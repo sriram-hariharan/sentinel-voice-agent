@@ -16,3 +16,6 @@ class ToolResourceNotFoundError(ToolError):
 
 class ToolInvalidStateError(ToolError):
     """Raised when a resource cannot perform the requested state transition."""
+
+class ToolSessionError(ToolError):
+    """Raised when a tool requires server-side session context."""

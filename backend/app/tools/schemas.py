@@ -1,11 +1,13 @@
 from datetime import datetime
 from decimal import Decimal
+from typing import Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
 class ToolExecutionContext(BaseModel):
+    session_id: str | None = Field(default=None, min_length=1, max_length=128)
     customer_id: UUID | None = None
     authenticated: bool = False
     confirmation: "ActionConfirmation | None" = None
@@ -116,3 +118,38 @@ class CreateDisputeOutput(BaseModel):
     reason_code: str
     status: str
     created: bool
+
+
+class EscalateToHumanInput(BaseModel):
+    category: str = Field(min_length=1, max_length=64)
+    priority: Literal["LOW", "MEDIUM", "HIGH", "URGENT"]
+    summary: str = Field(min_length=1, max_length=1000)
+    handoff_reason: str = Field(min_length=1, max_length=1000)
+    transaction_id: UUID | None = None
+    transaction_amount: Decimal | None = None
+    merchant: str | None = Field(default=None, max_length=255)
+    actions_completed: list[str] = Field(default_factory=list)
+    actions_not_completed: list[str] = Field(default_factory=list)
+    conversation_summary: str = Field(min_length=1, max_length=4000)
+
+
+class HandoffSummary(BaseModel):
+    customer_id: UUID | None
+    authenticated: bool
+    category: str
+    priority: str
+    summary: str
+    transaction_id: UUID | None
+    transaction_amount: Decimal | None
+    merchant: str | None
+    actions_completed: list[str]
+    actions_not_completed: list[str]
+    reason_for_handoff: str
+    conversation_summary: str
+
+
+class EscalateToHumanOutput(BaseModel):
+    case_id: UUID
+    status: str
+    created: bool
+    handoff: HandoffSummary

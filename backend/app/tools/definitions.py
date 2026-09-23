@@ -6,6 +6,7 @@ class PermissionLevel(StrEnum):
     PUBLIC_INFORMATIONAL = "PUBLIC_INFORMATIONAL"
     PRIVATE_READ = "PRIVATE_READ"
     PROTECTED_WRITE = "PROTECTED_WRITE"
+    SAFETY_ESCALATION = "SAFETY_ESCALATION"
 
 
 @dataclass(frozen=True)
@@ -32,6 +33,12 @@ _PROTECTED_WRITE_ERRORS = (
     "confirmation_required",
     "resource_not_found",
     "invalid_state",
+    "database_error",
+    "timeout",
+)
+
+_ESCALATION_ERRORS = (
+    "session_required",
     "database_error",
     "timeout",
 )
@@ -101,4 +108,15 @@ CREATE_DISPUTE = ToolDefinition(
     idempotent=True,
     audit_event="banking.dispute.create",
     error_types=_PROTECTED_WRITE_ERRORS,
+)
+
+ESCALATE_TO_HUMAN = ToolDefinition(
+    name="escalate_to_human",
+    permission_level=PermissionLevel.SAFETY_ESCALATION,
+    requires_authentication=False,
+    requires_confirmation=False,
+    timeout_seconds=2.0,
+    idempotent=True,
+    audit_event="support.escalation.create",
+    error_types=_ESCALATION_ERRORS,
 )

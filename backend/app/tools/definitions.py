@@ -91,3 +91,14 @@ FREEZE_CARD = ToolDefinition(
     audit_event="banking.card.freeze",
     error_types=_PROTECTED_WRITE_ERRORS,
 )
+
+CREATE_DISPUTE = ToolDefinition(
+    name="create_dispute",
+    permission_level=PermissionLevel.PROTECTED_WRITE,
+    requires_authentication=True,
+    requires_confirmation=True,
+    timeout_seconds=2.0,
+    idempotent=True,
+    audit_event="banking.dispute.create",
+    error_types=_PROTECTED_WRITE_ERRORS,
+)

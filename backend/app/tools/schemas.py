@@ -100,3 +100,19 @@ class FreezeCardOutput(BaseModel):
 
 
 ToolExecutionContext.model_rebuild()
+
+
+
+
+class CreateDisputeInput(BaseModel):
+    transaction_id: UUID
+    reason_code: str = Field(min_length=1, max_length=64)
+    notes: str | None = None
+
+
+class CreateDisputeOutput(BaseModel):
+    dispute_id: UUID
+    transaction_id: UUID
+    reason_code: str
+    status: str
+    created: bool

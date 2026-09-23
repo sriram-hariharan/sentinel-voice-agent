@@ -394,3 +394,217 @@ def test_freeze_card_definition_is_protected() -> None:
     assert FREEZE_CARD.requires_authentication is True
     assert FREEZE_CARD.requires_confirmation is True
     assert FREEZE_CARD.idempotent is True
+
+
+def test_create_dispute_definition_is_protected() -> None:
+    from backend.app.tools.definitions import CREATE_DISPUTE
+
+    assert CREATE_DISPUTE.permission_level == PermissionLevel.PROTECTED_WRITE
+    assert CREATE_DISPUTE.requires_authentication is True
+    assert CREATE_DISPUTE.requires_confirmation is True
+    assert CREATE_DISPUTE.idempotent is True
+
+
+@pytest.mark.asyncio
+async def test_create_dispute_requires_matching_confirmation() -> None:
+    from backend.app.tools.banking import create_dispute
+    from backend.app.tools.errors import ToolConfirmationError
+    from backend.app.tools.schemas import CreateDisputeInput
+
+    session = AsyncMock(spec=AsyncSession)
+
+    with pytest.raises(ToolConfirmationError):
+        await create_dispute(
+            CreateDisputeInput(
+                transaction_id=TRANSACTION_ID,
+                reason_code="UNRECOGNIZED_TRANSACTION",
+            ),
+            ToolExecutionContext(
+                customer_id=CUSTOMER_ID,
+                authenticated=True,
+            ),
+            session,
+        )
+
+    session.scalar.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_create_dispute_rejects_confirmation_for_different_transaction() -> None:
+    from backend.app.tools.banking import create_dispute
+    from backend.app.tools.errors import ToolConfirmationError
+    from backend.app.tools.schemas import (
+        ActionConfirmation,
+        CreateDisputeInput,
+    )
+
+    other_transaction_id = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee2")
+    session = AsyncMock(spec=AsyncSession)
+
+    with pytest.raises(ToolConfirmationError):
+        await create_dispute(
+            CreateDisputeInput(
+                transaction_id=TRANSACTION_ID,
+                reason_code="UNRECOGNIZED_TRANSACTION",
+            ),
+            ToolExecutionContext(
+                customer_id=CUSTOMER_ID,
+                authenticated=True,
+                confirmation=ActionConfirmation(
+                    action="create_dispute",
+                    resource_id=other_transaction_id,
+                    confirmed=True,
+                ),
+            ),
+            session,
+        )
+
+    session.scalar.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_create_dispute_hides_unowned_transaction() -> None:
+    from backend.app.tools.banking import create_dispute
+    from backend.app.tools.errors import ToolResourceNotFoundError
+    from backend.app.tools.schemas import (
+        ActionConfirmation,
+        CreateDisputeInput,
+    )
+
+    session = AsyncMock(spec=AsyncSession)
+    session.scalar.return_value = None
+
+    with pytest.raises(ToolResourceNotFoundError, match="Transaction not found"):
+        await create_dispute(
+            CreateDisputeInput(
+                transaction_id=TRANSACTION_ID,
+                reason_code="UNRECOGNIZED_TRANSACTION",
+            ),
+            ToolExecutionContext(
+                customer_id=CUSTOMER_ID,
+                authenticated=True,
+                confirmation=ActionConfirmation(
+                    action="create_dispute",
+                    resource_id=TRANSACTION_ID,
+                    confirmed=True,
+                ),
+            ),
+            session,
+        )
+
+    session.add.assert_not_called()
+    session.commit.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_create_dispute_returns_existing_dispute_on_retry() -> None:
+    from backend.app.db.models import Dispute
+    from backend.app.tools.banking import create_dispute
+    from backend.app.tools.schemas import (
+        ActionConfirmation,
+        CreateDisputeInput,
+    )
+
+    dispute_id = UUID("ffffffff-ffff-4fff-8fff-fffffffffff2")
+
+    transaction = Transaction(
+        transaction_id=TRANSACTION_ID,
+        account_id=ACCOUNT_ID,
+        card_id=CARD_ID,
+        merchant_name="ABC Electronics",
+        merchant_category="Electronics",
+        amount=Decimal("274.19"),
+        currency="USD",
+        transaction_timestamp=datetime(2026, 9, 20, tzinfo=UTC),
+        posted_timestamp=datetime(2026, 9, 21, tzinfo=UTC),
+        status="POSTED",
+        transaction_type="CARD_PURCHASE",
+        location="Newark, NJ",
+    )
+
+    existing_dispute = Dispute(
+        dispute_id=dispute_id,
+        customer_id=CUSTOMER_ID,
+        transaction_id=TRANSACTION_ID,
+        reason_code="UNRECOGNIZED_TRANSACTION",
+        status="OPEN",
+    )
+
+    session = AsyncMock(spec=AsyncSession)
+    session.scalar.side_effect = [transaction, existing_dispute]
+
+    result = await create_dispute(
+        CreateDisputeInput(
+            transaction_id=TRANSACTION_ID,
+            reason_code="UNRECOGNIZED_TRANSACTION",
+        ),
+        ToolExecutionContext(
+            customer_id=CUSTOMER_ID,
+            authenticated=True,
+            confirmation=ActionConfirmation(
+                action="create_dispute",
+                resource_id=TRANSACTION_ID,
+                confirmed=True,
+            ),
+        ),
+        session,
+    )
+
+    assert result.dispute_id == dispute_id
+    assert result.created is False
+    session.add.assert_not_called()
+    session.commit.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_create_dispute_creates_new_dispute() -> None:
+    from backend.app.tools.banking import create_dispute
+    from backend.app.tools.schemas import (
+        ActionConfirmation,
+        CreateDisputeInput,
+    )
+
+    transaction = Transaction(
+        transaction_id=TRANSACTION_ID,
+        account_id=ACCOUNT_ID,
+        card_id=CARD_ID,
+        merchant_name="ABC Electronics",
+        merchant_category="Electronics",
+        amount=Decimal("274.19"),
+        currency="USD",
+        transaction_timestamp=datetime(2026, 9, 20, tzinfo=UTC),
+        posted_timestamp=datetime(2026, 9, 21, tzinfo=UTC),
+        status="POSTED",
+        transaction_type="CARD_PURCHASE",
+        location="Newark, NJ",
+    )
+
+    session = AsyncMock(spec=AsyncSession)
+    session.scalar.side_effect = [transaction, None]
+
+    result = await create_dispute(
+        CreateDisputeInput(
+            transaction_id=TRANSACTION_ID,
+            reason_code="UNRECOGNIZED_TRANSACTION",
+            notes="Customer does not recognize this purchase.",
+        ),
+        ToolExecutionContext(
+            customer_id=CUSTOMER_ID,
+            authenticated=True,
+            confirmation=ActionConfirmation(
+                action="create_dispute",
+                resource_id=TRANSACTION_ID,
+                confirmed=True,
+            ),
+        ),
+        session,
+    )
+
+    assert result.transaction_id == TRANSACTION_ID
+    assert result.reason_code == "UNRECOGNIZED_TRANSACTION"
+    assert result.status == "OPEN"
+    assert result.created is True
+
+    session.add.assert_called_once()
+    session.flush.assert_awaited_once()
+    session.commit.assert_awaited_once()

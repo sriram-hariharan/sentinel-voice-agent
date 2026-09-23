@@ -1,9 +1,9 @@
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.app.db.models import Account, Card, Transaction
+from backend.app.db.models import Account, Card, Dispute, Transaction
 from backend.app.tools.errors import (
     ToolAuthenticationError,
     ToolConfirmationError,
@@ -15,6 +15,8 @@ from backend.app.tools.schemas import (
     AccountBalanceOutput,
     CardStatusInput,
     CardStatusOutput,
+    CreateDisputeInput,
+    CreateDisputeOutput,
     FreezeCardInput,
     FreezeCardOutput,
     RecentTransactionsInput,
@@ -232,4 +234,75 @@ async def freeze_card(
         previous_status=previous_status,
         status=card.status,
         changed=True,
+    )
+
+
+async def create_dispute(
+    request: CreateDisputeInput,
+    context: ToolExecutionContext,
+    session: AsyncSession,
+) -> CreateDisputeOutput:
+    customer_id = _require_authenticated_customer(context)
+
+    confirmation = context.confirmation
+    if (
+        confirmation is None
+        or not confirmation.confirmed
+        or confirmation.action != "create_dispute"
+        or confirmation.resource_id != request.transaction_id
+    ):
+        raise ToolConfirmationError(
+            "Explicit confirmation for this transaction dispute is required"
+        )
+
+    transaction_statement = (
+        select(Transaction)
+        .join(Account, Transaction.account_id == Account.account_id)
+        .where(
+            Transaction.transaction_id == request.transaction_id,
+            Account.customer_id == customer_id,
+        )
+        .with_for_update(of=Transaction)
+    )
+
+    transaction = await session.scalar(transaction_statement)
+
+    if transaction is None:
+        raise ToolResourceNotFoundError("Transaction not found")
+
+    existing_statement = select(Dispute).where(
+        Dispute.customer_id == customer_id,
+        Dispute.transaction_id == request.transaction_id,
+    )
+
+    existing_dispute = await session.scalar(existing_statement)
+
+    if existing_dispute is not None:
+        return CreateDisputeOutput(
+            dispute_id=existing_dispute.dispute_id,
+            transaction_id=existing_dispute.transaction_id,
+            reason_code=existing_dispute.reason_code,
+            status=existing_dispute.status,
+            created=False,
+        )
+
+    dispute = Dispute(
+        dispute_id=uuid4(),
+        customer_id=customer_id,
+        transaction_id=request.transaction_id,
+        reason_code=request.reason_code,
+        status="OPEN",
+        notes=request.notes,
+    )
+
+    session.add(dispute)
+    await session.flush()
+    await session.commit()
+
+    return CreateDisputeOutput(
+        dispute_id=dispute.dispute_id,
+        transaction_id=dispute.transaction_id,
+        reason_code=dispute.reason_code,
+        status=dispute.status,
+        created=True,
     )

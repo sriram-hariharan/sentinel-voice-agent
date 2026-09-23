@@ -19,3 +19,15 @@ class ToolInvalidStateError(ToolError):
 
 class ToolSessionError(ToolError):
     """Raised when a tool requires server-side session context."""
+
+
+class ToolNotFoundError(ToolError):
+    """Raised when an unknown tool name is requested."""
+
+
+class ToolValidationError(ToolError):
+    """Raised when model-provided tool arguments fail validation."""
+
+
+class ToolTimeoutError(ToolError):
+    """Raised when tool execution exceeds its configured timeout."""

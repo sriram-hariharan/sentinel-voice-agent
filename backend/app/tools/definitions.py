@@ -20,6 +20,14 @@ class ToolDefinition:
     error_types: tuple[str, ...]
 
 
+_PRIVATE_READ_ERRORS = (
+    "authentication_required",
+    "resource_not_found",
+    "database_error",
+    "timeout",
+)
+
+
 GET_ACCOUNT_BALANCE = ToolDefinition(
     name="get_account_balance",
     permission_level=PermissionLevel.PRIVATE_READ,
@@ -28,10 +36,38 @@ GET_ACCOUNT_BALANCE = ToolDefinition(
     timeout_seconds=2.0,
     idempotent=True,
     audit_event="banking.account_balance.read",
-    error_types=(
-        "authentication_required",
-        "resource_not_found",
-        "database_error",
-        "timeout",
-    ),
+    error_types=_PRIVATE_READ_ERRORS,
+)
+
+GET_RECENT_TRANSACTIONS = ToolDefinition(
+    name="get_recent_transactions",
+    permission_level=PermissionLevel.PRIVATE_READ,
+    requires_authentication=True,
+    requires_confirmation=False,
+    timeout_seconds=2.0,
+    idempotent=True,
+    audit_event="banking.transactions.read",
+    error_types=_PRIVATE_READ_ERRORS,
+)
+
+GET_TRANSACTION_DETAILS = ToolDefinition(
+    name="get_transaction_details",
+    permission_level=PermissionLevel.PRIVATE_READ,
+    requires_authentication=True,
+    requires_confirmation=False,
+    timeout_seconds=2.0,
+    idempotent=True,
+    audit_event="banking.transaction_details.read",
+    error_types=_PRIVATE_READ_ERRORS,
+)
+
+GET_CARD_STATUS = ToolDefinition(
+    name="get_card_status",
+    permission_level=PermissionLevel.PRIVATE_READ,
+    requires_authentication=True,
+    requires_confirmation=False,
+    timeout_seconds=2.0,
+    idempotent=True,
+    audit_event="banking.card_status.read",
+    error_types=_PRIVATE_READ_ERRORS,
 )

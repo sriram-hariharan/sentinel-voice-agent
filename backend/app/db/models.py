@@ -217,9 +217,10 @@ class SupportCase(Base):
         primary_key=True,
         default=uuid.uuid4,
     )
-    customer_id: Mapped[uuid.UUID] = mapped_column(
+    customer_id: Mapped[uuid.UUID | None] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("customers.customer_id"),
+        nullable=True,
         index=True,
     )
     session_id: Mapped[str] = mapped_column(String(128), index=True)

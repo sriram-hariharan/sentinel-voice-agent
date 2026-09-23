@@ -1360,7 +1360,7 @@ Security metadata belongs in code or configuration controlled by the application
 
 # 19. Permission Model
 
-Use three levels.
+Use three levels for customer banking capabilities. Human escalation is a separate system safety path described in Section 22.
 
 ## Level 1: Public / Informational
 
@@ -1505,6 +1505,18 @@ Potential escalation reasons:
 - security anomaly,
 - severe frustration,
 - degraded system state.
+
+### Authentication behavior
+
+Human escalation is a system safety path, not a protected banking action.
+
+It must remain available when authentication or identity verification fails.
+
+For a pre-authentication escalation, the session ID is required and the
+customer ID may be null.
+
+If the customer is already identified, the support case may also store that
+customer ID.
 
 ### Why human escalation is mandatory
 

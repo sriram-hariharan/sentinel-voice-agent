@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     db_user: str = "sentinelvoice_db_user"
     db_password: SecretStr | None = None
 
+    demo_pin: SecretStr | None = None
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_prefix="SENTINELVOICE_",

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from backend.app.api.health import router as health_router
+from backend.app.api.sessions import router as sessions_router
 from backend.app.config.settings import get_settings
 
 settings = get_settings()
@@ -11,3 +12,4 @@ app = FastAPI(
 )
 
 app.include_router(health_router)
+app.include_router(sessions_router)

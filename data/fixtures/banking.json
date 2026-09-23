@@ -1,0 +1,191 @@
+{
+  "customers": [
+    {
+      "customer_id": "11111111-1111-4111-8111-111111111111",
+      "first_name": "Avery",
+      "last_name": "Morgan",
+      "email": "avery.morgan@example.test",
+      "phone": "+1-555-0101",
+      "date_of_birth": "1992-04-18",
+      "status": "ACTIVE",
+      "authentication_profile": {
+        "verification_method": "demo_pin",
+        "verification_status": "ENROLLED"
+      }
+    },
+    {
+      "customer_id": "22222222-2222-4222-8222-222222222222",
+      "first_name": "Jordan",
+      "last_name": "Lee",
+      "email": "jordan.lee@example.test",
+      "phone": "+1-555-0102",
+      "date_of_birth": "1988-11-03",
+      "status": "ACTIVE",
+      "authentication_profile": {
+        "verification_method": "demo_pin",
+        "verification_status": "ENROLLED"
+      }
+    }
+  ],
+  "accounts": [
+    {
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "customer_id": "11111111-1111-4111-8111-111111111111",
+      "account_type": "checking",
+      "masked_account_number": "****4101",
+      "current_balance": "2847.63",
+      "available_balance": "2612.44",
+      "currency": "USD",
+      "status": "ACTIVE"
+    },
+    {
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2",
+      "customer_id": "11111111-1111-4111-8111-111111111111",
+      "account_type": "savings",
+      "masked_account_number": "****9204",
+      "current_balance": "10320.00",
+      "available_balance": "10320.00",
+      "currency": "USD",
+      "status": "ACTIVE"
+    },
+    {
+      "account_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "customer_id": "22222222-2222-4222-8222-222222222222",
+      "account_type": "checking",
+      "masked_account_number": "****7712",
+      "current_balance": "1240.18",
+      "available_balance": "1191.73",
+      "currency": "USD",
+      "status": "ACTIVE"
+    }
+  ],
+  "cards": [
+    {
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1",
+      "customer_id": "11111111-1111-4111-8111-111111111111",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "masked_card_number": "****1842",
+      "card_type": "DEBIT",
+      "status": "ACTIVE",
+      "expiration_month": 8,
+      "expiration_year": 2029
+    },
+    {
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc2",
+      "customer_id": "11111111-1111-4111-8111-111111111111",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "masked_card_number": "****6620",
+      "card_type": "DEBIT",
+      "status": "FROZEN",
+      "expiration_month": 2,
+      "expiration_year": 2028
+    },
+    {
+      "card_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1",
+      "customer_id": "22222222-2222-4222-8222-222222222222",
+      "account_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1",
+      "masked_card_number": "****4407",
+      "card_type": "DEBIT",
+      "status": "ACTIVE",
+      "expiration_month": 11,
+      "expiration_year": 2029
+    }
+  ],
+  "transactions": [
+    {
+      "transaction_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee1",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1",
+      "merchant_name": "ABC Electronics",
+      "merchant_category": "Electronics",
+      "amount": "274.19",
+      "currency": "USD",
+      "transaction_timestamp": "2026-09-20T14:12:00-04:00",
+      "posted_timestamp": "2026-09-21T06:00:00-04:00",
+      "status": "POSTED",
+      "transaction_type": "CARD_PURCHASE",
+      "location": "Newark, NJ"
+    },
+    {
+      "transaction_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee2",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1",
+      "merchant_name": "ABC Electronics",
+      "merchant_category": "Electronics",
+      "amount": "276.04",
+      "currency": "USD",
+      "transaction_timestamp": "2026-09-19T18:31:00-04:00",
+      "posted_timestamp": "2026-09-20T06:00:00-04:00",
+      "status": "POSTED",
+      "transaction_type": "CARD_PURCHASE",
+      "location": "Jersey City, NJ"
+    },
+    {
+      "transaction_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee3",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1",
+      "merchant_name": "Metro Market",
+      "merchant_category": "Groceries",
+      "amount": "48.45",
+      "currency": "USD",
+      "transaction_timestamp": "2026-09-22T19:04:00-04:00",
+      "posted_timestamp": null,
+      "status": "PENDING",
+      "transaction_type": "CARD_PURCHASE",
+      "location": "Newark, NJ"
+    },
+    {
+      "transaction_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee4",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1",
+      "merchant_name": "Metro Market",
+      "merchant_category": "Groceries",
+      "amount": "48.45",
+      "currency": "USD",
+      "transaction_timestamp": "2026-09-21T19:02:00-04:00",
+      "posted_timestamp": "2026-09-22T05:40:00-04:00",
+      "status": "POSTED",
+      "transaction_type": "CARD_PURCHASE",
+      "location": "Newark, NJ"
+    },
+    {
+      "transaction_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee5",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1",
+      "merchant_name": "Cloud Coffee",
+      "merchant_category": "Dining",
+      "amount": "12.75",
+      "currency": "USD",
+      "transaction_timestamp": "2026-09-18T08:12:00-04:00",
+      "posted_timestamp": "2026-09-18T15:00:00-04:00",
+      "status": "REVERSED",
+      "transaction_type": "CARD_PURCHASE",
+      "location": "Newark, NJ"
+    },
+    {
+      "transaction_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee6",
+      "account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      "card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1",
+      "merchant_name": "Global Digital Store",
+      "merchant_category": "Digital Goods",
+      "amount": "189.99",
+      "currency": "USD",
+      "transaction_timestamp": "2026-09-17T02:14:00-04:00",
+      "posted_timestamp": "2026-09-18T05:30:00-04:00",
+      "status": "POSTED",
+      "transaction_type": "CARD_PURCHASE",
+      "location": "London, UK"
+    }
+  ],
+  "disputes": [
+    {
+      "dispute_id": "ffffffff-ffff-4fff-8fff-fffffffffff1",
+      "customer_id": "11111111-1111-4111-8111-111111111111",
+      "transaction_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee5",
+      "reason_code": "DUPLICATE_CHARGE",
+      "status": "RESOLVED",
+      "notes": "Synthetic historical dispute used for evaluation."
+    }
+  ],
+  "support_cases": []
+}

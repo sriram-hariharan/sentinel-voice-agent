@@ -27,6 +27,15 @@ _PRIVATE_READ_ERRORS = (
     "timeout",
 )
 
+_PROTECTED_WRITE_ERRORS = (
+    "authentication_required",
+    "confirmation_required",
+    "resource_not_found",
+    "invalid_state",
+    "database_error",
+    "timeout",
+)
+
 
 GET_ACCOUNT_BALANCE = ToolDefinition(
     name="get_account_balance",
@@ -70,4 +79,15 @@ GET_CARD_STATUS = ToolDefinition(
     idempotent=True,
     audit_event="banking.card_status.read",
     error_types=_PRIVATE_READ_ERRORS,
+)
+
+FREEZE_CARD = ToolDefinition(
+    name="freeze_card",
+    permission_level=PermissionLevel.PROTECTED_WRITE,
+    requires_authentication=True,
+    requires_confirmation=True,
+    timeout_seconds=2.0,
+    idempotent=True,
+    audit_event="banking.card.freeze",
+    error_types=_PROTECTED_WRITE_ERRORS,
 )

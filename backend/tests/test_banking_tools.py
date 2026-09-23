@@ -250,3 +250,147 @@ async def test_get_card_status_hides_unowned_card() -> None:
             ToolExecutionContext(customer_id=CUSTOMER_ID, authenticated=True),
             session,
         )
+
+
+@pytest.mark.asyncio
+async def test_freeze_card_requires_matching_confirmation() -> None:
+    from backend.app.tools.banking import freeze_card
+    from backend.app.tools.errors import ToolConfirmationError
+    from backend.app.tools.schemas import FreezeCardInput
+
+    session = AsyncMock(spec=AsyncSession)
+
+    with pytest.raises(ToolConfirmationError):
+        await freeze_card(
+            FreezeCardInput(card_id=CARD_ID),
+            ToolExecutionContext(
+                customer_id=CUSTOMER_ID,
+                authenticated=True,
+            ),
+            session,
+        )
+
+    session.scalar.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_freeze_card_rejects_confirmation_for_different_card() -> None:
+    from backend.app.tools.banking import freeze_card
+    from backend.app.tools.errors import ToolConfirmationError
+    from backend.app.tools.schemas import (
+        ActionConfirmation,
+        FreezeCardInput,
+    )
+
+    other_card_id = UUID("cccccccc-cccc-4ccc-8ccc-ccccccccccc2")
+    session = AsyncMock(spec=AsyncSession)
+
+    with pytest.raises(ToolConfirmationError):
+        await freeze_card(
+            FreezeCardInput(card_id=CARD_ID),
+            ToolExecutionContext(
+                customer_id=CUSTOMER_ID,
+                authenticated=True,
+                confirmation=ActionConfirmation(
+                    action="freeze_card",
+                    resource_id=other_card_id,
+                    confirmed=True,
+                ),
+            ),
+            session,
+        )
+
+    session.scalar.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_freeze_card_freezes_owned_active_card() -> None:
+    from backend.app.tools.banking import freeze_card
+    from backend.app.tools.schemas import (
+        ActionConfirmation,
+        FreezeCardInput,
+    )
+
+    card = Card(
+        card_id=CARD_ID,
+        customer_id=CUSTOMER_ID,
+        account_id=ACCOUNT_ID,
+        masked_card_number="****1842",
+        card_type="DEBIT",
+        status="ACTIVE",
+        expiration_month=8,
+        expiration_year=2029,
+    )
+
+    session = AsyncMock(spec=AsyncSession)
+    session.scalar.return_value = card
+
+    result = await freeze_card(
+        FreezeCardInput(card_id=CARD_ID),
+        ToolExecutionContext(
+            customer_id=CUSTOMER_ID,
+            authenticated=True,
+            confirmation=ActionConfirmation(
+                action="freeze_card",
+                resource_id=CARD_ID,
+                confirmed=True,
+            ),
+        ),
+        session,
+    )
+
+    assert result.previous_status == "ACTIVE"
+    assert result.status == "FROZEN"
+    assert result.changed is True
+    assert card.status == "FROZEN"
+    session.commit.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_freeze_card_is_idempotent_when_already_frozen() -> None:
+    from backend.app.tools.banking import freeze_card
+    from backend.app.tools.schemas import (
+        ActionConfirmation,
+        FreezeCardInput,
+    )
+
+    card = Card(
+        card_id=CARD_ID,
+        customer_id=CUSTOMER_ID,
+        account_id=ACCOUNT_ID,
+        masked_card_number="****1842",
+        card_type="DEBIT",
+        status="FROZEN",
+        expiration_month=8,
+        expiration_year=2029,
+    )
+
+    session = AsyncMock(spec=AsyncSession)
+    session.scalar.return_value = card
+
+    result = await freeze_card(
+        FreezeCardInput(card_id=CARD_ID),
+        ToolExecutionContext(
+            customer_id=CUSTOMER_ID,
+            authenticated=True,
+            confirmation=ActionConfirmation(
+                action="freeze_card",
+                resource_id=CARD_ID,
+                confirmed=True,
+            ),
+        ),
+        session,
+    )
+
+    assert result.status == "FROZEN"
+    assert result.changed is False
+    session.commit.assert_not_awaited()
+
+
+def test_freeze_card_definition_is_protected() -> None:
+    from backend.app.tools.definitions import FREEZE_CARD
+
+    assert FREEZE_CARD.permission_level == PermissionLevel.PROTECTED_WRITE
+    assert FREEZE_CARD.requires_authentication is True
+    assert FREEZE_CARD.requires_confirmation is True
+    assert FREEZE_CARD.idempotent is True

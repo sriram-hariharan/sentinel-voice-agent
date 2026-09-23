@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class ToolExecutionContext(BaseModel):
     customer_id: UUID | None = None
     authenticated: bool = False
+    confirmation: "ActionConfirmation | None" = None
 
     model_config = ConfigDict(frozen=True)
 
@@ -76,3 +77,26 @@ class CardStatusOutput(BaseModel):
     status: str
     expiration_month: int
     expiration_year: int
+
+
+class ActionConfirmation(BaseModel):
+    action: str
+    resource_id: UUID
+    confirmed: bool
+
+    model_config = ConfigDict(frozen=True)
+
+
+class FreezeCardInput(BaseModel):
+    card_id: UUID
+
+
+class FreezeCardOutput(BaseModel):
+    card_id: UUID
+    masked_card_number: str
+    previous_status: str
+    status: str
+    changed: bool
+
+
+ToolExecutionContext.model_rebuild()

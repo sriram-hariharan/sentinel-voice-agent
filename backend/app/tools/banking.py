@@ -6,6 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from backend.app.db.models import Account, Card, Transaction
 from backend.app.tools.errors import (
     ToolAuthenticationError,
+    ToolConfirmationError,
+    ToolInvalidStateError,
     ToolResourceNotFoundError,
 )
 from backend.app.tools.schemas import (
@@ -13,6 +15,8 @@ from backend.app.tools.schemas import (
     AccountBalanceOutput,
     CardStatusInput,
     CardStatusOutput,
+    FreezeCardInput,
+    FreezeCardOutput,
     RecentTransactionsInput,
     RecentTransactionsOutput,
     ToolExecutionContext,
@@ -172,4 +176,60 @@ async def get_card_status(
         status=card.status,
         expiration_month=card.expiration_month,
         expiration_year=card.expiration_year,
+    )
+
+
+async def freeze_card(
+    request: FreezeCardInput,
+    context: ToolExecutionContext,
+    session: AsyncSession,
+) -> FreezeCardOutput:
+    customer_id = _require_authenticated_customer(context)
+
+    confirmation = context.confirmation
+    if (
+        confirmation is None
+        or not confirmation.confirmed
+        or confirmation.action != "freeze_card"
+        or confirmation.resource_id != request.card_id
+    ):
+        raise ToolConfirmationError(
+            "Explicit confirmation for this card freeze is required"
+        )
+
+    statement = select(Card).where(
+        Card.card_id == request.card_id,
+        Card.customer_id == customer_id,
+    )
+
+    card = await session.scalar(statement)
+
+    if card is None:
+        raise ToolResourceNotFoundError("Card not found")
+
+    previous_status = card.status
+
+    if card.status == "FROZEN":
+        return FreezeCardOutput(
+            card_id=card.card_id,
+            masked_card_number=card.masked_card_number,
+            previous_status=previous_status,
+            status=card.status,
+            changed=False,
+        )
+
+    if card.status != "ACTIVE":
+        raise ToolInvalidStateError(
+            f"Card in status {card.status} cannot be frozen"
+        )
+
+    card.status = "FROZEN"
+    await session.commit()
+
+    return FreezeCardOutput(
+        card_id=card.card_id,
+        masked_card_number=card.masked_card_number,
+        previous_status=previous_status,
+        status=card.status,
+        changed=True,
     )

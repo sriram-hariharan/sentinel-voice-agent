@@ -133,3 +133,27 @@ def test_tool_context_never_marks_unverified_identity_authenticated() -> None:
 
     assert context.customer_id == CUSTOMER_ID
     assert context.authenticated is False
+
+
+def test_pending_action_preserves_validated_arguments() -> None:
+    state = ConversationState(session_id="session-001")
+
+    state.request_action(
+        "freeze_card",
+        CARD_ID,
+        arguments={
+            "card_id": str(CARD_ID),
+        },
+    )
+
+    assert state.pending_action is not None
+    assert state.pending_action.arguments == {
+        "card_id": str(CARD_ID),
+    }
+
+    state.confirm_pending_action()
+
+    context = state.to_tool_context()
+
+    assert context.confirmation is not None
+    assert context.confirmation.resource_id == CARD_ID

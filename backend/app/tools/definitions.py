@@ -19,6 +19,8 @@ class ToolDefinition:
     idempotent: bool
     audit_event: str
     error_types: tuple[str, ...]
+    description: str = ""
+    confirmation_resource_field: str | None = None
 
 
 _PRIVATE_READ_ERRORS = (
@@ -53,6 +55,10 @@ GET_ACCOUNT_BALANCE = ToolDefinition(
     idempotent=True,
     audit_event="banking.account_balance.read",
     error_types=_PRIVATE_READ_ERRORS,
+    description=(
+        "Get the current and available balance for one account owned by "
+        "the authenticated customer."
+    ),
 )
 
 GET_RECENT_TRANSACTIONS = ToolDefinition(
@@ -64,6 +70,10 @@ GET_RECENT_TRANSACTIONS = ToolDefinition(
     idempotent=True,
     audit_event="banking.transactions.read",
     error_types=_PRIVATE_READ_ERRORS,
+    description=(
+        "Get recent transactions for one account owned by the "
+        "authenticated customer."
+    ),
 )
 
 GET_TRANSACTION_DETAILS = ToolDefinition(
@@ -75,6 +85,10 @@ GET_TRANSACTION_DETAILS = ToolDefinition(
     idempotent=True,
     audit_event="banking.transaction_details.read",
     error_types=_PRIVATE_READ_ERRORS,
+    description=(
+        "Get detailed information about one transaction belonging to "
+        "the authenticated customer."
+    ),
 )
 
 GET_CARD_STATUS = ToolDefinition(
@@ -86,6 +100,10 @@ GET_CARD_STATUS = ToolDefinition(
     idempotent=True,
     audit_event="banking.card_status.read",
     error_types=_PRIVATE_READ_ERRORS,
+    description=(
+        "Get status and masked details for one card owned by the "
+        "authenticated customer."
+    ),
 )
 
 FREEZE_CARD = ToolDefinition(
@@ -97,6 +115,11 @@ FREEZE_CARD = ToolDefinition(
     idempotent=True,
     audit_event="banking.card.freeze",
     error_types=_PROTECTED_WRITE_ERRORS,
+    description=(
+        "Freeze a specific card owned by the authenticated customer. "
+        "This is a protected action requiring explicit confirmation."
+    ),
+    confirmation_resource_field="card_id",
 )
 
 CREATE_DISPUTE = ToolDefinition(
@@ -108,6 +131,12 @@ CREATE_DISPUTE = ToolDefinition(
     idempotent=True,
     audit_event="banking.dispute.create",
     error_types=_PROTECTED_WRITE_ERRORS,
+    description=(
+        "Create a synthetic dispute for a specific transaction owned by "
+        "the authenticated customer. This is a protected action requiring "
+        "explicit confirmation."
+    ),
+    confirmation_resource_field="transaction_id",
 )
 
 ESCALATE_TO_HUMAN = ToolDefinition(
@@ -119,4 +148,8 @@ ESCALATE_TO_HUMAN = ToolDefinition(
     idempotent=True,
     audit_event="support.escalation.create",
     error_types=_ESCALATION_ERRORS,
+    description=(
+        "Create a human-support escalation with a structured handoff. "
+        "This safety path remains available even before authentication."
+    ),
 )

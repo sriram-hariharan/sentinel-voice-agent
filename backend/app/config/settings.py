@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import SecretStr
+from pydantic import AliasChoices, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -15,6 +15,15 @@ class Settings(BaseSettings):
     db_password: SecretStr | None = None
 
     demo_pin: SecretStr | None = None
+
+    groq_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "GROQ_API_KEY",
+            "SENTINELVOICE_GROQ_API_KEY",
+        ),
+    )
+    llm_model: str = "openai/gpt-oss-20b"
 
     model_config = SettingsConfigDict(
         env_file=".env",

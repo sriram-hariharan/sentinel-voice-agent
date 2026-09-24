@@ -41,6 +41,7 @@ class ConversationStateError(RuntimeError):
 class PendingAction(BaseModel):
     action: str = Field(min_length=1)
     resource_id: UUID
+    arguments: dict[str, Any] = Field(default_factory=dict)
     confirmation_required: bool = True
     confirmation_received: bool = False
 
@@ -81,11 +82,13 @@ class ConversationState(BaseModel):
         action: str,
         resource_id: UUID,
         *,
+        arguments: dict[str, Any] | None = None,
         confirmation_required: bool = True,
     ) -> None:
         self.pending_action = PendingAction(
             action=action,
             resource_id=resource_id,
+            arguments=dict(arguments or {}),
             confirmation_required=confirmation_required,
         )
 

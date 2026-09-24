@@ -1,4 +1,5 @@
 import json
+import re
 from enum import StrEnum
 from typing import Any
 from uuid import UUID
@@ -7,10 +8,12 @@ from pydantic import BaseModel, ConfigDict, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.agent.prompt import SYSTEM_PROMPT
+from backend.app.agent.resource_resolver import ResourceResolver
 from backend.app.agent.tool_schemas import build_llm_tool_schemas
 from backend.app.conversation.state import (
     ConversationPhase,
     ConversationState,
+    ResourceType,
 )
 from backend.app.providers.llm import (
     LLMProvider,
@@ -74,6 +77,40 @@ _NEGATIVE_CONFIRMATIONS = {
     "wait",
 }
 
+_RESOURCE_BINDINGS = {
+    "get_account_balance": ("account_id", "active_account_id"),
+    "get_recent_transactions": ("account_id", "active_account_id"),
+    "get_transaction_details": (
+        "transaction_id",
+        "active_transaction_id",
+    ),
+    "get_card_status": ("card_id", "active_card_id"),
+    "freeze_card": ("card_id", "active_card_id"),
+    "create_dispute": ("transaction_id", "active_transaction_id"),
+}
+
+_TOOLS_BY_ACTIVE_INTENT = {
+    "get_account_balance": {"get_account_balance"},
+    "get_recent_transactions": {"get_recent_transactions"},
+    "get_transaction_details": {"get_transaction_details"},
+    "get_card_status": {"get_card_status"},
+    "freeze_card": {"get_card_status", "freeze_card"},
+    "create_dispute": {"get_transaction_details", "create_dispute"},
+}
+
+_INTERNAL_ID_REQUEST = re.compile(
+    r"\buuid\b|\b(?:account|card|transaction|customer)\s+"
+    r"(?:id|identifier)\b|\b[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-"
+    r"[89ab][0-9a-f]{3}-[0-9a-f]{12}\b",
+    re.IGNORECASE,
+)
+
+_UNBACKED_CONFIRMATION_PROMPT = re.compile(
+    r"(?:would you like|do you want|confirm).*(?:freeze|dispute)|"
+    r"(?:freeze|dispute).*(?:would you like|do you want|confirm)",
+    re.IGNORECASE | re.DOTALL,
+)
+
 
 def _normalize_confirmation_text(text: str) -> str:
     return " ".join(
@@ -125,6 +162,79 @@ def _confirmation_prompt(tool_name: str) -> str:
     return "Would you like me to proceed with that action?"
 
 
+def _resource_clarification(tool_name: str) -> str:
+    if tool_name in {"get_account_balance", "get_recent_transactions"}:
+        return "Which account do you mean—checking or savings?"
+
+    if tool_name in {"get_card_status", "freeze_card"}:
+        return (
+            "Which card do you mean? You can identify it by status "
+            "or the last four digits."
+        )
+
+    return (
+        "Which transaction do you mean? You can identify it by "
+        "merchant, amount, or date."
+    )
+
+
+def _internal_id_fallback(state: ConversationState) -> str:
+    intent = state.active_intent or ""
+
+    if intent in {"get_account_balance", "get_recent_transactions"}:
+        return "Tell me whether you mean your checking or savings account."
+
+    if intent in {"get_card_status", "freeze_card"}:
+        return (
+            "Tell me the card status or the last four digits shown on the card."
+        )
+
+    if intent in {"get_transaction_details", "create_dispute"}:
+        return "Tell me the transaction’s merchant, amount, or date."
+
+    return (
+        "You don’t need an internal ID. Describe the account, card, "
+        "or transaction in customer-friendly terms."
+    )
+
+
+def _safe_customer_response(
+    response_text: str,
+    state: ConversationState,
+) -> str:
+    response_text = response_text.strip()
+
+    if _INTERNAL_ID_REQUEST.search(response_text):
+        return _internal_id_fallback(state)
+
+    if (
+        state.pending_action is None
+        and _UNBACKED_CONFIRMATION_PROMPT.search(response_text)
+    ):
+        return (
+            "I’m not ready to perform that protected action yet. "
+            "Please identify the card or transaction using "
+            "customer-visible details."
+        )
+
+    return response_text
+
+
+def _clear_action_context(
+    state: ConversationState,
+    action: str | None = None,
+) -> None:
+    action = action or state.active_intent
+    state.active_intent = None
+
+    if action in {"get_account_balance", "get_recent_transactions"}:
+        state.active_account_id = None
+    elif action in {"get_card_status", "freeze_card"}:
+        state.active_card_id = None
+    elif action in {"get_transaction_details", "create_dispute"}:
+        state.active_transaction_id = None
+
+
 def _tool_call_message(
     response: LLMResponse,
     tool_call: LLMToolCall,
@@ -163,6 +273,7 @@ class AgentOrchestrator:
         *,
         llm: LLMProvider,
         tool_executor: ToolExecutor | None = None,
+        resource_resolver: ResourceResolver | None = None,
         max_tool_calls: int = 3,
     ) -> None:
         if max_tool_calls < 1:
@@ -170,6 +281,7 @@ class AgentOrchestrator:
 
         self._llm = llm
         self._tool_executor = tool_executor or ToolExecutor()
+        self._resource_resolver = resource_resolver or ResourceResolver()
         self._max_tool_calls = max_tool_calls
 
     async def handle_text_turn(
@@ -213,6 +325,7 @@ class AgentOrchestrator:
             state.cancel_pending_action()
 
             if decision == ConfirmationDecision.CANCEL:
+                _clear_action_context(state, pending.action)
                 state.phase = ConversationPhase.AGENT_SPEAKING
 
                 return AgentTurnResult(
@@ -224,6 +337,69 @@ class AgentOrchestrator:
             # confirmation and is processed as a new user request.
 
         state.phase = ConversationPhase.PROCESSING
+
+        resolution = await self._resource_resolver.resolve(
+            user_text=user_text,
+            state=state,
+            db=db,
+        )
+
+        if resolution.clarification is not None:
+            state.phase = ConversationPhase.AGENT_SPEAKING
+
+            return AgentTurnResult(
+                text=resolution.clarification,
+                status=AgentTurnStatus.RESPONDED,
+            )
+
+        if (
+            state.pending_action is not None
+            and state.phase == ConversationPhase.WAITING_FOR_CONFIRMATION
+        ):
+            return AgentTurnResult(
+                text=_confirmation_prompt(state.pending_action.action),
+                status=AgentTurnStatus.WAITING_FOR_CONFIRMATION,
+            )
+
+        if (
+            resolution.selected_from_pending
+            and resolution.kind == ResourceType.TRANSACTION
+            and state.active_intent == "get_transaction_details"
+        ):
+            transaction_id = state.active_transaction_id
+
+            if transaction_id is None:
+                state.phase = ConversationPhase.FAILED
+                raise AgentOrchestrationError(
+                    "A selected transaction has no active resource ID"
+                )
+
+            messages = self._build_messages(
+                user_text=(
+                    "The customer selected one of the previously offered "
+                    "transaction candidates."
+                ),
+                state=state,
+            )
+
+            return await self._run_model_loop(
+                messages=messages,
+                state=state,
+                db=db,
+                initial_response=LLMResponse(
+                    content="",
+                    tool_calls=[
+                        LLMToolCall(
+                            id="application-resolved-transaction",
+                            name="get_transaction_details",
+                            arguments={
+                                "transaction_id": str(transaction_id),
+                            },
+                        )
+                    ],
+                    model="application-resolved-resource",
+                ),
+            )
 
         messages = self._build_messages(
             user_text=user_text,
@@ -266,6 +442,11 @@ class AgentOrchestrator:
             f"Authenticated session: {str(state.authenticated).lower()}",
         ]
 
+        if state.active_intent is not None:
+            context_lines.append(
+                f"Active intent: {state.active_intent}"
+            )
+
         if state.active_account_id is not None:
             context_lines.append(
                 f"Active account ID: {state.active_account_id}"
@@ -307,6 +488,7 @@ class AgentOrchestrator:
         messages: list[dict[str, Any]],
         state: ConversationState,
         db: AsyncSession,
+        initial_response: LLMResponse | None = None,
     ) -> AgentTurnResult:
         executed_tools: list[str] = []
         total_usage = LLMUsage()
@@ -317,10 +499,14 @@ class AgentOrchestrator:
         )
 
         while True:
-            response = await self._llm.generate(
-                messages=messages,
-                tools=tool_schemas,
-            )
+            if initial_response is not None:
+                response = initial_response
+                initial_response = None
+            else:
+                response = await self._llm.generate(
+                    messages=messages,
+                    tools=tool_schemas,
+                )
 
             total_usage = _merge_usage(
                 total_usage,
@@ -334,10 +520,16 @@ class AgentOrchestrator:
                         "LLM returned neither text nor a tool call"
                     )
 
+                response_text = _safe_customer_response(
+                    response.content,
+                    state,
+                )
+
+                _clear_action_context(state)
                 state.phase = ConversationPhase.AGENT_SPEAKING
 
                 return AgentTurnResult(
-                    text=response.content.strip(),
+                    text=response_text,
                     status=AgentTurnStatus.RESPONDED,
                     executed_tools=executed_tools,
                     usage=total_usage,
@@ -379,10 +571,36 @@ class AgentOrchestrator:
                 )
                 continue
 
+            authoritative_arguments = dict(tool_call.arguments)
+            binding = _RESOURCE_BINDINGS.get(tool_call.name)
+
+            if binding is not None:
+                field_name, state_field = binding
+                resource_id = getattr(state, state_field)
+                allowed_for_intent = _TOOLS_BY_ACTIVE_INTENT.get(
+                    state.active_intent or "",
+                    set(),
+                )
+
+                if (
+                    resource_id is None
+                    or tool_call.name not in allowed_for_intent
+                ):
+                    state.phase = ConversationPhase.AGENT_SPEAKING
+
+                    return AgentTurnResult(
+                        text=_resource_clarification(tool_call.name),
+                        status=AgentTurnStatus.RESPONDED,
+                        executed_tools=executed_tools,
+                        usage=total_usage,
+                    )
+
+                authoritative_arguments[field_name] = str(resource_id)
+
             try:
                 validated_request = (
                     registered.input_model.model_validate(
-                        tool_call.arguments
+                        authoritative_arguments
                     )
                 )
             except ValidationError:
@@ -532,6 +750,7 @@ class AgentOrchestrator:
             # Confirmation is one-use. Never automatically retry an
             # uncertain protected write using a stale confirmation.
             state.cancel_pending_action()
+            _clear_action_context(state, pending.action)
             state.phase = ConversationPhase.AGENT_SPEAKING
 
             return AgentTurnResult(
@@ -603,10 +822,15 @@ class AgentOrchestrator:
                 "after protected action execution"
             )
 
+        _clear_action_context(state, action)
+        response_text = _safe_customer_response(
+            final_response.content,
+            state,
+        )
         state.phase = ConversationPhase.AGENT_SPEAKING
 
         return AgentTurnResult(
-            text=final_response.content.strip(),
+            text=response_text,
             status=AgentTurnStatus.RESPONDED,
             executed_tools=[action],
             usage=final_response.usage,

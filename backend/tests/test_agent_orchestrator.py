@@ -9,6 +9,7 @@ from backend.app.agent.orchestrator import (
     AgentOrchestrator,
     AgentTurnStatus,
 )
+from backend.app.agent.resource_resolver import ResourceResolution
 from backend.app.conversation.state import (
     AuthenticationLevel,
     ConversationPhase,
@@ -47,6 +48,11 @@ class SequenceLLM:
         )
 
         return self.responses.pop(0)
+
+
+class NoopResourceResolver:
+    async def resolve(self, **kwargs) -> ResourceResolution:
+        return ResourceResolution()
 
 
 def _authenticated_state() -> ConversationState:
@@ -147,9 +153,12 @@ async def test_protected_tool_proposal_waits_for_confirmation() -> None:
     orchestrator = AgentOrchestrator(
         llm=llm,
         tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
     )
 
     state = _authenticated_state()
+    state.active_card_id = CARD_ID
+    state.active_intent = "freeze_card"
     db = AsyncMock(spec=AsyncSession)
 
     result = await orchestrator.handle_text_turn(
@@ -194,6 +203,7 @@ async def test_explicit_yes_executes_stored_protected_action_once() -> None:
     orchestrator = AgentOrchestrator(
         llm=llm,
         tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
     )
 
     state = _authenticated_state()
@@ -241,6 +251,7 @@ async def test_no_cancels_protected_action_without_execution() -> None:
     orchestrator = AgentOrchestrator(
         llm=llm,
         tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
     )
 
     state = _authenticated_state()
@@ -282,6 +293,7 @@ async def test_correction_invalidates_old_confirmation_and_is_reprocessed() -> N
     orchestrator = AgentOrchestrator(
         llm=llm,
         tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
     )
 
     state = _authenticated_state()
@@ -348,10 +360,12 @@ async def test_private_read_tool_result_returns_to_llm() -> None:
     orchestrator = AgentOrchestrator(
         llm=llm,
         tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
     )
 
     state = _authenticated_state()
     state.active_account_id = ACCOUNT_ID
+    state.active_intent = "get_account_balance"
 
     db = AsyncMock(spec=AsyncSession)
 

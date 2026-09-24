@@ -2,9 +2,15 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, Field, SecretStr
+from pydantic import BaseModel, ConfigDict, Field, SecretStr
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.agent.dependencies import get_agent_orchestrator
+from backend.app.agent.orchestrator import (
+    AgentOrchestrationError,
+    AgentOrchestrator,
+    AgentTurnStatus,
+)
 from backend.app.auth.service import (
     InvalidCredentialsError,
     SessionIdentityConflictError,
@@ -16,7 +22,9 @@ from backend.app.auth.sessions import (
     get_session_store,
 )
 from backend.app.config.settings import Settings, get_settings
+from backend.app.conversation.state import ConversationPhase, ConversationState
 from backend.app.db.session import get_db_session
+from backend.app.providers.groq_llm import LLMProviderError
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
 
@@ -32,6 +40,10 @@ SettingsDep = Annotated[
     Settings,
     Depends(get_settings),
 ]
+AgentOrchestratorDep = Annotated[
+    AgentOrchestrator,
+    Depends(get_agent_orchestrator),
+]
 
 
 class AuthenticateSessionRequest(BaseModel):
@@ -43,6 +55,42 @@ class SessionResponse(BaseModel):
     session_id: str
     customer_id: UUID | None
     authenticated: bool
+    conversation_phase: ConversationPhase
+    pending_action: str | None
+
+
+class MessageRequest(BaseModel):
+    message: str = Field(min_length=1, max_length=4000)
+
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+        extra="forbid",
+    )
+
+
+class MessageResponse(BaseModel):
+    session_id: str
+    message: str
+    turn_status: AgentTurnStatus
+    conversation_phase: ConversationPhase
+    authenticated: bool
+    customer_id: UUID | None
+    executed_tools: list[str]
+    pending_action: str | None
+
+
+def _session_response(state: ConversationState) -> SessionResponse:
+    return SessionResponse(
+        session_id=state.session_id,
+        customer_id=state.customer_id,
+        authenticated=state.authenticated,
+        conversation_phase=state.phase,
+        pending_action=(
+            state.pending_action.action
+            if state.pending_action is not None
+            else None
+        ),
+    )
 
 
 @router.post(
@@ -55,11 +103,7 @@ async def create_session(
 ) -> SessionResponse:
     state = store.create()
 
-    return SessionResponse(
-        session_id=state.session_id,
-        customer_id=None,
-        authenticated=False,
-    )
+    return _session_response(state)
 
 
 @router.post(
@@ -114,8 +158,56 @@ async def authenticate(
             detail="Session is already authenticated as another customer",
         ) from exc
 
-    return SessionResponse(
+    return _session_response(state)
+
+
+@router.post(
+    "/{session_id}/messages",
+    response_model=MessageResponse,
+)
+async def create_message(
+    session_id: str,
+    request: MessageRequest,
+    store: SessionStoreDep,
+    db: DbSessionDep,
+    orchestrator: AgentOrchestratorDep,
+) -> MessageResponse:
+    try:
+        state = store.get(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Session not found",
+        ) from exc
+
+    try:
+        result = await orchestrator.handle_text_turn(
+            user_text=request.message,
+            state=state,
+            db=db,
+        )
+    except LLMProviderError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="LLM provider request failed",
+        ) from exc
+    except AgentOrchestrationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Agent could not complete the turn",
+        ) from exc
+
+    return MessageResponse(
         session_id=state.session_id,
-        customer_id=state.customer_id,
+        message=result.text,
+        turn_status=result.status,
+        conversation_phase=state.phase,
         authenticated=state.authenticated,
+        customer_id=state.customer_id,
+        executed_tools=result.executed_tools,
+        pending_action=(
+            state.pending_action.action
+            if state.pending_action is not None
+            else None
+        ),
     )

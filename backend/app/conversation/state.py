@@ -34,6 +34,12 @@ class EscalationStatus(StrEnum):
     ESCALATED = "ESCALATED"
 
 
+class ResourceType(StrEnum):
+    ACCOUNT = "ACCOUNT"
+    CARD = "CARD"
+    TRANSACTION = "TRANSACTION"
+
+
 class ConversationStateError(RuntimeError):
     """Raised when a conversation-state operation is invalid."""
 
@@ -44,6 +50,24 @@ class PendingAction(BaseModel):
     arguments: dict[str, Any] = Field(default_factory=dict)
     confirmation_required: bool = True
     confirmation_received: bool = False
+
+    model_config = ConfigDict(frozen=True)
+
+
+class ResourceCandidate(BaseModel):
+    resource_id: UUID
+    label: str = Field(min_length=1, max_length=255)
+    selectors: tuple[str, ...] = Field(min_length=1)
+    related_account_id: UUID | None = None
+
+    model_config = ConfigDict(frozen=True)
+
+
+class PendingResourceResolution(BaseModel):
+    resource_type: ResourceType
+    intent: str = Field(min_length=1)
+    candidates: tuple[ResourceCandidate, ...] = Field(min_length=2)
+    clarification: str = Field(min_length=1, max_length=1000)
 
     model_config = ConfigDict(frozen=True)
 
@@ -61,6 +85,7 @@ class ConversationState(BaseModel):
     active_card_id: UUID | None = None
     active_transaction_id: UUID | None = None
 
+    pending_resource_resolution: PendingResourceResolution | None = None
     pending_action: PendingAction | None = None
     retrieved_policy_sources: list[str] = Field(default_factory=list)
     escalation_status: EscalationStatus = EscalationStatus.NONE
@@ -85,6 +110,7 @@ class ConversationState(BaseModel):
         arguments: dict[str, Any] | None = None,
         confirmation_required: bool = True,
     ) -> None:
+        self.pending_resource_resolution = None
         self.pending_action = PendingAction(
             action=action,
             resource_id=resource_id,
@@ -96,6 +122,26 @@ class ConversationState(BaseModel):
             self.phase = ConversationPhase.WAITING_FOR_CONFIRMATION
         else:
             self.phase = ConversationPhase.PROCESSING
+
+    def request_resource_resolution(
+        self,
+        resource_type: ResourceType,
+        intent: str,
+        candidates: list[ResourceCandidate],
+        clarification: str,
+    ) -> None:
+        self.pending_action = None
+        self.pending_resource_resolution = PendingResourceResolution(
+            resource_type=resource_type,
+            intent=intent,
+            candidates=tuple(candidates),
+            clarification=clarification,
+        )
+        self.active_intent = intent
+        self.phase = ConversationPhase.PROCESSING
+
+    def clear_resource_resolution(self) -> None:
+        self.pending_resource_resolution = None
 
     def confirm_pending_action(self) -> None:
         pending = self.pending_action
@@ -155,6 +201,7 @@ class ConversationState(BaseModel):
         # its deterministic result is known. Otherwise abandon it.
         if self.phase != ConversationPhase.TOOL_EXECUTION:
             self.pending_action = None
+            self.pending_resource_resolution = None
 
         self.phase = ConversationPhase.INTERRUPTED
 

@@ -89,6 +89,7 @@ class ConversationState(BaseModel):
     pending_action: PendingAction | None = None
     retrieved_policy_sources: list[str] = Field(default_factory=list)
     escalation_status: EscalationStatus = EscalationStatus.NONE
+    last_turn_status: str | None = None
     last_tool_result: dict[str, Any] | None = None
     conversation_summary: str = ""
 

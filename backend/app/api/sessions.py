@@ -25,6 +25,11 @@ from backend.app.config.settings import Settings, get_settings
 from backend.app.conversation.state import ConversationPhase, ConversationState
 from backend.app.db.session import get_db_session
 from backend.app.providers.groq_llm import LLMProviderError
+from backend.app.voice.tokens import (
+    VoiceConfigurationError,
+    VoiceConnectionToken,
+    create_voice_connection_token,
+)
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
 
@@ -56,6 +61,7 @@ class SessionResponse(BaseModel):
     customer_id: UUID | None
     authenticated: bool
     conversation_phase: ConversationPhase
+    turn_status: AgentTurnStatus | None
     pending_action: str | None
 
 
@@ -85,6 +91,7 @@ def _session_response(state: ConversationState) -> SessionResponse:
         customer_id=state.customer_id,
         authenticated=state.authenticated,
         conversation_phase=state.phase,
+        turn_status=state.last_turn_status,
         pending_action=(
             state.pending_action.action
             if state.pending_action is not None
@@ -104,6 +111,68 @@ async def create_session(
     state = store.create()
 
     return _session_response(state)
+
+
+@router.get(
+    "/{session_id}",
+    response_model=SessionResponse,
+)
+async def get_session(
+    session_id: str,
+    store: SessionStoreDep,
+) -> SessionResponse:
+    try:
+        state = store.get(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Session not found",
+        ) from exc
+
+    return _session_response(state)
+
+
+@router.post(
+    "/{session_id}/voice/token",
+    response_model=VoiceConnectionToken,
+)
+async def create_voice_token(
+    session_id: str,
+    store: SessionStoreDep,
+    settings: SettingsDep,
+) -> VoiceConnectionToken:
+    try:
+        state = store.get(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Session not found",
+        ) from exc
+
+    if not state.authenticated:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication is required for voice",
+        )
+
+    if settings.groq_api_key is None or not (
+        settings.groq_api_key.get_secret_value().strip()
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Groq speech providers are not configured",
+        )
+
+    try:
+        return create_voice_connection_token(
+            session_id=state.session_id,
+            settings=settings,
+        )
+    except VoiceConfigurationError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="LiveKit is not configured",
+        ) from exc
 
 
 @router.post(
@@ -197,6 +266,7 @@ async def create_message(
             detail="Agent could not complete the turn",
         ) from exc
 
+    state.last_turn_status = result.status
     return MessageResponse(
         session_id=state.session_id,
         message=result.text,

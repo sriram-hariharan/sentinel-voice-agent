@@ -25,6 +25,34 @@ class Settings(BaseSettings):
     )
     llm_model: str = "openai/gpt-oss-20b"
 
+    livekit_url: str | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "LIVEKIT_URL",
+            "SENTINELVOICE_LIVEKIT_URL",
+        ),
+    )
+    livekit_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "LIVEKIT_API_KEY",
+            "SENTINELVOICE_LIVEKIT_API_KEY",
+        ),
+    )
+    livekit_api_secret: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "LIVEKIT_API_SECRET",
+            "SENTINELVOICE_LIVEKIT_API_SECRET",
+        ),
+    )
+    livekit_agent_name: str = "sentinelvoice"
+    api_base_url: str = "http://127.0.0.1:8000"
+
+    stt_model: str = "whisper-large-v3-turbo"
+    tts_model: str = "canopylabs/orpheus-v1-english"
+    tts_voice: str = "hannah"
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_prefix="SENTINELVOICE_",

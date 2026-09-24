@@ -2,12 +2,99 @@
 
 ## Production-Style AI Voice Customer Support Agent for a Synthetic Digital Bank
 
-**Project status:** Planned  
+**Project status:** Step 12 voice reply scheduling fix implemented; full live re-acceptance pending
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
 **Core design priority:** Reliability, evaluation, safety, latency, and production-style engineering over feature count  
 **Project type:** Portfolio-grade flagship AI engineering system
+
+---
+
+## Current Step 12 voice slice
+
+The browser now supports an audio-only LiveKit/WebRTC session alongside the
+existing text UI. LiveKit is the media/session transport, not a second banking
+agent. The worker sends each final Groq Whisper transcript to the existing
+FastAPI `POST /sessions/{session_id}/messages` boundary. FastAPI therefore
+retains the authoritative in-process `ConversationState`, and the existing
+`AgentOrchestrator`, `ResourceResolver`, `ToolExecutor`, ownership checks, and
+confirmation rules handle both text and voice turns.
+
+With LiveKit Agents 1.8, finalized speech is handled through
+`Agent.on_user_turn_completed`. The media-facing agent uses that callback to
+send exactly one request per committed LiveKit message ID to the FastAPI
+boundary, then calls LiveKit `session.say` with the returned authoritative
+text. The callback schedules that speech without awaiting full playout and
+raises LiveKit `StopResponse` so no unused default LLM reply is generated.
+This keeps each response inside its originating turn instead of serializing the
+next finalized turn behind an outstanding speech handle. Empty and duplicate
+callback deliveries do not create banking turns.
+
+The worker uses provider interfaces around Groq
+`whisper-large-v3-turbo` STT and
+`canopylabs/orpheus-v1-english` TTS. TTS input is split into ordered chunks of
+at most 190 characters without silent truncation. Full interruption/barge-in
+is intentionally disabled until Step 13. Final assistant text is published to
+the room independently of TTS playback so a synthesis failure cannot hide an
+authoritative backend result or completed protected action.
+The browser refreshes the returned conversation phase and exact last turn
+status from FastAPI as soon as the assistant transcript arrives; LiveKit's
+agent state independently reports Processing, Speaking, and Listening for the
+media lifecycle.
+
+The browser UI is a viewport-bounded test console: the sidebar and transcript
+scroll independently, the composer stays compact, and **New Session** ends any
+active voice room, clears presentation state, creates a new unauthenticated
+backend session, and requires sign-in again.
+
+### Local voice setup
+
+1. Copy `.env.example` to `.env` if needed and configure PostgreSQL, the
+   synthetic demo PIN, and `GROQ_API_KEY`.
+2. Create a LiveKit Cloud project and copy its WebSocket URL, API key, and API
+   secret into `LIVEKIT_URL`, `LIVEKIT_API_KEY`, and `LIVEKIT_API_SECRET`.
+3. Keep `SENTINELVOICE_LIVEKIT_AGENT_NAME="sentinelvoice"` unchanged unless
+   both token dispatch and the worker are deliberately renamed.
+4. Install dependencies, migrate, and seed the synthetic data:
+
+   ```bash
+   python -m venv sentinelvoice_env
+   source sentinelvoice_env/bin/activate
+   python -m pip install -e '.[dev]'
+   alembic upgrade head
+   python scripts/seed_database.py
+   cd frontend
+   npm install
+   cd ..
+   ```
+
+Run the application from the repository root in three terminals (activate the
+same Python environment in the first two):
+
+```bash
+# Terminal 1 — authoritative application/session process
+source sentinelvoice_env/bin/activate
+python -m uvicorn backend.app.main:app --reload
+```
+
+```bash
+# Terminal 2 — LiveKit media worker process
+source sentinelvoice_env/bin/activate
+python -m backend.app.voice.worker dev
+```
+
+```bash
+# Terminal 3 — browser UI
+cd frontend
+npm run dev
+```
+
+Open `http://localhost:5173`, sign in to the existing synthetic customer,
+select **Start Voice**, grant microphone access, and speak. The browser never
+sends a customer ID when requesting a voice token. The signed LiveKit metadata
+contains only the opaque SentinelVoice session ID; all customer authority stays
+inside FastAPI.
 
 ---
 
@@ -3488,4 +3575,3 @@ The project is complete when the system reliably demonstrates those capabilities
 The guiding rule is:
 
 > Build the smallest system that convincingly proves production-grade AI engineering depth.
-

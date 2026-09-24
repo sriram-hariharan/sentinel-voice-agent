@@ -112,6 +112,11 @@ def test_unauthenticated_session_can_make_normal_agent_turn(api_context) -> None
         "pending_action": None,
     }
 
+    refreshed = client.get(f"/sessions/{state.session_id}")
+    assert refreshed.status_code == 200
+    assert refreshed.json()["turn_status"] == "RESPONDED"
+    assert refreshed.json()["conversation_phase"] == "AGENT_SPEAKING"
+
 
 def test_authenticated_turn_uses_server_side_identity(api_context) -> None:
     client, store, _ = api_context

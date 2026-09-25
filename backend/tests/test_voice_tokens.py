@@ -1,4 +1,6 @@
 import json
+import time
+from datetime import UTC, datetime, timedelta
 from unittest.mock import AsyncMock
 from uuid import UUID
 
@@ -150,3 +152,69 @@ def test_session_state_can_be_refreshed_after_voice_turn(
     assert response.status_code == 200
     assert response.json()["session_id"] == state.session_id
     assert response.json()["authenticated"] is True
+
+
+def test_voice_token_ttl_does_not_exceed_demo_session_ttl(
+    voice_api_context,
+) -> None:
+    client, _ = voice_api_context
+
+    store = InMemorySessionStore(session_ttl_seconds=300)
+    state = _authenticated_state(store)
+
+    app.dependency_overrides[get_session_store] = lambda: store
+    app.dependency_overrides[get_settings] = lambda: _settings(
+        voice_token_ttl_seconds=1800,
+        demo_session_ttl_seconds=300,
+    )
+
+    before = int(time.time())
+    response = client.post(f"/sessions/{state.session_id}/voice/token")
+    after = int(time.time())
+
+    assert response.status_code == 200
+
+    payload = jwt.decode(
+        response.json()["participant_token"],
+        JWT_SECRET,
+        algorithms=["HS256"],
+        options={"verify_aud": False},
+    )
+
+    assert before + 300 <= payload["exp"] <= after + 300
+
+
+def test_voice_token_ttl_respects_remaining_session_lifetime(
+    voice_api_context,
+) -> None:
+    client, _ = voice_api_context
+    now = [datetime.now(UTC)]
+
+    store = InMemorySessionStore(
+        session_ttl_seconds=300,
+        clock=lambda: now[0],
+    )
+    state = _authenticated_state(store)
+
+    now[0] += timedelta(seconds=240)
+
+    app.dependency_overrides[get_session_store] = lambda: store
+    app.dependency_overrides[get_settings] = lambda: _settings(
+        voice_token_ttl_seconds=600,
+        demo_session_ttl_seconds=300,
+    )
+
+    before = int(time.time())
+    response = client.post(f"/sessions/{state.session_id}/voice/token")
+    after = int(time.time())
+
+    assert response.status_code == 200
+
+    payload = jwt.decode(
+        response.json()["participant_token"],
+        JWT_SECRET,
+        algorithms=["HS256"],
+        options={"verify_aud": False},
+    )
+
+    assert before + 60 <= payload["exp"] <= after + 60

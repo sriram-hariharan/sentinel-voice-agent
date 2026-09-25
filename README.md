@@ -2,7 +2,7 @@
 
 ## Production-Style AI Voice Customer Support Agent for a Synthetic Digital Bank
 
-**Project status:** Step 14 synthetic policy RAG implemented and locally validated
+**Project status:** Core V1 product and AI features complete; final release hardening in progress. CI and bounded demo limits are implemented.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -2169,49 +2169,75 @@ A cheap model that fails often may be more expensive operationally than a slight
 
 # 34. Cost-Control Strategy
 
-Recommended controls:
+The implemented V1 demo boundary now limits provider exposure through:
 
-- use free tiers where available,
-- configure provider spending limits,
-- maintain a low monthly cap,
-- limit concurrent demo sessions,
-- rate-limit anonymous traffic,
-- limit conversation duration,
-- limit inactivity duration,
-- cap LLM tokens,
-- cache embeddings,
-- avoid recomputing static data,
-- use smaller default models,
-- disable expensive experiments in public demo mode.
+- a configurable maximum session lifetime,
+- a configurable maximum number of agent turns per session,
+- a configurable maximum number of active sessions per backend process,
+- a bounded LiveKit join-token lifetime,
+- cached local policy embeddings,
+- a small default LLM,
+- deterministic evaluation that does not require live provider calls,
+- and browser voice instead of paid telephony infrastructure.
+
+The default demo values are:
+
+```text
+session lifetime:          15 minutes
+agent turns per session:   30
+active sessions/process:   20
+LiveKit join-token TTL:    10 minutes
+```
+
+A LiveKit token is never issued with a lifetime longer than the remaining
+lifetime of its SentinelVoice backend session.
+
+Provider-account spending caps and deployment-level protections should still be
+configured outside the application where supported. IP-based anonymous rate
+limiting, distributed quotas, and a shared multi-instance limiter are not part
+of the V1 application.
 
 Principle:
 
 ```text
-Fail closed when budget is exhausted.
-Do not accumulate surprise charges.
+Fail closed when a configured demo budget is exhausted.
+Do not turn a public portfolio deployment into an unrestricted provider proxy.
 ```
 
 ---
 
 # 35. Session Limits
 
-Configurable limits:
+The process-local V1 session store enforces these configurable bounds:
 
 ```text
-maximum session duration
-maximum turns
-maximum concurrent sessions
-maximum LLM tokens
-maximum tool retries
-maximum retrieval calls
-maximum user inactivity
+SENTINELVOICE_DEMO_SESSION_TTL_SECONDS=900
+SENTINELVOICE_DEMO_MAX_TURNS_PER_SESSION=30
+SENTINELVOICE_DEMO_MAX_ACTIVE_SESSIONS=20
+SENTINELVOICE_VOICE_TOKEN_TTL_SECONDS=600
 ```
+
+Expired sessions are rejected and their capacity can be reclaimed. Agent turns
+are charged only after request structure and trace-correlation headers have
+been validated. Once a request enters real agent processing, it consumes one
+turn even if the provider or tool later fails; this prevents repeated failed
+requests from bypassing the public-demo budget.
+
+The active-session limit is intentionally per FastAPI process. It is not a
+distributed production rate limiter. That matches the current single-instance,
+low-cost portfolio deployment model and avoids introducing Redis solely for
+architecture appearance.
+
+If SentinelVoice were later scaled across multiple backend instances, these
+limits could be moved behind a shared rate limiter or short-lived distributed
+session store without changing the agent or banking-tool architecture.
 
 ### Why configuration rather than hardcoding
 
 Different environments need different limits.
 
-Local development, testing, and public demo deployments should not share exactly the same operational thresholds.
+Local development, testing, and public demo deployments should not share
+exactly the same operational thresholds.
 
 ---
 
@@ -3381,18 +3407,29 @@ Self-hosted inference can be explored separately if desired.
 
 # 74. Demo Mode
 
-Public demo mode should include stricter controls than local development.
-
-Possible restrictions:
+The V1 application now includes deterministic public-demo safety bounds:
 
 ```text
-limited session duration
-limited session count
-demo customer accounts only
-strict rate limiting
-no unrestricted model access
-no expensive benchmark endpoints
+15-minute backend session lifetime
+30 agent turns per session
+20 active sessions per backend process
+10-minute default LiveKit join-token lifetime
+synthetic customer data only
+authenticated voice-token issuance
+no browser access to provider credentials
 ```
+
+The LiveKit token lifetime is capped so it cannot exceed the remaining lifetime
+of the corresponding backend session.
+
+These controls are intentionally small and process-local. They protect the
+single-instance portfolio demo from unbounded application-level usage, but they
+do not claim to provide distributed rate limiting, IP-based abuse prevention,
+multi-instance quotas, or automatic disconnection of an already connected
+LiveKit room when the backend session expires.
+
+Those controls would belong at the deployment edge or in shared infrastructure
+if real traffic or horizontal scaling created that requirement.
 
 ### Why separate demo mode
 

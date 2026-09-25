@@ -28,6 +28,7 @@ def create_voice_connection_token(
     *,
     session_id: str,
     settings: Settings,
+    max_ttl_seconds: int | None = None,
 ) -> VoiceConnectionToken:
     server_url = (settings.livekit_url or "").strip()
     api_key = _secret_value(settings.livekit_api_key)
@@ -38,6 +39,19 @@ def create_voice_connection_token(
 
     room_name = f"sv-{uuid4().hex}"
     participant_identity = f"browser-{uuid4().hex}"
+    session_ttl_cap = (
+        settings.demo_session_ttl_seconds
+        if max_ttl_seconds is None
+        else max_ttl_seconds
+    )
+
+    if session_ttl_cap <= 0:
+        raise VoiceConfigurationError("Voice token TTL is invalid")
+
+    token_ttl_seconds = min(
+        settings.voice_token_ttl_seconds,
+        session_ttl_cap,
+    )
     safe_metadata = json.dumps(
         {"sentinelvoice_session_id": session_id},
         separators=(",", ":"),
@@ -47,7 +61,7 @@ def create_voice_connection_token(
         .with_identity(participant_identity)
         .with_name("SentinelVoice customer")
         .with_metadata(safe_metadata)
-        .with_ttl(timedelta(minutes=10))
+        .with_ttl(timedelta(seconds=token_ttl_seconds))
         .with_grants(
             api.VideoGrants(
                 room_join=True,

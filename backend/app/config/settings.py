@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     db_password: SecretStr | None = None
 
     demo_pin: SecretStr | None = None
+    demo_session_ttl_seconds: int = Field(default=900, ge=60, le=3600)
+    demo_max_turns_per_session: int = Field(default=30, ge=1, le=100)
+    demo_max_active_sessions: int = Field(default=20, ge=1, le=100)
 
     groq_api_key: SecretStr | None = Field(
         default=None,
@@ -52,6 +55,7 @@ class Settings(BaseSettings):
         ),
     )
     livekit_agent_name: str = "sentinelvoice"
+    voice_token_ttl_seconds: int = Field(default=600, ge=60, le=1800)
     api_base_url: str = "http://127.0.0.1:8000"
 
     stt_model: str = "whisper-large-v3-turbo"

@@ -18,7 +18,9 @@ from backend.app.auth.service import (
 )
 from backend.app.auth.sessions import (
     InMemorySessionStore,
+    SessionCapacityError,
     SessionNotFoundError,
+    SessionTurnLimitError,
     get_session_store,
 )
 from backend.app.config.settings import Settings, get_settings
@@ -175,7 +177,13 @@ def _session_response(state: ConversationState) -> SessionResponse:
 async def create_session(
     store: SessionStoreDep,
 ) -> SessionResponse:
-    state = store.create()
+    try:
+        state = store.create()
+    except SessionCapacityError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Demo session capacity reached",
+        ) from exc
 
     return _session_response(state)
 
@@ -266,7 +274,9 @@ async def create_voice_token(
     settings: SettingsDep,
 ) -> VoiceConnectionToken:
     try:
-        state = store.get(session_id)
+        state, remaining_session_ttl_seconds = store.get_with_remaining_ttl(
+            session_id
+        )
     except SessionNotFoundError as exc:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
@@ -291,6 +301,7 @@ async def create_voice_token(
         return create_voice_connection_token(
             session_id=state.session_id,
             settings=settings,
+            max_ttl_seconds=remaining_session_ttl_seconds,
         )
     except VoiceConfigurationError as exc:
         raise HTTPException(
@@ -385,6 +396,21 @@ async def create_message(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid trace correlation header",
+        ) from exc
+
+    try:
+        # Failed provider/tool turns still consume budget because they have
+        # entered real agent processing. Structurally invalid requests do not.
+        store.claim_turn(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Session not found",
+        ) from exc
+    except SessionTurnLimitError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Session turn limit reached",
         ) from exc
 
     try:

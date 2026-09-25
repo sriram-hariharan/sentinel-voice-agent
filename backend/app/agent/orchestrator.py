@@ -72,6 +72,7 @@ _NEGATIVE_CONFIRMATIONS = {
     "do not",
     "don't do it",
     "do not do it",
+    "actually no",
     "actually don't",
     "actually do not",
     "wait",

@@ -346,6 +346,15 @@ button:disabled {
   color: #963d3d;
 }
 
+.voice-summary.interrupted .voice-dot {
+  background: #d06d32;
+  box-shadow: 0 0 0 4px #fbe8dc;
+}
+
+.voice-summary.interrupted strong {
+  color: #93471f;
+}
+
 .voice-status {
   margin: 10px 0 0;
   color: #71809a;
@@ -526,6 +535,14 @@ button:disabled {
   text-align: right;
 }
 
+.message-interruption {
+  margin-left: 8px;
+  color: #a45128;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 .message > p:last-child {
   margin: 0;
   padding: 11px 14px;
@@ -543,6 +560,11 @@ button:disabled {
   border-radius: 14px 5px 14px 14px;
   background: #275cc9;
   color: #fff;
+}
+
+.message.assistant.interrupted > p:last-child {
+  border-color: #e3b69e;
+  background: #fff8f3;
 }
 
 .typing-indicator {

@@ -22,6 +22,13 @@ class VoiceTurnResult(BaseModel):
     model_config = ConfigDict(frozen=True, extra="ignore")
 
 
+class VoicePlaybackResult(BaseModel):
+    session_id: str
+    conversation_phase: str
+
+    model_config = ConfigDict(frozen=True, extra="ignore")
+
+
 class VoiceBridge:
     def __init__(
         self,
@@ -94,6 +101,57 @@ class VoiceBridge:
             },
         )
         return result
+
+    async def report_playback(
+        self,
+        *,
+        session_id: str,
+        speech_id: str,
+        voice_turn_id: str,
+        sequence: int,
+        status: str,
+        interruption_stop_latency_ms: float | None = None,
+        response_phase: str | None = None,
+    ) -> VoicePlaybackResult:
+        payload: dict[str, str | float] = {
+            "speech_id": speech_id,
+            "voice_turn_id": voice_turn_id,
+            "sequence": sequence,
+            "status": status,
+        }
+        if interruption_stop_latency_ms is not None:
+            payload["interruption_stop_latency_ms"] = (
+                interruption_stop_latency_ms
+            )
+        if response_phase is not None:
+            payload["response_phase"] = response_phase
+
+        try:
+            response = await self._client.post(
+                f"/sessions/{session_id}/voice/playback",
+                json=payload,
+            )
+            response.raise_for_status()
+            return VoicePlaybackResult.model_validate(response.json())
+        except Exception as exc:
+            status_code = (
+                exc.response.status_code
+                if isinstance(exc, httpx.HTTPStatusError)
+                else None
+            )
+            logger.exception(
+                "sentinelvoice playback state report failed",
+                extra={
+                    "sentinelvoice_session_id": session_id,
+                    "voice_turn_id": voice_turn_id,
+                    "speech_id": speech_id,
+                    "playback_status": status,
+                    "http_status": status_code,
+                },
+            )
+            raise VoiceBridgeError(
+                "SentinelVoice playback state report failed"
+            ) from exc
 
     async def aclose(self) -> None:
         if self._owns_client:

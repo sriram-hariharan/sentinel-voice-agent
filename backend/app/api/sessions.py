@@ -2,7 +2,7 @@ from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel, ConfigDict, Field, SecretStr
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.agent.dependencies import get_agent_orchestrator
@@ -22,7 +22,12 @@ from backend.app.auth.sessions import (
     get_session_store,
 )
 from backend.app.config.settings import Settings, get_settings
-from backend.app.conversation.state import ConversationPhase, ConversationState
+from backend.app.conversation.state import (
+    ConversationPhase,
+    ConversationState,
+    VoicePlaybackState,
+    VoicePlaybackStatus,
+)
 from backend.app.db.session import get_db_session
 from backend.app.providers.groq_llm import LLMProviderError
 from backend.app.voice.tokens import (
@@ -63,6 +68,54 @@ class SessionResponse(BaseModel):
     conversation_phase: ConversationPhase
     turn_status: AgentTurnStatus | None
     pending_action: str | None
+    voice_playback: VoicePlaybackState | None
+
+
+class VoicePlaybackRequest(BaseModel):
+    speech_id: str = Field(min_length=1, max_length=128)
+    voice_turn_id: str = Field(min_length=1, max_length=128)
+    sequence: int = Field(ge=1)
+    status: VoicePlaybackStatus
+    response_phase: ConversationPhase | None = None
+    interruption_stop_latency_ms: float | None = Field(
+        default=None,
+        ge=0,
+        le=60_000,
+    )
+
+    model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
+
+    @model_validator(mode="after")
+    def validate_interruption_latency(self) -> "VoicePlaybackRequest":
+        if (
+            self.status == VoicePlaybackStatus.INTERRUPTED
+            and self.interruption_stop_latency_ms is None
+        ):
+            raise ValueError(
+                "interruption_stop_latency_ms is required when interrupted"
+            )
+
+        if (
+            self.status != VoicePlaybackStatus.INTERRUPTED
+            and self.interruption_stop_latency_ms is not None
+        ):
+            raise ValueError(
+                "interruption_stop_latency_ms is only valid when interrupted"
+            )
+
+        if (
+            self.status == VoicePlaybackStatus.SCHEDULED
+            and self.response_phase is None
+        ):
+            raise ValueError("response_phase is required when scheduled")
+
+        if (
+            self.status != VoicePlaybackStatus.SCHEDULED
+            and self.response_phase is not None
+        ):
+            raise ValueError("response_phase is only valid when scheduled")
+
+        return self
 
 
 class MessageRequest(BaseModel):
@@ -97,6 +150,7 @@ def _session_response(state: ConversationState) -> SessionResponse:
             if state.pending_action is not None
             else None
         ),
+        voice_playback=state.voice_playback,
     )
 
 
@@ -129,6 +183,36 @@ async def get_session(
             detail="Session not found",
         ) from exc
 
+    return _session_response(state)
+
+
+@router.post(
+    "/{session_id}/voice/playback",
+    response_model=SessionResponse,
+)
+async def record_voice_playback(
+    session_id: str,
+    request: VoicePlaybackRequest,
+    store: SessionStoreDep,
+) -> SessionResponse:
+    try:
+        state = store.get(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Session not found",
+        ) from exc
+
+    state.record_voice_playback(
+        speech_id=request.speech_id,
+        voice_turn_id=request.voice_turn_id,
+        sequence=request.sequence,
+        status=request.status,
+        interruption_stop_latency_ms=(
+            request.interruption_stop_latency_ms
+        ),
+        response_phase=request.response_phase,
+    )
     return _session_response(state)
 
 

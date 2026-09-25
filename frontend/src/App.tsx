@@ -3,6 +3,7 @@ import {
   RoomAudioRenderer,
   StartAudio,
   VoiceAssistantControlBar,
+  useDataChannel,
   useLocalParticipant,
   useTranscriptions,
   useVoiceAssistant,
@@ -19,9 +20,19 @@ type SessionResponse = {
   conversation_phase: string
   turn_status: string | null
   pending_action: string | null
+  voice_playback?: {
+    speech_id: string
+    voice_turn_id: string
+    sequence: number
+    status: 'SCHEDULED' | 'COMPLETED' | 'INTERRUPTED'
+    interruption_stop_latency_ms: number | null
+  } | null
 }
 
-type MessageResponse = Omit<SessionResponse, 'turn_status'> & {
+type MessageResponse = Omit<
+  SessionResponse,
+  'turn_status' | 'voice_playback'
+> & {
   message: string
   turn_status: string
   executed_tools: string[]
@@ -31,6 +42,14 @@ type TranscriptMessage = {
   id: string
   role: 'user' | 'assistant'
   text: string
+  interrupted?: boolean
+}
+
+type VoiceInterruptionEvent = {
+  type: 'speech_interrupted'
+  speech_id: string
+  voice_turn_id: string
+  interruption_stop_latency_ms: number
 }
 
 type VoiceConnectionToken = {
@@ -101,6 +120,7 @@ type VoiceRoomProps = {
   onAgentStateChange: (state: string) => void
   onAgentFinalTranscript: () => void
   onError: (message: string) => void
+  onInterruption: (event: VoiceInterruptionEvent) => void
   onTranscript: (message: TranscriptMessage) => void
   onUserFinalTranscript: () => void
 }
@@ -109,6 +129,7 @@ function VoiceRoom({
   onAgentStateChange,
   onAgentFinalTranscript,
   onError,
+  onInterruption,
   onTranscript,
   onUserFinalTranscript,
 }: VoiceRoomProps) {
@@ -116,6 +137,29 @@ function VoiceRoom({
   const { localParticipant, microphoneTrack } = useLocalParticipant()
   const { state: agentState } = useVoiceAssistant()
   const seenFinalSegments = useRef(new Set<string>())
+
+  useDataChannel('sentinelvoice.voice', ({ payload }) => {
+    try {
+      const event: unknown = JSON.parse(new TextDecoder().decode(payload))
+
+      if (
+        event &&
+        typeof event === 'object' &&
+        'type' in event &&
+        event.type === 'speech_interrupted' &&
+        'speech_id' in event &&
+        typeof event.speech_id === 'string' &&
+        'voice_turn_id' in event &&
+        typeof event.voice_turn_id === 'string' &&
+        'interruption_stop_latency_ms' in event &&
+        typeof event.interruption_stop_latency_ms === 'number'
+      ) {
+        onInterruption(event as VoiceInterruptionEvent)
+      }
+    } catch {
+      // Ignore unrelated or malformed room data without disrupting audio.
+    }
+  })
 
   useEffect(() => {
     for (const transcription of transcriptions) {
@@ -210,12 +254,15 @@ function App() {
     useState<VoiceConnectionState>('disconnected')
   const [voiceAgentState, setVoiceAgentState] = useState('idle')
   const [voiceTurnPending, setVoiceTurnPending] = useState(false)
+  const [voiceInterrupted, setVoiceInterrupted] = useState(false)
   const [voiceError, setVoiceError] = useState<string | null>(null)
   const [resetting, setResetting] = useState(false)
   const transcriptRef = useRef<HTMLDivElement>(null)
   const transcriptEndRef = useRef<HTMLDivElement>(null)
   const composerRef = useRef<HTMLTextAreaElement>(null)
   const shouldAutoScroll = useRef(true)
+  const latestVoiceAssistantId = useRef<string | null>(null)
+  const pendingVoiceInterruptions = useRef(0)
 
   const updateSessionState = (response: SessionResponse) => {
     setSessionId(response.session_id)
@@ -246,11 +293,47 @@ function App() {
   }
 
   const addVoiceTranscript = (message: TranscriptMessage) => {
-    setMessages((current) =>
-      current.some((existing) => existing.id === message.id)
-        ? current
-        : [...current, message],
-    )
+    setMessages((current) => {
+      if (current.some((existing) => existing.id === message.id)) {
+        return current
+      }
+
+      if (message.role === 'assistant') {
+        if (pendingVoiceInterruptions.current > 0) {
+          pendingVoiceInterruptions.current -= 1
+          return [...current, { ...message, interrupted: true }]
+        }
+        latestVoiceAssistantId.current = message.id
+      }
+
+      return [...current, message]
+    })
+  }
+
+  const handleVoiceInterruption = (event: VoiceInterruptionEvent) => {
+    const messageId = latestVoiceAssistantId.current
+    latestVoiceAssistantId.current = null
+
+    if (messageId) {
+      setMessages((current) =>
+        current.map((message) =>
+          message.id === messageId
+            ? { ...message, interrupted: true }
+            : message,
+        ),
+      )
+    } else {
+      pendingVoiceInterruptions.current += 1
+    }
+
+    setVoiceInterrupted(true)
+    setVoiceTurnPending(false)
+    setConversationPhase('INTERRUPTED')
+    void refreshSessionState()
+    console.info('Voice playback interrupted', {
+      speechId: event.speech_id,
+      stopLatencyMs: event.interruption_stop_latency_ms,
+    })
   }
 
   useEffect(() => {
@@ -290,8 +373,11 @@ function App() {
     setError(null)
     setVoiceError(null)
     setVoiceTurnPending(false)
+    setVoiceInterrupted(false)
     setVoiceAgentState('idle')
     setVoiceConnectionState('connecting')
+    latestVoiceAssistantId.current = null
+    pendingVoiceInterruptions.current = 0
 
     try {
       const credentials = await postJson<VoiceConnectionToken>(
@@ -314,7 +400,10 @@ function App() {
     setVoiceConnectionState('disconnected')
     setVoiceAgentState('idle')
     setVoiceTurnPending(false)
+    setVoiceInterrupted(false)
     setVoiceError(null)
+    latestVoiceAssistantId.current = null
+    pendingVoiceInterruptions.current = 0
   }
 
   const resetDemoSession = async () => {
@@ -469,6 +558,8 @@ function App() {
       ? 'Connecting'
       : voiceConnectionState === 'disconnected'
         ? 'Disconnected'
+        : voiceInterrupted
+          ? 'Interrupted'
         : voiceAgentState === 'speaking'
           ? 'Speaking'
           : voiceTurnPending || voiceAgentState === 'thinking'
@@ -652,6 +743,9 @@ function App() {
                   setVoiceConnectionState('disconnected')
                   setVoiceAgentState('idle')
                   setVoiceTurnPending(false)
+                  setVoiceInterrupted(false)
+                  latestVoiceAssistantId.current = null
+                  pendingVoiceInterruptions.current = 0
                 }}
                 onError={(voiceError) => {
                   const message = `Voice connection failed: ${voiceError.message}`
@@ -659,6 +753,8 @@ function App() {
                   setVoiceError(message)
                   setVoiceCredentials(null)
                   setVoiceConnectionState('disconnected')
+                  latestVoiceAssistantId.current = null
+                  pendingVoiceInterruptions.current = 0
                 }}
                 onMediaDeviceFailure={() => {
                   const message =
@@ -668,9 +764,15 @@ function App() {
                 }}
               >
                 <VoiceRoom
-                  onAgentStateChange={setVoiceAgentState}
+                  onAgentStateChange={(state) => {
+                    setVoiceAgentState(state)
+                    if (state === 'listening' || state === 'idle') {
+                      latestVoiceAssistantId.current = null
+                    }
+                  }}
                   onAgentFinalTranscript={() => {
                     setVoiceTurnPending(false)
+                    setVoiceInterrupted(false)
                     void refreshSessionState()
                   }}
                   onError={(message) => {
@@ -679,8 +781,10 @@ function App() {
                     setVoiceTurnPending(false)
                   }}
                   onTranscript={addVoiceTranscript}
+                  onInterruption={handleVoiceInterruption}
                   onUserFinalTranscript={() => {
                     setVoiceError(null)
+                    setVoiceInterrupted(false)
                     setVoiceTurnPending(true)
                     setTurnStatus('PROCESSING')
                   }}
@@ -763,10 +867,17 @@ function App() {
               messages.map((message) => (
                 <article
                   key={message.id}
-                  className={`message ${message.role}`}
+                  className={`message ${message.role}${
+                    message.interrupted ? ' interrupted' : ''
+                  }`}
                 >
                   <p className="message-author">
                     {message.role === 'assistant' ? 'SentinelVoice' : 'You'}
+                    {message.interrupted && (
+                      <span className="message-interruption">
+                        Speech interrupted
+                      </span>
+                    )}
                   </p>
                   <p>{message.text}</p>
                 </article>

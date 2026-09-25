@@ -12,9 +12,11 @@ from backend.app.voice.bridge import VoiceBridgeError, VoiceTurnResult
 from backend.app.voice.worker import (
     VOICE_BACKEND_ERROR_MESSAGE,
     VOICE_PLAYBACK_ERROR_MESSAGE,
+    VOICE_TURN_HANDLING,
     SentinelVoiceAgent,
     VoiceWorkerConfigurationError,
     _groq_api_key,
+    _TrackedSpeech,
     _voice_room_options,
     parse_voice_session_metadata,
 )
@@ -37,6 +39,8 @@ class FakeSpeechHandle:
         self.id = speech_id
         self.awaited = False
         self.done = False
+        self.interrupted = False
+        self.interrupt_sources: list[str] = []
         self._error: Exception | None = None
         self._callbacks = []
 
@@ -56,6 +60,13 @@ class FakeSpeechHandle:
 
     def add_done_callback(self, callback) -> None:
         self._callbacks.append(callback)
+
+    def interrupt(self, *, source: str) -> None:
+        if self.done:
+            return
+        self.interrupted = True
+        self.interrupt_sources.append(source)
+        self.complete()
 
     def complete(self, error: Exception | None = None) -> None:
         self._error = error
@@ -100,11 +111,15 @@ def _agent_with_session(
     *,
     bridge: AsyncMock,
     session: FakeVoiceSession | None = None,
+    publish_event: AsyncMock | None = None,
+    clock=None,
 ) -> tuple[SentinelVoiceAgent, FakeVoiceSession]:
     active_session = session or FakeVoiceSession()
     agent = SentinelVoiceAgent(
         bridge=bridge,
         session_id="opaque-session-id",
+        publish_event=publish_event,
+        **({"clock": clock} if clock is not None else {}),
     )
     agent._activity = SimpleNamespace(session=active_session)
     return agent, active_session
@@ -181,6 +196,18 @@ def test_voice_worker_publishes_text_independently_of_tts() -> None:
     assert options.get_text_output_options().sync_transcription is False
 
 
+def test_voice_worker_uses_supported_vad_interruption_options() -> None:
+    assert VOICE_TURN_HANDLING == {
+        "interruption": {
+            "enabled": True,
+            "mode": "vad",
+            "min_duration": 0.35,
+            "min_words": 0,
+            "resume_false_interruption": False,
+        }
+    }
+
+
 @pytest.mark.asyncio
 async def test_finalized_turn_calls_bridge_once_and_starts_speech() -> None:
     bridge = AsyncMock()
@@ -202,7 +229,7 @@ async def test_finalized_turn_calls_bridge_once_and_starts_speech() -> None:
     assert session.say_calls == [
         {
             "text": "Your checking balance is $125.00.",
-            "allow_interruptions": False,
+            "allow_interruptions": True,
         }
     ]
     assert session.assistant_transcripts == [
@@ -229,6 +256,8 @@ async def test_repeated_words_in_distinct_turns_are_not_deduplicated() -> None:
 
     assert bridge.handle_transcript.await_count == 2
     assert len(session.say_calls) == 2
+    assert session.speech_handles[0].interrupted is True
+    assert session.speech_handles[1].interrupted is False
 
 
 @pytest.mark.asyncio
@@ -293,7 +322,31 @@ async def test_tts_failure_preserves_text_and_publishes_playback_error() -> None
 
 
 @pytest.mark.asyncio
-async def test_turn_responses_are_scheduled_in_order_without_next_turn_flush() -> None:
+async def test_tts_failure_during_speech_signal_does_not_duplicate_turn() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    agent, session = _agent_with_session(bridge=bridge)
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    agent.note_user_speaking()
+    session.speech_handles[0].complete(RuntimeError("tts unavailable"))
+    await asyncio.sleep(0)
+
+    assert bridge.handle_transcript.await_count == 1
+    assert agent._interruption_candidate_id is None
+    interrupted_reports = [
+        call
+        for call in bridge.report_playback.await_args_list
+        if call.kwargs["status"] == "INTERRUPTED"
+    ]
+    assert interrupted_reports == []
+
+
+@pytest.mark.asyncio
+async def test_new_turn_cancels_stale_responses_and_schedules_in_order() -> None:
     bridge = AsyncMock()
     bridge.handle_transcript.side_effect = [
         _voice_result().model_copy(update={"message": "Response A"}),
@@ -323,6 +376,215 @@ async def test_turn_responses_are_scheduled_in_order_without_next_turn_flush() -
         "Response C",
     ]
     assert all(not handle.awaited for handle in session.speech_handles)
+    assert [handle.interrupted for handle in session.speech_handles] == [
+        True,
+        True,
+        False,
+    ]
+
+
+@pytest.mark.asyncio
+async def test_vad_signal_waits_for_livekit_before_committing_interruption() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    agent, session = _agent_with_session(bridge=bridge)
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    agent.note_user_speaking()
+    await asyncio.sleep(0)
+
+    assert session.speech_handles[0].interrupted is False
+    bridge.report_playback.assert_awaited()
+
+
+@pytest.mark.asyncio
+async def test_interruption_reports_measured_latency_and_browser_event() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    publish_event = AsyncMock()
+    clock_values = iter([10.0, 10.123])
+    agent, session = _agent_with_session(
+        bridge=bridge,
+        publish_event=publish_event,
+        clock=lambda: next(clock_values),
+    )
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    sequence = agent._speech_sequence
+    agent.note_user_speaking()
+    session.speech_handles[0].interrupt(source="audio_activity")
+    await asyncio.sleep(0)
+    await asyncio.sleep(0)
+
+    bridge.report_playback.assert_any_await(
+        session_id="opaque-session-id",
+        speech_id="speech-1",
+        voice_turn_id="turn-a",
+        sequence=sequence,
+        status="INTERRUPTED",
+        interruption_stop_latency_ms=pytest.approx(123.0),
+        response_phase=None,
+    )
+    publish_event.assert_awaited_once_with(
+        {
+            "type": "speech_interrupted",
+            "speech_id": "speech-1",
+            "voice_turn_id": "turn-a",
+            "interruption_stop_latency_ms": pytest.approx(123.0),
+        }
+    )
+
+
+@pytest.mark.asyncio
+async def test_interruption_cancels_all_stale_queued_speech() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    agent, session = _agent_with_session(bridge=bridge)
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    for queued_turn in ("turn-b", "turn-c"):
+        speech = session.say("Queued response", allow_interruptions=True)
+        agent._speech_sequence += 1
+        agent._speech[speech.id] = _TrackedSpeech(
+            handle=speech,
+            turn_id=queued_turn,
+            sequence=agent._speech_sequence,
+        )
+
+    agent.note_user_speaking()
+    session.speech_handles[0].interrupt(source="audio_activity")
+    await asyncio.sleep(0)
+
+    assert all(handle.interrupted for handle in session.speech_handles)
+    assert all(
+        handle.interrupt_sources
+        for handle in session.speech_handles
+    )
+
+
+@pytest.mark.asyncio
+async def test_completed_speech_reports_completion_without_interruption() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    publish_event = AsyncMock()
+    agent, session = _agent_with_session(
+        bridge=bridge,
+        publish_event=publish_event,
+    )
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    sequence = agent._speech_sequence
+    session.speech_handles[0].complete()
+    await asyncio.sleep(0)
+
+    bridge.report_playback.assert_any_await(
+        session_id="opaque-session-id",
+        speech_id="speech-1",
+        voice_turn_id="turn-a",
+        sequence=sequence,
+        status="COMPLETED",
+        interruption_stop_latency_ms=None,
+        response_phase=None,
+    )
+    publish_event.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_empty_stt_after_interruption_never_creates_backend_turn() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    agent, session = _agent_with_session(bridge=bridge)
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    bridge.handle_transcript.reset_mock()
+    agent.note_user_speaking()
+    session.speech_handles[0].interrupt(source="audio_activity")
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="empty-after-interrupt", role="user", content=[" "]),
+    )
+
+    bridge.handle_transcript.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_interrupted_handle_cannot_resume_or_emit_duplicate_event() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    publish_event = AsyncMock()
+    agent, session = _agent_with_session(
+        bridge=bridge,
+        publish_event=publish_event,
+    )
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    agent.note_user_speaking()
+    handle = session.speech_handles[0]
+    handle.interrupt(source="audio_activity")
+    handle.interrupt(source="audio_activity")
+    await asyncio.sleep(0)
+    await asyncio.sleep(0)
+
+    publish_event.assert_awaited_once()
+    interrupted_reports = [
+        call
+        for call in bridge.report_playback.await_args_list
+        if call.kwargs["status"] == "INTERRUPTED"
+    ]
+    assert len(interrupted_reports) == 1
+
+
+@pytest.mark.asyncio
+async def test_backend_interruption_notification_failure_is_contained() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    bridge.report_playback.side_effect = VoiceBridgeError("unavailable")
+    publish_event = AsyncMock()
+    agent, session = _agent_with_session(
+        bridge=bridge,
+        publish_event=publish_event,
+    )
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+    )
+    agent.note_user_speaking()
+    session.speech_handles[0].interrupt(source="audio_activity")
+    await asyncio.sleep(0)
+    await asyncio.sleep(0)
+
+    assert session.speech_handles[0].interrupted is True
+    publish_event.assert_awaited_once()
+
+
+def test_interruption_signal_without_agent_speech_is_a_no_op() -> None:
+    bridge = AsyncMock()
+    agent, session = _agent_with_session(bridge=bridge)
+
+    agent.note_user_speaking()
+
+    assert session.speech_handles == []
+    assert agent._interruption_candidate_id is None
 
 
 @pytest.mark.asyncio

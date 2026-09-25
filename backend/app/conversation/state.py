@@ -40,6 +40,12 @@ class ResourceType(StrEnum):
     TRANSACTION = "TRANSACTION"
 
 
+class VoicePlaybackStatus(StrEnum):
+    SCHEDULED = "SCHEDULED"
+    COMPLETED = "COMPLETED"
+    INTERRUPTED = "INTERRUPTED"
+
+
 class ConversationStateError(RuntimeError):
     """Raised when a conversation-state operation is invalid."""
 
@@ -72,6 +78,19 @@ class PendingResourceResolution(BaseModel):
     model_config = ConfigDict(frozen=True)
 
 
+class VoicePlaybackState(BaseModel):
+    speech_id: str = Field(min_length=1, max_length=128)
+    voice_turn_id: str = Field(min_length=1, max_length=128)
+    sequence: int = Field(ge=1)
+    status: VoicePlaybackStatus
+    interruption_stop_latency_ms: float | None = Field(
+        default=None,
+        ge=0,
+    )
+
+    model_config = ConfigDict(frozen=True)
+
+
 class ConversationState(BaseModel):
     session_id: str = Field(min_length=1, max_length=128)
     customer_id: UUID | None = None
@@ -91,6 +110,7 @@ class ConversationState(BaseModel):
     escalation_status: EscalationStatus = EscalationStatus.NONE
     last_turn_status: str | None = None
     last_tool_result: dict[str, Any] | None = None
+    voice_playback: VoicePlaybackState | None = None
     conversation_summary: str = ""
 
     model_config = ConfigDict(validate_assignment=True)
@@ -197,14 +217,99 @@ class ConversationState(BaseModel):
         }:
             self.phase = ConversationPhase.PROCESSING
 
-    def interrupt(self) -> None:
+    def interrupt(
+        self,
+        *,
+        preserve_pending_confirmation: bool = False,
+        preserve_pending_resource_resolution: bool = False,
+    ) -> None:
         # If execution has already started, keep the action tracked until
-        # its deterministic result is known. Otherwise abandon it.
-        if self.phase != ConversationPhase.TOOL_EXECUTION:
+        # its deterministic result is known. A voice interruption also keeps
+        # an unconfirmed action until the corrected utterance is classified.
+        if (
+            self.phase != ConversationPhase.TOOL_EXECUTION
+            and not preserve_pending_confirmation
+        ):
             self.pending_action = None
+
+        if not preserve_pending_resource_resolution:
             self.pending_resource_resolution = None
 
         self.phase = ConversationPhase.INTERRUPTED
+
+    def record_voice_playback(
+        self,
+        *,
+        speech_id: str,
+        voice_turn_id: str,
+        sequence: int,
+        status: VoicePlaybackStatus,
+        interruption_stop_latency_ms: float | None = None,
+        response_phase: ConversationPhase | None = None,
+    ) -> None:
+        current = self.voice_playback
+
+        if current is not None and sequence < current.sequence:
+            return
+
+        if (
+            current is not None
+            and sequence == current.sequence
+            and current.speech_id != speech_id
+        ):
+            return
+
+        # Delivery is at-least-once. A terminal record for one speech is
+        # immutable, so duplicates and contradictory late events are no-ops.
+        if (
+            current is not None
+            and current.sequence == sequence
+            and current.speech_id == speech_id
+            and current.status
+            in {
+                VoicePlaybackStatus.COMPLETED,
+                VoicePlaybackStatus.INTERRUPTED,
+            }
+        ):
+            return
+
+        # A completion from superseded speech cannot change the current turn.
+        if (
+            status == VoicePlaybackStatus.COMPLETED
+            and current is not None
+            and (
+                current.sequence != sequence
+                or current.speech_id != speech_id
+            )
+        ):
+            return
+
+        self.voice_playback = VoicePlaybackState(
+            speech_id=speech_id,
+            voice_turn_id=voice_turn_id,
+            sequence=sequence,
+            status=status,
+            interruption_stop_latency_ms=interruption_stop_latency_ms,
+        )
+
+        if status == VoicePlaybackStatus.INTERRUPTED:
+            self.interrupt(
+                preserve_pending_confirmation=True,
+                preserve_pending_resource_resolution=True,
+            )
+        elif (
+            status == VoicePlaybackStatus.SCHEDULED
+            and response_phase is not None
+            and self.phase == ConversationPhase.INTERRUPTED
+        ):
+            # A newer corrected response wins if an older interruption report
+            # crossed it in flight.
+            self.phase = response_phase
+        elif (
+            status == VoicePlaybackStatus.COMPLETED
+            and self.phase == ConversationPhase.AGENT_SPEAKING
+        ):
+            self.phase = ConversationPhase.LISTENING
 
     def resume_listening(self) -> None:
         if self.phase in {

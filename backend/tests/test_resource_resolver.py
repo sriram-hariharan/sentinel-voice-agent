@@ -13,6 +13,7 @@ from backend.app.conversation.state import (
     ConversationPhase,
     ConversationState,
     ResourceType,
+    VoicePlaybackStatus,
 )
 from backend.app.db.models import Account, Card, Transaction
 from backend.app.providers.llm import LLMResponse, LLMToolCall
@@ -151,6 +152,36 @@ async def test_account_type_resolves_owned_account(
 
     assert result.clarification is None
     assert state.active_account_id == expected_id
+    assert state.active_intent == "get_account_balance"
+
+
+@pytest.mark.asyncio
+async def test_barge_in_correction_replaces_active_checking_with_savings() -> None:
+    state = _state()
+    state.active_intent = "get_account_balance"
+    state.active_account_id = CHECKING_ID
+    state.record_voice_playback(
+        speech_id="speech-checking",
+        voice_turn_id="turn-checking",
+        sequence=1,
+        status=VoicePlaybackStatus.INTERRUPTED,
+        interruption_stop_latency_ms=60,
+    )
+    db = _db_with_scalar_results(
+        [
+            _account(CHECKING_ID, "checking", "****4101"),
+            _account(SAVINGS_ID, "savings", "****9204"),
+        ]
+    )
+
+    result = await ResourceResolver().resolve(
+        user_text="No, I meant savings.",
+        state=state,
+        db=db,
+    )
+
+    assert result.clarification is None
+    assert state.active_account_id == SAVINGS_ID
     assert state.active_intent == "get_account_balance"
 
 
@@ -441,6 +472,14 @@ async def test_unrelated_new_turn_clears_stale_resource_clarification() -> None:
         state=state,
         db=db,
     )
+    state.record_voice_playback(
+        speech_id="speech-clarification",
+        voice_turn_id="turn-clarification",
+        sequence=1,
+        status=VoicePlaybackStatus.INTERRUPTED,
+        interruption_stop_latency_ms=60,
+    )
+    assert state.pending_resource_resolution is not None
     result = await resolver.resolve(
         user_text="Hello there",
         state=state,

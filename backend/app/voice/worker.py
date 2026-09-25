@@ -2,8 +2,10 @@ import asyncio
 import json
 import logging
 import os
+import time
 from collections import deque
-from collections.abc import AsyncIterable
+from collections.abc import AsyncIterable, Awaitable, Callable
+from dataclasses import dataclass
 from typing import Any
 
 from livekit import agents, rtc
@@ -38,6 +40,16 @@ VOICE_PLAYBACK_ERROR_MESSAGE = (
     "Voice session error: Audio playback failed. "
     "The text response above is still authoritative."
 )
+VOICE_EVENT_TOPIC = "sentinelvoice.voice"
+VOICE_TURN_HANDLING = {
+    "interruption": {
+        "enabled": True,
+        "mode": "vad",
+        "min_duration": 0.35,
+        "min_words": 0,
+        "resume_false_interruption": False,
+    }
+}
 
 
 class VoiceWorkerConfigurationError(RuntimeError):
@@ -48,6 +60,13 @@ class VoiceSessionMetadata(BaseModel):
     sentinelvoice_session_id: str = Field(min_length=1, max_length=128)
 
     model_config = ConfigDict(extra="forbid")
+
+
+@dataclass(frozen=True)
+class _TrackedSpeech:
+    handle: Any
+    turn_id: str
+    sequence: int
 
 
 def parse_voice_session_metadata(raw_metadata: str) -> VoiceSessionMetadata:
@@ -74,18 +93,37 @@ def _groq_api_key(settings: Settings) -> str:
 class SentinelVoiceAgent(Agent):
     """Media-facing agent that delegates every turn to FastAPI."""
 
-    def __init__(self, *, bridge: VoiceBridge, session_id: str) -> None:
+    def __init__(
+        self,
+        *,
+        bridge: VoiceBridge,
+        session_id: str,
+        publish_event: Callable[[dict[str, Any]], Awaitable[None]] | None = None,
+        clock: Callable[[], float] = time.perf_counter,
+    ) -> None:
         super().__init__(
             instructions=(
                 "Relay each final user transcript to the authoritative "
                 "SentinelVoice application and speak its response exactly."
             ),
-            allow_interruptions=False,
+            turn_handling=VOICE_TURN_HANDLING,
         )
         self._bridge = bridge
         self._session_id = session_id
+        self._publish_event = publish_event
+        self._clock = clock
         self._processed_turn_ids: set[str] = set()
         self._processed_turn_order: deque[str] = deque()
+        # A wall-clock seed keeps ordering monotonic when a browser reconnects
+        # and a new worker instance reports into the same FastAPI session.
+        self._speech_sequence = time.time_ns() // 1_000
+        self._speech: dict[str, _TrackedSpeech] = {}
+        self._interruption_candidate_id: str | None = None
+        self._interruption_started_at: float | None = None
+        self._interruption_cutoff = 0
+        self._reported_interruptions: set[str] = set()
+        self._awaiting_corrected_transcript = False
+        self._background_tasks: set[asyncio.Task[Any]] = set()
 
     def _claim_turn(self, turn_id: str) -> bool:
         if turn_id in self._processed_turn_ids:
@@ -112,12 +150,178 @@ class SentinelVoiceAgent(Agent):
         await output.capture_text(text)
         output.flush()
 
+    def _create_background_task(self, coroutine: Awaitable[Any]) -> None:
+        task = asyncio.create_task(coroutine)
+        self._background_tasks.add(task)
+        task.add_done_callback(self._background_tasks.discard)
+
+    @staticmethod
+    def _speech_is_done(speech: Any) -> bool:
+        done = getattr(speech, "done", False)
+        return bool(done() if callable(done) else done)
+
+    def note_user_speaking(self) -> None:
+        """Record the first VAD speech signal for interruption latency."""
+        if self._interruption_candidate_id is not None:
+            return
+
+        unfinished = sorted(
+            (
+                tracked
+                for tracked in self._speech.values()
+                if not self._speech_is_done(tracked.handle)
+            ),
+            key=lambda tracked: tracked.sequence,
+        )
+        if not unfinished:
+            return
+
+        self._interruption_candidate_id = unfinished[0].handle.id
+        self._interruption_started_at = self._clock()
+        self._interruption_cutoff = unfinished[-1].sequence
+        logger.info(
+            "voice interruption detected",
+            extra={
+                "sentinelvoice_session_id": self._session_id,
+                "speech_id": self._interruption_candidate_id,
+                "queued_speech_count": len(unfinished),
+            },
+        )
+
+    def _interrupt_speech_through(self, sequence: int) -> None:
+        stale = sorted(
+            (
+                tracked
+                for tracked in self._speech.values()
+                if tracked.sequence <= sequence
+                and not self._speech_is_done(tracked.handle)
+            ),
+            key=lambda tracked: tracked.sequence,
+        )
+        for tracked in stale:
+            tracked.handle.interrupt(source="user_turn")
+
+    async def _report_playback(
+        self,
+        *,
+        speech_id: str,
+        turn_id: str,
+        sequence: int,
+        status: str,
+        interruption_stop_latency_ms: float | None = None,
+        response_phase: str | None = None,
+    ) -> None:
+        try:
+            await self._bridge.report_playback(
+                session_id=self._session_id,
+                speech_id=speech_id,
+                voice_turn_id=turn_id,
+                sequence=sequence,
+                status=status,
+                interruption_stop_latency_ms=interruption_stop_latency_ms,
+                response_phase=response_phase,
+            )
+        except VoiceBridgeError:
+            # Text turns remain available even if this observability/state
+            # callback cannot reach the application boundary.
+            logger.exception(
+                "voice playback state could not be synchronized",
+                extra={
+                    "sentinelvoice_session_id": self._session_id,
+                    "speech_id": speech_id,
+                    "voice_turn_id": turn_id,
+                    "playback_status": status,
+                },
+            )
+
+    async def _report_interruption(
+        self,
+        *,
+        speech_id: str,
+        turn_id: str,
+        sequence: int,
+        latency_ms: float,
+    ) -> None:
+        await self._report_playback(
+            speech_id=speech_id,
+            turn_id=turn_id,
+            sequence=sequence,
+            status="INTERRUPTED",
+            interruption_stop_latency_ms=latency_ms,
+        )
+        if self._publish_event is not None:
+            try:
+                await self._publish_event(
+                    {
+                        "type": "speech_interrupted",
+                        "speech_id": speech_id,
+                        "voice_turn_id": turn_id,
+                        "interruption_stop_latency_ms": latency_ms,
+                    }
+                )
+            except Exception:
+                logger.exception(
+                    "voice interruption browser event could not be published",
+                    extra={
+                        "sentinelvoice_session_id": self._session_id,
+                        "speech_id": speech_id,
+                        "voice_turn_id": turn_id,
+                    },
+                )
+
     def _observe_speech_completion(
         self,
         speech: Any,
         *,
         turn_id: str,
     ) -> None:
+        speech_id = str(getattr(speech, "id", ""))
+        tracked = self._speech.pop(speech_id, None)
+        interrupted = bool(getattr(speech, "interrupted", False))
+
+        if interrupted:
+            logger.info(
+                "speech playback interrupted",
+                extra={
+                    "sentinelvoice_session_id": self._session_id,
+                    "voice_turn_id": turn_id,
+                    "speech_id": speech_id,
+                },
+            )
+            if (
+                speech_id == self._interruption_candidate_id
+                and speech_id not in self._reported_interruptions
+            ):
+                started_at = self._interruption_started_at or self._clock()
+                latency_ms = max(
+                    0.0,
+                    (self._clock() - started_at) * 1000,
+                )
+                self._reported_interruptions.add(speech_id)
+                self._awaiting_corrected_transcript = True
+                self._interrupt_speech_through(self._interruption_cutoff)
+                logger.info(
+                    "speech interruption stop measured",
+                    extra={
+                        "sentinelvoice_session_id": self._session_id,
+                        "voice_turn_id": turn_id,
+                        "speech_id": speech_id,
+                        "interruption_stop_latency_ms": latency_ms,
+                    },
+                )
+                self._create_background_task(
+                    self._report_interruption(
+                        speech_id=speech_id,
+                        turn_id=turn_id,
+                        sequence=(tracked.sequence if tracked else 1),
+                        latency_ms=latency_ms,
+                    )
+                )
+                self._interruption_candidate_id = None
+                self._interruption_started_at = None
+                self._interruption_cutoff = 0
+            return
+
         exception = speech.exception()
 
         if exception is not None:
@@ -133,6 +337,10 @@ class SentinelVoiceAgent(Agent):
             asyncio.create_task(
                 self._publish_text_only(VOICE_PLAYBACK_ERROR_MESSAGE)
             )
+            if speech_id == self._interruption_candidate_id:
+                self._interruption_candidate_id = None
+                self._interruption_started_at = None
+                self._interruption_cutoff = 0
             return
 
         logger.info(
@@ -143,6 +351,18 @@ class SentinelVoiceAgent(Agent):
                 "speech_id": getattr(speech, "id", None),
             },
         )
+        self._create_background_task(
+            self._report_playback(
+                speech_id=speech_id,
+                turn_id=turn_id,
+                sequence=(tracked.sequence if tracked else 1),
+                status="COMPLETED",
+            )
+        )
+        if speech_id == self._interruption_candidate_id:
+            self._interruption_candidate_id = None
+            self._interruption_started_at = None
+            self._interruption_cutoff = 0
 
     async def tts_node(
         self,
@@ -198,14 +418,40 @@ class SentinelVoiceAgent(Agent):
             )
             raise StopResponse()
 
+        # LiveKit normally interrupts the active handle from VAD before this
+        # hook. The finalized-turn fallback also cancels every stale queued
+        # response, while the corrected response receives a later sequence.
+        if self._awaiting_corrected_transcript:
+            unfinished_sequences = [
+                tracked.sequence
+                for tracked in self._speech.values()
+                if not self._speech_is_done(tracked.handle)
+            ]
+            if unfinished_sequences:
+                self._interrupt_speech_through(max(unfinished_sequences))
+        else:
+            self.note_user_speaking()
+            if self._interruption_candidate_id is not None:
+                self._interrupt_speech_through(self._interruption_cutoff)
+
+        corrects_interruption = (
+            self._awaiting_corrected_transcript
+            or self._interruption_candidate_id is not None
+        )
+
         logger.info(
-            "voice transcript finalized",
+            (
+                "new corrected transcript finalized"
+                if corrects_interruption
+                else "voice transcript finalized"
+            ),
             extra={
                 "sentinelvoice_session_id": self._session_id,
                 "voice_turn_id": new_message.id,
                 "transcript_length": len(transcript),
             },
         )
+        self._awaiting_corrected_transcript = False
 
         try:
             result = await self._bridge.handle_transcript(
@@ -238,7 +484,7 @@ class SentinelVoiceAgent(Agent):
         try:
             speech = self.session.say(
                 result.message,
-                allow_interruptions=False,
+                allow_interruptions=True,
             )
         except RuntimeError:
             logger.exception(
@@ -259,6 +505,21 @@ class SentinelVoiceAgent(Agent):
                 "voice_turn_id": new_message.id,
                 "speech_id": speech.id,
             },
+        )
+        self._speech_sequence += 1
+        self._speech[speech.id] = _TrackedSpeech(
+            handle=speech,
+            turn_id=new_message.id,
+            sequence=self._speech_sequence,
+        )
+        self._create_background_task(
+            self._report_playback(
+                speech_id=speech.id,
+                turn_id=new_message.id,
+                sequence=self._speech_sequence,
+                status="SCHEDULED",
+                response_phase=result.conversation_phase,
+            )
         )
         speech.add_done_callback(
             lambda completed: self._observe_speech_completion(
@@ -327,7 +588,20 @@ async def voice_session(ctx: JobContext) -> None:
             provider=tts_provider,
             model=settings.tts_model,
         ),
-        allow_interruptions=False,
+        turn_handling=VOICE_TURN_HANDLING,
+    )
+
+    async def _publish_voice_event(payload: dict[str, Any]) -> None:
+        await ctx.room.local_participant.publish_data(
+            json.dumps(payload),
+            reliable=True,
+            topic=VOICE_EVENT_TOPIC,
+        )
+
+    agent = SentinelVoiceAgent(
+        bridge=bridge,
+        session_id=metadata.sentinelvoice_session_id,
+        publish_event=_publish_voice_event,
     )
 
     def _log_agent_state_change(event: Any) -> None:
@@ -339,7 +613,12 @@ async def voice_session(ctx: JobContext) -> None:
                 },
             )
 
+    def _handle_user_state_change(event: Any) -> None:
+        if event.new_state == "speaking":
+            agent.note_user_speaking()
+
     session.on("agent_state_changed", _log_agent_state_change)
+    session.on("user_state_changed", _handle_user_state_change)
 
     logger.info(
         "sentinelvoice session resolved from voice dispatch metadata",
@@ -351,10 +630,7 @@ async def voice_session(ctx: JobContext) -> None:
     await session.start(
         room=ctx.room,
         room_options=_voice_room_options(),
-        agent=SentinelVoiceAgent(
-            bridge=bridge,
-            session_id=metadata.sentinelvoice_session_id,
-        ),
+        agent=agent,
     )
 
 

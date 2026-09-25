@@ -35,6 +35,15 @@ class NoopResourceResolver:
         return ResourceResolution()
 
 
+class PhaseRecordingResourceResolver:
+    def __init__(self) -> None:
+        self.phases = []
+
+    async def resolve(self, *, state, **kwargs) -> ResourceResolution:
+        self.phases.append(state.phase)
+        return ResourceResolution()
+
+
 def _pending_protected_action(store: InMemorySessionStore):
     state = store.create()
     state.customer_id = CUSTOMER_ID
@@ -166,6 +175,172 @@ async def test_voice_no_uses_existing_cancellation_path() -> None:
     assert state.pending_action is None
     executor.execute.assert_not_awaited()
     assert llm.calls == []
+
+
+@pytest.mark.asyncio
+async def test_interrupted_confirmation_prompt_actually_no_cancels() -> None:
+    store = InMemorySessionStore()
+    state = _pending_protected_action(store)
+    executor = AsyncMock()
+    llm = SequenceLLM([])
+    bridge, client = await _bridge_for(
+        store=store,
+        orchestrator=AgentOrchestrator(
+            llm=llm,
+            tool_executor=executor,
+            resource_resolver=NoopResourceResolver(),
+        ),
+    )
+
+    try:
+        await bridge.report_playback(
+            session_id=state.session_id,
+            speech_id="speech-confirmation",
+            voice_turn_id="turn-proposal",
+            sequence=1,
+            status="INTERRUPTED",
+            interruption_stop_latency_ms=75,
+        )
+        result = await bridge.handle_transcript(
+            session_id=state.session_id,
+            transcript="Actually no",
+        )
+    finally:
+        await client.aclose()
+        app.dependency_overrides.clear()
+
+    assert result is not None
+    assert result.message == "Okay, I won’t perform that action."
+    assert state.pending_action is None
+    executor.execute.assert_not_awaited()
+    assert llm.calls == []
+
+
+@pytest.mark.asyncio
+async def test_unrelated_barge_in_never_executes_pending_action() -> None:
+    store = InMemorySessionStore()
+    state = _pending_protected_action(store)
+    executor = AsyncMock()
+    llm = SequenceLLM(
+        [LLMResponse(content="I can help with your balance.", model="test")]
+    )
+    bridge, client = await _bridge_for(
+        store=store,
+        orchestrator=AgentOrchestrator(
+            llm=llm,
+            tool_executor=executor,
+            resource_resolver=NoopResourceResolver(),
+        ),
+    )
+
+    try:
+        await bridge.report_playback(
+            session_id=state.session_id,
+            speech_id="speech-confirmation",
+            voice_turn_id="turn-proposal",
+            sequence=1,
+            status="INTERRUPTED",
+            interruption_stop_latency_ms=75,
+        )
+        result = await bridge.handle_transcript(
+            session_id=state.session_id,
+            transcript="What is my balance?",
+        )
+    finally:
+        await client.aclose()
+        app.dependency_overrides.clear()
+
+    assert result is not None
+    assert result.message == "I can help with your balance."
+    assert state.pending_action is None
+    executor.execute.assert_not_awaited()
+    assert len(llm.calls) == 1
+
+
+@pytest.mark.asyncio
+async def test_interrupted_confirmation_still_executes_once_on_yes() -> None:
+    store = InMemorySessionStore()
+    state = _pending_protected_action(store)
+    executor = AsyncMock()
+    executor.execute.return_value = FreezeCardOutput(
+        card_id=CARD_ID,
+        masked_card_number="****1842",
+        previous_status="ACTIVE",
+        status="FROZEN",
+        changed=True,
+    )
+    llm = SequenceLLM(
+        [LLMResponse(content="Your card is now frozen.", model="test")]
+    )
+    bridge, client = await _bridge_for(
+        store=store,
+        orchestrator=AgentOrchestrator(
+            llm=llm,
+            tool_executor=executor,
+            resource_resolver=NoopResourceResolver(),
+        ),
+    )
+
+    try:
+        await bridge.report_playback(
+            session_id=state.session_id,
+            speech_id="speech-confirmation",
+            voice_turn_id="turn-proposal",
+            sequence=1,
+            status="INTERRUPTED",
+            interruption_stop_latency_ms=75,
+        )
+        result = await bridge.handle_transcript(
+            session_id=state.session_id,
+            transcript="Yes",
+        )
+    finally:
+        await client.aclose()
+        app.dependency_overrides.clear()
+
+    assert result is not None
+    assert result.executed_tools == ["freeze_card"]
+    assert state.pending_action is None
+    executor.execute.assert_awaited_once()
+
+
+@pytest.mark.asyncio
+async def test_corrected_turn_leaves_interrupted_state_for_processing() -> None:
+    store = InMemorySessionStore()
+    state = store.create()
+    resolver = PhaseRecordingResourceResolver()
+    llm = SequenceLLM(
+        [LLMResponse(content="Corrected response.", model="test")]
+    )
+    bridge, client = await _bridge_for(
+        store=store,
+        orchestrator=AgentOrchestrator(
+            llm=llm,
+            resource_resolver=resolver,
+        ),
+    )
+
+    try:
+        await bridge.report_playback(
+            session_id=state.session_id,
+            speech_id="speech-old",
+            voice_turn_id="turn-old",
+            sequence=1,
+            status="INTERRUPTED",
+            interruption_stop_latency_ms=75,
+        )
+        assert state.phase.value == "INTERRUPTED"
+        result = await bridge.handle_transcript(
+            session_id=state.session_id,
+            transcript="Use savings instead",
+        )
+    finally:
+        await client.aclose()
+        app.dependency_overrides.clear()
+
+    assert result is not None
+    assert resolver.phases == ["PROCESSING"]
+    assert state.phase.value == "AGENT_SPEAKING"
 
 
 @pytest.mark.asyncio

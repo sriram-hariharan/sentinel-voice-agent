@@ -2,13 +2,14 @@ import {
   LiveKitRoom,
   RoomAudioRenderer,
   StartAudio,
-  VoiceAssistantControlBar,
   useDataChannel,
+  useIsSpeaking,
   useLocalParticipant,
   useTranscriptions,
   useVoiceAssistant,
 } from '@livekit/components-react'
 import '@livekit/components-styles'
+import { Plus, SendHorizontal } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FormEvent, KeyboardEvent } from 'react'
 import './App.css'
@@ -17,6 +18,15 @@ import {
   canUseTextChat,
   type VoiceConnectionState,
 } from './access'
+import { SessionControlBar } from './components/SessionControlBar'
+import { TraceMetricsPanel } from './TraceMetricsPanel'
+import type { SessionObservabilityResponse } from './traceMetrics'
+import {
+  deriveVoiceUiState,
+  requestMicrophoneToggle,
+  voiceUiStateLabel,
+  type MicrophoneController,
+} from './voiceActivity'
 
 type SessionResponse = {
   session_id: string
@@ -127,10 +137,6 @@ async function getJson<T>(path: string): Promise<T> {
   return payload as T
 }
 
-function formatState(value: string): string {
-  return value.toLowerCase().replaceAll('_', ' ')
-}
-
 type VoiceRoomProps = {
   onAgentStateChange: (state: string) => void
   onAgentFinalTranscript: () => void
@@ -138,6 +144,11 @@ type VoiceRoomProps = {
   onInterruption: (event: VoiceInterruptionEvent) => void
   onTranscript: (message: TranscriptMessage) => void
   onUserFinalTranscript: () => void
+  onUserSpeakingChange: (speaking: boolean) => void
+  onMicrophoneControllerChange: (
+    controller: MicrophoneController | null,
+  ) => void
+  onMicrophoneEnabledChange: (enabled: boolean) => void
 }
 
 function VoiceRoom({
@@ -147,9 +158,13 @@ function VoiceRoom({
   onInterruption,
   onTranscript,
   onUserFinalTranscript,
+  onUserSpeakingChange,
+  onMicrophoneControllerChange,
+  onMicrophoneEnabledChange,
 }: VoiceRoomProps) {
   const transcriptions = useTranscriptions()
-  const { localParticipant, microphoneTrack } = useLocalParticipant()
+  const { isMicrophoneEnabled, localParticipant } = useLocalParticipant()
+  const userSpeaking = useIsSpeaking(localParticipant)
   const { state: agentState } = useVoiceAssistant()
   const seenFinalSegments = useRef(new Set<string>())
 
@@ -226,22 +241,34 @@ function VoiceRoom({
     onAgentStateChange(agentState)
   }, [agentState, onAgentStateChange])
 
-  const microphoneState = !microphoneTrack
-    ? 'Starting…'
-    : microphoneTrack.isMuted
-      ? 'Muted'
-      : 'Listening'
+  useEffect(() => {
+    onUserSpeakingChange(isMicrophoneEnabled && userSpeaking)
+  }, [isMicrophoneEnabled, onUserSpeakingChange, userSpeaking])
+
+  useEffect(() => {
+    onMicrophoneEnabledChange(isMicrophoneEnabled)
+  }, [isMicrophoneEnabled, onMicrophoneEnabledChange])
+
+  const setMicrophoneEnabled = useCallback<MicrophoneController>(
+    async (enabled) => {
+      await localParticipant.setMicrophoneEnabled(enabled)
+      return localParticipant.isMicrophoneEnabled
+    },
+    [localParticipant],
+  )
+
+  useEffect(() => {
+    onMicrophoneControllerChange(setMicrophoneEnabled)
+    return () => onMicrophoneControllerChange(null)
+  }, [onMicrophoneControllerChange, setMicrophoneEnabled])
+
+  useEffect(
+    () => () => onUserSpeakingChange(false),
+    [onUserSpeakingChange],
+  )
 
   return (
-    <div className="voice-room">
-      <div className="voice-device-state" role="status">
-        <span>Microphone: {microphoneState}</span>
-        <span>Transport agent: {formatState(agentState)}</span>
-      </div>
-      <VoiceAssistantControlBar
-        controls={{ leave: false, microphone: true }}
-        onDeviceError={({ error }) => onError(error.message)}
-      />
+    <div className="voice-room" aria-label="Connected voice controls">
       <StartAudio label="Enable speaker audio" className="start-audio-button" />
       <RoomAudioRenderer />
     </div>
@@ -252,12 +279,10 @@ function App() {
   const [email, setEmail] = useState('')
   const [pin, setPin] = useState('')
   const [sessionId, setSessionId] = useState<string | null>(null)
-  const [customerId, setCustomerId] = useState<string | null>(null)
   const [authenticated, setAuthenticated] = useState(false)
   const [conversationPhase, setConversationPhase] = useState('NOT_STARTED')
   const [turnStatus, setTurnStatus] = useState('READY')
   const [pendingAction, setPendingAction] = useState<string | null>(null)
-  const [executedTools, setExecutedTools] = useState<string[]>([])
   const [messages, setMessages] = useState<TranscriptMessage[]>([])
   const [draft, setDraft] = useState('')
   const [authenticating, setAuthenticating] = useState(false)
@@ -268,21 +293,41 @@ function App() {
   const [voiceConnectionState, setVoiceConnectionState] =
     useState<VoiceConnectionState>('disconnected')
   const [voiceAgentState, setVoiceAgentState] = useState('idle')
+  const [userSpeaking, setUserSpeaking] = useState(false)
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(true)
+  const [microphoneControllerReady, setMicrophoneControllerReady] =
+    useState(false)
+  const [microphoneTogglePending, setMicrophoneTogglePending] = useState(false)
   const [voiceTurnPending, setVoiceTurnPending] = useState(false)
   const [voiceInterrupted, setVoiceInterrupted] = useState(false)
   const [voiceError, setVoiceError] = useState<string | null>(null)
   const [sessionStarting, setSessionStarting] = useState(true)
   const [resetting, setResetting] = useState(false)
+  const [observability, setObservability] =
+    useState<SessionObservabilityResponse | null>(null)
+  const [observabilityLoading, setObservabilityLoading] = useState(false)
+  const [observabilityError, setObservabilityError] = useState<string | null>(
+    null,
+  )
   const transcriptRef = useRef<HTMLDivElement>(null)
   const transcriptEndRef = useRef<HTMLDivElement>(null)
   const composerRef = useRef<HTMLTextAreaElement>(null)
   const shouldAutoScroll = useRef(true)
   const latestVoiceAssistantId = useRef<string | null>(null)
   const pendingVoiceInterruptions = useRef(0)
+  const observabilityRequestId = useRef(0)
+  const microphoneControllerRef = useRef<MicrophoneController | null>(null)
+
+  const handleMicrophoneControllerChange = useCallback(
+    (controller: MicrophoneController | null) => {
+      microphoneControllerRef.current = controller
+      setMicrophoneControllerReady(controller !== null)
+    },
+    [],
+  )
 
   const updateSessionState = useCallback((response: SessionResponse) => {
     setSessionId(response.session_id)
-    setCustomerId(response.customer_id)
     setAuthenticated(response.authenticated)
     setConversationPhase(response.conversation_phase)
     if (response.turn_status) {
@@ -352,6 +397,45 @@ function App() {
     }
   }
 
+  const refreshObservability = useCallback(
+    async (targetSessionId: string | null = sessionId) => {
+      const requestId = observabilityRequestId.current + 1
+      observabilityRequestId.current = requestId
+
+      if (!targetSessionId) {
+        setObservability(null)
+        setObservabilityError(null)
+        setObservabilityLoading(false)
+        return
+      }
+
+      setObservabilityLoading(true)
+      setObservabilityError(null)
+
+      try {
+        const response = await getJson<SessionObservabilityResponse>(
+          `/sessions/${targetSessionId}/observability`,
+        )
+        if (requestId === observabilityRequestId.current) {
+          setObservability(response)
+        }
+      } catch (requestError) {
+        if (requestId === observabilityRequestId.current) {
+          setObservabilityError(
+            requestError instanceof Error
+              ? requestError.message
+              : 'Trace and metrics could not be refreshed.',
+          )
+        }
+      } finally {
+        if (requestId === observabilityRequestId.current) {
+          setObservabilityLoading(false)
+        }
+      }
+    },
+    [sessionId],
+  )
+
   const addVoiceTranscript = (message: TranscriptMessage) => {
     setMessages((current) => {
       if (current.some((existing) => existing.id === message.id)) {
@@ -389,7 +473,7 @@ function App() {
     setVoiceInterrupted(true)
     setVoiceTurnPending(false)
     setConversationPhase('INTERRUPTED')
-    void refreshSessionState()
+    void refreshSessionState().then(() => refreshObservability(sessionId))
     console.info('Voice playback interrupted', {
       speechId: event.speech_id,
       stopLatencyMs: event.interruption_stop_latency_ms,
@@ -409,7 +493,10 @@ function App() {
 
   useEffect(() => {
     if (shouldAutoScroll.current) {
-      transcriptEndRef.current?.scrollIntoView({ block: 'end' })
+      const transcript = transcriptRef.current
+      if (transcript) {
+        transcript.scrollTop = transcript.scrollHeight
+      }
     }
   }, [messages, processing])
 
@@ -441,6 +528,9 @@ function App() {
     setVoiceTurnPending(false)
     setVoiceInterrupted(false)
     setVoiceAgentState('idle')
+    setUserSpeaking(false)
+    setMicrophoneEnabled(true)
+    setMicrophoneTogglePending(false)
     setVoiceConnectionState('connecting')
     latestVoiceAssistantId.current = null
     pendingVoiceInterruptions.current = 0
@@ -462,9 +552,14 @@ function App() {
   }
 
   const endVoice = () => {
+    microphoneControllerRef.current = null
     setVoiceCredentials(null)
     setVoiceConnectionState('disconnected')
     setVoiceAgentState('idle')
+    setUserSpeaking(false)
+    setMicrophoneEnabled(true)
+    setMicrophoneControllerReady(false)
+    setMicrophoneTogglePending(false)
     setVoiceTurnPending(false)
     setVoiceInterrupted(false)
     setVoiceError(null)
@@ -472,21 +567,54 @@ function App() {
     pendingVoiceInterruptions.current = 0
   }
 
+  const toggleMicrophone = async () => {
+    if (microphoneTogglePending) {
+      return
+    }
+
+    setMicrophoneTogglePending(true)
+
+    try {
+      const authoritativeEnabled = await requestMicrophoneToggle({
+        connected: voiceConnectionState === 'connected',
+        microphoneEnabled,
+        controller: microphoneControllerRef.current,
+      })
+
+      if (authoritativeEnabled !== null) {
+        setMicrophoneEnabled(authoritativeEnabled)
+        setUserSpeaking(false)
+        setVoiceError(null)
+      }
+    } catch (requestError) {
+      const message =
+        requestError instanceof Error
+          ? `Microphone update failed: ${requestError.message}`
+          : 'Microphone update failed. Try again.'
+      setVoiceError(message)
+      setError(message)
+    } finally {
+      setMicrophoneTogglePending(false)
+    }
+  }
+
   const resetDemoSession = async () => {
     setResetting(true)
     endVoice()
     setSessionId(null)
-    setCustomerId(null)
     setAuthenticated(false)
     setConversationPhase('NOT_STARTED')
     setTurnStatus('READY')
     setPendingAction(null)
-    setExecutedTools([])
     setMessages([])
     setDraft('')
     setEmail('')
     setPin('')
     setError(null)
+    observabilityRequestId.current += 1
+    setObservability(null)
+    setObservabilityError(null)
+    setObservabilityLoading(false)
     shouldAutoScroll.current = true
 
     try {
@@ -571,7 +699,6 @@ function App() {
 
       updateSessionState(response)
       setTurnStatus(response.turn_status)
-      setExecutedTools(response.executed_tools)
       setMessages((current) => [
         ...current,
         newTranscriptMessage(
@@ -580,6 +707,7 @@ function App() {
           response.policy_sources,
         ),
       ])
+      void refreshObservability(sessionId)
     } catch (requestError) {
       setTurnStatus('FAILED')
       setError(
@@ -628,24 +756,101 @@ function App() {
     authenticated,
     voiceConnectionState,
   })
-  const voiceStatus = voiceError
-    ? 'Error'
-    : voiceConnectionState === 'connecting'
-      ? 'Connecting'
-      : voiceConnectionState === 'disconnected'
-        ? 'Disconnected'
-        : voiceInterrupted
-          ? 'Interrupted'
-        : voiceAgentState === 'speaking'
-          ? 'Speaking'
-          : voiceTurnPending || voiceAgentState === 'thinking'
-            ? 'Processing'
-            : 'Listening'
+  const voiceUiState = deriveVoiceUiState({
+    voiceConnectionState,
+    voiceAgentState,
+    microphoneMuted:
+      voiceConnectionState === 'connected' && !microphoneEnabled,
+    userSpeaking: microphoneEnabled && userSpeaking,
+    voiceTurnPending,
+    voiceInterrupted,
+    voiceError,
+  })
+  const voiceStatus = voiceUiStateLabel(voiceUiState)
   const conversationStatus = processing
     ? 'Processing'
     : voiceConnectionState === 'connected'
       ? voiceStatus
       : 'Ready'
+
+  const voiceControls = voiceCredentials ? (
+    <LiveKitRoom
+      token={voiceCredentials.participant_token}
+      serverUrl={voiceCredentials.server_url}
+      connect
+      audio
+      video={false}
+      onConnected={() => {
+        setVoiceConnectionState('connected')
+        setVoiceError(null)
+      }}
+      onDisconnected={() => {
+        microphoneControllerRef.current = null
+        setVoiceCredentials(null)
+        setVoiceConnectionState('disconnected')
+        setVoiceAgentState('idle')
+        setUserSpeaking(false)
+        setMicrophoneEnabled(true)
+        setMicrophoneControllerReady(false)
+        setMicrophoneTogglePending(false)
+        setVoiceTurnPending(false)
+        setVoiceInterrupted(false)
+        latestVoiceAssistantId.current = null
+        pendingVoiceInterruptions.current = 0
+      }}
+      onError={(connectionError) => {
+        const message = `Voice connection failed: ${connectionError.message}`
+        setError(message)
+        setVoiceError(message)
+        setVoiceCredentials(null)
+        setVoiceConnectionState('disconnected')
+        setUserSpeaking(false)
+        setMicrophoneEnabled(true)
+        setMicrophoneControllerReady(false)
+        setMicrophoneTogglePending(false)
+        latestVoiceAssistantId.current = null
+        pendingVoiceInterruptions.current = 0
+      }}
+      onMediaDeviceFailure={() => {
+        const message =
+          'Microphone access failed. Allow microphone permission and try again.'
+        setError(message)
+        setVoiceError(message)
+      }}
+    >
+      <VoiceRoom
+        onAgentStateChange={(state) => {
+          setVoiceAgentState(state)
+          if (state === 'listening' || state === 'idle') {
+            latestVoiceAssistantId.current = null
+          }
+        }}
+        onAgentFinalTranscript={() => {
+          setVoiceTurnPending(false)
+          setVoiceInterrupted(false)
+          void refreshSessionState(true).then(() =>
+            refreshObservability(sessionId),
+          )
+        }}
+        onError={(message) => {
+          setVoiceError(message)
+          setError(message)
+          setVoiceTurnPending(false)
+        }}
+        onTranscript={addVoiceTranscript}
+        onInterruption={handleVoiceInterruption}
+        onUserFinalTranscript={() => {
+          setVoiceError(null)
+          setVoiceInterrupted(false)
+          setVoiceTurnPending(true)
+          setTurnStatus('PROCESSING')
+        }}
+        onUserSpeakingChange={setUserSpeaking}
+        onMicrophoneControllerChange={handleMicrophoneControllerChange}
+        onMicrophoneEnabledChange={setMicrophoneEnabled}
+      />
+    </LiveKitRoom>
+  ) : null
 
   return (
     <main className="app-shell">
@@ -667,238 +872,41 @@ function App() {
               sessionStarting || resetting || authenticating || processing
             }
           >
+            <Plus size={16} aria-hidden="true" />
             {resetting ? 'Resetting…' : 'New Session'}
           </button>
         </div>
       </header>
 
+      <SessionControlBar
+        authenticated={authenticated}
+        authenticating={authenticating}
+        email={email}
+        pin={pin}
+        sessionId={sessionId}
+        sessionStarting={sessionStarting}
+        conversationPhase={conversationPhase}
+        turnStatus={turnStatus}
+        pendingAction={pendingAction}
+        voiceUiState={voiceUiState}
+        voiceError={voiceError}
+        voiceStartEnabled={voiceStartEnabled}
+        voiceActive={voiceCredentials !== null}
+        microphoneEnabled={microphoneEnabled}
+        microphoneToggleEnabled={
+          voiceConnectionState === 'connected' && microphoneControllerReady
+        }
+        microphoneTogglePending={microphoneTogglePending}
+        onEmailChange={setEmail}
+        onPinChange={setPin}
+        onSignIn={startAndSignIn}
+        onStartVoice={() => void startVoice()}
+        onEndVoice={endVoice}
+        onToggleMicrophone={() => void toggleMicrophone()}
+        voiceControls={voiceControls}
+      />
+
       <section className="workspace">
-        <aside className="sidebar">
-          <section className="panel auth-panel" aria-labelledby="auth-heading">
-            <div className="panel-heading">
-              <div>
-                <p className="section-label">Secure access</p>
-                <h2 id="auth-heading">Demo sign in</h2>
-              </div>
-              <span
-                className={`status-dot ${authenticated ? 'online' : ''}`}
-                aria-hidden="true"
-              />
-            </div>
-
-            <form onSubmit={startAndSignIn} className="auth-form">
-              <label>
-                Synthetic customer email
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  placeholder="name@example.test"
-                  autoComplete="username"
-                  required
-                  disabled={authenticating || authenticated}
-                />
-              </label>
-              <label>
-                Demo PIN
-                <input
-                  type="password"
-                  value={pin}
-                  onChange={(event) => setPin(event.target.value)}
-                  placeholder="Enter configured PIN"
-                  autoComplete="current-password"
-                  required
-                  disabled={authenticating || authenticated}
-                />
-              </label>
-              <button
-                className="primary-button"
-                type="submit"
-                disabled={sessionStarting || authenticating || authenticated}
-              >
-                {authenticated
-                  ? 'Signed in'
-                  : sessionStarting || authenticating
-                    ? 'Starting session…'
-                    : 'Start / Sign In'}
-              </button>
-            </form>
-
-            <p className="auth-status" role="status">
-              {authenticated
-                ? 'Authenticated synthetic customer session'
-                : sessionId
-                  ? 'Session started · Sign-in required for private banking tools'
-                  : 'No active session'}
-            </p>
-          </section>
-
-          <section className="panel status-panel" aria-labelledby="status-heading">
-            <div className="panel-heading">
-              <div>
-                <p className="section-label">Server state</p>
-                <h2 id="status-heading">Session details</h2>
-              </div>
-            </div>
-
-            <dl className="state-list">
-              <div>
-                <dt>Authentication</dt>
-                <dd>{authenticated ? 'Authenticated' : 'Unauthenticated'}</dd>
-              </div>
-              <div>
-                <dt>Conversation phase</dt>
-                <dd>{formatState(conversationPhase)}</dd>
-              </div>
-              <div>
-                <dt>Turn status</dt>
-                <dd>{formatState(turnStatus)}</dd>
-              </div>
-              <div>
-                <dt>Pending action</dt>
-                <dd>{pendingAction ? formatState(pendingAction) : 'None'}</dd>
-              </div>
-            </dl>
-
-            <div className="identifier-block">
-              <span>Session ID</span>
-              <code>{sessionId ?? 'Not created'}</code>
-            </div>
-            {customerId && (
-              <div className="identifier-block">
-                <span>Verified customer ID</span>
-                <code>{customerId}</code>
-              </div>
-            )}
-
-            <div className="tool-activity">
-              <span>Latest tool activity</span>
-              {executedTools.length > 0 ? (
-                <ul>
-                  {executedTools.map((tool) => (
-                    <li key={tool}>{formatState(tool)}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No tools executed in the latest turn.</p>
-              )}
-            </div>
-          </section>
-          <section className="panel voice-panel" aria-labelledby="voice-heading">
-            <div className="panel-heading">
-              <div>
-                <p className="section-label">WebRTC voice</p>
-                <h2 id="voice-heading">Voice session</h2>
-              </div>
-            </div>
-
-            <div className={`voice-summary ${voiceStatus.toLowerCase()}`}>
-              <span className="voice-dot" aria-hidden="true" />
-              <div>
-                <strong>{voiceStatus}</strong>
-                <span>
-                  {voiceError ??
-                    (authenticated
-                      ? 'Microphone and agent transport'
-                      : 'Sign in to enable voice')}
-                </span>
-              </div>
-            </div>
-
-            {voiceCredentials ? (
-              <LiveKitRoom
-                token={voiceCredentials.participant_token}
-                serverUrl={voiceCredentials.server_url}
-                connect
-                audio
-                video={false}
-                onConnected={() => {
-                  setVoiceConnectionState('connected')
-                  setVoiceError(null)
-                }}
-                onDisconnected={() => {
-                  setVoiceCredentials(null)
-                  setVoiceConnectionState('disconnected')
-                  setVoiceAgentState('idle')
-                  setVoiceTurnPending(false)
-                  setVoiceInterrupted(false)
-                  latestVoiceAssistantId.current = null
-                  pendingVoiceInterruptions.current = 0
-                }}
-                onError={(voiceError) => {
-                  const message = `Voice connection failed: ${voiceError.message}`
-                  setError(message)
-                  setVoiceError(message)
-                  setVoiceCredentials(null)
-                  setVoiceConnectionState('disconnected')
-                  latestVoiceAssistantId.current = null
-                  pendingVoiceInterruptions.current = 0
-                }}
-                onMediaDeviceFailure={() => {
-                  const message =
-                    'Microphone access failed. Allow microphone permission and try again.'
-                  setError(message)
-                  setVoiceError(message)
-                }}
-              >
-                <VoiceRoom
-                  onAgentStateChange={(state) => {
-                    setVoiceAgentState(state)
-                    if (state === 'listening' || state === 'idle') {
-                      latestVoiceAssistantId.current = null
-                    }
-                  }}
-                  onAgentFinalTranscript={() => {
-                    setVoiceTurnPending(false)
-                    setVoiceInterrupted(false)
-                    void refreshSessionState(true)
-                  }}
-                  onError={(message) => {
-                    setVoiceError(message)
-                    setError(message)
-                    setVoiceTurnPending(false)
-                  }}
-                  onTranscript={addVoiceTranscript}
-                  onInterruption={handleVoiceInterruption}
-                  onUserFinalTranscript={() => {
-                    setVoiceError(null)
-                    setVoiceInterrupted(false)
-                    setVoiceTurnPending(true)
-                    setTurnStatus('PROCESSING')
-                  }}
-                />
-              </LiveKitRoom>
-            ) : (
-              <p className="voice-status" role="status">
-                {authenticated
-                  ? 'Ready to connect microphone audio securely.'
-                  : 'Sign in before starting voice.'}
-              </p>
-            )}
-
-            <div className="voice-actions">
-              <button
-                type="button"
-                className="primary-button"
-                onClick={() => void startVoice()}
-                disabled={!voiceStartEnabled}
-              >
-                {voiceConnectionState === 'connecting'
-                  ? 'Connecting…'
-                  : 'Start Voice'}
-              </button>
-              <button
-                type="button"
-                className="end-voice-button"
-                onClick={endVoice}
-                disabled={!voiceCredentials}
-              >
-                End Voice
-              </button>
-            </div>
-          </section>
-        </aside>
-
         <section className="conversation-panel" aria-labelledby="conversation-heading">
           <div className="conversation-top">
             <div className="conversation-header">
@@ -947,25 +955,32 @@ function App() {
                     message.interrupted ? ' interrupted' : ''
                   }`}
                 >
-                  <p className="message-author">
-                    {message.role === 'assistant' ? 'SentinelVoice' : 'You'}
-                    {message.interrupted && (
-                      <span className="message-interruption">
-                        Speech interrupted
-                      </span>
-                    )}
-                  </p>
-                  <p className="message-body">{message.text}</p>
-                  {message.sources && message.sources.length > 0 && (
-                    <div className="message-sources" aria-label="Policy sources">
-                      <span>Sources</span>
-                      <ul>
-                        {message.sources.map((source) => (
-                          <li key={source}>{source}</li>
-                        ))}
-                      </ul>
+                  {message.role === 'assistant' && (
+                    <div className="message-avatar" aria-hidden="true">
+                      S
                     </div>
                   )}
+                  <div className="message-content">
+                    <p className="message-author">
+                      {message.role === 'assistant' ? 'SentinelVoice' : 'You'}
+                      {message.interrupted && (
+                        <span className="message-interruption">
+                          Speech interrupted
+                        </span>
+                      )}
+                    </p>
+                    <p className="message-body">{message.text}</p>
+                    {message.sources && message.sources.length > 0 && (
+                      <div className="message-sources" aria-label="Policy sources">
+                        <span>Sources</span>
+                        <ul>
+                          {message.sources.map((source) => (
+                            <li key={source}>{source}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </article>
               ))
             )}
@@ -1038,11 +1053,19 @@ function App() {
                 disabled={!textChatEnabled || !draft.trim()}
               >
                 Send
-                <span aria-hidden="true">↗</span>
+                <SendHorizontal size={15} aria-hidden="true" />
               </button>
             </form>
           </div>
         </section>
+
+        <TraceMetricsPanel
+          response={observability}
+          loading={observabilityLoading}
+          error={observabilityError}
+          canRefresh={sessionId !== null}
+          onRefresh={() => void refreshObservability()}
+        />
       </section>
     </main>
   )

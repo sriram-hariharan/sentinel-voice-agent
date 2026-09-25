@@ -28,6 +28,22 @@ body {
     radial-gradient(circle at 15% 5%, #dfe9ff, transparent 36%);
 }
 
+@media (min-width: 1200px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 1199px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
 button,
 input,
 textarea {

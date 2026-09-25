@@ -13,7 +13,12 @@ from backend.app.config.settings import Settings, get_settings
 from backend.app.conversation.state import AuthenticationLevel
 from backend.app.db.session import get_db_session
 from backend.app.main import app
-from backend.app.observability.tracing import InMemoryTraceSink, use_trace_sink
+from backend.app.observability.events import TraceEvent, TraceStatus
+from backend.app.observability.tracing import (
+    InMemoryTraceSink,
+    get_runtime_trace_sink,
+    use_trace_sink,
+)
 from backend.app.providers.llm import LLMResponse, LLMToolCall
 from backend.app.tools.schemas import FreezeCardOutput
 
@@ -40,6 +45,8 @@ class NoopResourceResolver:
 def api_context():
     store = InMemorySessionStore()
     db = AsyncMock(spec=AsyncSession)
+    trace_store = get_runtime_trace_sink()
+    trace_store.clear()
 
     app.dependency_overrides[get_session_store] = lambda: store
     app.dependency_overrides[get_db_session] = lambda: db
@@ -48,6 +55,7 @@ def api_context():
         yield client, store, db
 
     app.dependency_overrides.clear()
+    trace_store.clear()
 
 
 def _use_orchestrator(orchestrator: AgentOrchestrator) -> None:
@@ -347,3 +355,125 @@ def test_cancellation_does_not_execute_protected_action(api_context) -> None:
     assert state.active_intent is None
     assert state.active_card_id is None
     executor.execute.assert_not_awaited()
+
+
+def test_observability_rejects_unknown_session(api_context) -> None:
+    client, _, _ = api_context
+
+    response = client.get("/sessions/does-not-exist/observability")
+
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Session not found"}
+
+
+def test_observability_is_empty_before_first_turn(api_context) -> None:
+    client, store, _ = api_context
+    state = store.create()
+
+    response = client.get(
+        f"/sessions/{state.session_id}/observability"
+    )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "session": None,
+        "turns": [],
+    }
+
+
+def test_observability_returns_safe_live_turn_summary(api_context) -> None:
+    client, store, _ = api_context
+    state = store.create()
+    _use_orchestrator(
+        AgentOrchestrator(
+            llm=SequenceLLM([_direct_response("Hello.")]),
+            resource_resolver=NoopResourceResolver(),
+        )
+    )
+
+    secret_user_text = "private-reviewer-text-should-not-appear"
+    message_response = client.post(
+        f"/sessions/{state.session_id}/messages",
+        json={"message": secret_user_text},
+        headers={
+            "X-SentinelVoice-Trace-ID": "trace_1234567890123456",
+            "X-SentinelVoice-Turn-ID": "turn_12345678901234567",
+        },
+    )
+
+    assert message_response.status_code == 200
+
+    response = client.get(
+        f"/sessions/{state.session_id}/observability"
+    )
+
+    assert response.status_code == 200
+
+    payload = response.json()
+    assert payload["session"]["session_id"] == state.session_id
+    assert payload["session"]["turn_count"] == 1
+    assert len(payload["turns"]) == 1
+
+    turn = payload["turns"][0]
+    assert turn["trace_id"] == "trace_1234567890123456"
+    assert turn["turn_id"] == "turn_12345678901234567"
+    assert turn["status"] == "completed"
+    assert turn["outcome"] == "RESPONDED"
+    assert turn["tool_calls"] == []
+    assert turn["retrieval_count"] == 0
+    assert turn["policy_sources"] == []
+    assert turn["latency_ms"]["agent.turn"] >= 0
+    assert turn["errors"] == []
+
+    assert "metadata" not in turn
+    assert secret_user_text not in response.text
+
+
+def test_observability_preserves_turn_order_without_cross_session_leakage(
+    api_context,
+) -> None:
+    client, store, _ = api_context
+    requested_session = store.create()
+    other_session = store.create()
+    trace_store = get_runtime_trace_sink()
+
+    for index in (1, 2):
+        trace_store.emit(
+            TraceEvent(
+                event_name="agent.turn.completed",
+                trace_id=f"trace_123456789012345{index}",
+                session_id=requested_session.session_id,
+                turn_id=f"turn_1234567890123456{index}",
+                component="api",
+                status=TraceStatus.COMPLETED,
+                duration_ms=float(index),
+                metadata={"turn_status": "RESPONDED"},
+            )
+        )
+
+    leaked_trace_id = "trace_cross_session_123456"
+    trace_store.emit(
+        TraceEvent(
+            event_name="agent.turn.completed",
+            trace_id=leaked_trace_id,
+            session_id=other_session.session_id,
+            turn_id="turn_cross_session_1234567",
+            component="api",
+            status=TraceStatus.COMPLETED,
+            duration_ms=3,
+            metadata={"turn_status": "RESPONDED"},
+        )
+    )
+
+    response = client.get(
+        f"/sessions/{requested_session.session_id}/observability"
+    )
+
+    assert response.status_code == 200
+    assert [
+        turn["turn_id"] for turn in response.json()["turns"]
+    ] == [
+        "turn_12345678901234561",
+        "turn_12345678901234562",
+    ]
+    assert leaked_trace_id not in response.text

@@ -1,8 +1,10 @@
 import logging
 import time
+from collections import deque
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from contextvars import ContextVar, Token
+from threading import Lock
 from typing import Any, Protocol, Self
 
 from backend.app.observability.context import current_trace_context
@@ -30,7 +32,53 @@ class InMemoryTraceSink:
         self.events.append(event)
 
 
-_default_sink = LoggingTraceSink()
+class BoundedInMemoryTraceSink:
+    """Thread-safe, process-local buffer for the reviewer trace surface."""
+
+    def __init__(self, *, max_events: int = 10_000) -> None:
+        if max_events <= 0:
+            raise ValueError("max_events must be positive")
+
+        self._events: deque[TraceEvent] = deque(maxlen=max_events)
+        self._lock = Lock()
+
+    def emit(self, event: TraceEvent) -> None:
+        with self._lock:
+            self._events.append(event)
+
+    def events_for_session(self, session_id: str) -> list[TraceEvent]:
+        with self._lock:
+            return [
+                event
+                for event in self._events
+                if event.session_id == session_id
+            ]
+
+    def clear(self) -> None:
+        with self._lock:
+            self._events.clear()
+
+
+class CompositeTraceSink:
+    def __init__(self, *sinks: TraceSink) -> None:
+        if not sinks:
+            raise ValueError("at least one trace sink is required")
+        self._sinks = sinks
+
+    def emit(self, event: TraceEvent) -> None:
+        for sink in self._sinks:
+            sink.emit(event)
+
+
+_runtime_trace_sink = BoundedInMemoryTraceSink()
+_default_sink = CompositeTraceSink(
+    LoggingTraceSink(),
+    _runtime_trace_sink,
+)
+
+
+def get_runtime_trace_sink() -> BoundedInMemoryTraceSink:
+    return _runtime_trace_sink
 _trace_sink: ContextVar[TraceSink] = ContextVar(
     "sentinelvoice_trace_sink",
     default=_default_sink,

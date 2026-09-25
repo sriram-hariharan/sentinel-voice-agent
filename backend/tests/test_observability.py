@@ -22,6 +22,7 @@ from backend.app.observability.metrics import (
 )
 from backend.app.observability.summaries import summarize_turn
 from backend.app.observability.tracing import (
+    BoundedInMemoryTraceSink,
     InMemoryTraceSink,
     LoggingTraceSink,
     trace_span,
@@ -372,3 +373,24 @@ def test_trace_event_rejects_naive_timestamp() -> None:
             component="agent",
             status=TraceStatus.STARTED,
         )
+
+
+def test_bounded_trace_sink_evicts_oldest_events() -> None:
+    sink = BoundedInMemoryTraceSink(max_events=2)
+
+    common = {
+        "trace_id": "trace_1234567890123456",
+        "session_id": "session-1",
+        "turn_id": "turn_12345678901234567",
+        "component": "test",
+        "status": TraceStatus.COMPLETED,
+    }
+
+    sink.emit(TraceEvent(**common, event_name="test.first"))
+    sink.emit(TraceEvent(**common, event_name="test.second"))
+    sink.emit(TraceEvent(**common, event_name="test.third"))
+
+    assert [
+        event.event_name
+        for event in sink.events_for_session("session-1")
+    ] == ["test.second", "test.third"]

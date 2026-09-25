@@ -37,8 +37,19 @@ from backend.app.observability.context import (
     build_trace_context,
     trace_scope,
 )
-from backend.app.observability.events import TraceStatus
-from backend.app.observability.tracing import emit_trace_event, trace_span
+from backend.app.observability.events import TraceEvent, TraceStatus
+from backend.app.observability.summaries import (
+    SessionTraceSummary,
+    TurnTraceSummary,
+    summarize_session,
+    summarize_turn,
+)
+from backend.app.observability.tracing import (
+    BoundedInMemoryTraceSink,
+    emit_trace_event,
+    get_runtime_trace_sink,
+    trace_span,
+)
 from backend.app.providers.groq_llm import LLMProviderError
 from backend.app.voice.tokens import (
     VoiceConfigurationError,
@@ -63,6 +74,10 @@ SettingsDep = Annotated[
 AgentOrchestratorDep = Annotated[
     AgentOrchestrator,
     Depends(get_agent_orchestrator),
+]
+TraceStoreDep = Annotated[
+    BoundedInMemoryTraceSink,
+    Depends(get_runtime_trace_sink),
 ]
 
 
@@ -138,6 +153,11 @@ class MessageRequest(BaseModel):
     )
 
 
+class SessionObservabilityResponse(BaseModel):
+    session: SessionTraceSummary | None = None
+    turns: list[TurnTraceSummary] = Field(default_factory=list)
+
+
 class MessageResponse(BaseModel):
     session_id: str
     trace_id: str
@@ -205,6 +225,43 @@ async def get_session(
         ) from exc
 
     return _session_response(state)
+
+
+@router.get(
+    "/{session_id}/observability",
+    response_model=SessionObservabilityResponse,
+)
+async def get_session_observability(
+    session_id: str,
+    store: SessionStoreDep,
+    trace_store: TraceStoreDep,
+) -> SessionObservabilityResponse:
+    try:
+        store.get(session_id)
+    except SessionNotFoundError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Session not found",
+        ) from exc
+
+    events = trace_store.events_for_session(session_id)
+    if not events:
+        return SessionObservabilityResponse()
+
+    grouped: dict[tuple[str, str], list[TraceEvent]] = {}
+    for event in events:
+        key = (event.trace_id, event.turn_id)
+        grouped.setdefault(key, []).append(event)
+
+    turns = [
+        summarize_turn(turn_events)
+        for turn_events in grouped.values()
+    ]
+
+    return SessionObservabilityResponse(
+        session=summarize_session(events),
+        turns=turns,
+    )
 
 
 @router.post(

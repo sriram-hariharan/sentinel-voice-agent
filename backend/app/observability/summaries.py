@@ -15,8 +15,10 @@ class TurnTraceSummary(BaseModel):
     trace_id: str
     turn_id: str
     status: str
+    outcome: str | None = None
     tool_calls: list[str] = Field(default_factory=list)
     retrieval_count: int = 0
+    policy_sources: list[str] = Field(default_factory=list)
     latency_ms: dict[str, float] = Field(default_factory=dict)
     usage: list[UsageRecord] = Field(default_factory=list)
     estimated_cost_usd: Decimal | None = None
@@ -103,11 +105,16 @@ def summarize_turn(events: list[TraceEvent]) -> TurnTraceSummary:
         None,
     )
     retrieval_count = 0
+    policy_sources: list[str] = []
     for event in events:
         if event.event_name == "rag.retrieval.completed":
             retrieval_count = int(
                 event.metadata.get("retrieval_result_count", 0)
             )
+            for source in event.metadata.get("policy_source_slugs", []):
+                source_name = str(source)
+                if source_name not in policy_sources:
+                    policy_sources.append(source_name)
     latency_ms: dict[str, float] = {}
     for event in events:
         if (
@@ -130,12 +137,19 @@ def summarize_turn(events: list[TraceEvent]) -> TurnTraceSummary:
         trace_id=next(iter(trace_ids)),
         turn_id=next(iter(turn_ids)),
         status=status,
+        outcome=(
+            str(agent_terminal.metadata.get("turn_status"))
+            if agent_terminal is not None
+            and agent_terminal.metadata.get("turn_status") is not None
+            else None
+        ),
         tool_calls=[
             str(event.metadata.get("tool_name"))
             for event in events
             if event.event_name == "tool.execution.completed"
         ],
         retrieval_count=retrieval_count,
+        policy_sources=policy_sources,
         latency_ms=latency_ms,
         usage=usage,
         estimated_cost_usd=estimate.estimated_usd,

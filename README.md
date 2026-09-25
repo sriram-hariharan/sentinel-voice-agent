@@ -2,7 +2,7 @@
 
 ## Production-Style AI Voice Customer Support Agent for a Synthetic Digital Bank
 
-**Project status:** Core V1 product and AI features complete; final release hardening in progress. CI and bounded demo limits are implemented.
+**Project status:** Core V1 product and AI features complete; final release hardening in progress. CI, bounded demo limits, and the local reviewer Trace & Metrics inspector are implemented.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -44,10 +44,14 @@ status from FastAPI as soon as the assistant transcript arrives; LiveKit's
 agent state independently reports Processing, Speaking, and Listening for the
 media lifecycle.
 
-The browser UI is a viewport-bounded test console: the sidebar and transcript
-scroll independently, the composer stays compact, and **New Session** ends any
-active voice room, clears presentation state, creates a new unauthenticated
-backend session, and requires sign-in again.
+The browser UI is a viewport-bounded test console with a compact brand header,
+one horizontal authentication/session/voice control strip, and a two-column
+desktop workspace. Only the conversation transcript deliberately scrolls on
+desktop; the composer stays fixed and the compact right-side Trace & Metrics
+inspector fits in the viewport. **New Session** ends any active voice room,
+clears presentation state, creates a new unauthenticated backend session, and
+requires sign-in again. Below desktop width the controls and inspector stack
+into the normal document flow.
 
 ### Local voice setup
 
@@ -957,9 +961,10 @@ It is an optional optimization after the core system works.
 ## 8.10 Evaluation and Observability Layer
 
 Step 15 implements one application-native trace model shared by live runtime
-paths and the deterministic offline evaluator. It intentionally does not add a
-hosted telemetry product, a dashboard, another database, or an OpenTelemetry
-deployment.
+paths and the deterministic offline evaluator. It does not require a hosted
+telemetry vendor, another database, or an OpenTelemetry deployment. The V1
+browser includes a minimal local Trace & Metrics reviewer inspector backed by
+the same application-native trace model.
 
 Every meaningful turn has three correlation fields:
 
@@ -983,7 +988,9 @@ authentication authority.
   timestamp, correlation IDs, component, status, optional duration, safe error
   category, and centrally redacted metadata.
 - `LoggingTraceSink` emits one JSON object per runtime log record;
-  `InMemoryTraceSink` gives tests and evaluation the identical event model.
+  `InMemoryTraceSink` gives tests and evaluation the identical event model;
+  and a composite runtime sink also retains a hard-bounded, thread-safe event
+  window for the local reviewer inspector.
 - `trace_span` emits paired `.started` and `.completed`/`.failed` events and
   measures duration with a monotonic clock.
 - deterministic nearest-rank summaries report count, min, max, mean, P50,
@@ -1010,6 +1017,22 @@ account/card-like numbers, internal resource UUIDs, and customer identifiers.
 Runtime events record safe metadata such as tool name, permission and decision,
 source slugs, counts, model, usage, and duration. Raw utterances, full prompts,
 policy bodies, and complete customer records are not trace metadata.
+
+`GET /sessions/{session_id}/observability` reads only the bounded FastAPI
+process buffer and returns typed session and turn summaries. It never exposes
+raw `TraceEvent` metadata, transcripts, prompts, tool payloads, customer IDs,
+or account/card/transaction identifiers. The React inspector refreshes this
+deterministic endpoint after completed application turns and on explicit
+reviewer request; it does not trigger another model call.
+
+This low-cost V1 buffer is intentionally process-local and ephemeral. It resets
+when FastAPI restarts and is not shared across multiple FastAPI instances.
+LiveKit worker-local STT/TTS events are still written to structured logs but are
+not centrally aggregated into this browser panel; FastAPI-visible agent,
+retrieval, tool, and interruption events can be summarized here. The
+`TraceSink` abstraction keeps a future move to Langfuse, OpenTelemetry/Jaeger,
+a Grafana-backed pipeline, PostgreSQL, or Redis reversible without changing
+core agent, tool, or RAG behavior.
 
 Provider usage is normalized only from quantities already available at the
 boundary: LLM input/output/total tokens, STT input audio duration and request
@@ -1093,8 +1116,8 @@ now occurs deterministically after two consecutive backend failures, but there
 is no general retry engine; the offline synthetic handlers do not validate
 PostgreSQL query behavior (the banking-tool test suite covers those handlers
 separately); no default LLM judge grades subjective response quality; and
-traces currently go to logs or memory rather than a production telemetry
-backend.
+traces go to structured logs plus an ephemeral FastAPI reviewer buffer rather
+than a persistent, distributed production telemetry backend.
 
 This layer is not optional.
 
@@ -2265,7 +2288,8 @@ Telephony adds cost and infrastructure more than AI depth.
 
 # 37. Frontend Experience
 
-Suggested primary screen:
+The implemented primary screen retains the banking conversation as its main
+surface:
 
 ```text
 SentinelVoice
@@ -2291,13 +2315,15 @@ Latency:
 [ End Session ]
 ```
 
-Optional side panel:
+The desktop experience also includes a reviewer side panel:
 
 ```text
-Tools
-Sources
-Trace
-Safety state
+Trace and turn IDs
+Tool calls
+Retrieval count and policy sources
+Per-stage latency
+Safe error categories
+Estimated cost
 ```
 
 ### Why expose agent state
@@ -2310,7 +2336,21 @@ Showing state lets a technical reviewer understand what the system is doing.
 
 # 38. Demo Dashboard
 
-Useful summary cards:
+The V1 demo dashboard is intentionally a session-scoped Trace & Metrics
+inspector rather than a generic analytics product. It occupies a fixed desktop
+column beside the dominant conversation surface and does not introduce a
+second desktop scrollbar. Its compact KPI cards show
+turn count, estimated session cost, latest agent-turn latency, and latest turn
+status. The latest-turn drill-down shows trace correlation, tools, retrieval,
+policy source identifiers, recorded latency stages, and safe error categories.
+An empty session presents a quiet no-traces state rather than a wall of zeroes.
+
+This local reviewer surface is sufficient for the single-instance portfolio
+demo. Aggregate evaluation metrics remain available from the versioned offline
+evaluation report; a hosted or persistent dashboard remains a future upgrade
+only when deployment evidence justifies its infrastructure and operating cost.
+
+Broader aggregate dashboards may later include:
 
 ```text
 Task completion rate
@@ -2322,17 +2362,13 @@ Safety violations
 Average cost / session
 ```
 
-Session drill-down:
+The implemented session drill-down focuses on:
 
 ```text
-timeline
-transcript
 tool calls
-retrieved documents
-authentication state
-confirmation state
+retrieval count and policy source identifiers
 errors
-latency
+per-stage latency
 estimated cost
 final outcome
 ```
@@ -2375,6 +2411,10 @@ voice.backend_turn.started / completed / failed
 voice.interruption.detected / completed
 escalation.created
 ```
+
+The browser inspector consumes the safe session/turn summary endpoint only.
+The footer labels its boundary as a FastAPI-process demo trace so it does not
+imply that worker-local STT/TTS events are centrally aggregated.
 
 ### Why event-level tracing
 

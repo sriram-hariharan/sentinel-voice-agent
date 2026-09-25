@@ -1,7 +1,7 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, status
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, model_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -29,6 +29,14 @@ from backend.app.conversation.state import (
     VoicePlaybackStatus,
 )
 from backend.app.db.session import get_db_session
+from backend.app.observability.context import (
+    TRACE_ID_HEADER,
+    TURN_ID_HEADER,
+    build_trace_context,
+    trace_scope,
+)
+from backend.app.observability.events import TraceStatus
+from backend.app.observability.tracing import emit_trace_event, trace_span
 from backend.app.providers.groq_llm import LLMProviderError
 from backend.app.voice.tokens import (
     VoiceConfigurationError,
@@ -130,6 +138,8 @@ class MessageRequest(BaseModel):
 
 class MessageResponse(BaseModel):
     session_id: str
+    trace_id: str
+    turn_id: str
     message: str
     turn_status: AgentTurnStatus
     conversation_phase: ConversationPhase
@@ -197,6 +207,8 @@ async def record_voice_playback(
     session_id: str,
     request: VoicePlaybackRequest,
     store: SessionStoreDep,
+    trace_id: Annotated[str | None, Header(alias=TRACE_ID_HEADER)] = None,
+    turn_id: Annotated[str | None, Header(alias=TURN_ID_HEADER)] = None,
 ) -> SessionResponse:
     try:
         state = store.get(session_id)
@@ -206,16 +218,41 @@ async def record_voice_playback(
             detail="Session not found",
         ) from exc
 
-    state.record_voice_playback(
-        speech_id=request.speech_id,
-        voice_turn_id=request.voice_turn_id,
-        sequence=request.sequence,
-        status=request.status,
-        interruption_stop_latency_ms=(
-            request.interruption_stop_latency_ms
-        ),
-        response_phase=request.response_phase,
-    )
+    try:
+        correlation = build_trace_context(
+            session_id=session_id,
+            trace_id=trace_id,
+            turn_id=turn_id,
+        )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid trace correlation header",
+        ) from exc
+
+    with trace_scope(
+        session_id=session_id,
+        trace_id=correlation.trace_id,
+        turn_id=correlation.turn_id,
+    ):
+        state.record_voice_playback(
+            speech_id=request.speech_id,
+            voice_turn_id=request.voice_turn_id,
+            sequence=request.sequence,
+            status=request.status,
+            interruption_stop_latency_ms=(
+                request.interruption_stop_latency_ms
+            ),
+            response_phase=request.response_phase,
+        )
+        if request.status == VoicePlaybackStatus.INTERRUPTED:
+            emit_trace_event(
+                "voice.interruption.completed",
+                component="api",
+                status=TraceStatus.COMPLETED,
+                duration_ms=request.interruption_stop_latency_ms,
+                metadata={"speech_id": request.speech_id},
+            )
     return _session_response(state)
 
 
@@ -327,6 +364,8 @@ async def create_message(
     store: SessionStoreDep,
     db: DbSessionDep,
     orchestrator: AgentOrchestratorDep,
+    trace_id: Annotated[str | None, Header(alias=TRACE_ID_HEADER)] = None,
+    turn_id: Annotated[str | None, Header(alias=TURN_ID_HEADER)] = None,
 ) -> MessageResponse:
     try:
         state = store.get(session_id)
@@ -337,11 +376,40 @@ async def create_message(
         ) from exc
 
     try:
-        result = await orchestrator.handle_text_turn(
-            user_text=request.message,
-            state=state,
-            db=db,
+        correlation = build_trace_context(
+            session_id=session_id,
+            trace_id=trace_id,
+            turn_id=turn_id,
         )
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid trace correlation header",
+        ) from exc
+
+    try:
+        with trace_scope(
+            session_id=session_id,
+            trace_id=correlation.trace_id,
+            turn_id=correlation.turn_id,
+        ), trace_span(
+            "agent.turn",
+            component="api",
+            metadata={
+                "authenticated": state.authenticated,
+                "input_character_count": len(request.message),
+            },
+        ) as span:
+            result = await orchestrator.handle_text_turn(
+                user_text=request.message,
+                state=state,
+                db=db,
+            )
+            span.set_metadata(
+                turn_status=result.status.value,
+                executed_tools=result.executed_tools,
+                policy_source_count=len(result.policy_sources),
+            )
     except LLMProviderError as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
@@ -356,6 +424,8 @@ async def create_message(
     state.last_turn_status = result.status
     return MessageResponse(
         session_id=state.session_id,
+        trace_id=correlation.trace_id,
+        turn_id=correlation.turn_id,
         message=result.text,
         turn_status=result.status,
         conversation_phase=state.phase,

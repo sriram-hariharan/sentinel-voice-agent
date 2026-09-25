@@ -5,6 +5,8 @@ from typing import Any
 from pydantic import BaseModel, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from backend.app.observability.events import TraceStatus
+from backend.app.observability.tracing import emit_trace_event, trace_span
 from backend.app.tools.errors import (
     ToolAuthenticationError,
     ToolConfirmationError,
@@ -44,6 +46,18 @@ class ToolExecutor:
                 or context.customer_id is None
             )
         ):
+            emit_trace_event(
+                "authorization.checked",
+                component="tools",
+                status=TraceStatus.FAILED,
+                error_category="authorization_denied",
+                metadata={
+                    "tool_name": tool_name,
+                    "permission_level": definition.permission_level.value,
+                    "authorization_decision": "denied",
+                    "reason": "authentication_required",
+                },
+            )
             raise ToolAuthenticationError(
                 f"{tool_name} requires an authenticated customer session"
             )
@@ -56,24 +70,56 @@ class ToolExecutor:
                 or not confirmation.confirmed
                 or confirmation.action != tool_name
             ):
+                emit_trace_event(
+                    "authorization.checked",
+                    component="tools",
+                    status=TraceStatus.FAILED,
+                    error_category="authorization_denied",
+                    metadata={
+                        "tool_name": tool_name,
+                        "permission_level": definition.permission_level.value,
+                        "authorization_decision": "denied",
+                        "reason": "confirmation_required",
+                    },
+                )
                 raise ToolConfirmationError(
                     f"{tool_name} requires explicit confirmation"
                 )
 
-        try:
-            request = registered.input_model.model_validate(arguments)
-        except ValidationError as exc:
-            raise ToolValidationError(
-                f"Invalid arguments for {tool_name}"
-            ) from exc
+        emit_trace_event(
+            "authorization.checked",
+            component="tools",
+            status=TraceStatus.COMPLETED,
+            metadata={
+                "tool_name": tool_name,
+                "permission_level": definition.permission_level.value,
+                "authorization_decision": "allowed",
+                "confirmation_present": context.confirmation is not None,
+            },
+        )
 
         try:
-            async with asyncio.timeout(definition.timeout_seconds):
-                return await registered.handler(
-                    request,
-                    context,
-                    session,
-                )
+            async with trace_span(
+                "tool.execution",
+                component="tools",
+                metadata={
+                    "tool_name": tool_name,
+                    "permission_level": definition.permission_level.value,
+                    "arguments": arguments,
+                },
+            ):
+                try:
+                    request = registered.input_model.model_validate(arguments)
+                except ValidationError as exc:
+                    raise ToolValidationError(
+                        f"Invalid arguments for {tool_name}"
+                    ) from exc
+                async with asyncio.timeout(definition.timeout_seconds):
+                    return await registered.handler(
+                        request,
+                        context,
+                        session,
+                    )
         except TimeoutError as exc:
             raise ToolTimeoutError(
                 f"{tool_name} exceeded its "

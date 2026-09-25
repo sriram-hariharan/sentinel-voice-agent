@@ -15,6 +15,8 @@ from backend.app.conversation.state import (
     ConversationState,
     ResourceType,
 )
+from backend.app.observability.events import TraceStatus
+from backend.app.observability.tracing import emit_trace_event, trace_span
 from backend.app.providers.llm import (
     LLMProvider,
     LLMResponse,
@@ -40,6 +42,10 @@ class AgentTurnStatus(StrEnum):
 
 class AgentOrchestrationError(RuntimeError):
     """Raised when the agent cannot safely continue orchestration."""
+
+
+class MalformedModelOutputError(AgentOrchestrationError):
+    """Raised when the model response violates the orchestration contract."""
 
 
 class AgentTurnResult(BaseModel):
@@ -339,6 +345,12 @@ class AgentOrchestrator:
             decision = _classify_confirmation(user_text)
 
             if decision == ConfirmationDecision.CONFIRM:
+                emit_trace_event(
+                    "confirmation.accepted",
+                    component="agent",
+                    status=TraceStatus.COMPLETED,
+                    metadata={"tool_name": pending.action},
+                )
                 return await self._execute_confirmed_action(
                     user_text=user_text,
                     state=state,
@@ -346,6 +358,12 @@ class AgentOrchestrator:
                 )
 
             state.cancel_pending_action()
+            emit_trace_event(
+                "confirmation.cancelled",
+                component="agent",
+                status=TraceStatus.COMPLETED,
+                metadata={"tool_name": pending.action},
+            )
 
             if decision == ConfirmationDecision.CANCEL:
                 _clear_action_context(state, pending.action)
@@ -454,11 +472,33 @@ class AgentOrchestrator:
         db: AsyncSession,
     ) -> AgentTurnResult:
         evidence: list[RetrievedPolicyChunk] = []
-        if self._policy_retriever is not None:
-            evidence = await self._policy_retriever.retrieve(
-                query=user_text,
-                search=PostgresPolicySearch(db),
-                top_k=self._policy_top_k,
+        try:
+            async with trace_span(
+                "rag.retrieval",
+                component="rag",
+                metadata={"top_k": self._policy_top_k},
+            ) as span:
+                if self._policy_retriever is not None:
+                    evidence = await self._policy_retriever.retrieve(
+                        query=user_text,
+                        search=PostgresPolicySearch(db),
+                        top_k=self._policy_top_k,
+                    )
+                span.set_metadata(
+                    retrieval_result_count=len(evidence),
+                    policy_source_slugs=[
+                        result.chunk.policy_id for result in evidence
+                    ],
+                )
+        except Exception:  # noqa: BLE001 - retrieval failures fail closed
+            state.phase = ConversationPhase.AGENT_SPEAKING
+            return AgentTurnResult(
+                text=(
+                    "I couldn’t retrieve current SentinelVoice policy "
+                    "evidence safely. Please try again or ask me to connect "
+                    "you to human support."
+                ),
+                status=AgentTurnStatus.TOOL_ERROR,
             )
 
         if not evidence:
@@ -509,6 +549,37 @@ class AgentOrchestrator:
             )
 
         return allowed
+
+    async def _generate_llm(
+        self,
+        *,
+        messages: list[dict[str, Any]],
+        tools: list[dict[str, Any]] | None,
+    ) -> LLMResponse:
+        provider = getattr(self._llm, "provider", "unknown")
+        configured_model = getattr(self._llm, "model", "unknown")
+        async with trace_span(
+            "llm.request",
+            component="llm",
+            metadata={
+                "provider": provider,
+                "model": configured_model,
+                "tool_schema_count": len(tools or []),
+            },
+        ) as span:
+            response = await self._llm.generate(
+                messages=messages,
+                tools=tools,
+            )
+            span.set_metadata(
+                model=response.model,
+                finish_reason=response.finish_reason,
+                prompt_tokens=response.usage.prompt_tokens,
+                completion_tokens=response.usage.completion_tokens,
+                total_tokens=response.usage.total_tokens,
+                tool_call_count=len(response.tool_calls),
+            )
+            return response
 
     def _build_messages(
         self,
@@ -624,7 +695,7 @@ class AgentOrchestrator:
                 response = initial_response
                 initial_response = None
             else:
-                response = await self._llm.generate(
+                response = await self._generate_llm(
                     messages=messages,
                     tools=tool_schemas,
                 )
@@ -637,7 +708,7 @@ class AgentOrchestrator:
             if not response.tool_calls:
                 if not response.content.strip():
                     state.phase = ConversationPhase.FAILED
-                    raise AgentOrchestrationError(
+                    raise MalformedModelOutputError(
                         "LLM returned neither text nor a tool call"
                     )
 
@@ -662,7 +733,7 @@ class AgentOrchestrator:
 
             if len(response.tool_calls) != 1:
                 state.phase = ConversationPhase.FAILED
-                raise AgentOrchestrationError(
+                raise MalformedModelOutputError(
                     "Only one tool call per model response is supported"
                 )
 
@@ -674,6 +745,14 @@ class AgentOrchestrator:
 
             tool_calls_used += 1
             tool_call = response.tool_calls[0]
+            emit_trace_event(
+                "tool.requested",
+                component="agent",
+                metadata={
+                    "tool_name": tool_call.name,
+                    "arguments": tool_call.arguments,
+                },
+            )
 
             registered = TOOL_REGISTRY.get(tool_call.name)
 
@@ -681,6 +760,22 @@ class AgentOrchestrator:
                 registered is None
                 or tool_call.name not in effective_allowed_tools
             ):
+                emit_trace_event(
+                    "authorization.checked",
+                    component="agent",
+                    status=TraceStatus.FAILED,
+                    error_category="authorization_denied",
+                    metadata={
+                        "tool_name": tool_call.name,
+                        "permission_level": (
+                            registered.definition.permission_level.value
+                            if registered is not None
+                            else "unknown"
+                        ),
+                        "authorization_decision": "denied",
+                        "reason": "tool_not_allowed",
+                    },
+                )
                 messages.extend(
                     [
                         _tool_call_message(
@@ -733,6 +828,13 @@ class AgentOrchestrator:
                     )
                 )
             except ValidationError:
+                emit_trace_event(
+                    "tool.validation.failed",
+                    component="agent",
+                    status=TraceStatus.FAILED,
+                    error_category="validation_error",
+                    metadata={"tool_name": tool_call.name},
+                )
                 messages.extend(
                     [
                         _tool_call_message(
@@ -785,6 +887,12 @@ class AgentOrchestrator:
                     arguments=normalized_arguments,
                     confirmation_required=True,
                 )
+                emit_trace_event(
+                    "confirmation.requested",
+                    component="agent",
+                    status=TraceStatus.COMPLETED,
+                    metadata={"tool_name": tool_call.name},
+                )
 
                 return AgentTurnResult(
                     text=_confirmation_prompt(tool_call.name),
@@ -831,6 +939,12 @@ class AgentOrchestrator:
 
             if tool_call.name == "escalate_to_human":
                 state.mark_escalated()
+                emit_trace_event(
+                    "escalation.created",
+                    component="agent",
+                    status=TraceStatus.COMPLETED,
+                    metadata={"tool_name": tool_call.name},
+                )
             else:
                 state.phase = ConversationPhase.PROCESSING
 
@@ -936,7 +1050,7 @@ class AgentOrchestrator:
             ]
         )
 
-        final_response = await self._llm.generate(
+        final_response = await self._generate_llm(
             messages=messages,
             tools=None,
         )
@@ -946,7 +1060,7 @@ class AgentOrchestrator:
             or not final_response.content.strip()
         ):
             state.phase = ConversationPhase.FAILED
-            raise AgentOrchestrationError(
+            raise MalformedModelOutputError(
                 "LLM did not return a final response "
                 "after protected action execution"
             )

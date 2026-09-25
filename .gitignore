@@ -20,5 +20,8 @@ __pycache__/
 # Logs
 *.log
 
+# Generated evaluation reports
+evaluation-reports/
+
 # Python package metadata
 *.egg-info/

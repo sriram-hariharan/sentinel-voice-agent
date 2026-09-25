@@ -5,7 +5,7 @@ import os
 import time
 from collections import deque
 from collections.abc import AsyncIterable, Awaitable, Callable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 from livekit import agents, rtc
@@ -23,6 +23,16 @@ from livekit.agents.voice.room_io import RoomOptions, TextOutputOptions
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from backend.app.config.settings import Settings, get_settings
+from backend.app.observability.context import (
+    TraceContext,
+    VoiceCorrelationQueue,
+    build_trace_context,
+    new_correlation_id,
+    trace_scope,
+)
+from backend.app.observability.events import TraceStatus
+from backend.app.observability.logging import configure_runtime_logging
+from backend.app.observability.tracing import emit_trace_event
 from backend.app.providers.groq_speech import (
     GroqSpeechToTextProvider,
     GroqTextToSpeechProvider,
@@ -31,6 +41,7 @@ from backend.app.voice.adapters import GroqSTTAdapter, GroqTTSAdapter
 from backend.app.voice.bridge import VoiceBridge, VoiceBridgeError
 
 logger = logging.getLogger(__name__)
+configure_runtime_logging()
 
 VOICE_BACKEND_ERROR_MESSAGE = (
     "Voice session error: I couldn’t complete that request. "
@@ -45,9 +56,9 @@ VOICE_TURN_HANDLING = {
     "interruption": {
         "enabled": True,
         "mode": "vad",
-        "min_duration": 0.35,
-        "min_words": 0,
-        "resume_false_interruption": False,
+        "min_duration": 0.50,
+        "min_words": 1,
+        "resume_false_interruption": True,
     }
 }
 
@@ -67,6 +78,7 @@ class _TrackedSpeech:
     handle: Any
     turn_id: str
     sequence: int
+    trace_id: str = field(default_factory=new_correlation_id)
 
 
 def parse_voice_session_metadata(raw_metadata: str) -> VoiceSessionMetadata:
@@ -100,6 +112,7 @@ class SentinelVoiceAgent(Agent):
         session_id: str,
         publish_event: Callable[[dict[str, Any]], Awaitable[None]] | None = None,
         clock: Callable[[], float] = time.perf_counter,
+        correlation_queue: VoiceCorrelationQueue | None = None,
     ) -> None:
         super().__init__(
             instructions=(
@@ -112,6 +125,8 @@ class SentinelVoiceAgent(Agent):
         self._session_id = session_id
         self._publish_event = publish_event
         self._clock = clock
+        self._correlation_queue = correlation_queue or VoiceCorrelationQueue()
+        self._tts_correlations: deque[TraceContext] = deque()
         self._processed_turn_ids: set[str] = set()
         self._processed_turn_order: deque[str] = deque()
         # A wall-clock seed keeps ordering monotonic when a browser reconnects
@@ -179,6 +194,20 @@ class SentinelVoiceAgent(Agent):
         self._interruption_candidate_id = unfinished[0].handle.id
         self._interruption_started_at = self._clock()
         self._interruption_cutoff = unfinished[-1].sequence
+        interrupted = unfinished[0]
+        with trace_scope(
+            session_id=self._session_id,
+            trace_id=interrupted.trace_id,
+            turn_id=interrupted.turn_id,
+        ):
+            emit_trace_event(
+                "voice.interruption.detected",
+                component="voice_worker",
+                metadata={
+                    "speech_id": self._interruption_candidate_id,
+                    "queued_speech_count": len(unfinished),
+                },
+            )
         logger.info(
             "voice interruption detected",
             extra={
@@ -210,6 +239,7 @@ class SentinelVoiceAgent(Agent):
         status: str,
         interruption_stop_latency_ms: float | None = None,
         response_phase: str | None = None,
+        trace_id: str | None = None,
     ) -> None:
         try:
             await self._bridge.report_playback(
@@ -220,6 +250,8 @@ class SentinelVoiceAgent(Agent):
                 status=status,
                 interruption_stop_latency_ms=interruption_stop_latency_ms,
                 response_phase=response_phase,
+                trace_id=trace_id,
+                turn_id=turn_id,
             )
         except VoiceBridgeError:
             # Text turns remain available even if this observability/state
@@ -241,6 +273,7 @@ class SentinelVoiceAgent(Agent):
         turn_id: str,
         sequence: int,
         latency_ms: float,
+        trace_id: str,
     ) -> None:
         await self._report_playback(
             speech_id=speech_id,
@@ -248,6 +281,7 @@ class SentinelVoiceAgent(Agent):
             sequence=sequence,
             status="INTERRUPTED",
             interruption_stop_latency_ms=latency_ms,
+            trace_id=trace_id,
         )
         if self._publish_event is not None:
             try:
@@ -315,6 +349,11 @@ class SentinelVoiceAgent(Agent):
                         turn_id=turn_id,
                         sequence=(tracked.sequence if tracked else 1),
                         latency_ms=latency_ms,
+                        trace_id=(
+                            tracked.trace_id
+                            if tracked
+                            else new_correlation_id()
+                        ),
                     )
                 )
                 self._interruption_candidate_id = None
@@ -357,6 +396,7 @@ class SentinelVoiceAgent(Agent):
                 turn_id=turn_id,
                 sequence=(tracked.sequence if tracked else 1),
                 status="COMPLETED",
+                trace_id=(tracked.trace_id if tracked else None),
             )
         )
         if speech_id == self._interruption_candidate_id:
@@ -369,29 +409,39 @@ class SentinelVoiceAgent(Agent):
         text: AsyncIterable[str],
         model_settings: ModelSettings,
     ) -> AsyncIterable[rtc.AudioFrame]:
-        logger.info(
-            "tts node entered",
-            extra={"sentinelvoice_session_id": self._session_id},
+        correlation = (
+            self._tts_correlations.popleft()
+            if self._tts_correlations
+            else build_trace_context(session_id=self._session_id)
         )
-        audio = super().tts_node(text, model_settings)
-        if not isinstance(audio, AsyncIterable):
-            audio = await audio
+        with trace_scope(
+            session_id=self._session_id,
+            trace_id=correlation.trace_id,
+            turn_id=correlation.turn_id,
+        ):
+            logger.info(
+                "tts node entered",
+                extra={"sentinelvoice_session_id": self._session_id},
+            )
+            audio = super().tts_node(text, model_settings)
+            if not isinstance(audio, AsyncIterable):
+                audio = await audio
 
-        if audio is None:
-            return
+            if audio is None:
+                return
 
-        frame_count = 0
-        async for frame in audio:
-            frame_count += 1
-            yield frame
+            frame_count = 0
+            async for frame in audio:
+                frame_count += 1
+                yield frame
 
-        logger.info(
-            "tts audio frames yielded",
-            extra={
-                "sentinelvoice_session_id": self._session_id,
-                "audio_frame_count": frame_count,
-            },
-        )
+            logger.info(
+                "tts audio frames yielded",
+                extra={
+                    "sentinelvoice_session_id": self._session_id,
+                    "audio_frame_count": frame_count,
+                },
+            )
 
     async def on_user_turn_completed(
         self,
@@ -418,6 +468,10 @@ class SentinelVoiceAgent(Agent):
             )
             raise StopResponse()
 
+        correlation = self._correlation_queue.consume() or build_trace_context(
+            session_id=self._session_id
+        )
+
         # LiveKit normally interrupts the active handle from VAD before this
         # hook. The finalized-turn fallback also cancels every stale queued
         # response, while the corrected response receives a later sequence.
@@ -439,24 +493,41 @@ class SentinelVoiceAgent(Agent):
             or self._interruption_candidate_id is not None
         )
 
-        logger.info(
-            (
-                "new corrected transcript finalized"
-                if corrects_interruption
-                else "voice transcript finalized"
-            ),
-            extra={
-                "sentinelvoice_session_id": self._session_id,
-                "voice_turn_id": new_message.id,
-                "transcript_length": len(transcript),
-            },
-        )
+        with trace_scope(
+            session_id=self._session_id,
+            trace_id=correlation.trace_id,
+            turn_id=correlation.turn_id,
+        ):
+            emit_trace_event(
+                "voice.transcript.finalized",
+                component="voice_worker",
+                status=TraceStatus.COMPLETED,
+                metadata={
+                    "transcript_length": len(transcript),
+                    "corrects_interruption": corrects_interruption,
+                },
+            )
+            logger.info(
+                (
+                    "new corrected transcript finalized"
+                    if corrects_interruption
+                    else "voice transcript finalized"
+                ),
+                extra={
+                    "sentinelvoice_session_id": self._session_id,
+                    "trace_id": correlation.trace_id,
+                    "turn_id": correlation.turn_id,
+                    "transcript_length": len(transcript),
+                },
+            )
         self._awaiting_corrected_transcript = False
 
         try:
             result = await self._bridge.handle_transcript(
                 session_id=self._session_id,
                 transcript=transcript,
+                trace_id=correlation.trace_id,
+                turn_id=correlation.turn_id,
             )
         except VoiceBridgeError:
             logger.exception(
@@ -482,11 +553,13 @@ class SentinelVoiceAgent(Agent):
             },
         )
         try:
+            self._tts_correlations.append(correlation)
             speech = self.session.say(
                 result.message,
                 allow_interruptions=True,
             )
         except RuntimeError:
+            self._tts_correlations.pop()
             logger.exception(
                 "assistant speech could not be scheduled",
                 extra={
@@ -509,28 +582,36 @@ class SentinelVoiceAgent(Agent):
         self._speech_sequence += 1
         self._speech[speech.id] = _TrackedSpeech(
             handle=speech,
-            turn_id=new_message.id,
+            trace_id=correlation.trace_id,
+            turn_id=correlation.turn_id,
             sequence=self._speech_sequence,
         )
         self._create_background_task(
             self._report_playback(
                 speech_id=speech.id,
-                turn_id=new_message.id,
+                turn_id=correlation.turn_id,
                 sequence=self._speech_sequence,
                 status="SCHEDULED",
                 response_phase=result.conversation_phase,
+                trace_id=correlation.trace_id,
             )
         )
         speech.add_done_callback(
             lambda completed: self._observe_speech_completion(
                 completed,
-                turn_id=new_message.id,
+                turn_id=correlation.turn_id,
             )
         )
         raise StopResponse()
 
 
 def _prewarm(proc: JobProcess) -> None:
+    # Import lazy runtime dependencies before realtime audio begins so first-use
+    # imports cannot block STT, interruption handling, or playback.
+    import groq.resources.audio
+    import groq.resources.chat.chat  # noqa: F401
+    import livekit.agents.llm.async_toolset  # noqa: F401
+
     # Silero imports ONNX Runtime, whose telemetry cache otherwise creates a
     # ``:memory:.ses`` marker in the worker's current directory on macOS.
     os.environ.setdefault("ORT_DISABLE_TELEMETRY", "1")
@@ -548,6 +629,7 @@ def _voice_room_options() -> RoomOptions:
 settings = get_settings()
 server = AgentServer(
     setup_fnc=_prewarm,
+    initialize_process_timeout=90.0,
     ws_url=settings.livekit_url,
     api_key=(
         settings.livekit_api_key.get_secret_value()
@@ -564,6 +646,9 @@ server = AgentServer(
 
 @server.rtc_session(agent_name=settings.livekit_agent_name)
 async def voice_session(ctx: JobContext) -> None:
+    # LiveKit's CLI may initialize logging after this module is imported.
+    # Reapplying the idempotent policy keeps provider DEBUG payloads disabled.
+    configure_runtime_logging()
     metadata = parse_voice_session_metadata(ctx.job.metadata)
     api_key = _groq_api_key(settings)
     bridge = VoiceBridge(api_base_url=settings.api_base_url)
@@ -573,6 +658,7 @@ async def voice_session(ctx: JobContext) -> None:
         api_key=api_key,
         model=settings.stt_model,
     )
+    correlation_queue = VoiceCorrelationQueue()
     tts_provider = GroqTextToSpeechProvider(
         api_key=api_key,
         model=settings.tts_model,
@@ -582,6 +668,8 @@ async def voice_session(ctx: JobContext) -> None:
         stt=GroqSTTAdapter(
             provider=stt_provider,
             model=settings.stt_model,
+            session_id=metadata.sentinelvoice_session_id,
+            correlation_queue=correlation_queue,
         ),
         vad=ctx.proc.userdata["vad"],
         tts=GroqTTSAdapter(
@@ -602,6 +690,7 @@ async def voice_session(ctx: JobContext) -> None:
         bridge=bridge,
         session_id=metadata.sentinelvoice_session_id,
         publish_event=_publish_voice_event,
+        correlation_queue=correlation_queue,
     )
 
     def _log_agent_state_change(event: Any) -> None:

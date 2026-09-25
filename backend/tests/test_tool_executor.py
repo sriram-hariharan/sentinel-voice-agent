@@ -8,6 +8,8 @@ from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.db.models import Account
+from backend.app.observability.context import trace_scope
+from backend.app.observability.tracing import InMemoryTraceSink, use_trace_sink
 from backend.app.tools.definitions import ToolDefinition
 from backend.app.tools.errors import (
     ToolAuthenticationError,
@@ -90,6 +92,35 @@ async def test_executor_validates_model_tool_arguments() -> None:
         )
 
     session.scalar.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_executor_traces_validation_failure() -> None:
+    executor = ToolExecutor()
+    session = AsyncMock(spec=AsyncSession)
+    sink = InMemoryTraceSink()
+
+    with (
+        use_trace_sink(sink),
+        trace_scope(session_id="session-1"),
+        pytest.raises(ToolValidationError),
+    ):
+        await executor.execute(
+            "get_account_balance",
+            {"account_id": "not-a-uuid"},
+            ToolExecutionContext(
+                customer_id=CUSTOMER_ID,
+                authenticated=True,
+            ),
+            session,
+        )
+
+    assert [event.event_name for event in sink.events] == [
+        "authorization.checked",
+        "tool.execution.started",
+        "tool.execution.failed",
+    ]
+    assert sink.events[-1].error_category == "validation_error"
 
 
 @pytest.mark.asyncio

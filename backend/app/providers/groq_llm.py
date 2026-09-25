@@ -34,6 +34,10 @@ class GroqLLMProvider:
         self.max_completion_tokens = max_completion_tokens
         self._client = client or AsyncGroq(api_key=api_key)
 
+    @property
+    def provider(self) -> str:
+        return "groq"
+
     async def generate(
         self,
         *,

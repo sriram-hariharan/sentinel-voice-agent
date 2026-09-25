@@ -956,7 +956,144 @@ It is an optional optimization after the core system works.
 
 ## 8.10 Evaluation and Observability Layer
 
-Every important operation should emit trace events and measurable outcomes.
+Step 15 implements one application-native trace model shared by live runtime
+paths and the deterministic offline evaluator. It intentionally does not add a
+hosted telemetry product, a dashboard, another database, or an OpenTelemetry
+deployment.
+
+Every meaningful turn has three correlation fields:
+
+```text
+trace_id    one processing path
+session_id  the existing SentinelVoice conversation
+turn_id     one logical user turn
+```
+
+The text API accepts optional `X-SentinelVoice-Trace-ID` and
+`X-SentinelVoice-Turn-ID` headers, validates them as opaque identifiers,
+generates either value when absent, and returns both values in the message
+response. The voice STT adapter creates the same correlation context and the
+worker passes it through `VoiceBridge` to FastAPI. These identifiers contain no
+authentication authority.
+
+`backend/app/observability/` provides the shared implementation:
+
+- `TraceContext` uses `contextvars` so nested async work retains correlation.
+- `TraceEvent` is a frozen, JSON-serializable schema with event name,
+  timestamp, correlation IDs, component, status, optional duration, safe error
+  category, and centrally redacted metadata.
+- `LoggingTraceSink` emits one JSON object per runtime log record;
+  `InMemoryTraceSink` gives tests and evaluation the identical event model.
+- `trace_span` emits paired `.started` and `.completed`/`.failed` events and
+  measures duration with a monotonic clock.
+- deterministic nearest-rank summaries report count, min, max, mean, P50,
+  P90, and P95.
+
+Instrumented stages currently include backend agent turns, policy retrieval,
+LLM requests, authorization decisions, confirmation decisions, validation and
+tool execution, escalation creation, bounded STT, TTS request/first audio/total
+generation, the voice bridge call, finalized transcripts, and interruption
+detection/completion. No `retry.scheduled` event is emitted because a general
+application retry engine does not exist.
+
+Both the FastAPI process and the LiveKit worker apply the same idempotent
+runtime logging policy. `sentinelvoice.trace` has an INFO console handler so
+backend events remain visible under Uvicorn, while provider/transport loggers
+such as `groq`, `httpx`, and `httpcore` are held at WARNING to prevent their
+DEBUG request dumps from exposing multipart audio, prompts, TTS input, or
+authorization headers. SentinelVoice-owned application logging is not globally
+suppressed.
+
+Central redaction removes secret-bearing fields and obvious secret values,
+including PINs, API keys, bearer/auth tokens, raw audio/transcripts, full
+account/card-like numbers, internal resource UUIDs, and customer identifiers.
+Runtime events record safe metadata such as tool name, permission and decision,
+source slugs, counts, model, usage, and duration. Raw utterances, full prompts,
+policy bodies, and complete customer records are not trace metadata.
+
+Provider usage is normalized only from quantities already available at the
+boundary: LLM input/output/total tokens, STT input audio duration and request
+count, and TTS character count, generated audio duration, and request count.
+TTS duration uses the byte length of PCM frames actually decoded and emitted;
+it never trusts a streaming WAV header's declared frame count.
+The versioned pricing catalog records provider/model/operation/unit, rate,
+verification date, and source note. Unknown prices make the estimate
+unavailable rather than silently contributing zero. Rates verified against
+Groq documentation on 2026-09-24 are GPT-OSS 20B at $0.075/$0.30 per million
+input/output tokens, Whisper Large V3 Turbo at $0.04 per audio hour, and
+Orpheus V1 English at $22 per million characters. All displayed costs are
+labeled **estimated**.
+
+The version-controlled `data/evals/agent_scenarios.json` contains 34 typed
+scenarios. It covers public policy, private reads, resource ambiguity and
+binding, card/dispute confirmation and cancellation, stale and replayed
+confirmation, authorization and cross-customer defenses, prompt injection,
+normal/paraphrased/unsupported/malicious RAG, validation/tool/timeout/retrieval
+failures, explicit escalation and false-positive avoidance, interruption
+recovery, multi-policy grounding, informational-versus-action routing, and
+malformed model output. The default runner uses scripted provider responses,
+synthetic tool handlers, the real orchestrator, real conversation state, real
+tool schemas/authorization/confirmation executor, and the real trace layer. It
+does not call Groq, LiveKit Cloud, PostgreSQL, or Hugging Face.
+
+Run it from the repository root:
+
+```bash
+python scripts/evaluate_agent.py
+python scripts/evaluate_agent.py \
+  --json-report evaluation-reports/agent-evaluation.json
+```
+
+The JSON report includes the evaluation version and timestamp, scenario
+results, aggregate metrics, safety counters, offline timing distributions,
+fake-provider usage, estimated cost, unavailable price units, and failures.
+Generated files under `evaluation-reports/` are ignored by Git.
+
+The deterministic baseline measured locally on 2026-09-24 is:
+
+| Metric | Result |
+|---|---:|
+| Scenarios | 34 |
+| Task success | 100.0% (34/34) |
+| Tool selection accuracy | 100.0% |
+| Tool argument accuracy | 100.0% |
+| Unauthorized action rate | 0.000 (0 executed / 3 attempts) |
+| Confirmation compliance | 100.0% (8/8) |
+| Escalation precision / recall | 100.0% / 100.0% |
+| Interruption recovery | 100.0% |
+| Policy source accuracy | 100.0% |
+| Cross-customer attempts blocked | 1 |
+| Prompt-injection attempts blocked | 2 |
+
+The same run recorded 1,100 fake-provider input tokens and 550 output tokens.
+Applying the verified catalog to those synthetic quantities gives an estimated
+total of `$0.0002475000`, or approximately `$0.0000072794` per scenario and per
+successful task. This is an evaluator accounting check, not a bill or a live
+traffic measurement.
+
+Offline deterministic timing from that run was:
+
+| Stage | Count | P50 | P90 | P95 |
+|---|---:|---:|---:|---:|
+| Agent turn | 44 | 0.857 ms | 1.711 ms | 1.731 ms |
+| LLM fake boundary | 55 | 0.026 ms | 0.037 ms | 0.051 ms |
+| RAG fake boundary | 12 | 0.019 ms | 0.037 ms | 0.070 ms |
+| Tool synthetic boundary | 11 | 0.043 ms | 0.064 ms | 0.100 ms |
+
+These are explicitly **offline deterministic evaluation timings**. They are
+not production latency and do not represent microphone-to-audible-response
+time. The live boundaries can honestly measure STT provider duration,
+finalized transcript to backend-turn completion, TTS request to first emitted
+audio, TTS generation duration, and interruption-stop latency. Complete
+microphone-to-audible latency is not yet observable from the current
+boundaries.
+
+Current limitations are deliberate and visible: automatic escalation after
+repeated failures does not exist; there is no general retry engine; the
+offline synthetic handlers do not validate PostgreSQL query behavior (the
+banking-tool test suite covers those handlers separately); no default LLM
+judge grades subjective response quality; and traces currently go to logs or
+memory rather than a production telemetry backend.
 
 This layer is not optional.
 
@@ -1959,6 +2096,10 @@ These timestamps allow latency decomposition rather than guessing.
 
 # 32. Latency Metrics
 
+The following list remains the desired complete voice decomposition. The
+current implementation measures only the boundaries described in Section
+8.10; in particular it does not claim full microphone-to-audible latency.
+
 Track:
 
 ```text
@@ -1990,6 +2131,11 @@ P95 exposes that problem.
 ---
 
 # 33. Cost Metrics
+
+Current runtime summaries estimate cost only when every observed usage unit
+has a catalog rate. An unknown provider/model/unit reports cost as unavailable,
+not zero. Offline evaluator usage and cost are explicitly labeled synthetic
+and estimated.
 
 Track:
 
@@ -2184,29 +2330,23 @@ session_id
 turn_id
 ```
 
-Trace event examples:
+Current event names use stable dotted notation. Representative events are:
 
 ```text
-USER_SPEECH_STARTED
-USER_SPEECH_ENDED
-STT_STARTED
-STT_COMPLETED
-LLM_REQUESTED
-LLM_FIRST_TOKEN
-RETRIEVAL_STARTED
-RETRIEVAL_COMPLETED
-TOOL_REQUESTED
-TOOL_AUTHORIZED
-TOOL_DENIED
-TOOL_STARTED
-TOOL_COMPLETED
-TOOL_FAILED
-TTS_STARTED
-TTS_FIRST_AUDIO
-TTS_CANCELLED
-INTERRUPTION_DETECTED
-ESCALATION_CREATED
-SESSION_ENDED
+agent.turn.started / completed / failed
+rag.retrieval.started / completed / failed
+llm.request.started / completed / failed
+authorization.checked
+tool.requested
+tool.validation.failed
+tool.execution.started / completed / failed
+confirmation.requested / accepted / cancelled
+stt.started / completed / failed
+tts.started / first_audio / completed / failed
+voice.transcript.finalized
+voice.backend_turn.started / completed / failed
+voice.interruption.detected / completed
+escalation.created
 ```
 
 ### Why event-level tracing
@@ -2226,13 +2366,14 @@ Example:
 
 ```json
 {
-  "event": "tool_completed",
+  "event_name": "tool.execution.completed",
   "trace_id": "...",
   "session_id": "...",
   "turn_id": "...",
-  "tool": "get_transaction_details",
+  "component": "tools",
+  "status": "completed",
   "duration_ms": 82,
-  "success": true
+  "metadata": {"tool_name": "get_transaction_details"}
 }
 ```
 
@@ -2275,9 +2416,11 @@ The evaluation suite should catch these.
 
 # 42. Evaluation Dataset
 
-Use version-controlled scenarios.
+The current dataset is version-controlled JSON validated by strict Pydantic
+models. Malformed fields, empty turns, and duplicate scenario IDs fail before
+evaluation starts.
 
-Example:
+Conceptual example:
 
 ```yaml
 id: unknown_transaction_001
@@ -3294,7 +3437,9 @@ The project can be considered complete when all of the following are true.
 ## Escalation
 
 - User can request a human.
-- System can escalate based on defined failure rules.
+- Explicit human requests execute the idempotent escalation tool, including
+  before authentication.
+- Automatic escalation after repeated failures is not currently implemented.
 - Structured handoff summary is created.
 
 ## Evaluation
@@ -3304,11 +3449,12 @@ The project can be considered complete when all of the following are true.
 - Task completion can be measured.
 - Safety failures can be detected.
 - Retrieval performance can be measured.
-- Voice latency can be measured.
+- Implemented voice-stage boundaries and interruption latency can be measured;
+  full microphone-to-audible latency is not yet available.
 
 ## Observability
 
-- Sessions have trace IDs.
+- Every meaningful processing path has a trace ID.
 - Turns have turn IDs.
 - Tool calls are traceable.
 - Retrieval calls are traceable.

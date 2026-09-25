@@ -13,6 +13,7 @@ from backend.app.config.settings import Settings, get_settings
 from backend.app.conversation.state import AuthenticationLevel
 from backend.app.db.session import get_db_session
 from backend.app.main import app
+from backend.app.observability.tracing import InMemoryTraceSink, use_trace_sink
 from backend.app.providers.llm import LLMResponse, LLMToolCall
 from backend.app.tools.schemas import FreezeCardOutput
 
@@ -101,7 +102,10 @@ def test_unauthenticated_session_can_make_normal_agent_turn(api_context) -> None
     )
 
     assert response.status_code == 200
-    assert response.json() == {
+    payload = response.json()
+    assert len(payload.pop("trace_id")) >= 16
+    assert len(payload.pop("turn_id")) >= 16
+    assert payload == {
         "session_id": state.session_id,
         "message": "How can I help?",
         "turn_status": "RESPONDED",
@@ -117,6 +121,59 @@ def test_unauthenticated_session_can_make_normal_agent_turn(api_context) -> None
     assert refreshed.status_code == 200
     assert refreshed.json()["turn_status"] == "RESPONDED"
     assert refreshed.json()["conversation_phase"] == "AGENT_SPEAKING"
+
+
+def test_text_api_propagates_correlation_and_emits_turn_trace(api_context) -> None:
+    client, store, _ = api_context
+    state = store.create()
+    _use_orchestrator(
+        AgentOrchestrator(
+            llm=SequenceLLM([_direct_response("Hello.")]),
+            resource_resolver=NoopResourceResolver(),
+        )
+    )
+    sink = InMemoryTraceSink()
+
+    with use_trace_sink(sink):
+        response = client.post(
+            f"/sessions/{state.session_id}/messages",
+            json={"message": "Hello"},
+            headers={
+                "X-SentinelVoice-Trace-ID": "trace_1234567890123456",
+                "X-SentinelVoice-Turn-ID": "turn_12345678901234567",
+            },
+        )
+
+    assert response.status_code == 200
+    assert response.json()["trace_id"] == "trace_1234567890123456"
+    assert response.json()["turn_id"] == "turn_12345678901234567"
+    assert [event.event_name for event in sink.events] == [
+        "agent.turn.started",
+        "llm.request.started",
+        "llm.request.completed",
+        "agent.turn.completed",
+    ]
+    assert all(event.session_id == state.session_id for event in sink.events)
+
+
+def test_text_api_rejects_invalid_correlation_header(api_context) -> None:
+    client, store, _ = api_context
+    state = store.create()
+    _use_orchestrator(
+        AgentOrchestrator(
+            llm=SequenceLLM([_direct_response("Hello.")]),
+            resource_resolver=NoopResourceResolver(),
+        )
+    )
+
+    response = client.post(
+        f"/sessions/{state.session_id}/messages",
+        json={"message": "Hello"},
+        headers={"X-SentinelVoice-Trace-ID": "too-short"},
+    )
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Invalid trace correlation header"}
 
 
 def test_authenticated_turn_uses_server_side_identity(api_context) -> None:

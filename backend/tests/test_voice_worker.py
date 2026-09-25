@@ -201,9 +201,9 @@ def test_voice_worker_uses_supported_vad_interruption_options() -> None:
         "interruption": {
             "enabled": True,
             "mode": "vad",
-            "min_duration": 0.35,
-            "min_words": 0,
-            "resume_false_interruption": False,
+            "min_duration": 0.50,
+            "min_words": 1,
+            "resume_false_interruption": True,
         }
     }
 
@@ -222,10 +222,12 @@ async def test_finalized_turn_calls_bridge_once_and_starts_speech() -> None:
     await _invoke_finalized_turn(agent, message)
     await _invoke_finalized_turn(agent, message)
 
-    bridge.handle_transcript.assert_awaited_once_with(
-        session_id="opaque-session-id",
-        transcript="What is my checking balance?",
-    )
+    bridge.handle_transcript.assert_awaited_once()
+    bridge_call = bridge.handle_transcript.await_args.kwargs
+    assert bridge_call["session_id"] == "opaque-session-id"
+    assert bridge_call["transcript"] == "What is my checking balance?"
+    assert len(bridge_call["trace_id"]) >= 16
+    assert len(bridge_call["turn_id"]) >= 16
     assert session.say_calls == [
         {
             "text": "Your checking balance is $125.00.",
@@ -446,6 +448,7 @@ async def test_interruption_reports_measured_latency_and_browser_event() -> None
         llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
     )
     sequence = agent._speech_sequence
+    correlation = bridge.handle_transcript.await_args.kwargs
     agent.note_user_speaking()
     session.speech_handles[0].interrupt(source="audio_activity")
     await asyncio.sleep(0)
@@ -454,17 +457,19 @@ async def test_interruption_reports_measured_latency_and_browser_event() -> None
     bridge.report_playback.assert_any_await(
         session_id="opaque-session-id",
         speech_id="speech-1",
-        voice_turn_id="turn-a",
+        voice_turn_id=correlation["turn_id"],
         sequence=sequence,
         status="INTERRUPTED",
         interruption_stop_latency_ms=pytest.approx(123.0),
         response_phase=None,
+        trace_id=correlation["trace_id"],
+        turn_id=correlation["turn_id"],
     )
     publish_event.assert_awaited_once_with(
         {
             "type": "speech_interrupted",
             "speech_id": "speech-1",
-            "voice_turn_id": "turn-a",
+            "voice_turn_id": correlation["turn_id"],
             "interruption_stop_latency_ms": pytest.approx(123.0),
         }
     )
@@ -515,17 +520,20 @@ async def test_completed_speech_reports_completion_without_interruption() -> Non
         llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
     )
     sequence = agent._speech_sequence
+    correlation = bridge.handle_transcript.await_args.kwargs
     session.speech_handles[0].complete()
     await asyncio.sleep(0)
 
     bridge.report_playback.assert_any_await(
         session_id="opaque-session-id",
         speech_id="speech-1",
-        voice_turn_id="turn-a",
+        voice_turn_id=correlation["turn_id"],
         sequence=sequence,
         status="COMPLETED",
         interruption_stop_latency_ms=None,
         response_phase=None,
+        trace_id=correlation["trace_id"],
+        turn_id=correlation["turn_id"],
     )
     publish_event.assert_not_awaited()
 

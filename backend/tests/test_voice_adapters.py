@@ -5,6 +5,8 @@ import pytest
 from livekit import rtc
 from livekit.agents import stt
 
+from backend.app.observability.context import VoiceCorrelationQueue, trace_scope
+from backend.app.observability.tracing import InMemoryTraceSink, use_trace_sink
 from backend.app.voice.adapters import GroqSTTAdapter, GroqTTSAdapter
 
 
@@ -46,6 +48,13 @@ def _wav_bytes(
     return output.getvalue()
 
 
+def _streaming_header_wav_bytes(*, frames: int = 240) -> bytes:
+    audio = bytearray(_wav_bytes(frames=frames))
+    audio[4:8] = (0xFFFFFFFF).to_bytes(4, "little")
+    audio[40:44] = (0xFFFFFFFF).to_bytes(4, "little")
+    return bytes(audio)
+
+
 @pytest.mark.asyncio
 async def test_stt_adapter_sends_wav_and_returns_final_transcript() -> None:
     provider = StubSTTProvider("What is my checking balance?")
@@ -70,7 +79,13 @@ async def test_stt_adapter_sends_wav_and_returns_final_transcript() -> None:
 @pytest.mark.asyncio
 async def test_stt_adapter_handles_empty_transcript() -> None:
     provider = StubSTTProvider("")
-    adapter = GroqSTTAdapter(provider=provider, model="configured-whisper")
+    queue = VoiceCorrelationQueue()
+    adapter = GroqSTTAdapter(
+        provider=provider,
+        model="configured-whisper",
+        session_id="session-1",
+        correlation_queue=queue,
+    )
     frame = rtc.AudioFrame(
         data=b"\x00\x00" * 480,
         sample_rate=24000,
@@ -82,6 +97,7 @@ async def test_stt_adapter_handles_empty_transcript() -> None:
 
     assert event.type == stt.SpeechEventType.FINAL_TRANSCRIPT
     assert event.alternatives == []
+    assert queue.consume() is None
 
 
 @pytest.mark.asyncio
@@ -97,6 +113,27 @@ async def test_tts_adapter_preserves_all_ordered_wav_chunks() -> None:
     assert frame.samples_per_channel == 480
     assert adapter.model == "configured-orpheus"
     assert adapter.provider == "groq"
+
+
+@pytest.mark.asyncio
+async def test_tts_duration_uses_actual_pcm_with_streaming_wav_header() -> None:
+    wav_bytes = _streaming_header_wav_bytes(frames=240)
+    with wave.open(io.BytesIO(wav_bytes), "rb") as wav_file:
+        assert wav_file.getnframes() == 2_147_483_647
+
+    provider = StubTTSProvider([wav_bytes])
+    adapter = GroqTTSAdapter(provider=provider, model="configured-orpheus")
+    sink = InMemoryTraceSink()
+
+    with use_trace_sink(sink), trace_scope(session_id="session-1"):
+        frame = await adapter.synthesize("Short response.").collect()
+
+    completed = next(
+        event for event in sink.events if event.event_name == "tts.completed"
+    )
+    assert frame.samples_per_channel == 240
+    assert completed.metadata["generated_audio_seconds"] == pytest.approx(0.01)
+    assert completed.metadata["generated_audio_seconds"] < 1
 
 
 @pytest.mark.asyncio

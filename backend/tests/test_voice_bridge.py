@@ -93,6 +93,8 @@ async def test_voice_bridge_uses_authoritative_message_boundary_and_session() ->
         result = await bridge.handle_transcript(
             session_id=state.session_id,
             transcript="  What is my checking balance?  ",
+            trace_id="trace_1234567890123456",
+            turn_id="turn_12345678901234567",
         )
     finally:
         await client.aclose()
@@ -100,6 +102,8 @@ async def test_voice_bridge_uses_authoritative_message_boundary_and_session() ->
 
     assert result is not None
     assert result.session_id == state.session_id
+    assert result.trace_id == "trace_1234567890123456"
+    assert result.turn_id == "turn_12345678901234567"
     assert result.message == "Your balance is $125.00."
     assert llm.calls[0]["messages"][-1] == {
         "role": "user",

@@ -29,7 +29,7 @@ from backend.app.rag.retrieval import (
     PostgresPolicySearch,
 )
 from backend.app.rag.routing import is_policy_question
-from backend.app.tools.errors import ToolError
+from backend.app.tools.errors import ToolBackendError, ToolError
 from backend.app.tools.executor import ToolExecutor
 from backend.app.tools.registry import TOOL_REGISTRY
 
@@ -680,6 +680,7 @@ class AgentOrchestrator:
         total_usage = LLMUsage()
         tool_calls_used = 0
 
+
         effective_allowed_tools = (
             self._allowed_tool_names(state)
             if allowed_tool_names is None
@@ -913,6 +914,31 @@ class AgentOrchestrator:
             except ToolError as exc:
                 state.phase = ConversationPhase.PROCESSING
 
+                if isinstance(exc, ToolBackendError):
+                    failure_count = state.record_backend_failure()
+                    emit_trace_event(
+                        "backend.failure.recorded",
+                        component="agent",
+                        status=TraceStatus.FAILED,
+                        error_category="backend_failure",
+                        metadata={
+                            "tool_name": tool_call.name,
+                            "consecutive_failures": failure_count,
+                        },
+                    )
+
+                    if failure_count >= 2:
+                        return await self._auto_escalate_repeated_backend_failure(
+                            state=state,
+                            db=db,
+                            failed_action=tool_call.name,
+                            actions_completed=executed_tools,
+                            transaction_id=state.active_transaction_id,
+                            usage=total_usage,
+                        )
+                else:
+                    state.clear_backend_failures()
+
                 messages.extend(
                     [
                         _tool_call_message(
@@ -932,6 +958,7 @@ class AgentOrchestrator:
                 )
                 continue
 
+            state.clear_backend_failures()
             executed_tools.append(tool_call.name)
 
             payload = tool_result.model_dump(mode="json")
@@ -965,6 +992,104 @@ class AgentOrchestrator:
                 ]
             )
 
+    async def _auto_escalate_repeated_backend_failure(
+        self,
+        *,
+        state: ConversationState,
+        db: AsyncSession,
+        failed_action: str,
+        actions_completed: list[str],
+        transaction_id: UUID | None,
+        usage: LLMUsage,
+    ) -> AgentTurnResult:
+        arguments = {
+            "category": "repeated_backend_failure",
+            "priority": "HIGH",
+            "summary": (
+                "SentinelVoice encountered repeated backend failures and "
+                "could not safely complete the customer request."
+            ),
+            "handoff_reason": (
+                "Automatic escalation after two consecutive backend failures."
+            ),
+            "transaction_id": (
+                str(transaction_id) if transaction_id is not None else None
+            ),
+            "actions_completed": list(actions_completed),
+            "actions_not_completed": [failed_action],
+            "conversation_summary": (
+                "Customer request could not be completed due to repeated "
+                "backend failures."
+            ),
+        }
+
+        emit_trace_event(
+            "escalation.triggered",
+            component="agent",
+            status=TraceStatus.COMPLETED,
+            metadata={
+                "reason": "repeated_backend_failure",
+                "failed_action": failed_action,
+                "consecutive_failures": state.consecutive_backend_failures,
+            },
+        )
+
+        state.phase = ConversationPhase.ESCALATING
+
+        try:
+            escalation = await self._tool_executor.execute(
+                "escalate_to_human",
+                arguments,
+                state.to_tool_context(),
+                db,
+            )
+        except ToolError as exc:
+            state.phase = ConversationPhase.AGENT_SPEAKING
+            emit_trace_event(
+                "escalation.failed",
+                component="agent",
+                status=TraceStatus.FAILED,
+                error_category=type(exc).__name__,
+                metadata={"reason": "repeated_backend_failure"},
+            )
+            return AgentTurnResult(
+                text=(
+                    "I’m unable to complete this safely, and I also couldn’t "
+                    "create the human-support handoff. Please try again shortly."
+                ),
+                status=AgentTurnStatus.TOOL_ERROR,
+                executed_tools=list(actions_completed),
+                usage=usage,
+            )
+
+        payload = escalation.model_dump(mode="json")
+        state.last_tool_result = payload
+        state.clear_backend_failures()
+        state.mark_escalated()
+
+        emit_trace_event(
+            "escalation.created",
+            component="agent",
+            status=TraceStatus.COMPLETED,
+            metadata={
+                "tool_name": "escalate_to_human",
+                "reason": "repeated_backend_failure",
+            },
+        )
+
+        return AgentTurnResult(
+            text=(
+                "I’ve hit repeated system problems and can’t safely complete "
+                "this request. I’ve created a handoff for human support."
+            ),
+            status=AgentTurnStatus.RESPONDED,
+            executed_tools=[
+                *actions_completed,
+                "escalate_to_human",
+            ],
+            usage=usage,
+        )
+
     async def _execute_confirmed_action(
         self,
         *,
@@ -989,11 +1114,38 @@ class AgentOrchestrator:
                 state.to_tool_context(),
                 db,
             )
-        except ToolError:
+        except ToolError as exc:
             # Confirmation is one-use. Never automatically retry an
             # uncertain protected write using a stale confirmation.
+            failed_transaction_id = state.active_transaction_id
             state.cancel_pending_action()
             _clear_action_context(state, pending.action)
+
+            if isinstance(exc, ToolBackendError):
+                failure_count = state.record_backend_failure()
+                emit_trace_event(
+                    "backend.failure.recorded",
+                    component="agent",
+                    status=TraceStatus.FAILED,
+                    error_category="backend_failure",
+                    metadata={
+                        "tool_name": pending.action,
+                        "consecutive_failures": failure_count,
+                    },
+                )
+
+                if failure_count >= 2:
+                    return await self._auto_escalate_repeated_backend_failure(
+                        state=state,
+                        db=db,
+                        failed_action=pending.action,
+                        actions_completed=[],
+                        transaction_id=failed_transaction_id,
+                        usage=LLMUsage(),
+                    )
+            else:
+                state.clear_backend_failures()
+
             state.phase = ConversationPhase.AGENT_SPEAKING
 
             return AgentTurnResult(
@@ -1004,6 +1156,7 @@ class AgentOrchestrator:
                 status=AgentTurnStatus.TOOL_ERROR,
             )
 
+        state.clear_backend_failures()
         payload = tool_result.model_dump(mode="json")
         state.last_tool_result = payload
 

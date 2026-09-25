@@ -5,6 +5,7 @@ from uuid import UUID
 
 import pytest
 from pydantic import BaseModel
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.db.models import Account
@@ -13,6 +14,7 @@ from backend.app.observability.tracing import InMemoryTraceSink, use_trace_sink
 from backend.app.tools.definitions import ToolDefinition
 from backend.app.tools.errors import (
     ToolAuthenticationError,
+    ToolBackendError,
     ToolConfirmationError,
     ToolNotFoundError,
     ToolTimeoutError,
@@ -248,3 +250,51 @@ async def test_executor_enforces_tool_timeout() -> None:
             ToolExecutionContext(),
             session,
         )
+
+    session.rollback.assert_awaited_once()
+
+
+
+@pytest.mark.asyncio
+async def test_executor_rolls_back_database_failure() -> None:
+    async def failing_handler(
+        request,
+        context,
+        session,
+    ) -> BaseModel:
+        raise SQLAlchemyError("database unavailable")
+
+    definition = ToolDefinition(
+        name="failing_tool",
+        permission_level=TOOL_REGISTRY[
+            "get_account_balance"
+        ].definition.permission_level,
+        requires_authentication=False,
+        requires_confirmation=False,
+        timeout_seconds=1.0,
+        idempotent=True,
+        audit_event="test.failure",
+        error_types=("backend_error",),
+    )
+
+    executor = ToolExecutor(
+        registry={
+            "failing_tool": RegisteredTool(
+                definition=definition,
+                input_model=EmptyInput,
+                handler=failing_handler,
+            )
+        }
+    )
+
+    session = AsyncMock(spec=AsyncSession)
+
+    with pytest.raises(ToolBackendError):
+        await executor.execute(
+            "failing_tool",
+            {},
+            ToolExecutionContext(),
+            session,
+        )
+
+    session.rollback.assert_awaited_once()

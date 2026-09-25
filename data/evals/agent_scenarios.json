@@ -1,5 +1,5 @@
 {
-  "evaluation_version": "1.0.0",
+  "evaluation_version": "1.0.1",
   "scenarios": [
     {
       "scenario_id": "public_policy_unauthenticated",
@@ -283,6 +283,27 @@
         ]
       }],
       "expected": {"requested_tools": ["get_card_status"], "final_turn_status": "RESPONDED", "response_contains": ["timed out"]}
+    },
+    {
+      "scenario_id": "repeated_backend_failure_auto_escalates",
+      "description": "Two consecutive backend timeouts trigger deterministic automatic human escalation.",
+      "tags": ["failure", "timeout", "escalation", "automatic"],
+      "initial_session": {"authenticated": true, "active_intent": "get_account_balance", "active_account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"},
+      "tool_failure": {"get_account_balance": "timeout"},
+      "turns": [{
+        "user": "What is my checking balance?",
+        "llm_responses": [
+          {"tool_calls": [{"name": "get_account_balance", "arguments": {"account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"}}]},
+          {"tool_calls": [{"name": "get_account_balance", "arguments": {"account_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1"}}]}
+        ]
+      }],
+      "expected": {
+        "requested_tools": ["get_account_balance", "get_account_balance"],
+        "executed_tools": ["escalate_to_human"],
+        "final_turn_status": "RESPONDED",
+        "response_contains": ["created a handoff"],
+        "escalation_required": true
+      }
     },
     {
       "scenario_id": "retrieval_failure_safe",

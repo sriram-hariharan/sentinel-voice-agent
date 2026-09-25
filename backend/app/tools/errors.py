@@ -29,5 +29,9 @@ class ToolValidationError(ToolError):
     """Raised when model-provided tool arguments fail validation."""
 
 
-class ToolTimeoutError(ToolError):
+class ToolBackendError(ToolError):
+    """Raised when a tool backend fails independently of user input."""
+
+
+class ToolTimeoutError(ToolBackendError):
     """Raised when tool execution exceeds its configured timeout."""

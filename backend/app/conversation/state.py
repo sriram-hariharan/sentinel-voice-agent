@@ -112,6 +112,7 @@ class ConversationState(BaseModel):
     last_tool_result: dict[str, Any] | None = None
     voice_playback: VoicePlaybackState | None = None
     conversation_summary: str = ""
+    consecutive_backend_failures: int = Field(default=0, ge=0)
 
     model_config = ConfigDict(validate_assignment=True)
 
@@ -321,6 +322,13 @@ class ConversationState(BaseModel):
             )
 
         self.phase = ConversationPhase.LISTENING
+
+    def record_backend_failure(self) -> int:
+        self.consecutive_backend_failures += 1
+        return self.consecutive_backend_failures
+
+    def clear_backend_failures(self) -> None:
+        self.consecutive_backend_failures = 0
 
     def mark_escalating(self) -> None:
         self.escalation_status = EscalationStatus.ESCALATING

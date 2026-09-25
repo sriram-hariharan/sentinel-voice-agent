@@ -14,14 +14,23 @@ from backend.app.conversation.state import (
     AuthenticationLevel,
     ConversationPhase,
     ConversationState,
+    EscalationStatus,
 )
 from backend.app.providers.llm import (
     LLMResponse,
     LLMToolCall,
 )
+from backend.app.tools.errors import (
+    ToolAuthenticationError,
+    ToolBackendError,
+    ToolConfirmationError,
+    ToolValidationError,
+)
 from backend.app.tools.schemas import (
     AccountBalanceOutput,
+    EscalateToHumanOutput,
     FreezeCardOutput,
+    HandoffSummary,
 )
 
 CUSTOMER_ID = UUID("11111111-1111-4111-8111-111111111111")
@@ -390,3 +399,248 @@ async def test_private_read_tool_result_returns_to_llm() -> None:
 
     assert second_messages[-1]["role"] == "tool"
     assert second_messages[-1]["tool_call_id"] == "call-balance"
+
+
+def _balance_tool_call(call_id: str) -> LLMResponse:
+    return LLMResponse(
+        content="",
+        model="test-model",
+        tool_calls=[
+            LLMToolCall(
+                id=call_id,
+                name="get_account_balance",
+                arguments={"account_id": str(ACCOUNT_ID)},
+            )
+        ],
+    )
+
+
+def _escalation_output() -> EscalateToHumanOutput:
+    return EscalateToHumanOutput(
+        case_id=UUID("dddddddd-dddd-4ddd-8ddd-dddddddddddd"),
+        status="ESCALATED",
+        created=True,
+        handoff=HandoffSummary(
+            customer_id=CUSTOMER_ID,
+            authenticated=True,
+            category="repeated_backend_failure",
+            priority="HIGH",
+            summary="Repeated backend failures.",
+            transaction_id=None,
+            transaction_amount=None,
+            merchant=None,
+            actions_completed=[],
+            actions_not_completed=["get_account_balance"],
+            reason_for_handoff="Repeated backend failure.",
+            conversation_summary="Customer asked for their balance.",
+        ),
+    )
+
+
+@pytest.mark.asyncio
+async def test_first_backend_failure_does_not_auto_escalate() -> None:
+    llm = SequenceLLM(
+        [
+            LLMResponse(
+                content="I couldn't retrieve that right now. Please try again.",
+                model="test-model",
+            )
+        ]
+    )
+    executor = AsyncMock()
+    executor.execute.side_effect = ToolBackendError("banking backend unavailable")
+
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
+    )
+    state = _authenticated_state()
+    state.active_account_id = ACCOUNT_ID
+    state.active_intent = "get_account_balance"
+    db = AsyncMock(spec=AsyncSession)
+
+    result = await orchestrator._run_model_loop(
+        messages=[{"role": "user", "content": "What is my balance?"}],
+        state=state,
+        db=db,
+        initial_response=_balance_tool_call("call-backend-1"),
+    )
+
+    assert result.status == AgentTurnStatus.RESPONDED
+    assert state.consecutive_backend_failures == 1
+    assert state.escalation_status == EscalationStatus.NONE
+    assert executor.execute.await_count == 1
+
+
+@pytest.mark.asyncio
+async def test_second_consecutive_backend_failure_auto_escalates() -> None:
+    llm = SequenceLLM([])
+    executor = AsyncMock()
+    executor.execute.side_effect = [
+        ToolBackendError("banking backend unavailable"),
+        _escalation_output(),
+    ]
+
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
+    )
+    state = _authenticated_state()
+    state.active_account_id = ACCOUNT_ID
+    state.active_intent = "get_account_balance"
+    state.consecutive_backend_failures = 1
+    db = AsyncMock(spec=AsyncSession)
+
+    result = await orchestrator._run_model_loop(
+        messages=[{"role": "user", "content": "What is my balance?"}],
+        state=state,
+        db=db,
+        initial_response=_balance_tool_call("call-backend-2"),
+    )
+
+    assert result.status == AgentTurnStatus.RESPONDED
+    assert result.executed_tools == ["escalate_to_human"]
+    assert state.escalation_status == EscalationStatus.ESCALATED
+    assert state.consecutive_backend_failures == 0
+    assert executor.execute.await_count == 2
+
+    escalation_call = executor.execute.await_args_list[1]
+    assert escalation_call.args[0] == "escalate_to_human"
+    assert escalation_call.args[1]["category"] == "repeated_backend_failure"
+    assert escalation_call.args[1]["priority"] == "HIGH"
+    assert escalation_call.args[1]["actions_not_completed"] == [
+        "get_account_balance"
+    ]
+    assert escalation_call.args[1]["conversation_summary"] == (
+        "Customer request could not be completed due to repeated "
+        "backend failures."
+    )
+    assert "What is my balance?" not in escalation_call.args[1][
+        "conversation_summary"
+    ]
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        ToolAuthenticationError("authentication required"),
+        ToolConfirmationError("confirmation required"),
+        ToolValidationError("invalid arguments"),
+    ],
+)
+@pytest.mark.asyncio
+async def test_non_backend_tool_errors_do_not_trigger_escalation(
+    error: Exception,
+) -> None:
+    llm = SequenceLLM(
+        [
+            LLMResponse(
+                content="I need different information to continue.",
+                model="test-model",
+            )
+        ]
+    )
+    executor = AsyncMock()
+    executor.execute.side_effect = error
+
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
+    )
+    state = _authenticated_state()
+    state.active_account_id = ACCOUNT_ID
+    state.active_intent = "get_account_balance"
+    db = AsyncMock(spec=AsyncSession)
+
+    result = await orchestrator._run_model_loop(
+        messages=[{"role": "user", "content": "What is my balance?"}],
+        state=state,
+        db=db,
+        initial_response=_balance_tool_call("call-non-backend"),
+    )
+
+    assert result.status == AgentTurnStatus.RESPONDED
+    assert state.consecutive_backend_failures == 0
+    assert state.escalation_status == EscalationStatus.NONE
+    assert executor.execute.await_count == 1
+
+
+@pytest.mark.asyncio
+async def test_second_protected_backend_failure_escalates_without_retry() -> None:
+    llm = SequenceLLM([])
+    executor = AsyncMock()
+    executor.execute.side_effect = [
+        ToolBackendError("banking backend unavailable"),
+        _escalation_output(),
+    ]
+
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
+    )
+
+    state = _authenticated_state()
+    state.request_action(
+        "freeze_card",
+        CARD_ID,
+        arguments={"card_id": str(CARD_ID)},
+    )
+    state.consecutive_backend_failures = 1
+
+    db = AsyncMock(spec=AsyncSession)
+
+    result = await orchestrator.handle_text_turn(
+        user_text="Yes",
+        state=state,
+        db=db,
+    )
+
+    assert result.status == AgentTurnStatus.RESPONDED
+    assert result.executed_tools == ["escalate_to_human"]
+    assert state.escalation_status == EscalationStatus.ESCALATED
+    assert state.pending_action is None
+    assert state.consecutive_backend_failures == 0
+
+    assert executor.execute.await_count == 2
+    assert executor.execute.await_args_list[0].args[0] == "freeze_card"
+    assert executor.execute.await_args_list[1].args[0] == "escalate_to_human"
+
+
+@pytest.mark.asyncio
+async def test_auto_escalation_failure_does_not_false_mark_escalated() -> None:
+    llm = SequenceLLM([])
+    executor = AsyncMock()
+    executor.execute.side_effect = [
+        ToolBackendError("banking backend unavailable"),
+        ToolBackendError("support backend unavailable"),
+    ]
+
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        resource_resolver=NoopResourceResolver(),
+    )
+
+    state = _authenticated_state()
+    state.active_account_id = ACCOUNT_ID
+    state.active_intent = "get_account_balance"
+    state.consecutive_backend_failures = 1
+
+    db = AsyncMock(spec=AsyncSession)
+
+    result = await orchestrator._run_model_loop(
+        messages=[{"role": "user", "content": "What is my balance?"}],
+        state=state,
+        db=db,
+        initial_response=_balance_tool_call("call-escalation-failure"),
+    )
+
+    assert result.status == AgentTurnStatus.TOOL_ERROR
+    assert state.escalation_status == EscalationStatus.NONE
+    assert executor.execute.await_count == 2
+    assert executor.execute.await_args_list[0].args[0] == "get_account_balance"
+    assert executor.execute.await_args_list[1].args[0] == "escalate_to_human"

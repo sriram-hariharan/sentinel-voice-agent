@@ -1049,12 +1049,12 @@ results, aggregate metrics, safety counters, offline timing distributions,
 fake-provider usage, estimated cost, unavailable price units, and failures.
 Generated files under `evaluation-reports/` are ignored by Git.
 
-The deterministic baseline measured locally on 2026-09-24 is:
+The deterministic baseline measured locally on 2026-09-25 is:
 
 | Metric | Result |
 |---|---:|
-| Scenarios | 34 |
-| Task success | 100.0% (34/34) |
+| Scenarios | 35 |
+| Task success | 100.0% (35/35) |
 | Tool selection accuracy | 100.0% |
 | Tool argument accuracy | 100.0% |
 | Unauthorized action rate | 0.000 (0 executed / 3 attempts) |
@@ -1065,9 +1065,9 @@ The deterministic baseline measured locally on 2026-09-24 is:
 | Cross-customer attempts blocked | 1 |
 | Prompt-injection attempts blocked | 2 |
 
-The same run recorded 1,100 fake-provider input tokens and 550 output tokens.
+The same run recorded 1,140 fake-provider input tokens and 570 output tokens.
 Applying the verified catalog to those synthetic quantities gives an estimated
-total of `$0.0002475000`, or approximately `$0.0000072794` per scenario and per
+total of `$0.0002565000`, or approximately `$0.0000073286` per scenario and per
 successful task. This is an evaluator accounting check, not a bill or a live
 traffic measurement.
 
@@ -1075,10 +1075,10 @@ Offline deterministic timing from that run was:
 
 | Stage | Count | P50 | P90 | P95 |
 |---|---:|---:|---:|---:|
-| Agent turn | 44 | 0.857 ms | 1.711 ms | 1.731 ms |
-| LLM fake boundary | 55 | 0.026 ms | 0.037 ms | 0.051 ms |
-| RAG fake boundary | 12 | 0.019 ms | 0.037 ms | 0.070 ms |
-| Tool synthetic boundary | 11 | 0.043 ms | 0.064 ms | 0.100 ms |
+| Agent turn | 45 | 2.310 ms | 3.382 ms | 3.795 ms |
+| LLM fake boundary | 57 | 0.059 ms | 0.091 ms | 0.116 ms |
+| RAG fake boundary | 12 | 0.037 ms | 0.105 ms | 0.152 ms |
+| Tool synthetic boundary | 12 | 0.066 ms | 0.143 ms | 0.215 ms |
 
 These are explicitly **offline deterministic evaluation timings**. They are
 not production latency and do not represent microphone-to-audible-response
@@ -1088,12 +1088,13 @@ audio, TTS generation duration, and interruption-stop latency. Complete
 microphone-to-audible latency is not yet observable from the current
 boundaries.
 
-Current limitations are deliberate and visible: automatic escalation after
-repeated failures does not exist; there is no general retry engine; the
-offline synthetic handlers do not validate PostgreSQL query behavior (the
-banking-tool test suite covers those handlers separately); no default LLM
-judge grades subjective response quality; and traces currently go to logs or
-memory rather than a production telemetry backend.
+Current limitations are deliberate and visible: automatic human escalation
+now occurs deterministically after two consecutive backend failures, but there
+is no general retry engine; the offline synthetic handlers do not validate
+PostgreSQL query behavior (the banking-tool test suite covers those handlers
+separately); no default LLM judge grades subjective response quality; and
+traces currently go to logs or memory rather than a production telemetry
+backend.
 
 This layer is not optional.
 
@@ -3439,7 +3440,9 @@ The project can be considered complete when all of the following are true.
 - User can request a human.
 - Explicit human requests execute the idempotent escalation tool, including
   before authentication.
-- Automatic escalation after repeated failures is not currently implemented.
+- Two consecutive backend failures trigger deterministic automatic escalation.
+- Authentication, confirmation, validation, and other user-correctable errors
+  do not count toward that backend-failure threshold.
 - Structured handoff summary is created.
 
 ## Evaluation

@@ -23,7 +23,7 @@ DATASET_PATH = Path("data/evals/agent_scenarios.json")
 def test_agent_scenario_dataset_is_typed_and_versioned() -> None:
     dataset = load_agent_scenarios(DATASET_PATH)
 
-    assert dataset.evaluation_version == "1.0.0"
+    assert dataset.evaluation_version == "1.0.1"
     assert 25 <= len(dataset.scenarios) <= 35
     assert len({scenario.scenario_id for scenario in dataset.scenarios}) == len(
         dataset.scenarios

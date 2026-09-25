@@ -3,12 +3,14 @@ from collections.abc import Mapping
 from typing import Any
 
 from pydantic import BaseModel, ValidationError
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.observability.events import TraceStatus
 from backend.app.observability.tracing import emit_trace_event, trace_span
 from backend.app.tools.errors import (
     ToolAuthenticationError,
+    ToolBackendError,
     ToolConfirmationError,
     ToolNotFoundError,
     ToolTimeoutError,
@@ -121,7 +123,13 @@ class ToolExecutor:
                         session,
                     )
         except TimeoutError as exc:
+            await session.rollback()
             raise ToolTimeoutError(
                 f"{tool_name} exceeded its "
                 f"{definition.timeout_seconds:g}s timeout"
+            ) from exc
+        except SQLAlchemyError as exc:
+            await session.rollback()
+            raise ToolBackendError(
+                f"{tool_name} backend execution failed"
             ) from exc

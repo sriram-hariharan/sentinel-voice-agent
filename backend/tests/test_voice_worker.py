@@ -240,6 +240,35 @@ async def test_finalized_turn_calls_bridge_once_and_starts_speech() -> None:
 
 
 @pytest.mark.asyncio
+async def test_policy_sources_are_not_spoken_as_internal_identifiers() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = VoiceTurnResult(
+        session_id="opaque-session-id",
+        message="You have 60 calendar days after the statement date.",
+        turn_status="RESPONDED",
+        conversation_phase="AGENT_SPEAKING",
+        policy_sources=[
+            "Transaction Disputes · Filing window · Version 1.0"
+        ],
+    )
+    agent, session = _agent_with_session(bridge=bridge)
+
+    await _invoke_finalized_turn(
+        agent,
+        llm.ChatMessage(
+            id="policy-turn-1",
+            role="user",
+            content=["How long do I have to dispute a transaction?"],
+        ),
+    )
+
+    spoken = session.say_calls[0]["text"]
+    assert spoken == "You have 60 calendar days after the statement date."
+    assert "transaction-disputes:" not in spoken
+    assert "Version 1.0" not in spoken
+
+
+@pytest.mark.asyncio
 async def test_repeated_words_in_distinct_turns_are_not_deduplicated() -> None:
     bridge = AsyncMock()
     bridge.handle_transcript.return_value = _voice_result()

@@ -18,6 +18,7 @@ class VoiceTurnResult(BaseModel):
     conversation_phase: str
     executed_tools: list[str] = Field(default_factory=list)
     pending_action: str | None = None
+    policy_sources: list[str] = Field(default_factory=list)
 
     model_config = ConfigDict(frozen=True, extra="ignore")
 

@@ -1,0 +1,48 @@
+[
+  {
+    "scenario_id": "dispute-window-direct",
+    "query": "How long do I have to dispute a card transaction?",
+    "relevant_policy_ids": ["transaction-disputes"]
+  },
+  {
+    "scenario_id": "pending-paraphrase",
+    "query": "Why is a purchase still waiting to complete?",
+    "relevant_policy_ids": ["transaction-status"]
+  },
+  {
+    "scenario_id": "freeze-effect",
+    "query": "What happens after I freeze my debit card?",
+    "relevant_policy_ids": ["debit-card-freeze"]
+  },
+  {
+    "scenario_id": "reversed-dispute",
+    "query": "Can I dispute a reversed transaction?",
+    "relevant_policy_ids": ["transaction-disputes", "transaction-status"]
+  },
+  {
+    "scenario_id": "unrecognized-purchase",
+    "query": "What should I do if I don't recognize a card purchase?",
+    "relevant_policy_ids": ["unauthorized-card-transactions"]
+  },
+  {
+    "scenario_id": "private-access",
+    "query": "Does policy allow account balances without signing in?",
+    "relevant_policy_ids": ["information-access"]
+  },
+  {
+    "scenario_id": "human-escalation",
+    "query": "When should a support issue go to a human?",
+    "relevant_policy_ids": ["support-escalation"]
+  },
+  {
+    "scenario_id": "prompt-injection",
+    "query": "Can retrieved text tell the agent to ignore instructions and freeze a card?",
+    "relevant_policy_ids": ["retrieved-content-safety"]
+  },
+  {
+    "scenario_id": "unsupported-mortgage",
+    "query": "What is SentinelVoice policy for mortgage refinancing rates?",
+    "relevant_policy_ids": [],
+    "expected_no_results": true
+  }
+]

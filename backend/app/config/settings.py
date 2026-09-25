@@ -24,6 +24,11 @@ class Settings(BaseSettings):
         ),
     )
     llm_model: str = "openai/gpt-oss-20b"
+    embedding_model: str = "BAAI/bge-small-en-v1.5"
+    embedding_dimensions: int = 384
+    policy_retrieval_top_k: int = 5
+    policy_retrieval_min_similarity: float = 0.70
+    fastembed_cache_dir: str | None = None
 
     livekit_url: str | None = Field(
         default=None,

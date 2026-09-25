@@ -2,7 +2,7 @@
 
 ## Production-Style AI Voice Customer Support Agent for a Synthetic Digital Bank
 
-**Project status:** Step 12 voice reply scheduling fix implemented; full live re-acceptance pending
+**Project status:** Step 14 synthetic policy RAG implemented and locally validated
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -11,7 +11,7 @@
 
 ---
 
-## Current Step 12 voice slice
+## Current realtime voice slice
 
 The browser now supports an audio-only LiveKit/WebRTC session alongside the
 existing text UI. LiveKit is the media/session transport, not a second banking
@@ -34,9 +34,10 @@ callback deliveries do not create banking turns.
 The worker uses provider interfaces around Groq
 `whisper-large-v3-turbo` STT and
 `canopylabs/orpheus-v1-english` TTS. TTS input is split into ordered chunks of
-at most 190 characters without silent truncation. Full interruption/barge-in
-is intentionally disabled until Step 13. Final assistant text is published to
-the room independently of TTS playback so a synthesis failure cannot hide an
+at most 190 characters without silent truncation. Realtime interruption and
+barge-in stop scheduled playback while preserving authoritative backend and
+protected-action state. Final assistant text is published to the room
+independently of TTS playback so a synthesis failure cannot hide an
 authoritative backend result or completed protected action.
 The browser refreshes the returned conversation phase and exact last turn
 status from FastAPI as soon as the assistant transcript arrives; LiveKit's
@@ -64,6 +65,7 @@ backend session, and requires sign-in again.
    python -m pip install -e '.[dev]'
    alembic upgrade head
    python scripts/seed_database.py
+   python scripts/index_policies.py
    cd frontend
    npm install
    cd ..
@@ -781,6 +783,69 @@ The purpose is to show reliable tool use.
 ## 8.7 Policy RAG
 
 Policy questions are answered through retrieval over synthetic bank policy documents.
+
+### Current Step 14 implementation
+
+The version-controlled corpus in `data/policies/` contains seven focused,
+explicitly synthetic SentinelVoice Bank policies. A small frontmatter parser
+validates policy metadata, and deterministic heading/paragraph chunking creates
+stable source IDs without LLM-based or semantic chunking. Content hashes make
+re-indexing idempotent and allow changed documents and stale chunks to be
+replaced explicitly.
+
+`FastEmbedProvider` is a lazy local embedding adapter using
+`BAAI/bge-small-en-v1.5` at 384 dimensions. Embeddings remain in PostgreSQL
+through pgvector; FastEmbed does not introduce or run Qdrant. The API can start
+and the automated test suite can run without loading or downloading the model.
+Tests use fake deterministic embedding providers.
+
+The retriever independently runs PostgreSQL full-text search and exact cosine
+vector search, then combines the two ranked lists with deterministic Reciprocal
+Rank Fusion using `1 / (60 + rank)`. No HNSW or IVFFlat index is used for this
+small corpus. Generic product and “policy” routing words are removed from the
+retrieval query so both channels focus on the requested subject. If
+embedding or vector retrieval fails, bounded keyword results
+remain available; if keyword retrieval fails, bounded vector results remain
+available. A complete miss produces a safe insufficient-evidence response
+instead of an institution-specific guess.
+
+The existing `AgentOrchestrator` handles policy grounding. Pending
+confirmations and direct protected-action/resource resolution remain
+authoritative. Clear public policy questions may be answered without
+authentication, while customer-specific reads and writes retain all existing
+authentication, ownership, and confirmation checks. Retrieved text is passed
+to the model as untrusted evidence and policy-only turns expose no banking
+tools. Human-readable title, section, and version labels are returned to the
+browser; the spoken answer remains plain natural text.
+
+Apply the migration and build or refresh the local index from the repository
+root:
+
+```bash
+alembic upgrade head
+python scripts/index_policies.py
+python scripts/index_policies.py --reset
+```
+
+Run the real local retrieval evaluation only after indexing:
+
+```bash
+python scripts/evaluate_policy_retrieval.py
+```
+
+The version-controlled scenarios in `data/evals/policy_retrieval.json` cover
+direct terms, paraphrases, overlap, an unsupported query, and malicious
+retrieved content. The command reports scenario count, Recall@1, Recall@3,
+top-1 hit rate, and mean reciprocal rank (MRR). These are retrieval metrics;
+they do not replace grounded-generation and protected-action tests.
+
+The real local run on 2026-09-24, after resetting the 21-chunk index with
+FastEmbed and PostgreSQL, measured 9 scenarios (8 positive): Recall@1 0.938,
+Recall@3 1.000, top-1 hit rate 1.000, and MRR 1.000. Recall@1 is below 1.000
+because the overlapping reversed-transaction scenario labels two relevant
+policies while a single rank-1 position can retrieve only one of them. Use
+`--details` to print the ranked policy/section and channel scores for each
+scenario.
 
 ### Why RAG
 
@@ -1742,16 +1807,17 @@ Useful for exact terminology and rare phrases.
 
 ## Hybrid Retrieval
 
-Combine both.
+Combine both ranked result lists using Reciprocal Rank Fusion (RRF).
 
 Conceptual score:
 
 ```text
-hybrid_score =
-    alpha * normalized_vector_score
-    +
-    beta * normalized_keyword_score
+rrf_score(document) =
+    sum(1 / (60 + rank_in_result_list))
 ```
+
+RRF avoids adding incomparable full-text rank and cosine-similarity values.
+Ties are broken by stable chunk identifier for deterministic evaluation.
 
 ### Why hybrid is preferred
 

@@ -9,9 +9,14 @@ import {
   useVoiceAssistant,
 } from '@livekit/components-react'
 import '@livekit/components-styles'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FormEvent, KeyboardEvent } from 'react'
 import './App.css'
+import {
+  canStartVoice,
+  canUseTextChat,
+  type VoiceConnectionState,
+} from './access'
 
 type SessionResponse = {
   session_id: string
@@ -20,6 +25,7 @@ type SessionResponse = {
   conversation_phase: string
   turn_status: string | null
   pending_action: string | null
+  policy_sources: string[]
   voice_playback?: {
     speech_id: string
     voice_turn_id: string
@@ -43,6 +49,7 @@ type TranscriptMessage = {
   role: 'user' | 'assistant'
   text: string
   interrupted?: boolean
+  sources?: string[]
 }
 
 type VoiceInterruptionEvent = {
@@ -57,16 +64,12 @@ type VoiceConnectionToken = {
   participant_token: string
 }
 
-type VoiceConnectionState =
-  | 'disconnected'
-  | 'connecting'
-  | 'connected'
-
 function newTranscriptMessage(
   role: TranscriptMessage['role'],
   text: string,
+  sources: string[] = [],
 ): TranscriptMessage {
-  return { id: crypto.randomUUID(), role, text }
+  return { id: crypto.randomUUID(), role, text, sources }
 }
 
 async function postJson<T>(path: string, body?: object): Promise<T> {
@@ -91,6 +94,18 @@ async function postJson<T>(path: string, body?: object): Promise<T> {
   }
 
   return payload as T
+}
+
+let initialSessionRequest: Promise<SessionResponse> | null = null
+
+function createInitialSession(): Promise<SessionResponse> {
+  initialSessionRequest ??= postJson<SessionResponse>('/sessions').catch(
+    (error: unknown) => {
+      initialSessionRequest = null
+      throw error
+    },
+  )
+  return initialSessionRequest
 }
 
 async function getJson<T>(path: string): Promise<T> {
@@ -256,6 +271,7 @@ function App() {
   const [voiceTurnPending, setVoiceTurnPending] = useState(false)
   const [voiceInterrupted, setVoiceInterrupted] = useState(false)
   const [voiceError, setVoiceError] = useState<string | null>(null)
+  const [sessionStarting, setSessionStarting] = useState(true)
   const [resetting, setResetting] = useState(false)
   const transcriptRef = useRef<HTMLDivElement>(null)
   const transcriptEndRef = useRef<HTMLDivElement>(null)
@@ -264,7 +280,7 @@ function App() {
   const latestVoiceAssistantId = useRef<string | null>(null)
   const pendingVoiceInterruptions = useRef(0)
 
-  const updateSessionState = (response: SessionResponse) => {
+  const updateSessionState = useCallback((response: SessionResponse) => {
     setSessionId(response.session_id)
     setCustomerId(response.customer_id)
     setAuthenticated(response.authenticated)
@@ -273,9 +289,38 @@ function App() {
       setTurnStatus(response.turn_status)
     }
     setPendingAction(response.pending_action)
-  }
+  }, [])
 
-  const refreshSessionState = async () => {
+  useEffect(() => {
+    let ignore = false
+
+    void createInitialSession()
+      .then((session) => {
+        if (!ignore) {
+          updateSessionState(session)
+        }
+      })
+      .catch((requestError: unknown) => {
+        if (!ignore) {
+          setError(
+            requestError instanceof Error
+              ? requestError.message
+              : 'An anonymous session could not be created.',
+          )
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setSessionStarting(false)
+        }
+      })
+
+    return () => {
+      ignore = true
+    }
+  }, [updateSessionState])
+
+  const refreshSessionState = async (attachSources = false) => {
     if (!sessionId) {
       return
     }
@@ -283,6 +328,21 @@ function App() {
     try {
       const response = await getJson<SessionResponse>(`/sessions/${sessionId}`)
       updateSessionState(response)
+      if (attachSources && response.policy_sources.length > 0) {
+        setMessages((current) => {
+          const index = current.findLastIndex(
+            (message) => message.role === 'assistant',
+          )
+          if (index < 0) {
+            return current
+          }
+          return current.map((message, messageIndex) =>
+            messageIndex === index
+              ? { ...message, sources: response.policy_sources }
+              : message,
+          )
+        })
+      }
     } catch (requestError) {
       setError(
         requestError instanceof Error
@@ -366,7 +426,13 @@ function App() {
   }
 
   const startVoice = async () => {
-    if (!sessionId || !authenticated || voiceConnectionState !== 'disconnected') {
+    if (
+      !canStartVoice({
+        sessionId,
+        authenticated,
+        voiceConnectionState,
+      })
+    ) {
       return
     }
 
@@ -508,7 +574,11 @@ function App() {
       setExecutedTools(response.executed_tools)
       setMessages((current) => [
         ...current,
-        newTranscriptMessage('assistant', response.message),
+        newTranscriptMessage(
+          'assistant',
+          response.message,
+          response.policy_sources,
+        ),
       ])
     } catch (requestError) {
       setTurnStatus('FAILED')
@@ -528,7 +598,7 @@ function App() {
   }
 
   const submitDraft = () => {
-    if (!draft.trim() || processing || !sessionId) {
+    if (!draft.trim() || !textChatEnabled) {
       return
     }
 
@@ -552,6 +622,12 @@ function App() {
 
   const waitingForConfirmation =
     turnStatus === 'WAITING_FOR_CONFIRMATION'
+  const textChatEnabled = canUseTextChat({ sessionId, processing })
+  const voiceStartEnabled = canStartVoice({
+    sessionId,
+    authenticated,
+    voiceConnectionState,
+  })
   const voiceStatus = voiceError
     ? 'Error'
     : voiceConnectionState === 'connecting'
@@ -587,7 +663,9 @@ function App() {
             type="button"
             className="reset-button"
             onClick={() => void resetDemoSession()}
-            disabled={resetting || authenticating || processing}
+            disabled={
+              sessionStarting || resetting || authenticating || processing
+            }
           >
             {resetting ? 'Resetting…' : 'New Session'}
           </button>
@@ -636,11 +714,11 @@ function App() {
               <button
                 className="primary-button"
                 type="submit"
-                disabled={authenticating || authenticated}
+                disabled={sessionStarting || authenticating || authenticated}
               >
                 {authenticated
                   ? 'Signed in'
-                  : authenticating
+                  : sessionStarting || authenticating
                     ? 'Starting session…'
                     : 'Start / Sign In'}
               </button>
@@ -773,7 +851,7 @@ function App() {
                   onAgentFinalTranscript={() => {
                     setVoiceTurnPending(false)
                     setVoiceInterrupted(false)
-                    void refreshSessionState()
+                    void refreshSessionState(true)
                   }}
                   onError={(message) => {
                     setVoiceError(message)
@@ -803,9 +881,7 @@ function App() {
                 type="button"
                 className="primary-button"
                 onClick={() => void startVoice()}
-                disabled={
-                  !authenticated || voiceConnectionState !== 'disconnected'
-                }
+                disabled={!voiceStartEnabled}
               >
                 {voiceConnectionState === 'connecting'
                   ? 'Connecting…'
@@ -879,7 +955,17 @@ function App() {
                       </span>
                     )}
                   </p>
-                  <p>{message.text}</p>
+                  <p className="message-body">{message.text}</p>
+                  {message.sources && message.sources.length > 0 && (
+                    <div className="message-sources" aria-label="Policy sources">
+                      <span>Sources</span>
+                      <ul>
+                        {message.sources.map((source) => (
+                          <li key={source}>{source}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </article>
               ))
             )}
@@ -937,17 +1023,19 @@ function App() {
                 onChange={(event) => setDraft(event.target.value)}
                 onKeyDown={handleComposerKeyDown}
                 placeholder={
-                  sessionId
-                    ? 'Ask about your synthetic bank account…'
-                    : 'Start a session to send a message'
+                  sessionStarting
+                    ? 'Starting a secure session…'
+                    : authenticated
+                      ? 'Ask about your synthetic bank account…'
+                      : 'Ask a public policy question or sign in for account help.'
                 }
                 maxLength={4000}
-                disabled={!sessionId || processing}
+                disabled={!textChatEnabled}
               />
               <button
                 type="submit"
                 className="send-button"
-                disabled={!sessionId || processing || !draft.trim()}
+                disabled={!textChatEnabled || !draft.trim()}
               >
                 Send
                 <span aria-hidden="true">↗</span>

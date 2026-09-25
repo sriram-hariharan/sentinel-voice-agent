@@ -4,7 +4,9 @@ from fastapi import Depends, HTTPException, status
 
 from backend.app.agent.orchestrator import AgentOrchestrator
 from backend.app.config.settings import Settings, get_settings
+from backend.app.providers.embeddings import FastEmbedProvider
 from backend.app.providers.groq_llm import GroqLLMProvider
+from backend.app.rag.retrieval import PolicyRetriever
 
 
 def build_llm_provider(settings: Settings) -> GroqLLMProvider:
@@ -24,7 +26,21 @@ def build_llm_provider(settings: Settings) -> GroqLLMProvider:
 
 
 def build_agent_orchestrator(settings: Settings) -> AgentOrchestrator:
-    return AgentOrchestrator(llm=build_llm_provider(settings))
+    embedding_provider = FastEmbedProvider(
+        model_name=settings.embedding_model,
+        dimensions=settings.embedding_dimensions,
+        cache_dir=settings.fastembed_cache_dir,
+    )
+    return AgentOrchestrator(
+        llm=build_llm_provider(settings),
+        policy_retriever=PolicyRetriever(
+            embedding_provider=embedding_provider,
+            min_vector_similarity=(
+                settings.policy_retrieval_min_similarity
+            ),
+        ),
+        policy_top_k=settings.policy_retrieval_top_k,
+    )
 
 
 def get_agent_orchestrator(

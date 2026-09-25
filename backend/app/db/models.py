@@ -2,17 +2,20 @@ import uuid
 from datetime import date, datetime
 from decimal import Decimal
 
+from pgvector.sqlalchemy import Vector
 from sqlalchemy import (
     CheckConstraint,
+    Computed,
     Date,
     DateTime,
     ForeignKey,
+    Index,
     Numeric,
     String,
     Text,
     func,
 )
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy.dialects.postgresql import JSONB, TSVECTOR, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.app.db.base import Base
@@ -242,5 +245,60 @@ class SupportCase(Base):
         CheckConstraint(
             "status IN ('OPEN', 'ESCALATED', 'RESOLVED', 'CLOSED')",
             name="ck_support_cases_status",
+        ),
+    )
+
+
+class PolicyDocumentRecord(Base):
+    __tablename__ = "policy_documents"
+
+    document_id: Mapped[str] = mapped_column(String(100), primary_key=True)
+    slug: Mapped[str] = mapped_column(String(100), unique=True)
+    title: Mapped[str] = mapped_column(String(255))
+    version: Mapped[str] = mapped_column(String(32))
+    effective_date: Mapped[date] = mapped_column(Date)
+    source_path: Mapped[str] = mapped_column(String(500))
+    content_hash: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+
+class PolicyChunkRecord(Base):
+    __tablename__ = "policy_chunks"
+
+    chunk_id: Mapped[str] = mapped_column(String(180), primary_key=True)
+    document_id: Mapped[str] = mapped_column(
+        String(100),
+        ForeignKey("policy_documents.document_id", ondelete="CASCADE"),
+        index=True,
+    )
+    section: Mapped[str] = mapped_column(String(255))
+    chunk_index: Mapped[int]
+    content: Mapped[str] = mapped_column(Text)
+    embedding: Mapped[list[float]] = mapped_column(Vector(384))
+    search_vector: Mapped[str] = mapped_column(
+        TSVECTOR,
+        Computed(
+            "to_tsvector('english', coalesce(content, ''))",
+            persisted=True,
+        ),
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    __table_args__ = (
+        Index(
+            "ix_policy_chunks_search_vector",
+            "search_vector",
+            postgresql_using="gin",
         ),
     )

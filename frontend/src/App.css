@@ -543,7 +543,7 @@ button:disabled {
   text-transform: none;
 }
 
-.message > p:last-child {
+.message > .message-body {
   margin: 0;
   padding: 11px 14px;
   border: 1px solid #e1e7f0;
@@ -555,16 +555,38 @@ button:disabled {
   white-space: pre-wrap;
 }
 
-.message.user > p:last-child {
+.message.user > .message-body {
   border-color: #275cc9;
   border-radius: 14px 5px 14px 14px;
   background: #275cc9;
   color: #fff;
 }
 
-.message.assistant.interrupted > p:last-child {
+.message.assistant.interrupted > .message-body {
   border-color: #e3b69e;
   background: #fff8f3;
+}
+
+.message-sources {
+  margin-top: 7px;
+  padding: 8px 10px;
+  border-left: 2px solid #9ab3df;
+  color: #60708a;
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.message-sources > span {
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.message-sources ul {
+  display: grid;
+  gap: 2px;
+  margin: 4px 0 0;
+  padding-left: 15px;
 }
 
 .typing-indicator {

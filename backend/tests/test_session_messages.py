@@ -110,6 +110,7 @@ def test_unauthenticated_session_can_make_normal_agent_turn(api_context) -> None
         "customer_id": None,
         "executed_tools": [],
         "pending_action": None,
+        "policy_sources": [],
     }
 
     refreshed = client.get(f"/sessions/{state.session_id}")

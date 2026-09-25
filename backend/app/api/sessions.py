@@ -69,6 +69,7 @@ class SessionResponse(BaseModel):
     turn_status: AgentTurnStatus | None
     pending_action: str | None
     voice_playback: VoicePlaybackState | None
+    policy_sources: list[str]
 
 
 class VoicePlaybackRequest(BaseModel):
@@ -136,6 +137,7 @@ class MessageResponse(BaseModel):
     customer_id: UUID | None
     executed_tools: list[str]
     pending_action: str | None
+    policy_sources: list[str]
 
 
 def _session_response(state: ConversationState) -> SessionResponse:
@@ -151,6 +153,7 @@ def _session_response(state: ConversationState) -> SessionResponse:
             else None
         ),
         voice_playback=state.voice_playback,
+        policy_sources=state.retrieved_policy_sources,
     )
 
 
@@ -364,4 +367,5 @@ async def create_message(
             if state.pending_action is not None
             else None
         ),
+        policy_sources=result.policy_sources,
     )

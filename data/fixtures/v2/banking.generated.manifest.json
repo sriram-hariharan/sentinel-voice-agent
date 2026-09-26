@@ -1,0 +1,23 @@
+{
+  "config_version": "v2-banking-config.v1",
+  "generator_version": "v2-banking-generator.v1",
+  "provenance": "fully synthetic deterministic data generated without external or real customer data",
+  "record_counts": {
+    "accounts": 48,
+    "annotations": 5,
+    "cards": 40,
+    "customers": 32,
+    "disputes": 8,
+    "support_cases": 0,
+    "transactions": 768
+  },
+  "reference_datetime": "2026-09-26T12:00:00-04:00",
+  "schema_version": "v2-banking-manifest.v1",
+  "seed": 20260926,
+  "sha256": {
+    "canonical_v1_banking_fixture": "a1e1a48dcaa0f998975dbe8aea8f04c6f93c668b7a0d5fabc7a1f9275b22540d",
+    "generated_banking_fixture": "4b60b9fb26ca5c10a2a317fbad5c49536997c64b0be6986474f09c71c0d40ed3",
+    "generation_config": "2c55bb85e6eca8dea6ee29dd14dfba3e7545e99cba161fc89e19856ca8238cc2",
+    "suspicious_patterns": "0bd0ad85e92c654b4596074fa6b5bd4091aad68517df52102b1ac1d95fd8a56f"
+  }
+}

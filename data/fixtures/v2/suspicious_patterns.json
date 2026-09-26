@@ -1,0 +1,60 @@
+{
+  "annotations": [
+    {
+      "annotation_id": "v2-pattern-001",
+      "customer_id": "3020565a-074f-5351-b0b0-46feae6bf9c0",
+      "explanation": "Synthetic purchase location differs from the generated customer's otherwise regional activity.",
+      "pattern_type": "unusual_location",
+      "transaction_ids": [
+        "e74d1b4c-b30e-5f40-b827-e2381b6f3eb4"
+      ]
+    },
+    {
+      "annotation_id": "v2-pattern-002",
+      "customer_id": "5a64bbce-e18a-5f90-9312-85436a2306fa",
+      "explanation": "Same merchant and amount on nearby dates with posted and pending statuses creates deliberate selector ambiguity.",
+      "pattern_type": "near_duplicate_transactions",
+      "transaction_ids": [
+        "65147f99-ecc0-57ad-9f8b-900837cc2f2a",
+        "f0e3e388-a77e-5552-98c7-28b91036cb48"
+      ]
+    },
+    {
+      "annotation_id": "v2-pattern-003",
+      "customer_id": "7afe38eb-d20d-56c8-9b13-3baadd262314",
+      "explanation": "Four synthetic purchases occur within a short deterministic time window.",
+      "pattern_type": "rapid_transaction_burst",
+      "transaction_ids": [
+        "b2047f98-188a-55ac-ad2b-0391efbc10c3",
+        "d7f7d0b0-61f1-537d-84d5-76a0208cb042",
+        "8f761b05-f392-5a8c-81cd-ca5295e2db42",
+        "ac48e141-7d8c-5c5d-a532-a10f404a971d"
+      ]
+    },
+    {
+      "annotation_id": "v2-pattern-004",
+      "customer_id": "0a097f04-ad82-5f68-97dc-c5be92275433",
+      "explanation": "A deliberately large synthetic purchase exceeds the customer's surrounding everyday amounts.",
+      "pattern_type": "unusual_amount",
+      "transaction_ids": [
+        "534f06b2-6f16-5a97-9ce8-887449827177"
+      ]
+    },
+    {
+      "annotation_id": "v2-pattern-005",
+      "customer_id": "2d2c49e0-65c5-5c38-9bba-79173f5963a9",
+      "explanation": "Repeated synthetic purchases at one merchant support merchant selector and sequence evaluation.",
+      "pattern_type": "repeated_merchant_pattern",
+      "transaction_ids": [
+        "3ff90288-1296-518f-8033-2ce0c3ab8969",
+        "469c0f5c-d5c2-5556-9ddb-a33ee070056a",
+        "ad8b05a5-ecb6-5a32-89f6-0923c43c73d4",
+        "43b4380e-45f3-5bd7-9c72-e65211687651",
+        "f897516d-691c-5c97-9146-9dd397b41a08"
+      ]
+    }
+  ],
+  "interpretation": "not fraud labels or fraud ground truth",
+  "provenance": "fully synthetic deterministic evaluation metadata",
+  "schema_version": "v2-suspicious-patterns.v1"
+}

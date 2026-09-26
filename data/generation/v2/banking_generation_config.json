@@ -1,0 +1,36 @@
+{
+  "config_version": "v2-banking-config.v1",
+  "generator_version": "v2-banking-generator.v1",
+  "seed": 20260926,
+  "reference_datetime": "2026-09-26T12:00:00-04:00",
+  "customer_count": 32,
+  "account_settings": {
+    "minimum_per_customer": 1,
+    "maximum_per_customer": 2,
+    "multiple_accounts_every": 2
+  },
+  "card_settings": {
+    "minimum_per_customer": 1,
+    "maximum_per_customer": 2,
+    "multiple_cards_every": 4,
+    "frozen_primary_every": 11
+  },
+  "transaction_settings": {
+    "per_customer": 24,
+    "lookback_days": 180,
+    "status_weights": {
+      "POSTED": 76,
+      "PENDING": 12,
+      "REVERSED": 7,
+      "DECLINED": 5
+    }
+  },
+  "dispute_count": 8,
+  "pattern_coverage": {
+    "unusual_location": true,
+    "near_duplicate_transactions": true,
+    "rapid_transaction_burst": true,
+    "unusual_amount": true,
+    "repeated_merchant_pattern": true
+  }
+}

@@ -19,18 +19,40 @@ from backend.app.db.models import (
 from backend.app.db.session import get_session_factory
 
 FIXTURE_PATH = Path("data/fixtures/banking.json")
+V2_FIXTURE_PATH = Path("data/fixtures/v2/banking.generated.json")
+FIXTURE_COLLECTIONS = (
+    "customers",
+    "accounts",
+    "cards",
+    "transactions",
+    "disputes",
+    "support_cases",
+)
 
 
-def load_fixtures() -> dict:
-    return json.loads(FIXTURE_PATH.read_text())
+def load_fixtures(profile: str = "v1") -> dict:
+    canonical = json.loads(FIXTURE_PATH.read_text())
+    if profile == "v1":
+        return canonical
+    if profile != "v2":
+        raise ValueError(f"unsupported seed profile: {profile}")
+
+    generated = json.loads(V2_FIXTURE_PATH.read_text())
+    return {
+        collection: [
+            *canonical.get(collection, []),
+            *generated.get(collection, []),
+        ]
+        for collection in FIXTURE_COLLECTIONS
+    }
 
 
 def parse_uuid(value: str) -> uuid.UUID:
     return uuid.UUID(value)
 
 
-async def seed(reset: bool) -> None:
-    fixture = load_fixtures()
+async def seed(reset: bool, profile: str = "v1") -> None:
+    fixture = load_fixtures(profile)
     session_factory = get_session_factory()
 
     async with session_factory() as session:
@@ -155,9 +177,18 @@ def main() -> None:
         action="store_true",
         help="Delete existing synthetic banking data before seeding.",
     )
+    parser.add_argument(
+        "--profile",
+        choices=("v1", "v2"),
+        default="v1",
+        help=(
+            "Seed the canonical V1 fixture, or explicitly compose it with "
+            "the generated V2 add-on."
+        ),
+    )
     args = parser.parse_args()
 
-    asyncio.run(seed(reset=args.reset))
+    asyncio.run(seed(reset=args.reset, profile=args.profile))
 
 
 if __name__ == "__main__":

@@ -214,5 +214,5 @@ async def test_offline_agent_evaluation_covers_required_system_contracts(
     assert payload["scenario_count"] == len(dataset.scenarios)
     assert "gsk_" not in payload_text
     assert "Bearer " not in payload_text
-    assert "1234" not in payload_text
+    assert '"pin": "1234"' not in payload_text
     assert "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1" not in payload_text

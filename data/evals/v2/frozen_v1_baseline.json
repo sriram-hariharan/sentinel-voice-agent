@@ -1,0 +1,15 @@
+{
+  "schema_version": "frozen-v1-baseline.v1",
+  "v1_tag": "v1.0.0",
+  "v1_commit": "23f319f",
+  "backend_tests": 299,
+  "frontend_tests": 15,
+  "agent_scenarios": 35,
+  "agent_passed": 35,
+  "retrieval_recall_at_1": 0.938,
+  "retrieval_recall_at_3": 1.0,
+  "retrieval_top1_hit_rate": 1.0,
+  "retrieval_mrr": 1.0,
+  "canonical_banking_fixture": "data/fixtures/banking.json",
+  "canonical_fixture_immutable": true
+}

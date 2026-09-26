@@ -1,0 +1,493 @@
+{
+  "schema_version": "intent-risk.v1",
+  "dataset_version": "2026-09-26.seed1",
+  "advisory_only": true,
+  "examples": [
+    {
+      "example_id": "account_balance_001",
+      "text": "What is the balance in my checking account?",
+      "intent": "account_balance",
+      "risk": "PRIVATE_READ",
+      "group_id": "account_balance_train_01",
+      "split": "train",
+      "tags": ["direct", "checking"]
+    },
+    {
+      "example_id": "account_balance_002",
+      "text": "How much money do I have in checking?",
+      "intent": "account_balance",
+      "risk": "PRIVATE_READ",
+      "group_id": "account_balance_train_01",
+      "split": "train",
+      "tags": ["paraphrase", "checking"]
+    },
+    {
+      "example_id": "account_balance_003",
+      "text": "Tell me what is available to spend from savings.",
+      "intent": "account_balance",
+      "risk": "PRIVATE_READ",
+      "group_id": "account_balance_train_01",
+      "split": "train",
+      "tags": ["indirect", "savings"]
+    },
+    {
+      "example_id": "account_balance_004",
+      "text": "Can you read out my available balance?",
+      "intent": "account_balance",
+      "risk": "PRIVATE_READ",
+      "group_id": "account_balance_validation_01",
+      "split": "validation",
+      "tags": ["indirect"]
+    },
+    {
+      "example_id": "account_balance_005",
+      "text": "Actually, not my recent charges—just tell me my checking balance.",
+      "intent": "account_balance",
+      "risk": "PRIVATE_READ",
+      "group_id": "account_balance_locked_01",
+      "split": "locked_test",
+      "tags": ["correction", "negation"]
+    },
+    {
+      "example_id": "account_balance_006",
+      "text": "Do I have enough available in savings right now?",
+      "intent": "account_balance",
+      "risk": "PRIVATE_READ",
+      "group_id": "account_balance_locked_01",
+      "split": "locked_test",
+      "tags": ["indirect", "challenge"]
+    },
+    {
+      "example_id": "card_status_001",
+      "text": "Is my card ending in 1842 active?",
+      "intent": "card_status",
+      "risk": "PRIVATE_READ",
+      "group_id": "card_status_train_01",
+      "split": "train",
+      "tags": ["direct", "card_selector"]
+    },
+    {
+      "example_id": "card_status_002",
+      "text": "Check whether my credit card is frozen.",
+      "intent": "card_status",
+      "risk": "PRIVATE_READ",
+      "group_id": "card_status_train_01",
+      "split": "train",
+      "tags": ["status", "frozen"]
+    },
+    {
+      "example_id": "card_status_003",
+      "text": "What state is my debit card in?",
+      "intent": "card_status",
+      "risk": "PRIVATE_READ",
+      "group_id": "card_status_train_01",
+      "split": "train",
+      "tags": ["indirect"]
+    },
+    {
+      "example_id": "card_status_004",
+      "text": "Can I still use the card ending 6620?",
+      "intent": "card_status",
+      "risk": "PRIVATE_READ",
+      "group_id": "card_status_validation_01",
+      "split": "validation",
+      "tags": ["indirect", "card_selector"]
+    },
+    {
+      "example_id": "card_status_005",
+      "text": "Don't freeze anything; I only want to know my card's status.",
+      "intent": "card_status",
+      "risk": "PRIVATE_READ",
+      "group_id": "card_status_locked_01",
+      "split": "locked_test",
+      "tags": ["negation", "policy_versus_action"]
+    },
+    {
+      "example_id": "card_status_006",
+      "text": "I tried paying and it failed—has my card been locked or frozen?",
+      "intent": "card_status",
+      "risk": "PRIVATE_READ",
+      "group_id": "card_status_locked_01",
+      "split": "locked_test",
+      "tags": ["indirect", "challenge"]
+    },
+    {
+      "example_id": "create_dispute_001",
+      "text": "Dispute the Metro Market transaction.",
+      "intent": "create_dispute",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "create_dispute_train_01",
+      "split": "train",
+      "tags": ["direct", "protected_action"]
+    },
+    {
+      "example_id": "create_dispute_002",
+      "text": "I want to challenge that charge on my account.",
+      "intent": "create_dispute",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "create_dispute_train_01",
+      "split": "train",
+      "tags": ["indirect", "protected_action"]
+    },
+    {
+      "example_id": "create_dispute_003",
+      "text": "Please open a dispute for the London purchase.",
+      "intent": "create_dispute",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "create_dispute_train_01",
+      "split": "train",
+      "tags": ["direct", "location_selector"]
+    },
+    {
+      "example_id": "create_dispute_004",
+      "text": "That payment was not mine; start the process to contest it.",
+      "intent": "create_dispute",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "create_dispute_validation_01",
+      "split": "validation",
+      "tags": ["indirect", "protected_action"]
+    },
+    {
+      "example_id": "create_dispute_005",
+      "text": "Actually, dispute the second Metro Market charge, not the first one.",
+      "intent": "create_dispute",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "create_dispute_locked_01",
+      "split": "locked_test",
+      "tags": ["correction", "ambiguity", "protected_action"]
+    },
+    {
+      "example_id": "create_dispute_006",
+      "text": "Can you file something so I can get that unauthorized charge investigated?",
+      "intent": "create_dispute",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "create_dispute_locked_01",
+      "split": "locked_test",
+      "tags": ["indirect", "challenge", "protected_action"]
+    },
+    {
+      "example_id": "escalation_001",
+      "text": "Connect me with a human agent.",
+      "intent": "escalation",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "escalation_train_01",
+      "split": "train",
+      "tags": ["direct"]
+    },
+    {
+      "example_id": "escalation_002",
+      "text": "I need to speak to a person about this.",
+      "intent": "escalation",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "escalation_train_01",
+      "split": "train",
+      "tags": ["paraphrase"]
+    },
+    {
+      "example_id": "escalation_003",
+      "text": "Please transfer me to support.",
+      "intent": "escalation",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "escalation_train_01",
+      "split": "train",
+      "tags": ["direct"]
+    },
+    {
+      "example_id": "escalation_004",
+      "text": "This is too complicated; let me talk with a representative.",
+      "intent": "escalation",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "escalation_validation_01",
+      "split": "validation",
+      "tags": ["indirect"]
+    },
+    {
+      "example_id": "escalation_005",
+      "text": "Never mind the dispute—get me a human instead.",
+      "intent": "escalation",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "escalation_locked_01",
+      "split": "locked_test",
+      "tags": ["correction", "negation"]
+    },
+    {
+      "example_id": "escalation_006",
+      "text": "I don't want the automated answer; who can take over this conversation?",
+      "intent": "escalation",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "escalation_locked_01",
+      "split": "locked_test",
+      "tags": ["indirect", "challenge"]
+    },
+    {
+      "example_id": "freeze_card_001",
+      "text": "Freeze my card ending in 1842.",
+      "intent": "freeze_card",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "freeze_card_train_01",
+      "split": "train",
+      "tags": ["direct", "protected_action"]
+    },
+    {
+      "example_id": "freeze_card_002",
+      "text": "Lock my debit card now.",
+      "intent": "freeze_card",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "freeze_card_train_01",
+      "split": "train",
+      "tags": ["paraphrase", "protected_action"]
+    },
+    {
+      "example_id": "freeze_card_003",
+      "text": "Make the card unusable until I find it.",
+      "intent": "freeze_card",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "freeze_card_train_01",
+      "split": "train",
+      "tags": ["indirect", "protected_action"]
+    },
+    {
+      "example_id": "freeze_card_004",
+      "text": "I lost my card, so please disable it right away.",
+      "intent": "freeze_card",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "freeze_card_validation_01",
+      "split": "validation",
+      "tags": ["indirect", "protected_action"]
+    },
+    {
+      "example_id": "freeze_card_005",
+      "text": "Wait, freeze the 1842 card, not the one ending 6620.",
+      "intent": "freeze_card",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "freeze_card_locked_01",
+      "split": "locked_test",
+      "tags": ["correction", "card_selector", "protected_action"]
+    },
+    {
+      "example_id": "freeze_card_006",
+      "text": "Stop anyone from using that card while I look for it.",
+      "intent": "freeze_card",
+      "risk": "PROTECTED_WRITE",
+      "group_id": "freeze_card_locked_01",
+      "split": "locked_test",
+      "tags": ["indirect", "challenge", "protected_action"]
+    },
+    {
+      "example_id": "informational_policy_001",
+      "text": "What is the bank's card-freeze policy?",
+      "intent": "informational_policy",
+      "risk": "PUBLIC",
+      "group_id": "informational_policy_train_01",
+      "split": "train",
+      "tags": ["policy", "freeze"]
+    },
+    {
+      "example_id": "informational_policy_002",
+      "text": "How long does a transaction dispute usually take?",
+      "intent": "informational_policy",
+      "risk": "PUBLIC",
+      "group_id": "informational_policy_train_01",
+      "split": "train",
+      "tags": ["policy", "dispute"]
+    },
+    {
+      "example_id": "informational_policy_003",
+      "text": "Are there fees for replacing a lost card?",
+      "intent": "informational_policy",
+      "risk": "PUBLIC",
+      "group_id": "informational_policy_train_01",
+      "split": "train",
+      "tags": ["policy", "fees"]
+    },
+    {
+      "example_id": "informational_policy_004",
+      "text": "What would happen if I froze my card?",
+      "intent": "informational_policy",
+      "risk": "PUBLIC",
+      "group_id": "informational_policy_validation_01",
+      "split": "validation",
+      "tags": ["policy_versus_action", "conditional"]
+    },
+    {
+      "example_id": "informational_policy_005",
+      "text": "Don't freeze it—I only want to understand the freeze rules.",
+      "intent": "informational_policy",
+      "risk": "PUBLIC",
+      "group_id": "informational_policy_locked_01",
+      "split": "locked_test",
+      "tags": ["negation", "policy_versus_action"]
+    },
+    {
+      "example_id": "informational_policy_006",
+      "text": "I'm not filing a dispute yet; explain what qualifies for one.",
+      "intent": "informational_policy",
+      "risk": "PUBLIC",
+      "group_id": "informational_policy_locked_01",
+      "split": "locked_test",
+      "tags": ["negation", "policy_versus_action", "challenge"]
+    },
+    {
+      "example_id": "recent_transactions_001",
+      "text": "Show me my recent transactions.",
+      "intent": "recent_transactions",
+      "risk": "PRIVATE_READ",
+      "group_id": "recent_transactions_train_01",
+      "split": "train",
+      "tags": ["direct"]
+    },
+    {
+      "example_id": "recent_transactions_002",
+      "text": "What purchases have posted lately?",
+      "intent": "recent_transactions",
+      "risk": "PRIVATE_READ",
+      "group_id": "recent_transactions_train_01",
+      "split": "train",
+      "tags": ["paraphrase", "posted"]
+    },
+    {
+      "example_id": "recent_transactions_003",
+      "text": "Read my latest checking account activity.",
+      "intent": "recent_transactions",
+      "risk": "PRIVATE_READ",
+      "group_id": "recent_transactions_train_01",
+      "split": "train",
+      "tags": ["indirect", "checking"]
+    },
+    {
+      "example_id": "recent_transactions_004",
+      "text": "Have there been any new charges on my account?",
+      "intent": "recent_transactions",
+      "risk": "PRIVATE_READ",
+      "group_id": "recent_transactions_validation_01",
+      "split": "validation",
+      "tags": ["indirect"]
+    },
+    {
+      "example_id": "recent_transactions_005",
+      "text": "Skip the balance; I want the last few transactions instead.",
+      "intent": "recent_transactions",
+      "risk": "PRIVATE_READ",
+      "group_id": "recent_transactions_locked_01",
+      "split": "locked_test",
+      "tags": ["correction", "negation"]
+    },
+    {
+      "example_id": "recent_transactions_006",
+      "text": "What's been moving in and out of checking this week?",
+      "intent": "recent_transactions",
+      "risk": "PRIVATE_READ",
+      "group_id": "recent_transactions_locked_01",
+      "split": "locked_test",
+      "tags": ["indirect", "challenge"]
+    },
+    {
+      "example_id": "transaction_details_001",
+      "text": "Tell me about the Global Digital Store transaction.",
+      "intent": "transaction_details",
+      "risk": "PRIVATE_READ",
+      "group_id": "transaction_details_train_01",
+      "split": "train",
+      "tags": ["direct", "merchant_selector"]
+    },
+    {
+      "example_id": "transaction_details_002",
+      "text": "What was that $189.99 charge?",
+      "intent": "transaction_details",
+      "risk": "PRIVATE_READ",
+      "group_id": "transaction_details_train_01",
+      "split": "train",
+      "tags": ["amount_selector", "indirect"]
+    },
+    {
+      "example_id": "transaction_details_003",
+      "text": "Give me the details for the pending Metro Market purchase.",
+      "intent": "transaction_details",
+      "risk": "PRIVATE_READ",
+      "group_id": "transaction_details_train_01",
+      "split": "train",
+      "tags": ["merchant_selector", "status_selector"]
+    },
+    {
+      "example_id": "transaction_details_004",
+      "text": "Where and when did the London transaction happen?",
+      "intent": "transaction_details",
+      "risk": "PRIVATE_READ",
+      "group_id": "transaction_details_validation_01",
+      "split": "validation",
+      "tags": ["location_selector", "indirect"]
+    },
+    {
+      "example_id": "transaction_details_005",
+      "text": "I meant the September 22 Metro charge, not the pending one.",
+      "intent": "transaction_details",
+      "risk": "PRIVATE_READ",
+      "group_id": "transaction_details_locked_01",
+      "split": "locked_test",
+      "tags": ["correction", "date_selector", "ambiguity"]
+    },
+    {
+      "example_id": "transaction_details_006",
+      "text": "Which merchant took the forty-eight forty-five payment?",
+      "intent": "transaction_details",
+      "risk": "PRIVATE_READ",
+      "group_id": "transaction_details_locked_01",
+      "split": "locked_test",
+      "tags": ["spoken_amount", "challenge", "ambiguity"]
+    },
+    {
+      "example_id": "unsupported_or_uncertain_001",
+      "text": "Can you increase my credit limit?",
+      "intent": "unsupported_or_uncertain",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "unsupported_or_uncertain_train_01",
+      "split": "train",
+      "tags": ["unsupported"]
+    },
+    {
+      "example_id": "unsupported_or_uncertain_002",
+      "text": "Send money to my landlord.",
+      "intent": "unsupported_or_uncertain",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "unsupported_or_uncertain_train_01",
+      "split": "train",
+      "tags": ["unsupported", "write_request"]
+    },
+    {
+      "example_id": "unsupported_or_uncertain_003",
+      "text": "Do something about that charge.",
+      "intent": "unsupported_or_uncertain",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "unsupported_or_uncertain_train_01",
+      "split": "train",
+      "tags": ["ambiguous"]
+    },
+    {
+      "example_id": "unsupported_or_uncertain_004",
+      "text": "Fix my account for me.",
+      "intent": "unsupported_or_uncertain",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "unsupported_or_uncertain_validation_01",
+      "split": "validation",
+      "tags": ["ambiguous", "indirect"]
+    },
+    {
+      "example_id": "unsupported_or_uncertain_005",
+      "text": "Cancel that—actually, I'm not sure what I need.",
+      "intent": "unsupported_or_uncertain",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "unsupported_or_uncertain_locked_01",
+      "split": "locked_test",
+      "tags": ["cancellation_like", "uncertain"]
+    },
+    {
+      "example_id": "unsupported_or_uncertain_006",
+      "text": "Take care of the thing we were discussing before.",
+      "intent": "unsupported_or_uncertain",
+      "risk": "ESCALATION_OR_UNCERTAIN",
+      "group_id": "unsupported_or_uncertain_locked_01",
+      "split": "locked_test",
+      "tags": ["ambiguous", "challenge"]
+    }
+  ]
+}

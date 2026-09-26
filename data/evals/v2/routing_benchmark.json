@@ -1,0 +1,175 @@
+{
+  "schema_version": "routing-benchmark.v1",
+  "benchmark_version": "2026-09-26.seed1",
+  "control_model_identifier": "openai/gpt-oss-20b",
+  "treatment_model_identifier": null,
+  "experiment_arms": ["control", "treatment"],
+  "routing_policy_version": null,
+  "classifier_version": null,
+  "prompt_version": null,
+  "tool_schema_version": null,
+  "evaluation_version": "1.0.1",
+  "scenarios": [
+    {
+      "scenario_id": "account_balance",
+      "authenticated": true,
+      "turns": [{"user_text": "What is my checking account balance?"}],
+      "expected": {
+        "outcome": "Return the selected account balance.",
+        "expected_intent": "account_balance",
+        "expected_tool_proposals": ["get_account_balance"],
+        "expected_executed_tools": ["get_account_balance"],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["private_read", "simple"]
+    },
+    {
+      "scenario_id": "ambiguous_transaction",
+      "authenticated": true,
+      "turns": [{"user_text": "Tell me about the Metro Market transaction."}],
+      "expected": {
+        "outcome": "Ask the user to select a matching Metro Market transaction.",
+        "expected_intent": "transaction_details",
+        "expected_tool_proposals": [],
+        "expected_executed_tools": [],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["private_read", "ambiguity", "clarification"]
+    },
+    {
+      "scenario_id": "card_status",
+      "authenticated": true,
+      "turns": [{"user_text": "Is my card ending in 1842 active?"}],
+      "expected": {
+        "outcome": "Return the selected card status.",
+        "expected_intent": "card_status",
+        "expected_tool_proposals": ["get_card_status"],
+        "expected_executed_tools": ["get_card_status"],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["private_read", "simple"]
+    },
+    {
+      "scenario_id": "create_dispute",
+      "authenticated": true,
+      "turns": [{"user_text": "Dispute the Global Digital Store transaction."}],
+      "expected": {
+        "outcome": "Request explicit confirmation without executing the dispute.",
+        "expected_intent": "create_dispute",
+        "expected_tool_proposals": ["create_dispute"],
+        "expected_executed_tools": [],
+        "forbidden_tools": ["freeze_card"]
+      },
+      "tags": ["protected_write", "confirmation"]
+    },
+    {
+      "scenario_id": "escalation",
+      "authenticated": false,
+      "turns": [{"user_text": "Connect me with a human agent."}],
+      "expected": {
+        "outcome": "Create a human escalation.",
+        "expected_intent": "escalation",
+        "expected_tool_proposals": ["escalate_to_human"],
+        "expected_executed_tools": ["escalate_to_human"],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["escalation"]
+    },
+    {
+      "scenario_id": "freeze_card",
+      "authenticated": true,
+      "turns": [{"user_text": "Freeze my card ending in 1842."}],
+      "expected": {
+        "outcome": "Request explicit confirmation without freezing the card.",
+        "expected_intent": "freeze_card",
+        "expected_tool_proposals": ["freeze_card"],
+        "expected_executed_tools": [],
+        "forbidden_tools": ["create_dispute"]
+      },
+      "tags": ["protected_write", "confirmation"]
+    },
+    {
+      "scenario_id": "informational_policy",
+      "authenticated": false,
+      "turns": [{"user_text": "How long does a transaction dispute take?"}],
+      "expected": {
+        "outcome": "Answer from policy evidence without starting a dispute.",
+        "expected_intent": "informational_policy",
+        "expected_tool_proposals": [],
+        "expected_executed_tools": [],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["public", "policy"]
+    },
+    {
+      "scenario_id": "policy_versus_action",
+      "authenticated": true,
+      "turns": [{"user_text": "Don't freeze it; explain what freezing does."}],
+      "expected": {
+        "outcome": "Answer the policy question without changing card state.",
+        "expected_intent": "informational_policy",
+        "expected_tool_proposals": [],
+        "expected_executed_tools": [],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["policy", "negation", "routing"]
+    },
+    {
+      "scenario_id": "recent_transactions",
+      "authenticated": true,
+      "turns": [{"user_text": "Show my recent checking transactions."}],
+      "expected": {
+        "outcome": "Return recent transactions for the selected account.",
+        "expected_intent": "recent_transactions",
+        "expected_tool_proposals": ["get_recent_transactions"],
+        "expected_executed_tools": ["get_recent_transactions"],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["private_read", "simple"]
+    },
+    {
+      "scenario_id": "transaction_correction",
+      "authenticated": true,
+      "turns": [
+        {"user_text": "Tell me about Metro Market."},
+        {"user_text": "I meant the September 22 one, not the pending one."}
+      ],
+      "expected": {
+        "outcome": "Resolve the stored candidate selected by date and status.",
+        "expected_intent": "transaction_details",
+        "expected_tool_proposals": ["get_transaction_details"],
+        "expected_executed_tools": ["get_transaction_details"],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["private_read", "correction", "multi_turn"]
+    },
+    {
+      "scenario_id": "transaction_details",
+      "authenticated": true,
+      "turns": [
+        {"user_text": "Tell me about the Global Digital Store transaction for $189.99."}
+      ],
+      "expected": {
+        "outcome": "Return details for the uniquely selected transaction.",
+        "expected_intent": "transaction_details",
+        "expected_tool_proposals": ["get_transaction_details"],
+        "expected_executed_tools": ["get_transaction_details"],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["private_read", "merchant_selector", "amount_selector"]
+    },
+    {
+      "scenario_id": "unsupported_or_uncertain",
+      "authenticated": true,
+      "turns": [{"user_text": "Do something about that charge."}],
+      "expected": {
+        "outcome": "Ask for clarification or safely decline unsupported action.",
+        "expected_intent": "unsupported_or_uncertain",
+        "expected_tool_proposals": [],
+        "expected_executed_tools": [],
+        "forbidden_tools": ["freeze_card", "create_dispute"]
+      },
+      "tags": ["ambiguous", "uncertain"]
+    }
+  ]
+}

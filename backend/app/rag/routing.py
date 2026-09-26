@@ -2,6 +2,7 @@ import re
 
 _POLICY_TERMS = re.compile(
     r"\b(policy|policies|disput(?:e|es|ing)|unauthori[sz]ed|unrecognized|"
+    r"unfamiliar|compromis(?:e|ed)|suspicious|"
     r"don't recognize|do not recognize|pending|posted|reversed|"
     r"freez(?:e|es|ing)|frozen|"
     r"unfreeze|replacement|replace|"
@@ -9,7 +10,8 @@ _POLICY_TERMS = re.compile(
     re.IGNORECASE,
 )
 _INFORMATIONAL_FORM = re.compile(
-    r"\b(how long|what happens|what should|when can|can i|am i able|"
+    r"\b(how long|how does|how do|what happens|what should|"
+    r"what(?:'s| is) the process|when can|when should|can i|am i able|"
     r"should i|does|whether|why|what is .*policy|tell me about|explain)\b",
     re.IGNORECASE,
 )

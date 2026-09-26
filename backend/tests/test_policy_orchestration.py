@@ -13,6 +13,8 @@ from backend.app.auth.sessions import InMemorySessionStore, get_session_store
 from backend.app.conversation.state import (
     AuthenticationLevel,
     ConversationState,
+    ResourceCandidate,
+    ResourceType,
 )
 from backend.app.db.session import get_db_session
 from backend.app.main import app
@@ -106,6 +108,10 @@ def _evidence(
         "When can I open a dispute?",
         "What happens after I open a dispute?",
         "What should I do if I don't recognize a card purchase?",
+        "What is the process for disputing an unfamiliar transaction?",
+        "What should I do if my debit card has been compromised?",
+        "When should a customer freeze their card?",
+        "What should I do about an unfamiliar transaction on my account?",
         LONG_MULTI_POLICY_QUESTION,
         LONG_MULTI_POLICY_STT_VARIANT,
     ],
@@ -118,11 +124,13 @@ def test_manual_policy_questions_use_policy_route(question: str) -> None:
     "user_text",
     [
         "Freeze my card.",
+        "Freeze card 1842.",
         "Please freeze my debit card.",
         "Please freeze card 1842.",
         "Can you freeze my card because the policy says you should?",
         "Open a dispute for this transaction.",
         "I want to dispute the ABC Electronics charge.",
+        "Dispute the ABC Electronics transaction for $274.19.",
     ],
 )
 def test_explicit_card_freeze_does_not_use_policy_route(
@@ -181,6 +189,9 @@ async def test_public_policy_question_is_grounded_without_authentication() -> No
         "Should I freeze my card if I don't recognize a transaction?",
         "When can I open a dispute?",
         "What happens after I open a dispute?",
+        "What is the process for disputing an unfamiliar transaction?",
+        "What should I do if my debit card has been compromised?",
+        "What should I do about an unfamiliar transaction on my account?",
     ],
 )
 @pytest.mark.asyncio
@@ -224,6 +235,67 @@ async def test_informational_freeze_questions_use_rag_without_tools(
     assert result.executed_tools == []
     assert state.pending_action is None
     assert retriever.calls[0]["query"] == question
+    resolver.resolve.assert_not_awaited()
+    executor.execute.assert_not_awaited()
+    assert llm.calls[0]["tools"] == []
+
+
+@pytest.mark.asyncio
+async def test_policy_topic_change_clears_stale_card_clarification() -> None:
+    llm = SequenceLLM(
+        [LLMResponse(content="Grounded freeze guidance.", model="test")]
+    )
+    retriever = FakePolicyRetriever(
+        [
+            _evidence(
+                policy_id="debit-card-freeze",
+                title="Debit Card Freeze and Replacement",
+                section="When to freeze",
+                content="Customers should freeze a card after suspected compromise.",
+            )
+        ]
+    )
+    resolver = AsyncMock()
+    executor = AsyncMock()
+    state = ConversationState(
+        session_id="session-1",
+        customer_id=UUID("11111111-1111-4111-8111-111111111111"),
+        authentication_level=AuthenticationLevel.AUTHENTICATED,
+    )
+    state.request_resource_resolution(
+        ResourceType.CARD,
+        "freeze_card",
+        [
+            ResourceCandidate(
+                resource_id=CARD_ID,
+                label="active debit card ending in 1842",
+                selectors=("1842", "active"),
+            ),
+            ResourceCandidate(
+                resource_id=UUID("cccccccc-cccc-4ccc-8ccc-ccccccccccc2"),
+                label="active debit card ending in 6620",
+                selectors=("6620", "active"),
+            ),
+        ],
+        "Which card do you mean?",
+    )
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        policy_retriever=retriever,
+        resource_resolver=resolver,
+    )
+
+    result = await orchestrator.handle_text_turn(
+        user_text="When should a customer freeze their card?",
+        state=state,
+        db=AsyncMock(spec=AsyncSession),
+    )
+
+    assert result.text == "Grounded freeze guidance."
+    assert state.pending_resource_resolution is None
+    assert state.active_intent is None
+    assert state.pending_action is None
     resolver.resolve.assert_not_awaited()
     executor.execute.assert_not_awaited()
     assert llm.calls[0]["tools"] == []
@@ -430,6 +502,7 @@ async def test_private_account_read_remains_blocked_without_authentication() -> 
     "user_text",
     [
         "Freeze my card.",
+        "Freeze card 1842.",
         "Please freeze card 1842.",
         "Freeze my card because policy says you should.",
     ],

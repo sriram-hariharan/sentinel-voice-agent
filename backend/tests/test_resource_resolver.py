@@ -32,6 +32,8 @@ FROZEN_CARD_ID = UUID("cccccccc-cccc-4ccc-8ccc-ccccccccccc2")
 OTHER_CARD_ID = UUID("dddddddd-dddd-4ddd-8ddd-ddddddddddd1")
 TRANSACTION_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee1")
 OTHER_TRANSACTION_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee2")
+CLOUD_COFFEE_TRANSACTION_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee3")
+GLOBAL_DIGITAL_TRANSACTION_ID = UUID("eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee4")
 
 
 class SequenceLLM:
@@ -94,18 +96,25 @@ def _transaction(
     transaction_id: UUID,
     amount: str,
     day: int,
+    *,
+    merchant_name: str = "ABC Electronics",
+    status: str = "POSTED",
 ) -> Transaction:
     return Transaction(
         transaction_id=transaction_id,
         account_id=CHECKING_ID,
         card_id=CARD_ID,
-        merchant_name="ABC Electronics",
+        merchant_name=merchant_name,
         merchant_category="Electronics",
         amount=Decimal(amount),
         currency="USD",
         transaction_timestamp=datetime(2026, 9, day, 14, 12, tzinfo=UTC),
-        posted_timestamp=datetime(2026, 9, day + 1, 6, 0, tzinfo=UTC),
-        status="POSTED",
+        posted_timestamp=(
+            None
+            if status == "PENDING"
+            else datetime(2026, 9, day + 1, 6, 0, tzinfo=UTC)
+        ),
+        status=status,
         transaction_type="CARD_PURCHASE",
         location="Newark, NJ",
     )
@@ -344,6 +353,188 @@ async def test_duplicate_merchant_transactions_trigger_clarification() -> None:
 
 
 @pytest.mark.asyncio
+async def test_new_transaction_merchant_abandons_stale_transaction_clarification(
+) -> None:
+    state = _state()
+    metro_first = _transaction(
+        TRANSACTION_ID,
+        "48.45",
+        22,
+        merchant_name="Metro Market",
+        status="PENDING",
+    )
+    metro_second = _transaction(
+        OTHER_TRANSACTION_ID,
+        "52.10",
+        21,
+        merchant_name="Metro Market",
+    )
+    cloud_coffee = _transaction(
+        CLOUD_COFFEE_TRANSACTION_ID,
+        "8.75",
+        23,
+        merchant_name="Cloud Coffee",
+    )
+    db = _db_with_scalar_results(
+        [_account(CHECKING_ID, "checking", "****4101")],
+        [metro_first, metro_second, cloud_coffee],
+        [_account(CHECKING_ID, "checking", "****4101")],
+        [metro_first, metro_second, cloud_coffee],
+    )
+    resolver = ResourceResolver()
+
+    first = await resolver.resolve(
+        user_text="Tell me about the Metro Market transaction.",
+        state=state,
+        db=db,
+    )
+    second = await resolver.resolve(
+        user_text="What happened with the pending Cloud Coffee transaction?",
+        state=state,
+        db=db,
+    )
+
+    assert first.clarification is not None
+    assert "Metro Market" in first.clarification
+    assert second.clarification is None
+    assert state.pending_resource_resolution is None
+    assert state.active_transaction_id == CLOUD_COFFEE_TRANSACTION_ID
+    assert state.active_intent == "get_transaction_details"
+    assert db.scalars.await_count == 4
+
+
+@pytest.mark.asyncio
+async def test_new_transaction_amount_abandons_stale_transaction_clarification(
+) -> None:
+    state = _state()
+    metro_first = _transaction(
+        TRANSACTION_ID,
+        "48.45",
+        22,
+        merchant_name="Metro Market",
+    )
+    metro_second = _transaction(
+        OTHER_TRANSACTION_ID,
+        "52.10",
+        21,
+        merchant_name="Metro Market",
+    )
+    global_digital = _transaction(
+        GLOBAL_DIGITAL_TRANSACTION_ID,
+        "189.99",
+        24,
+        merchant_name="Global Digital Store",
+    )
+    db = _db_with_scalar_results(
+        [_account(CHECKING_ID, "checking", "****4101")],
+        [metro_first, metro_second, global_digital],
+        [_account(CHECKING_ID, "checking", "****4101")],
+        [metro_first, metro_second, global_digital],
+    )
+    resolver = ResourceResolver()
+
+    first = await resolver.resolve(
+        user_text="Tell me about the Metro Market transaction.",
+        state=state,
+        db=db,
+    )
+    second = await resolver.resolve(
+        user_text=(
+            "Tell me about the Global Digital Store transaction for $189.99."
+        ),
+        state=state,
+        db=db,
+    )
+
+    assert first.clarification is not None
+    assert "Metro Market" in first.clarification
+    assert second.clarification is None
+    assert state.pending_resource_resolution is None
+    assert state.active_transaction_id == GLOBAL_DIGITAL_TRANSACTION_ID
+    assert state.active_intent == "get_transaction_details"
+    assert db.scalars.await_count == 4
+
+
+@pytest.mark.parametrize(
+    "selection",
+    ["the September 22 one", "the pending one"],
+)
+@pytest.mark.asyncio
+async def test_transaction_clarification_continues_for_candidate_selector(
+    selection: str,
+) -> None:
+    state = _state()
+    db = _db_with_scalar_results(
+        [_account(CHECKING_ID, "checking", "****4101")],
+        [
+            _transaction(
+                TRANSACTION_ID,
+                "48.45",
+                22,
+                merchant_name="Metro Market",
+                status="PENDING",
+            ),
+            _transaction(
+                OTHER_TRANSACTION_ID,
+                "52.10",
+                21,
+                merchant_name="Metro Market",
+            ),
+        ],
+    )
+    resolver = ResourceResolver()
+
+    await resolver.resolve(
+        user_text="Tell me about the Metro Market transaction.",
+        state=state,
+        db=db,
+    )
+    result = await resolver.resolve(
+        user_text=selection,
+        state=state,
+        db=db,
+    )
+
+    assert result.clarification is None
+    assert result.selected_from_pending is True
+    assert state.pending_resource_resolution is None
+    assert state.active_transaction_id == TRANSACTION_ID
+    assert state.active_intent == "get_transaction_details"
+    assert db.scalars.await_count == 2
+
+
+@pytest.mark.asyncio
+async def test_explicit_dispute_requires_a_concrete_transaction() -> None:
+    state = _state()
+    db = _db_with_scalar_results(
+        [_account(CHECKING_ID, "checking", "****4101")],
+        [
+            _transaction(TRANSACTION_ID, "274.19", 20),
+            _transaction(OTHER_TRANSACTION_ID, "276.04", 19),
+        ],
+    )
+
+    result = await ResourceResolver().resolve(
+        user_text="Create a dispute for a transaction.",
+        state=state,
+        db=db,
+    )
+
+    assert result.clarification == (
+        "Which transaction do you mean? You can identify it by "
+        "merchant, amount, or date."
+    )
+    assert state.active_intent == "create_dispute"
+    assert state.active_transaction_id is None
+    assert state.pending_action is None
+    assert state.pending_resource_resolution is not None
+    assert (
+        state.pending_resource_resolution.resource_type
+        == ResourceType.TRANSACTION
+    )
+
+
+@pytest.mark.asyncio
 async def test_account_clarification_follow_up_uses_stored_candidates() -> None:
     state = _state()
     db = _db_with_scalar_results(
@@ -422,38 +613,35 @@ async def test_transaction_follow_up_uses_stored_candidates(
 @pytest.mark.asyncio
 async def test_transaction_selection_cannot_escape_stored_candidates() -> None:
     state = _state()
+    transactions = [
+        _transaction(TRANSACTION_ID, "274.19", 20),
+        _transaction(OTHER_TRANSACTION_ID, "276.04", 19),
+    ]
     db = _db_with_scalar_results(
         [_account(CHECKING_ID, "checking", "****4101")],
-        [
-            _transaction(TRANSACTION_ID, "274.19", 20),
-            _transaction(OTHER_TRANSACTION_ID, "276.04", 19),
-        ],
+        transactions,
+        [_account(CHECKING_ID, "checking", "****4101")],
+        transactions,
     )
     resolver = ResourceResolver()
 
-    first = await resolver.resolve(
+    await resolver.resolve(
         user_text="What was that ABC Electronics charge?",
         state=state,
         db=db,
     )
-    candidate_ids = {
-        candidate.resource_id
-        for candidate in state.pending_resource_resolution.candidates
-    }
     second = await resolver.resolve(
         user_text="$999.99",
         state=state,
         db=db,
     )
 
-    assert second.clarification == first.clarification
-    assert db.scalars.await_count == 2
+    assert second.clarification == (
+        "I couldn’t find a matching transaction. Try the merchant, amount, or date."
+    )
+    assert db.scalars.await_count == 4
     assert state.active_transaction_id is None
-    assert state.pending_resource_resolution is not None
-    assert {
-        candidate.resource_id
-        for candidate in state.pending_resource_resolution.candidates
-    } == candidate_ids
+    assert state.pending_resource_resolution is None
 
 
 @pytest.mark.asyncio
@@ -572,8 +760,14 @@ async def test_resolved_account_feeds_balance_tool_with_authoritative_id() -> No
     assert executor.execute.await_args.args[1]["account_id"] == str(CHECKING_ID)
 
 
+@pytest.mark.parametrize(
+    "user_text",
+    ["Freeze the card ending in 1842", "Freeze card 1842."],
+)
 @pytest.mark.asyncio
-async def test_resolved_card_feeds_protected_proposal_and_still_waits() -> None:
+async def test_resolved_card_feeds_protected_proposal_and_still_waits(
+    user_text: str,
+) -> None:
     state = _state()
     db = _db_with_scalar_results(
         [
@@ -599,7 +793,7 @@ async def test_resolved_card_feeds_protected_proposal_and_still_waits() -> None:
     orchestrator = AgentOrchestrator(llm=llm, tool_executor=executor)
 
     result = await orchestrator.handle_text_turn(
-        user_text="Freeze the card ending in 1842",
+        user_text=user_text,
         state=state,
         db=db,
     )
@@ -608,6 +802,59 @@ async def test_resolved_card_feeds_protected_proposal_and_still_waits() -> None:
     assert state.pending_action is not None
     assert state.pending_action.resource_id == CARD_ID
     assert state.pending_action.arguments == {"card_id": str(CARD_ID)}
+    executor.execute.assert_not_awaited()
+
+
+@pytest.mark.asyncio
+async def test_concrete_dispute_request_still_requires_confirmation() -> None:
+    state = _state()
+    db = _db_with_scalar_results(
+        [_account(CHECKING_ID, "checking", "****4101")],
+        [
+            _transaction(TRANSACTION_ID, "274.19", 20),
+            _transaction(OTHER_TRANSACTION_ID, "276.04", 19),
+        ],
+    )
+    llm = SequenceLLM(
+        [
+            LLMResponse(
+                model="test-model",
+                tool_calls=[
+                    LLMToolCall(
+                        id="call-dispute",
+                        name="create_dispute",
+                        arguments={
+                            "transaction_id": str(OTHER_TRANSACTION_ID),
+                            "reason_code": "unauthorized",
+                        },
+                    )
+                ],
+            )
+        ]
+    )
+    executor = AsyncMock()
+
+    result = await AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+    ).handle_text_turn(
+        user_text=(
+            "Dispute the ABC Electronics transaction for $274.19."
+        ),
+        state=state,
+        db=db,
+    )
+
+    assert result.status == AgentTurnStatus.WAITING_FOR_CONFIRMATION
+    assert state.active_transaction_id == TRANSACTION_ID
+    assert state.pending_action is not None
+    assert state.pending_action.action == "create_dispute"
+    assert state.pending_action.resource_id == TRANSACTION_ID
+    assert state.pending_action.arguments == {
+        "transaction_id": str(TRANSACTION_ID),
+        "reason_code": "unauthorized",
+        "notes": None,
+    }
     executor.execute.assert_not_awaited()
 
 

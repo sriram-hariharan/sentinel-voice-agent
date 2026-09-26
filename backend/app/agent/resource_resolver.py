@@ -64,6 +64,8 @@ _ORDINALS = {
     "fourth one": 3,
 }
 
+_TRANSACTION_STATUSES = ("pending", "posted", "reversed", "declined")
+
 
 def _normalize(text: str) -> str:
     return " ".join(text.casefold().replace("’", "'").split())
@@ -80,6 +82,8 @@ def _requested_suffix(text: str) -> str | None:
         r"\s*(\d{4})\b",
         text,
     )
+    if match is None:
+        match = re.search(r"\bcards?\s+(\d{4})\b", text)
     return match.group(1) if match else None
 
 
@@ -158,6 +162,117 @@ def _candidate_matches(text: str, candidate: ResourceCandidate) -> bool:
     return False
 
 
+def _transaction_merchant_from_text(text: str) -> str | None:
+    match = re.search(
+        r"\b(?:about|with)\s+(?:the\s+)?(?P<merchant>.+?)\s+"
+        r"(?:transaction|charge|purchase|payment)\b",
+        text,
+    )
+
+    if match is None:
+        return None
+
+    merchant = match.group("merchant")
+    merchant = re.sub(
+        rf"^(?:{'|'.join(_TRANSACTION_STATUSES)})\s+",
+        "",
+        merchant,
+    )
+    merchant = re.sub(
+        rf"\s+(?:{'|'.join(_TRANSACTION_STATUSES)})$",
+        "",
+        merchant,
+    )
+    return merchant or None
+
+
+def _dates_are_compatible(
+    requested: tuple[int | None, int, int],
+    candidate: tuple[int | None, int, int],
+) -> bool:
+    requested_year, requested_month, requested_day = requested
+    candidate_year, candidate_month, candidate_day = candidate
+    return (
+        requested_month == candidate_month
+        and requested_day == candidate_day
+        and (
+            requested_year is None
+            or candidate_year is None
+            or requested_year == candidate_year
+        )
+    )
+
+
+def _transaction_candidate_matches(
+    text: str,
+    candidate: ResourceCandidate,
+) -> bool:
+    if not _candidate_matches(text, candidate):
+        return False
+
+    requested_amount = _amount_from_text(text)
+    candidate_amounts = {
+        amount
+        for selector in candidate.selectors
+        if (amount := _amount_from_text(selector)) is not None
+    }
+    if requested_amount is not None and requested_amount not in candidate_amounts:
+        return False
+
+    requested_date = _date_from_text(text)
+    candidate_dates = {
+        candidate_date
+        for selector in candidate.selectors
+        if (candidate_date := _date_from_text(selector)) is not None
+    }
+    if requested_date is not None and not any(
+        _dates_are_compatible(requested_date, candidate_date)
+        for candidate_date in candidate_dates
+    ):
+        return False
+
+    requested_statuses = {
+        status
+        for status in _TRANSACTION_STATUSES
+        if re.search(rf"\b{status}\b", text)
+    }
+    candidate_selectors = {_normalize(selector) for selector in candidate.selectors}
+    if requested_statuses and requested_statuses.isdisjoint(candidate_selectors):
+        return False
+
+    requested_merchant = _transaction_merchant_from_text(text)
+    candidate_merchant = _normalize(candidate.selectors[0])
+    return requested_merchant is None or requested_merchant == candidate_merchant
+
+
+def _candidate_matches_pending_selector(
+    text: str,
+    pending: PendingResourceResolution,
+    candidate: ResourceCandidate,
+) -> bool:
+    if pending.resource_type == ResourceType.TRANSACTION:
+        return _transaction_candidate_matches(text, candidate)
+
+    return _candidate_matches(text, candidate)
+
+
+def _matches_pending_candidate_selector(
+    text: str,
+    pending: PendingResourceResolution,
+) -> bool:
+    for phrase, index in _ORDINALS.items():
+        if (
+            re.search(rf"\b{re.escape(phrase)}\b", text)
+            and index < len(pending.candidates)
+        ):
+            return True
+
+    return any(
+        _candidate_matches_pending_selector(text, pending, candidate)
+        for candidate in pending.candidates
+    )
+
+
 def _selected_candidate(
     text: str,
     pending: PendingResourceResolution,
@@ -172,7 +287,7 @@ def _selected_candidate(
     matches = [
         candidate
         for candidate in pending.candidates
-        if _candidate_matches(text, candidate)
+        if _candidate_matches_pending_selector(text, pending, candidate)
     ]
 
     return matches[0] if len(matches) == 1 else None
@@ -237,10 +352,7 @@ class ResourceResolver:
             self._clear_pending_context(state, pending.resource_type)
             return None
 
-        if new_type == pending.resource_type or self._looks_like_selection(
-            text,
-            pending.resource_type,
-        ):
+        if _matches_pending_candidate_selector(text, pending):
             return ResourceResolution(
                 kind=pending.resource_type,
                 clarification=pending.clarification,
@@ -267,28 +379,6 @@ class ResourceResolver:
             return ResourceType.TRANSACTION
 
         return None
-
-    @staticmethod
-    def _looks_like_selection(text: str, resource_type: ResourceType) -> bool:
-        if any(re.search(rf"\b{phrase}\b", text) for phrase in _ORDINALS):
-            return True
-
-        if resource_type == ResourceType.ACCOUNT:
-            return any(word in text for word in ("checking", "savings", "ending"))
-
-        if resource_type == ResourceType.CARD:
-            return bool(
-                re.search(r"\b\d{4}\b", text)
-                or any(
-                    word in text
-                    for word in ("active", "frozen", "debit", "credit", "ending")
-                )
-            )
-
-        return bool(
-            _amount_from_text(text) is not None
-            or _date_from_text(text) is not None
-        )
 
     @staticmethod
     def _is_account_request(text: str, state: ConversationState) -> bool:
@@ -679,6 +769,7 @@ class ResourceResolver:
         timestamp = transaction.transaction_timestamp
         display_date = timestamp.strftime("%B %-d, %Y")
         amount = f"{transaction.amount:.2f}"
+        status = transaction.status.casefold()
         return ResourceCandidate(
             resource_id=transaction.transaction_id,
             label=f"{transaction.merchant_name}, ${amount} on {display_date}",
@@ -689,6 +780,8 @@ class ResourceResolver:
                 display_date.casefold(),
                 timestamp.strftime("%B %-d").casefold(),
                 timestamp.date().isoformat(),
+                status,
+                f"{status} transaction",
             ),
             related_account_id=transaction.account_id,
         )

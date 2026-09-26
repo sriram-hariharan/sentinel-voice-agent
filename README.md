@@ -2,59 +2,127 @@
 
 ## Production-Style AI Voice Customer Support Agent for a Synthetic Digital Bank
 
-**Project status:** Core V1 product and AI features complete; final release hardening in progress. CI, bounded demo limits, and the local reviewer Trace & Metrics inspector are implemented.
+**Project status:** Core V1 complete and release-validated for the synthetic banking portfolio demo.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
 **Core design priority:** Reliability, evaluation, safety, latency, and production-style engineering over feature count  
 **Project type:** Portfolio-grade flagship AI engineering system
 
----
+SentinelVoice is a browser-based realtime voice agent that demonstrates how an
+LLM system can safely answer policy questions, read synthetic account data,
+perform tightly controlled banking actions, recover from interruptions, and
+produce inspectable traces. It is an engineering portfolio system built
+entirely around fictional customers and accounts; it is not production banking
+software and has no connection to a real financial institution.
 
-## Current realtime voice slice
+## V1 at a glance
 
-The browser now supports an audio-only LiveKit/WebRTC session alongside the
-existing text UI. LiveKit is the media/session transport, not a second banking
-agent. The worker sends each final Groq Whisper transcript to the existing
-FastAPI `POST /sessions/{session_id}/messages` boundary. FastAPI therefore
-retains the authoritative in-process `ConversationState`, and the existing
-`AgentOrchestrator`, `ResourceResolver`, `ToolExecutor`, ownership checks, and
-confirmation rules handle both text and voice turns.
+### Core capabilities
 
-With LiveKit Agents 1.8, finalized speech is handled through
-`Agent.on_user_turn_completed`. The media-facing agent uses that callback to
-send exactly one request per committed LiveKit message ID to the FastAPI
-boundary, then calls LiveKit `session.say` with the returned authoritative
-text. The callback schedules that speech without awaiting full playout and
-raises LiveKit `StopResponse` so no unused default LLM reply is generated.
-This keeps each response inside its originating turn instead of serializing the
-next finalized turn behind an outstanding speech handle. Empty and duplicate
-callback deliveries do not create banking turns.
+- Realtime browser voice over LiveKit/WebRTC with Groq STT, LLM, and TTS.
+- Typed tools over a synthetic PostgreSQL banking domain.
+- Hybrid policy RAG with source attribution and prompt-injection defenses.
+- Stateful resource clarification and corrected-intent recovery.
+- Deterministic authorization, ownership checks, and explicit confirmation for
+  protected writes.
+- Barge-in, playback cancellation, bounded failure handling, and human
+  escalation with structured handoff.
+- Correlated traces, stage latency, provider usage, estimated cost, and a local
+  reviewer-facing Trace & Metrics inspector.
+- Version-controlled agent, retrieval, safety, interruption, backend, and
+  frontend tests.
 
-The worker uses provider interfaces around Groq
-`whisper-large-v3-turbo` STT and
-`canopylabs/orpheus-v1-english` TTS. TTS input is split into ordered chunks of
-at most 190 characters without silent truncation. Those chunks are requested
-sequentially and each completed WAV is decoded and pushed to LiveKit before the
-next request finishes. This streams between SentinelVoice's bounded text
-chunks; Groq still returns one complete WAV per request. Realtime interruption
-and barge-in stop scheduled playback while preserving authoritative backend
-and protected-action state. Final assistant text is published to the room
-independently of TTS playback so a synthesis failure cannot hide an
-authoritative backend result or completed protected action.
-The browser refreshes the returned conversation phase and exact last turn
-status from FastAPI as soon as the assistant transcript arrives; LiveKit's
-agent state independently reports Processing, Speaking, and Listening for the
-media lifecycle.
+### Architecture
 
-The browser UI is a viewport-bounded test console with a compact brand header,
-one horizontal authentication/session/voice control strip, and a two-column
-desktop workspace. Only the conversation transcript deliberately scrolls on
-desktop; the composer stays fixed and the compact right-side Trace & Metrics
-inspector fits in the viewport. **New Session** ends any active voice room,
-clears presentation state, creates a new unauthenticated backend session, and
-requires sign-in again. Below desktop width the controls and inspector stack
-into the normal document flow.
+```text
+Browser UI
+  ⇅ LiveKit / WebRTC audio and session events
+Voice worker ── Groq Whisper STT / chunked Orpheus TTS
+  ⇅ final transcript and authoritative response text
+FastAPI session boundary
+  ↓
+Agent orchestrator
+  ├── conversation and resource state
+  ├── authorization and confirmation gates
+  ├── typed banking tools ──────────────┐
+  ├── hybrid policy retrieval ─────────┤
+  └── tracing, evaluation, and cost     │
+                                       ↓
+                              PostgreSQL + pgvector
+```
+
+LiveKit transports media but does not own banking authority. Voice and text
+turns cross the same FastAPI boundary and use the same conversation state,
+resource resolver, tools, ownership checks, and confirmation rules.
+
+### Reviewer demo flow
+
+1. Ask for the checking-account balance.
+2. Ask about an ambiguous Metro Market transaction.
+3. Switch directly to the Cloud Coffee transaction.
+4. Ask a banking-policy question and inspect its sources.
+5. Say, “Freeze card 1842.”
+6. Decline the explicit confirmation and verify that no freeze occurs.
+7. Request a longer recent-transactions response.
+8. Interrupt it with a corrected savings-balance request.
+9. Request human support and inspect the structured handoff.
+10. Open **Trace & Metrics** to review tools, sources, safety decisions, latency,
+    and estimated cost.
+
+### Safety model
+
+The model can propose actions but cannot grant itself authority. FastAPI owns
+authentication and session state; backend code validates tool schemas,
+resource ownership, permissions, and confirmations. Protected writes execute
+only after an explicit confirmation bound to the pending action. Retrieved
+policy text is treated as untrusted evidence, and cancellation or barge-in does
+not bypass protected-action rules.
+
+### V1 validation snapshot
+
+| Check | Validation boundary | Verified result |
+|---|---|---:|
+| Backend tests | Local deterministic test suite | 299 passed |
+| Frontend tests | Local deterministic test suite | 15 passed |
+| Agent scenarios | Version-controlled offline synthetic evaluation | 35/35 passed |
+| Unauthorized actions executed | Offline synthetic safety evaluation | 0 |
+| Confirmation compliance | Offline synthetic agent evaluation | 100% |
+| Interruption recovery | Offline synthetic agent evaluation | 100% |
+| Recall@1 | Local version-controlled retrieval evaluation | 0.938 |
+| Recall@3 | Local version-controlled retrieval evaluation | 1.000 |
+| MRR | Local version-controlled retrieval evaluation | 1.000 |
+
+These results describe the repository's bounded synthetic datasets and test
+fixtures, not universal model accuracy. Backend Ruff, frontend lint and
+production build, and the Alembic single/current revision `a14c0f17d901` also
+passed final release validation.
+
+### Realtime voice acceptance and latency boundary
+
+Manual browser acceptance verified realtime voice, stale-clarification
+correction, informational policy Q&A, protected-action confirmation and
+cancellation, long-form TTS without observed stammer in the final acceptance
+run, and barge-in followed by a corrected savings-balance request.
+
+TTS uses sequential inter-chunk streaming: each completed provider WAV is
+decoded and pushed to LiveKit before the next provider request completes.
+Current latency traces measure provider and LiveKit-observed system stages,
+including speech end to playback start and TTS first emitted PCM. They do not
+measure complete microphone/device-to-acoustic latency and are not presented as
+universal production benchmarks.
+
+### Known limitations
+
+- Banking users, accounts, transactions, policies, and actions are synthetic.
+- The demo uses browser voice rather than telephony and has no real bank API.
+- Sessions and the reviewer observability buffer are process-local and
+  intentionally ephemeral where documented.
+- STT and TTS use hosted providers; no custom speech model is trained here.
+- Full microphone/device-to-acoustic latency is outside the measured boundary.
+- Provider-generated audio quality can vary across requests.
+- Public-demo session, turn, token, and process limits are deliberately
+  bounded rather than designed as distributed production quotas.
 
 ### Local voice setup
 
@@ -105,13 +173,19 @@ sends a customer ID when requesting a voice token. The signed LiveKit metadata
 contains only the opaque SentinelVoice session ID; all customer authority stays
 inside FastAPI.
 
+The remainder of this README is the deeper engineering reference: architecture
+decisions, data and tool contracts, safety boundaries, evaluation design,
+observability, deployment tradeoffs, and explicit non-goals.
+
 ---
 
 # 1. Executive Summary
 
 SentinelVoice is a production-style realtime AI voice customer-support agent for a synthetic digital bank.
 
-The system is designed to demonstrate significantly more than a basic speech-to-text, LLM, and text-to-speech loop. It should behave like a constrained enterprise voice agent that can:
+The system demonstrates significantly more than a basic speech-to-text, LLM,
+and text-to-speech loop. It behaves like a constrained enterprise voice agent
+that can:
 
 - carry on a natural realtime spoken conversation,
 - understand user interruptions and barge-in,
@@ -124,13 +198,14 @@ The system is designed to demonstrate significantly more than a basic speech-to-
 - escalate appropriately to a human,
 - generate structured handoff summaries,
 - create detailed execution traces,
-- and be evaluated against a repeatable suite of synthetic customer scenarios.
+- and run against a repeatable suite of synthetic customer scenarios.
 
 The goal is not to build a complete banking platform or a generic voice-agent framework.
 
-The goal is to build one narrow, technically deep, demonstrably reliable vertical slice that proves competence in modern AI engineering.
+The result is one narrow, technically deep, demonstrably reliable vertical
+slice that demonstrates modern AI engineering.
 
-The project should communicate the following to a recruiter or hiring manager:
+The project communicates the following to a recruiter or hiring manager:
 
 > This engineer understands how to build, constrain, observe, test, evaluate, and operate a realtime LLM-powered agent that can safely interact with external systems.
 
@@ -241,7 +316,7 @@ No real banking data is required or desirable.
 
 # 4. Primary Project Goals
 
-SentinelVoice should prove competency in the following areas.
+SentinelVoice demonstrates competency in the following areas.
 
 ## 4.1 Realtime AI Systems
 
@@ -250,7 +325,7 @@ Demonstrate:
 - streaming audio,
 - WebRTC,
 - speech recognition,
-- partial and final transcripts,
+- bounded-turn final transcripts,
 - endpoint detection,
 - voice activity detection,
 - interruption handling,
@@ -371,13 +446,14 @@ SentinelVoice is not intended to become:
 
 These exclusions are deliberate.
 
-The strength of the project should come from engineering depth, measurable behavior, and reliability, not feature count.
+The strength of the project comes from engineering depth, measurable behavior,
+and reliability, not feature count.
 
 ---
 
-# 6. Scope Freeze
+# 6. V1 Scope
 
-The required V1 capabilities are:
+The implemented V1 capabilities are:
 
 1. Browser-based realtime voice conversation.
 2. Natural interruption and barge-in behavior.
@@ -388,9 +464,8 @@ The required V1 capabilities are:
 7. Human escalation and structured handoff.
 8. Evaluation and observability.
 
-If these eight capabilities are implemented well, the project is complete.
-
-Everything else is optional.
+Together, these eight capabilities form the complete V1 scope. Everything else
+is optional.
 
 A new feature should only be added if it materially improves:
 
@@ -711,7 +786,7 @@ Additional agents should only be introduced if evaluation proves a concrete bene
 
 ## 8.5 Groq GPT-OSS 20B as Default Reasoning Model
 
-GPT-OSS 20B should be the default LLM.
+GPT-OSS 20B is the default LLM.
 
 A larger model can be used selectively for difficult cases or model-comparison experiments.
 
@@ -791,7 +866,7 @@ The purpose is to show reliable tool use.
 
 Policy questions are answered through retrieval over synthetic bank policy documents.
 
-### Current Step 14 implementation
+### Implemented V1 retrieval pipeline
 
 The version-controlled corpus in `data/policies/` contains seven focused,
 explicitly synthetic SentinelVoice Bank policies. A small frontmatter parser
@@ -937,7 +1012,7 @@ MongoDB would not provide a clear advantage here.
 
 ## 8.9 Text-to-Speech
 
-The default TTS layer should use Groq-supported TTS where practical, behind a provider interface.
+The default TTS layer uses Groq-supported TTS behind a provider interface.
 
 ### Why provider abstraction matters
 
@@ -963,7 +1038,7 @@ It is an optional optimization after the core system works.
 
 ## 8.10 Evaluation and Observability Layer
 
-Step 15 implements one application-native trace model shared by live runtime
+V1 uses one application-native trace model shared by live runtime
 paths and the deterministic offline evaluator. It does not require a hosted
 telemetry vendor, another database, or an OpenTelemetry deployment. The V1
 browser includes a minimal local Trace & Metrics reviewer inspector backed by
@@ -1067,7 +1142,8 @@ python scripts/summarize_voice_latency.py \
 The command skips unrelated Uvicorn and LiveKit lines and reports sample count
 with nearest-rank P50, P90, and P95 for every supported stage present. It does
 not print event metadata or transcript content. No live benchmark percentile is
-claimed until the Task 4B protocol in Section 47 has been run.
+claimed unless the reproducible protocol in Section 47 has been run for the
+environment being described.
 
 Provider usage is normalized only from quantities already available at the
 boundary: LLM input/output/total tokens, STT input audio duration and request
@@ -1082,7 +1158,7 @@ input/output tokens, Whisper Large V3 Turbo at $0.04 per audio hour, and
 Orpheus V1 English at $22 per million characters. All displayed costs are
 labeled **estimated**.
 
-The version-controlled `data/evals/agent_scenarios.json` contains 34 typed
+The version-controlled `data/evals/agent_scenarios.json` contains 35 typed
 scenarios. It covers public policy, private reads, resource ambiguity and
 binding, card/dispute confirmation and cancellation, stale and replayed
 confirmation, authorization and cross-customer defenses, prompt injection,
@@ -2140,12 +2216,12 @@ Without cancellation, the agent continues speaking after the user interrupts, ma
 
 # 31. Speech-to-Text Design
 
-Track:
+V1 uses bounded-turn, non-streaming Groq recognition after LiveKit identifies a
+completed speech turn. It tracks only boundaries that the implementation can
+observe directly:
 
 ```text
-partial transcript
 final transcript
-speech start timestamp
 speech end timestamp
 STT completion timestamp
 ```
@@ -2776,7 +2852,7 @@ conversation completion rate
 
 Where automated audio testing is difficult, store reproducible audio fixtures.
 
-### Task 4B manual live benchmark protocol
+### Reproducible manual live benchmark protocol
 
 Use the real configured Groq and LiveKit providers with synthetic banking data.
 Capture the FastAPI and worker structured logs separately, then summarize them
@@ -2800,7 +2876,7 @@ together with `scripts/summarize_voice_latency.py`.
    audio.
 
 A 2–3 turn live smoke test may verify that all three worker events appear with
-positive durations, but it is not a Task 4B benchmark and must not be published
+positive durations, but it is not a full benchmark and must not be published
 as one.
 
 ---
@@ -3559,9 +3635,9 @@ A public portfolio URL should not become an open API proxy.
 
 ---
 
-# 75. Acceptance Criteria
+# 75. V1 Release Criteria
 
-The project can be considered complete when all of the following are true.
+The release validation covers all of the following criteria.
 
 ## Voice
 
@@ -3638,13 +3714,13 @@ The project can be considered complete when all of the following are true.
 
 ---
 
-# 76. Definition of Done
+# 76. Release-Ready V1
 
-SentinelVoice is done when it demonstrates the complete vertical slice reliably.
+SentinelVoice V1 demonstrates the complete vertical slice reliably.
 
-It is **not** done when every possible feature has been added.
+Completeness does **not** require every possible feature.
 
-The intended final portfolio experience should be:
+The release-ready portfolio experience is:
 
 1. Reviewer opens the project.
 2. Reviewer understands the architecture from the README.
@@ -3805,13 +3881,17 @@ Model quality is not evaluated independently of latency and cost.
 
 # 81. What Makes This Project Recruiter-Grade
 
-The project should not be marketed as:
+The project is not marketed as:
 
 > I built a voice chatbot.
 
-It should be described as:
+It is described as:
 
-> Built a production-style realtime AI voice agent for synthetic financial customer support using streaming speech recognition, tool calling, hybrid RAG, permission-aware actions, human escalation, full execution tracing, and an automated evaluation harness measuring task success, tool accuracy, safety, latency, and cost.
+> Built a production-style realtime AI voice agent for synthetic financial
+> customer support using realtime browser audio, bounded-turn speech
+> recognition, tool calling, hybrid RAG, permission-aware actions, human
+> escalation, full execution tracing, and an automated evaluation harness
+> measuring task success, tool accuracy, safety, latency, and cost.
 
 That framing reflects what the project actually demonstrates.
 
@@ -3902,28 +3982,13 @@ Answer with:
 
 ---
 
-# 83. README Storyline
+# 83. Reading Guide
 
-The repository README should eventually follow this narrative:
-
-1. What SentinelVoice is.
-2. Short demo GIF/video.
-3. Why the project exists.
-4. Architecture diagram.
-5. Architecture decision summary.
-6. Core capabilities.
-7. Example conversations.
-8. Safety model.
-9. Evaluation results.
-10. Latency results.
-11. Cost results.
-12. Local setup.
-13. Repository structure.
-14. Design tradeoffs.
-15. Known limitations.
-16. Stretch ideas.
-
-This keeps the README recruiter-friendly while `PROJECT_SPEC.md` remains the deeper engineering document.
+The opening overview is the two-minute reviewer path: product definition,
+capabilities, architecture, demo flow, safety, validation, voice behavior,
+limitations, and setup. The numbered sections retain the deeper engineering
+rationale, contracts, tradeoffs, evaluation design, and explicit non-goals for
+technical interviews and implementation review.
 
 ---
 
@@ -3947,7 +4012,8 @@ Its purpose is to demonstrate disciplined AI engineering through:
 - latency measurement,
 - and cost-aware design.
 
-The project is complete when the system reliably demonstrates those capabilities in one polished vertical slice.
+V1 is complete because the system reliably demonstrates those capabilities in
+one polished vertical slice.
 
 The guiding rule is:
 

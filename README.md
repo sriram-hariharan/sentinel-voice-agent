@@ -998,10 +998,27 @@ authentication authority.
 
 Instrumented stages currently include backend agent turns, policy retrieval,
 LLM requests, authorization decisions, confirmation decisions, validation and
-tool execution, escalation creation, bounded STT, TTS request/first audio/total
-generation, the voice bridge call, finalized transcripts, and interruption
-detection/completion. No `retry.scheduled` event is emitted because a general
-application retry engine does not exist.
+tool execution, escalation creation, bounded STT, TTS request/first emitted
+PCM/total generation, the voice bridge call, finalized transcripts, and
+interruption detection/completion. The LiveKit worker also measures three
+complete-turn boundaries with one monotonic process clock:
+
+```text
+speech end → final transcript
+final transcript → playback start
+speech end → playback start
+```
+
+Here, speech end is LiveKit Agents changing the user state from `speaking` to a
+non-speaking state. Playback start is LiveKit Agents changing the agent state
+to `speaking` for the correlated scheduled response. The primary live response
+metric is therefore **LiveKit-observed speech-end → agent playback-start
+latency**. It is not microphone-to-audible latency: worker playback start does
+not prove that a browser, operating system, or physical speaker has rendered
+the audio. `tts.first_audio` is also narrower: it measures the TTS request to
+the first decoded PCM pushed into LiveKit's audio emitter. No
+`retry.scheduled` event is emitted because a general application retry engine
+does not exist.
 
 Both the FastAPI process and the LiveKit worker apply the same idempotent
 runtime logging policy. `sentinelvoice.trace` has an INFO console handler so
@@ -1033,6 +1050,21 @@ retrieval, tool, and interruption events can be summarized here. The
 `TraceSink` abstraction keeps a future move to Langfuse, OpenTelemetry/Jaeger,
 a Grafana-backed pipeline, PostgreSQL, or Redis reversible without changing
 core agent, tool, or RAG behavior.
+
+FastAPI and the LiveKit worker write separate logs. Aggregate their completed
+latency samples without adding a tracing service by passing both files to the
+repeatable summary command:
+
+```bash
+python scripts/summarize_voice_latency.py \
+  /tmp/sentinel-backend.log \
+  /tmp/sentinel-voice-worker.log
+```
+
+The command skips unrelated Uvicorn and LiveKit lines and reports sample count
+with nearest-rank P50, P90, and P95 for every supported stage present. It does
+not print event metadata or transcript content. No live benchmark percentile is
+claimed until the Task 4B protocol in Section 47 has been run.
 
 Provider usage is normalized only from quantities already available at the
 boundary: LLM input/output/total tokens, STT input audio duration and request
@@ -2120,21 +2152,30 @@ These timestamps allow latency decomposition rather than guessing.
 
 # 32. Latency Metrics
 
-The following list remains the desired complete voice decomposition. The
-current implementation measures only the boundaries described in Section
-8.10; in particular it does not claim full microphone-to-audible latency.
+Offline evaluator timings remain deterministic in-process test measurements;
+they are not live provider or network benchmarks. Live voice timing is emitted
+from real runtime boundaries into the existing structured traces.
 
-Track:
+The worker now measures:
 
 ```text
 speech_end → final_transcript
-final_transcript → LLM_start
-LLM_start → first_token
-tool_start → tool_end
-response_ready → TTS_start
-TTS_start → first_audio
-speech_end → first_audio
+final_transcript → playback_start
+speech_end → playback_start
 ```
+
+The authoritative clock is `time.perf_counter()` inside the LiveKit worker.
+Speech end is the real `speaking` → non-speaking user-state transition, and
+playback start is the correlated agent-state transition to `speaking` for the
+scheduled SentinelVoice response. Missing boundaries are omitted rather than
+reported as zero, and failed or abandoned turns do not fabricate a playback
+sample.
+
+The surrounding decomposition continues to report completed STT provider,
+voice backend turn, agent turn, LLM request, policy retrieval, tool execution,
+TTS first emitted PCM, TTS total, and interruption-stop samples when those
+stages occur. Interruption stop remains a separate distribution and is not
+combined with normal response latency.
 
 Report:
 
@@ -2151,6 +2192,11 @@ Average latency hides bad tail behavior.
 A voice assistant that is fast most of the time but occasionally pauses for five seconds still feels unreliable.
 
 P95 exposes that problem.
+
+These boundaries stop at LiveKit worker playback start. Full
+microphone/device-to-acoustic-audio latency, including browser, operating
+system, device buffering, and physical speaker output, remains outside the
+current instrumented boundary.
 
 ---
 
@@ -2708,11 +2754,12 @@ Separating retrieval metrics makes diagnosis possible.
 
 # 47. Voice Evaluation
 
-Voice evaluation should include:
+Live voice evaluation includes:
 
 ```text
 time to final transcript
-time to first response audio
+time from final transcript to playback start
+time from speech end to playback start
 interruption cancellation latency
 false interruption rate
 missed interruption rate
@@ -2720,6 +2767,33 @@ conversation completion rate
 ```
 
 Where automated audio testing is difficult, store reproducible audio fixtures.
+
+### Task 4B manual live benchmark protocol
+
+Use the real configured Groq and LiveKit providers with synthetic banking data.
+Capture the FastAPI and worker structured logs separately, then summarize them
+together with `scripts/summarize_voice_latency.py`.
+
+1. Record the date, execution environment, network limitations, provider
+   names, and exact STT, LLM, and TTS model names.
+2. Complete approximately 20 successful, uninterrupted voice turns so the P95
+   result is not based on only a handful of observations.
+3. Mix direct informational turns, private account reads, tool-backed reads,
+   and policy/RAG questions. Include several tool and RAG turns so those stage
+   distributions have samples. Protected writes are optional.
+4. Run several intentional interruptions separately and report their
+   interruption-stop latency. Do not combine interruption samples with normal
+   response-latency percentiles.
+5. For every reported stage, record count with P50, P90, and P95. Fewer samples
+   after a provider or scheduling failure are expected and must remain visible
+   in the count.
+6. Describe the results as one environment/network run, not universal
+   production performance. Do not call playback start physically audible
+   audio.
+
+A 2–3 turn live smoke test may verify that all three worker events appear with
+positive durations, but it is not a Task 4B benchmark and must not be published
+as one.
 
 ---
 
@@ -3529,8 +3603,11 @@ The project can be considered complete when all of the following are true.
 - Task completion can be measured.
 - Safety failures can be detected.
 - Retrieval performance can be measured.
-- Implemented voice-stage boundaries and interruption latency can be measured;
-  full microphone-to-audible latency is not yet available.
+- LiveKit-observed speech-end → final-transcript, final-transcript →
+  playback-start, speech-end → playback-start, existing provider stages, and
+  interruption-stop latency can be summarized with sample counts and
+  percentiles; full microphone/device-to-acoustic-audio latency is not
+  available.
 
 ## Observability
 

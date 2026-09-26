@@ -81,6 +81,12 @@ class _TrackedSpeech:
     trace_id: str = field(default_factory=new_correlation_id)
 
 
+@dataclass(frozen=True)
+class _VoiceLatencyTiming:
+    final_transcript_at: float
+    speech_end_at: float | None = None
+
+
 def parse_voice_session_metadata(raw_metadata: str) -> VoiceSessionMetadata:
     try:
         return VoiceSessionMetadata.model_validate(json.loads(raw_metadata))
@@ -138,6 +144,8 @@ class SentinelVoiceAgent(Agent):
         self._interruption_cutoff = 0
         self._reported_interruptions: set[str] = set()
         self._awaiting_corrected_transcript = False
+        self._pending_user_speech_end_at: float | None = None
+        self._voice_latency_by_turn: dict[str, _VoiceLatencyTiming] = {}
         self._background_tasks: set[asyncio.Task[Any]] = set()
 
     def _claim_turn(self, turn_id: str) -> bool:
@@ -177,6 +185,9 @@ class SentinelVoiceAgent(Agent):
 
     def note_user_speaking(self) -> None:
         """Record the first VAD speech signal for interruption latency."""
+        # A new utterance makes any unconsumed speech-end signal from an
+        # abandoned prior utterance ineligible for correlation.
+        self._pending_user_speech_end_at = None
         if self._interruption_candidate_id is not None:
             return
 
@@ -216,6 +227,90 @@ class SentinelVoiceAgent(Agent):
                 "queued_speech_count": len(unfinished),
             },
         )
+
+    def note_user_speech_ended(self) -> None:
+        """Record LiveKit's real speaking-to-non-speaking transition."""
+        self._pending_user_speech_end_at = self._clock()
+
+    def _record_final_transcript_latency(
+        self,
+        *,
+        correlation: TraceContext,
+    ) -> None:
+        final_transcript_at = self._clock()
+        speech_end_at = self._pending_user_speech_end_at
+        self._pending_user_speech_end_at = None
+
+        if len(self._voice_latency_by_turn) >= 128:
+            oldest_turn_id = next(iter(self._voice_latency_by_turn))
+            self._voice_latency_by_turn.pop(oldest_turn_id)
+        self._voice_latency_by_turn[correlation.turn_id] = _VoiceLatencyTiming(
+            speech_end_at=speech_end_at,
+            final_transcript_at=final_transcript_at,
+        )
+
+        if speech_end_at is None:
+            return
+
+        with trace_scope(
+            session_id=self._session_id,
+            trace_id=correlation.trace_id,
+            turn_id=correlation.turn_id,
+        ):
+            emit_trace_event(
+                "voice.speech_end_to_final_transcript.completed",
+                component="voice_worker",
+                status=TraceStatus.COMPLETED,
+                duration_ms=max(
+                    0.0,
+                    (final_transcript_at - speech_end_at) * 1000,
+                ),
+                metadata={"measurement_boundary": "livekit_worker"},
+            )
+
+    def note_agent_playback_started(self) -> None:
+        """Measure the tracked response that LiveKit has begun playing."""
+        current_speech = getattr(self.session, "current_speech", None)
+        speech_id = str(getattr(current_speech, "id", ""))
+        tracked = self._speech.get(speech_id)
+        if tracked is None:
+            return
+
+        timing = self._voice_latency_by_turn.pop(tracked.turn_id, None)
+        if timing is None:
+            return
+
+        playback_started_at = self._clock()
+        with trace_scope(
+            session_id=self._session_id,
+            trace_id=tracked.trace_id,
+            turn_id=tracked.turn_id,
+        ):
+            emit_trace_event(
+                "voice.final_transcript_to_playback_start.completed",
+                component="voice_worker",
+                status=TraceStatus.COMPLETED,
+                duration_ms=max(
+                    0.0,
+                    (playback_started_at - timing.final_transcript_at) * 1000,
+                ),
+                metadata={"measurement_boundary": "livekit_worker"},
+            )
+            if timing.speech_end_at is not None:
+                emit_trace_event(
+                    "voice.speech_end_to_playback_start.completed",
+                    component="voice_worker",
+                    status=TraceStatus.COMPLETED,
+                    duration_ms=max(
+                        0.0,
+                        (playback_started_at - timing.speech_end_at) * 1000,
+                    ),
+                    metadata={"measurement_boundary": "livekit_worker"},
+                )
+
+    def clear_voice_latency_state(self) -> None:
+        self._pending_user_speech_end_at = None
+        self._voice_latency_by_turn.clear()
 
     def _interrupt_speech_through(self, sequence: int) -> None:
         stale = sorted(
@@ -314,6 +409,8 @@ class SentinelVoiceAgent(Agent):
         interrupted = bool(getattr(speech, "interrupted", False))
 
         if interrupted:
+            if tracked is not None:
+                self._voice_latency_by_turn.pop(tracked.turn_id, None)
             logger.info(
                 "speech playback interrupted",
                 extra={
@@ -364,6 +461,8 @@ class SentinelVoiceAgent(Agent):
         exception = speech.exception()
 
         if exception is not None:
+            if tracked is not None:
+                self._voice_latency_by_turn.pop(tracked.turn_id, None)
             logger.error(
                 "tts synthesis or publication failed",
                 exc_info=exception,
@@ -382,6 +481,8 @@ class SentinelVoiceAgent(Agent):
                 self._interruption_cutoff = 0
             return
 
+        if tracked is not None:
+            self._voice_latency_by_turn.pop(tracked.turn_id, None)
         logger.info(
             "speech playback completed",
             extra={
@@ -452,6 +553,7 @@ class SentinelVoiceAgent(Agent):
         transcript = " ".join((new_message.text_content or "").split())
 
         if not transcript:
+            self._pending_user_speech_end_at = None
             logger.info(
                 "empty finalized voice transcript ignored",
                 extra={"sentinelvoice_session_id": self._session_id},
@@ -471,6 +573,7 @@ class SentinelVoiceAgent(Agent):
         correlation = self._correlation_queue.consume() or build_trace_context(
             session_id=self._session_id
         )
+        self._record_final_transcript_latency(correlation=correlation)
 
         # LiveKit normally interrupts the active handle from VAD before this
         # hook. The finalized-turn fallback also cancels every stale queued
@@ -530,6 +633,7 @@ class SentinelVoiceAgent(Agent):
                 turn_id=correlation.turn_id,
             )
         except VoiceBridgeError:
+            self._voice_latency_by_turn.pop(correlation.turn_id, None)
             logger.exception(
                 "voice bridge failed before speech synthesis",
                 extra={
@@ -541,6 +645,7 @@ class SentinelVoiceAgent(Agent):
             raise StopResponse()
 
         if result is None:
+            self._voice_latency_by_turn.pop(correlation.turn_id, None)
             raise StopResponse()
 
         logger.info(
@@ -560,6 +665,7 @@ class SentinelVoiceAgent(Agent):
             )
         except RuntimeError:
             self._tts_correlations.pop()
+            self._voice_latency_by_turn.pop(correlation.turn_id, None)
             logger.exception(
                 "assistant speech could not be scheduled",
                 extra={
@@ -603,6 +709,18 @@ class SentinelVoiceAgent(Agent):
             )
         )
         raise StopResponse()
+
+
+def _observe_user_state_change(agent: SentinelVoiceAgent, event: Any) -> None:
+    if event.new_state == "speaking":
+        agent.note_user_speaking()
+    if event.old_state == "speaking" and event.new_state != "speaking":
+        agent.note_user_speech_ended()
+
+
+def _observe_agent_state_change(agent: SentinelVoiceAgent, event: Any) -> None:
+    if event.new_state == "speaking":
+        agent.note_agent_playback_started()
 
 
 def _prewarm(proc: JobProcess) -> None:
@@ -693,6 +811,11 @@ async def voice_session(ctx: JobContext) -> None:
         correlation_queue=correlation_queue,
     )
 
+    async def _clear_voice_latency_state() -> None:
+        agent.clear_voice_latency_state()
+
+    ctx.add_shutdown_callback(_clear_voice_latency_state)
+
     def _log_agent_state_change(event: Any) -> None:
         if event.new_state == "speaking":
             logger.info(
@@ -701,10 +824,10 @@ async def voice_session(ctx: JobContext) -> None:
                     "sentinelvoice_session_id": metadata.sentinelvoice_session_id,
                 },
             )
+        _observe_agent_state_change(agent, event)
 
     def _handle_user_state_change(event: Any) -> None:
-        if event.new_state == "speaking":
-            agent.note_user_speaking()
+        _observe_user_state_change(agent, event)
 
     session.on("agent_state_changed", _log_agent_state_change)
     session.on("user_state_changed", _handle_user_state_change)

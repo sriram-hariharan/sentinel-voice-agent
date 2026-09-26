@@ -5,9 +5,14 @@ from unittest.mock import AsyncMock
 
 import pytest
 from livekit.agents import StopResponse, llm
+from livekit.agents.voice.events import (
+    AgentStateChangedEvent,
+    UserStateChangedEvent,
+)
 from pydantic import SecretStr
 
 from backend.app.config.settings import Settings
+from backend.app.observability.tracing import InMemoryTraceSink, use_trace_sink
 from backend.app.voice.bridge import VoiceBridgeError, VoiceTurnResult
 from backend.app.voice.worker import (
     VOICE_BACKEND_ERROR_MESSAGE,
@@ -16,6 +21,8 @@ from backend.app.voice.worker import (
     SentinelVoiceAgent,
     VoiceWorkerConfigurationError,
     _groq_api_key,
+    _observe_agent_state_change,
+    _observe_user_state_change,
     _TrackedSpeech,
     _voice_room_options,
     parse_voice_session_metadata,
@@ -86,6 +93,7 @@ class FakeVoiceSession:
         self.say_calls: list[dict[str, object]] = []
         self.assistant_transcripts: list[str] = []
         self.speech_handles: list[FakeSpeechHandle] = []
+        self.current_speech: FakeSpeechHandle | None = None
 
     def say(self, text: str, *, allow_interruptions: bool) -> FakeSpeechHandle:
         if self.say_error is not None:
@@ -241,6 +249,151 @@ async def test_finalized_turn_calls_bridge_once_and_starts_speech() -> None:
     assert session.speech_handles[0].done is False
 
 
+def test_speaking_to_listening_records_user_speech_end_only_on_transition(
+) -> None:
+    bridge = AsyncMock()
+    clock_values = iter([10.0])
+    agent, _ = _agent_with_session(
+        bridge=bridge,
+        clock=lambda: next(clock_values),
+    )
+
+    _observe_user_state_change(
+        agent,
+        UserStateChangedEvent(old_state="listening", new_state="listening"),
+    )
+    assert agent._pending_user_speech_end_at is None
+
+    _observe_user_state_change(
+        agent,
+        UserStateChangedEvent(old_state="speaking", new_state="listening"),
+    )
+
+    assert agent._pending_user_speech_end_at == 10.0
+
+
+@pytest.mark.asyncio
+async def test_livekit_boundaries_emit_correlated_monotonic_durations_once(
+) -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    clock_values = iter([10.0, 10.2, 10.8])
+    agent, session = _agent_with_session(
+        bridge=bridge,
+        clock=lambda: next(clock_values),
+    )
+    sink = InMemoryTraceSink()
+
+    with use_trace_sink(sink):
+        _observe_user_state_change(
+            agent,
+            UserStateChangedEvent(
+                old_state="speaking",
+                new_state="listening",
+            ),
+        )
+        await _invoke_finalized_turn(
+            agent,
+            llm.ChatMessage(
+                id="timed-turn",
+                role="user",
+                content=["Show my balance"],
+            ),
+        )
+        session.current_speech = session.speech_handles[0]
+        event = AgentStateChangedEvent(
+            old_state="thinking",
+            new_state="speaking",
+        )
+        _observe_agent_state_change(agent, event)
+        _observe_agent_state_change(agent, event)
+
+    latency_events = {
+        event.event_name: event
+        for event in sink.events
+        if event.event_name.startswith("voice.")
+        and event.duration_ms is not None
+    }
+    correlation = bridge.handle_transcript.await_args.kwargs
+    assert set(latency_events) == {
+        "voice.speech_end_to_final_transcript.completed",
+        "voice.final_transcript_to_playback_start.completed",
+        "voice.speech_end_to_playback_start.completed",
+    }
+    assert latency_events[
+        "voice.speech_end_to_final_transcript.completed"
+    ].duration_ms == pytest.approx(200.0)
+    assert latency_events[
+        "voice.final_transcript_to_playback_start.completed"
+    ].duration_ms == pytest.approx(600.0)
+    assert latency_events[
+        "voice.speech_end_to_playback_start.completed"
+    ].duration_ms == pytest.approx(800.0)
+    assert all(
+        event.trace_id == correlation["trace_id"]
+        and event.turn_id == correlation["turn_id"]
+        and event.session_id == "opaque-session-id"
+        and event.metadata == {"measurement_boundary": "livekit_worker"}
+        for event in latency_events.values()
+    )
+    assert agent._voice_latency_by_turn == {}
+
+
+@pytest.mark.asyncio
+async def test_missing_speech_end_emits_only_real_available_boundary() -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    clock_values = iter([20.0, 20.5])
+    agent, session = _agent_with_session(
+        bridge=bridge,
+        clock=lambda: next(clock_values),
+    )
+    sink = InMemoryTraceSink()
+
+    with use_trace_sink(sink):
+        await _invoke_finalized_turn(
+            agent,
+            llm.ChatMessage(
+                id="no-speech-end",
+                role="user",
+                content=["Show my balance"],
+            ),
+        )
+        session.current_speech = session.speech_handles[0]
+        _observe_agent_state_change(
+            agent,
+            AgentStateChangedEvent(
+                old_state="thinking",
+                new_state="speaking",
+            ),
+        )
+
+    latency_names = {
+        event.event_name for event in sink.events if event.duration_ms is not None
+    }
+    assert latency_names == {
+        "voice.final_transcript_to_playback_start.completed"
+    }
+
+
+def test_untracked_greeting_speech_emits_no_response_latency() -> None:
+    bridge = AsyncMock()
+    agent, session = _agent_with_session(bridge=bridge)
+    session.current_speech = FakeSpeechHandle(speech_id="greeting")
+    sink = InMemoryTraceSink()
+
+    with use_trace_sink(sink):
+        _observe_agent_state_change(
+            agent,
+            AgentStateChangedEvent(
+                old_state="thinking",
+                new_state="speaking",
+            ),
+        )
+
+    assert sink.events == []
+
+
 @pytest.mark.asyncio
 async def test_policy_sources_are_not_spoken_as_internal_identifiers() -> None:
     bridge = AsyncMock()
@@ -295,6 +448,7 @@ async def test_repeated_words_in_distinct_turns_are_not_deduplicated() -> None:
 async def test_empty_finalized_turn_does_nothing() -> None:
     bridge = AsyncMock()
     agent, session = _agent_with_session(bridge=bridge)
+    agent.note_user_speech_ended()
     message = llm.ChatMessage(
         id="empty-turn",
         role="user",
@@ -305,6 +459,7 @@ async def test_empty_finalized_turn_does_nothing() -> None:
 
     bridge.handle_transcript.assert_not_awaited()
     assert session.say_calls == []
+    assert agent._pending_user_speech_end_at is None
 
 
 @pytest.mark.asyncio
@@ -324,6 +479,7 @@ async def test_bridge_failure_publishes_error_without_tts() -> None:
     assert session.say_calls == []
     assert session.transcription.segments == [VOICE_BACKEND_ERROR_MESSAGE]
     assert session.transcription.flush_count == 1
+    assert agent._voice_latency_by_turn == {}
 
 
 @pytest.mark.asyncio
@@ -350,6 +506,7 @@ async def test_tts_failure_preserves_text_and_publishes_playback_error() -> None
 
     assert session.transcription.segments == [VOICE_PLAYBACK_ERROR_MESSAGE]
     assert session.transcription.flush_count == 1
+    assert agent._voice_latency_by_turn == {}
 
 
 @pytest.mark.asyncio
@@ -436,7 +593,7 @@ async def test_interruption_reports_measured_latency_and_browser_event() -> None
     bridge = AsyncMock()
     bridge.handle_transcript.return_value = _voice_result()
     publish_event = AsyncMock()
-    clock_values = iter([10.0, 10.123])
+    clock_values = iter([9.0, 10.0, 10.123])
     agent, session = _agent_with_session(
         bridge=bridge,
         publish_event=publish_event,
@@ -473,6 +630,78 @@ async def test_interruption_reports_measured_latency_and_browser_event() -> None
             "interruption_stop_latency_ms": pytest.approx(123.0),
         }
     )
+    assert agent._voice_latency_by_turn == {}
+
+
+@pytest.mark.asyncio
+async def test_corrected_post_interruption_turn_gets_own_latency_measurement(
+) -> None:
+    bridge = AsyncMock()
+    bridge.handle_transcript.return_value = _voice_result()
+    clock_values = iter([1.0, 1.2, 2.0, 2.05, 2.1, 2.3, 2.9])
+    agent, session = _agent_with_session(
+        bridge=bridge,
+        clock=lambda: next(clock_values),
+    )
+    sink = InMemoryTraceSink()
+
+    with use_trace_sink(sink):
+        await _invoke_finalized_turn(
+            agent,
+            llm.ChatMessage(id="turn-a", role="user", content=["Question A"]),
+        )
+        session.current_speech = session.speech_handles[0]
+        _observe_agent_state_change(
+            agent,
+            AgentStateChangedEvent(
+                old_state="thinking",
+                new_state="speaking",
+            ),
+        )
+        _observe_user_state_change(
+            agent,
+            UserStateChangedEvent(
+                old_state="listening",
+                new_state="speaking",
+            ),
+        )
+        session.speech_handles[0].interrupt(source="audio_activity")
+        _observe_user_state_change(
+            agent,
+            UserStateChangedEvent(
+                old_state="speaking",
+                new_state="listening",
+            ),
+        )
+        await _invoke_finalized_turn(
+            agent,
+            llm.ChatMessage(
+                id="turn-b",
+                role="user",
+                content=["Corrected question"],
+            ),
+        )
+        session.current_speech = session.speech_handles[1]
+        _observe_agent_state_change(
+            agent,
+            AgentStateChangedEvent(
+                old_state="thinking",
+                new_state="speaking",
+            ),
+        )
+
+    corrected_correlation = bridge.handle_transcript.await_args_list[1].kwargs
+    corrected = {
+        event.event_name: event.duration_ms
+        for event in sink.events
+        if event.turn_id == corrected_correlation["turn_id"]
+        and event.duration_ms is not None
+    }
+    assert corrected == {
+        "voice.speech_end_to_final_transcript.completed": pytest.approx(200.0),
+        "voice.final_transcript_to_playback_start.completed": pytest.approx(600.0),
+        "voice.speech_end_to_playback_start.completed": pytest.approx(800.0),
+    }
 
 
 @pytest.mark.asyncio
@@ -641,3 +870,4 @@ async def test_synchronous_speech_scheduling_failure_keeps_text_visible() -> Non
         VOICE_PLAYBACK_ERROR_MESSAGE,
     ]
     assert session.transcription.flush_count == 2
+    assert agent._voice_latency_by_turn == {}

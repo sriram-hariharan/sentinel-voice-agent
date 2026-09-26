@@ -34,9 +34,12 @@ callback deliveries do not create banking turns.
 The worker uses provider interfaces around Groq
 `whisper-large-v3-turbo` STT and
 `canopylabs/orpheus-v1-english` TTS. TTS input is split into ordered chunks of
-at most 190 characters without silent truncation. Realtime interruption and
-barge-in stop scheduled playback while preserving authoritative backend and
-protected-action state. Final assistant text is published to the room
+at most 190 characters without silent truncation. Those chunks are requested
+sequentially and each completed WAV is decoded and pushed to LiveKit before the
+next request finishes. This streams between SentinelVoice's bounded text
+chunks; Groq still returns one complete WAV per request. Realtime interruption
+and barge-in stop scheduled playback while preserving authoritative backend
+and protected-action state. Final assistant text is published to the room
 independently of TTS playback so a synthesis failure cannot hide an
 authoritative backend result or completed protected action.
 The browser refreshes the returned conversation phase and exact last turn
@@ -2122,7 +2125,12 @@ Requirements:
 
 Waiting for a complete response before TTS begins creates noticeable dead air.
 
-Streaming can reduce time-to-first-audio.
+SentinelVoice therefore emits each decoded WAV chunk as soon as its sequential
+provider request completes instead of collecting every chunk first. This can
+reduce time-to-first-audio for long responses without concurrent provider
+bursts, output reordering, or a provider-specific streaming framework. It is
+inter-chunk streaming, not true incremental audio streaming within one Groq
+request.
 
 ### Why cancellation matters
 

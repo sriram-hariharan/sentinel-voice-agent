@@ -1,6 +1,7 @@
 import logging
 import re
 import textwrap
+from collections.abc import AsyncIterator
 from typing import Any
 
 from groq import AsyncGroq
@@ -120,12 +121,11 @@ class GroqTextToSpeechProvider:
             max_retries=1,
         )
 
-    async def synthesize(self, text: str) -> list[bytes]:
+    async def synthesize_chunks(self, text: str) -> AsyncIterator[bytes]:
         text_chunks = split_tts_text(
             text,
             max_chars=self.max_chars,
         )
-        audio_chunks: list[bytes] = []
 
         for chunk_index, chunk in enumerate(text_chunks, start=1):
             logger.info(
@@ -163,6 +163,8 @@ class GroqTextToSpeechProvider:
                     "tts_model": self.model,
                 },
             )
-            audio_chunks.append(audio)
+            yield audio
 
-        return audio_chunks
+    async def synthesize(self, text: str) -> list[bytes]:
+        """Collect all WAV chunks for callers that need the legacy API."""
+        return [chunk async for chunk in self.synthesize_chunks(text)]

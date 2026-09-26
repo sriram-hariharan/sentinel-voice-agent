@@ -182,10 +182,8 @@ class _GroqChunkedStream(tts.ChunkedStream):
                 "provider": self._tts.provider,
                 "model": self._tts.model,
                 "character_count": len(self._input_text),
-                "provider_request_count": 1,
             },
         ) as span:
-            wav_chunks = await self._provider.synthesize(self._input_text)
             output_emitter.initialize(
                 request_id=uuid4().hex,
                 sample_rate=24000,
@@ -194,51 +192,76 @@ class _GroqChunkedStream(tts.ChunkedStream):
             )
 
             sample_count = 0
+            wav_chunk_count = 0
+            chunk_audio_seconds: list[float] = []
             first_audio_emitted = False
-            for wav_bytes in wav_chunks:
-                with wave.open(io.BytesIO(wav_bytes), "rb") as wav_file:
-                    if (
-                        wav_file.getframerate() != 24000
-                        or wav_file.getnchannels() != 1
-                        or wav_file.getsampwidth() != 2
-                    ):
-                        raise ValueError(
-                            "Groq TTS must return 24 kHz, mono, 16-bit WAV audio"
-                        )
+            try:
+                async for wav_bytes in self._provider.synthesize_chunks(
+                    self._input_text
+                ):
+                    wav_chunk_count += 1
+                    with wave.open(io.BytesIO(wav_bytes), "rb") as wav_file:
+                        if (
+                            wav_file.getframerate() != 24000
+                            or wav_file.getnchannels() != 1
+                            or wav_file.getsampwidth() != 2
+                        ):
+                            raise ValueError(
+                                "Groq TTS must return 24 kHz, mono, 16-bit WAV audio"
+                            )
 
-                    declared_frame_count = wav_file.getnframes()
-                    pcm_bytes = wav_file.readframes(declared_frame_count)
-                    bytes_per_frame = (
-                        wav_file.getnchannels() * wav_file.getsampwidth()
-                    )
-                    if len(pcm_bytes) % bytes_per_frame:
-                        raise ValueError(
-                            "Groq TTS returned incomplete PCM audio frames"
+                        declared_frame_count = wav_file.getnframes()
+                        pcm_bytes = wav_file.readframes(declared_frame_count)
+                        bytes_per_frame = (
+                            wav_file.getnchannels() * wav_file.getsampwidth()
                         )
-                    actual_frame_count = len(pcm_bytes) // bytes_per_frame
-                    output_emitter.push(pcm_bytes)
-                    sample_count += actual_frame_count
-                    if not first_audio_emitted:
-                        emit_trace_event(
-                            "tts.first_audio",
-                            component="voice",
-                            status=TraceStatus.COMPLETED,
-                            duration_ms=(time.perf_counter() - started_at) * 1000,
-                            metadata={
-                                "provider": self._tts.provider,
-                                "model": self._tts.model,
+                        if len(pcm_bytes) % bytes_per_frame:
+                            raise ValueError(
+                                "Groq TTS returned incomplete PCM audio frames"
+                            )
+                        actual_frame_count = len(pcm_bytes) // bytes_per_frame
+                        output_emitter.push(pcm_bytes)
+                        sample_count += actual_frame_count
+                        chunk_audio_seconds.append(
+                            actual_frame_count / wav_file.getframerate()
+                        )
+                        logger.info(
+                            "groq tts wav chunk emitted to livekit",
+                            extra={
+                                "tts_chunk_index": wav_chunk_count,
+                                "tts_chunk_audio_seconds": (
+                                    chunk_audio_seconds[-1]
+                                ),
+                                "tts_model": self._tts.model,
                             },
                         )
-                        first_audio_emitted = True
-            span.set_metadata(
-                wav_chunk_count=len(wav_chunks),
-                generated_audio_seconds=sample_count / 24000,
-            )
+                        if not first_audio_emitted:
+                            emit_trace_event(
+                                "tts.first_audio",
+                                component="voice",
+                                status=TraceStatus.COMPLETED,
+                                duration_ms=(
+                                    time.perf_counter() - started_at
+                                )
+                                * 1000,
+                                metadata={
+                                    "provider": self._tts.provider,
+                                    "model": self._tts.model,
+                                },
+                            )
+                            first_audio_emitted = True
+            finally:
+                span.set_metadata(
+                    wav_chunk_count=wav_chunk_count,
+                    generated_audio_seconds=sample_count / 24000,
+                    generated_audio_seconds_by_chunk=chunk_audio_seconds,
+                )
+            span.set_metadata(provider_request_count=wav_chunk_count)
 
         logger.info(
             "groq tts audio frames yielded to livekit",
             extra={
-                "wav_chunk_count": len(wav_chunks),
+                "wav_chunk_count": wav_chunk_count,
                 "sample_count": sample_count,
             },
         )

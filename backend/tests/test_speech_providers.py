@@ -79,6 +79,42 @@ async def test_tts_uses_configured_model_and_voice() -> None:
     )
 
 
+@pytest.mark.asyncio
+async def test_tts_chunk_requests_preserve_text_once_and_in_order() -> None:
+    client = _groq_client()
+    provider = GroqTextToSpeechProvider(
+        api_key="",
+        max_chars=32,
+        client=client,
+    )
+    text = (
+        "First sentence stays intact. Second sentence is also here. "
+        "Third sentence finishes the response."
+    )
+    expected_text_chunks = split_tts_text(text, max_chars=32)
+    expected_audio_chunks = [
+        f"wav-{index}".encode()
+        for index in range(1, len(expected_text_chunks) + 1)
+    ]
+    responses = []
+    for audio in expected_audio_chunks:
+        response = MagicMock()
+        response.read = AsyncMock(return_value=audio)
+        responses.append(response)
+    client.audio.speech.create.side_effect = responses
+
+    audio_chunks = [
+        chunk async for chunk in provider.synthesize_chunks(text)
+    ]
+
+    assert audio_chunks == expected_audio_chunks
+    assert " ".join(expected_text_chunks) == " ".join(text.split())
+    assert [
+        call.kwargs["input"]
+        for call in client.audio.speech.create.await_args_list
+    ] == expected_text_chunks
+
+
 def test_long_tts_text_is_split_without_truncation() -> None:
     text = (
         "Your checking balance is one hundred twenty-five dollars. "

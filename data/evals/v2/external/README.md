@@ -333,3 +333,29 @@ deduplicated eligibility views. These aggregates will guide a later sampling
 and semantic-review design; V2-C2N itself selects no final evaluation sample,
 assigns no narrative-level SentinelVoice intent, runs no model inference, and
 uses no CFPB data for training.
+
+## CFPB narrative review-pool materialization
+
+V2-C2O defines a deterministic, diversity-aware review/evaluation-candidate
+pool with default sizes of 600 `NEAR_MATCH`, 1,200 `AMBIGUOUS`, and 2,000
+`UNSUPPORTED` narratives. Eligibility is privacy-screened with the existing
+CFPB patterns and globally deduplicated by exact narrative SHA-256. When the
+same narrative occurs in multiple mapping lanes, ownership follows the frozen
+precedence `AMBIGUOUS` > `NEAR_MATCH` > `UNSUPPORTED` > `EXACT_MATCH`.
+
+The two semantic-review lanes target a 35% / 30% / 25% / 10% mix across
+`<=500`, `501-1000`, `1001-2000`, and `>2000` characters. Deterministic quota
+reallocation handles unavailable strata, while an approximately 20% issue cap
+limits dominance unless relaxing it is necessary to fill a lane. Selection
+also rotates across frozen overlapping candidate-intent sets, products,
+issues, and source archives. Unsupported selection instead uses deterministic
+round-robin coverage across products and product/issue/sub-issue/length
+strata.
+
+The trackable `processed/cfpb/review_pool_manifest.json` contains complaint
+IDs, narrative hashes, CFPB taxonomy, frozen candidate intents, provenance,
+selection metadata, and aggregate summaries, but no narrative text. Real
+consumer-authored text is written only to the ignored local file
+`processed/cfpb/local/cfpb_review_pool.jsonl`. This pool is not the final CFPB
+evaluation set: V2-C2O assigns no final intent labels, runs no model inference,
+performs no training, and defers semantic review to the next phase.

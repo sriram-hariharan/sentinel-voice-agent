@@ -387,3 +387,13 @@ metadata, annotations, and aggregate counts but no consumer narrative text or
 reviewer identifiers. See `cfpb_semantic_review_guidelines.md` for the complete
 human-review protocol. V2-C2P runs no classifier or LLM labeling and performs
 no model training.
+
+V2-C2Q adds the standard-library local reviewer CLI at
+`scripts/review_cfpb_semantic_annotations.py`. Launch it with
+`python scripts/review_cfpb_semantic_annotations.py --reviewer-id <id>`; it
+resumes at the first `UNREVIEWED` row, displays one local narrative at a time,
+and atomically saves only explicit human annotations. Use `k` to skip without
+changing a row and `q` (or Ctrl+C) to quit safely. Candidate intents are marked
+as `HINTS only`; classifier predictions, scores, probabilities, margins, and
+abstention outputs are intentionally neither used nor displayed. The narrative
+workfile remains local and Git-ignored.

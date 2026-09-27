@@ -291,3 +291,29 @@ representative sample of consumers or institutions. Complaint counts must not
 be used to rank companies. CFPB's publication and scrubbing controls reduce,
 but do not eliminate, residual privacy risk, so raw narratives remain local and
 must be handled as real consumer-authored data.
+
+## CFPB structured-taxonomy mapping
+
+V2-C2M inventories every Product/Sub-product/Issue/Sub-issue combination
+observed among the complete archive's narrative-bearing rows and freezes a
+hierarchical mapping before any classifier inference or narrative sampling.
+The inventory retains low-frequency combinations and reports product,
+product/issue, product/sub-product/issue, and full-tuple marginal counts.
+
+The mapping is deliberately conservative because CFPB taxonomy describes the
+product and issue represented by a complaint, not the exact conversational
+action a SentinelVoice user is currently requesting. Complaint topics such as
+fraud, an unauthorized transaction, a lost or stolen card, a purchase problem,
+or dispute history do not authorize `freeze_card` or `create_dispute` and are
+not exact protected-write labels. No structured rule maps directly to either
+protected-write intent as `EXACT_MATCH`; explicit action semantics must be
+established later from narrative text and remain subject to deterministic
+authorization and confirmation controls.
+
+CFPB narratives are often long-form and retrospective, may describe multiple
+events or actions a company already took, and may contain multiple intents or
+requested remedies. A later phase must keep taxonomy-derived scored examples,
+narrative-semantic review examples, multi-intent/ambiguity robustness examples,
+and unsupported/OOD examples separate. V2-C2M performs no narrative-level
+classification, creates no final evaluation sample, runs no model prediction,
+and trains no model.

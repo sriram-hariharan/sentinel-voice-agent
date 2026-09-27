@@ -4,6 +4,24 @@ V2-C2A records provenance and intended use only. It does not download a
 dataset, run an external benchmark, retrain a model, alter the frozen V2-C1
 classifier artifact, or integrate classification into runtime behavior.
 
+## Data-governance boundary
+
+The SentinelVoice application and demo use synthetic identities, accounts,
+cards, transactions, disputes, authentication records, and session data only.
+No public external corpus may become application customer/account data or be
+loaded into the synthetic banking backend.
+
+Offline evaluation may separately use synthetic, hybrid synthetic,
+crowdsourced human-written, or publicly released and de-identified real
+consumer-authored datasets. A real-world source must be public and trustworthy,
+have documented provenance and reviewed use or redistribution terms, and have
+been de-identified or intentionally released for public use. SentinelVoice
+must not use private, leaked, proprietary, or scraped customer records, and
+must not intentionally retain credentials, account secrets, or PII. Raw source
+material stays segregated from synthetic application data. This permission is
+for offline evaluation only; training on real consumer-derived data requires a
+separate explicit decision.
+
 ## Why provenance is separate
 
 External text can differ in origin, consent, privacy risk, label meaning, and
@@ -29,11 +47,14 @@ review.
   to SentinelVoice, and it is not a collection of released bank calls.
 - [CFPB Consumer Complaint Database Narratives Archive](https://www.consumerfinance.gov/foia-requests/foia-electronic-reading-room/cfpb-consumer-complaint-database-narratives-archive/)
   contains real consumer-written financial complaints previously published
-  through August 14, 2026. It is useful for language robustness, ambiguity,
-  and multi-intent stress testing, not direct intent accuracy or automatic
-  training labels. Complaints are one-sided consumer allegations and are not
-  independently verified. The archive is not representative of all consumer
-  experiences.
+  through August 14, 2026. CFPB states that its published complaint data is
+  freely available to use and analyze. Public narratives required consumer
+  publication consent and underwent personal-information scrubbing intended to
+  minimize, not eliminate, re-identification risk. The narratives are
+  one-sided, unverified consumer allegations and are not a representative
+  sample. SentinelVoice permits them only for offline language robustness,
+  intent, ambiguity, and out-of-distribution evaluation—not model training or
+  automatic labels.
 - [Bitext Retail Banking](https://huggingface.co/datasets/bitext/Bitext-retail-banking-llm-chatbot-training-dataset)
   has approximately 25,545 rows under CDLA-Sharing-1.0. Its official card calls
   it a hybrid synthetic dataset generated with NLP/NLG and automated labeling,
@@ -68,6 +89,28 @@ authority.
 `allowed_for_initial_evaluation` field means only that a later phase may design
 and approve an evaluation protocol; it does not authorize downloading during
 V2-C2A.
+
+## CFPB offline-evaluation qualification
+
+The [public database](https://www.consumerfinance.gov/data-research/consumer-complaints/)
+permits analysis of published complaint data, while the
+[narrative publication policy](https://www.consumerfinance.gov/complaint/data-use/)
+documents that directly identifying information is not published. CFPB's
+[scrubbing standard](https://files.consumerfinance.gov/f/documents/cfpb_narrative-scrubbing-standard_2023-05.pdf)
+and privacy assessment describe opt-in publication consent and steps intended
+to remove personal information; these controls reduce but do not eliminate
+privacy risk. The official
+[archive](https://www.consumerfinance.gov/foia-requests/foia-electronic-reading-room/cfpb-consumer-complaint-database-narratives-archive/)
+covers previously published narratives received through August 14, 2026.
+
+CFPB cautions that complaint narratives are unverified, one-sided allegations
+and not a representative sample of consumer experience. SentinelVoice will not
+use them to rank or judge financial institutions. Any future approved use is
+limited to offline language robustness, intent, ambiguity, or OOD evaluation,
+with metrics kept separate from synthetic and other external sources. The data
+is not assumed to be perfectly anonymized or risk-free, and future model
+training remains prohibited pending a separate review. V2-C2K changes policy
+only: it downloads no CFPB data and runs no model evaluation.
 
 ## BANKING77 taxonomy mapping
 

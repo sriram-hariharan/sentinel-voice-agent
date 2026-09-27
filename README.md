@@ -2,8 +2,10 @@
 
 ## Production-Style AI Voice Customer Support Agent for a Synthetic Digital Bank
 
-**Project status:** Core V1 remains release-validated; V2-C adds an offline-only
-intent/risk ML experiment over controlled SentinelVoice synthetic data.
+**Project status:** Core V1 remains release-validated; V2-C1 adds an offline-only
+intent/risk ML experiment over controlled SentinelVoice synthetic data, and
+V2-C2 measures frozen-model generalization on separately governed public
+external benchmarks.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -124,6 +126,27 @@ universal production benchmarks.
 - Provider-generated audio quality can vary across requests.
 - Public-demo session, turn, token, and process limits are deliberately
   bounded rather than designed as distributed production quotas.
+
+### Data-governance boundary
+
+Application and demo data remain synthetic only. Customer identities,
+accounts, cards, transactions, disputes, authentication records, and session
+data must be fictional. SentinelVoice uses no real banking API, private bank
+customer record, or real consumer complaint as application state.
+
+Offline ML research and evaluation may separately use synthetic datasets,
+hybrid synthetic datasets, crowdsourced human-written benchmarks, and publicly
+released, de-identified real consumer-authored datasets. Real-world external
+data is allowed only when it is publicly available from a trustworthy source;
+its provenance and use or redistribution terms are documented and reviewed;
+it was de-identified or intended for public release; credentials, account
+secrets, and PII are not intentionally retained; and it does not come from
+private, leaked, proprietary, or scraped customer records. Raw external data
+must remain segregated from the synthetic application data.
+
+This permission is for offline evaluation. Using real consumer-derived data
+for model training requires a separate explicit project-owner decision and
+review.
 
 ### Local voice setup
 
@@ -309,9 +332,10 @@ Example user requests include:
 - "Actually, don't freeze it. I only want to know what the transaction was."
 - "Can you transfer me to a human?"
 
-The project uses only synthetic users, accounts, transactions, policies, and disputes.
-
-No real banking data is required or desirable.
+The application uses only synthetic users, accounts, transactions, policies,
+and disputes. It requires no real bank API or private customer record. Public,
+de-identified external corpora may be used only for the separately governed
+offline evaluation described in the data-governance boundary above.
 
 ---
 
@@ -1660,9 +1684,11 @@ created_at
 
 ### Why synthetic banking data
 
-Real financial data introduces privacy, compliance, and security obligations that add no portfolio value.
-
-Synthetic data lets the project demonstrate the architecture safely.
+Synthetic application data lets the project demonstrate the architecture
+safely without importing real identities, accounts, authentication data, or
+banking records into the backend. Publicly released, de-identified
+consumer-authored text may be useful as a separate offline robustness corpus,
+but it never becomes application customer or account data.
 
 ### Why banking as the domain
 
@@ -2988,7 +3014,9 @@ No single prompt, model, or policy should be able to bypass every control.
 
 # 52. Data Privacy
 
-Even though the project uses synthetic data, design as though data were sensitive.
+Even though the application uses synthetic data, and any approved public
+external corpus stays offline and separate, design as though all data were
+sensitive.
 
 Practices:
 
@@ -3531,11 +3559,12 @@ calibration and advisory abstention
 local vectorization + inference latency
 ```
 
-V2-C uses only the 54 unchanged V2-A seeds plus deterministic, inspectable,
+V2-C1 uses only the 54 unchanged V2-A seeds plus deterministic, inspectable,
 hand-reviewed SentinelVoice expansions. It does not use BANKING77, another
 public/external dataset, an external paraphrasing API, or production
-transcripts. Public-dataset generalization is a separate future phase whose
-metrics must remain distinct. See `data/evals/v2/ml/README.md`.
+transcripts. V2-C2 evaluates frozen-model generalization on separately
+qualified public datasets; those external metrics remain distinct from V2-C1.
+See `data/evals/v2/ml/README.md` and `data/evals/v2/external/README.md`.
 
 ### Why this extension is useful
 
@@ -3619,7 +3648,7 @@ The V1 application now includes deterministic public-demo safety bounds:
 30 agent turns per session
 20 active sessions per backend process
 10-minute default LiveKit join-token lifetime
-synthetic customer data only
+synthetic application customer data only
 authenticated voice-token issuance
 no browser access to provider credentials
 ```

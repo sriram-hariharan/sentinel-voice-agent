@@ -1,9 +1,18 @@
 {
-  "schema_version": "external-dataset-sources.v1",
+  "schema_version": "external-dataset-sources.v2",
   "qualification_phase": "V2-C2A",
-  "reviewed_on": "2026-09-26",
-  "datasets_downloaded": false,
+  "policy_update_phase": "V2-C2K",
+  "reviewed_on": "2026-09-27",
+  "datasets_downloaded": true,
   "models_retrained": false,
+  "data_governance_policy": {
+    "application_and_demo_data": "synthetic_only",
+    "public_deidentified_real_consumer_authored_data_allowed_for_offline_evaluation": true,
+    "real_consumer_derived_data_allowed_for_training": false,
+    "training_requires_separate_explicit_decision": true,
+    "private_leaked_proprietary_or_scraped_customer_records_allowed": false,
+    "external_raw_data_must_remain_separate_from_application_data": true
+  },
   "sources": [
     {
       "source_id": "banking77",
@@ -29,19 +38,33 @@
       "name": "CFPB Consumer Complaint Database Narratives Archive",
       "publisher": "Consumer Financial Protection Bureau",
       "official_source_url": "https://www.consumerfinance.gov/foia-requests/foia-electronic-reading-room/cfpb-consumer-complaint-database-narratives-archive/",
+      "official_policy_sources": {
+        "public_database": "https://www.consumerfinance.gov/data-research/consumer-complaints/",
+        "data_sharing_and_privacy": "https://www.consumerfinance.gov/complaint/data-use/",
+        "narrative_scrubbing_standard": "https://files.consumerfinance.gov/f/documents/cfpb_narrative-scrubbing-standard_2023-05.pdf",
+        "narrative_archive": "https://www.consumerfinance.gov/foia-requests/foia-electronic-reading-room/cfpb-consumer-complaint-database-narratives-archive/",
+        "publication_change_and_limitations": "https://www.consumerfinance.gov/about-us/newsroom/the-cfpb-to-cease-discretionary-publication-of-complaint-narratives-and-visualizations/"
+      },
       "dataset_type": "archived consumer-written financial complaint narratives and complaint metadata",
-      "real_or_synthetic": "real consumer-written complaints; not support conversations",
+      "real_or_synthetic": "publicly released, consumer-authored real complaint narratives; not support conversations or application customer records",
       "language": "Primarily English; language coverage requires inspection before use",
       "approximate_size": "Archive of previously published narratives received from 2011-12-01 through 2026-08-14; record count not qualified in this phase",
       "label_structure": "Complaint product, sub-product, issue, sub-issue, company, response, and related metadata; no clean SentinelVoice intent labels",
-      "license": "U.S. federal public data; the CFPB states that previously published narratives are in the public domain for FOIA purposes. This is not a conventional ML-dataset license.",
-      "provenance_notes": "Official CFPB FOIA Reading Room archive. Narratives are one-sided consumer allegations, are not independently verified, and are not representative of all consumer experiences.",
-      "privacy_notes": "The CFPB published narratives only after consumer consent and steps to remove personal information, but the free-form text still requires additional privacy and sensitive-content review before local use.",
-      "intended_use": "Real-language robustness, ambiguity, long-form, and multi-intent stress testing only; not automatic intent-label training in V2-C2.",
+      "license": "The CFPB states that published complaint data is freely available to use, analyze, and build on, and that previously published narratives are in the public domain for FOIA purposes. Use and redistribution terms still require review before acquisition; this is not represented as a conventional ML-dataset license.",
+      "provenance_notes": "Official CFPB FOIA Reading Room archive of public consumer-authored complaints previously published in the Consumer Complaint Database, covering complaints received from 2011-12-01 through 2026-08-14.",
+      "privacy_notes": "Public narratives required consumer opt-in publication consent and CFPB personal-information scrubbing intended to minimize, not eliminate, re-identification risk. SentinelVoice must perform additional privacy and sensitive-content review and must not intentionally retain credentials, account secrets, or PII.",
+      "limitations": [
+        "Narratives are one-sided consumer allegations and were not independently verified by the CFPB complaint process.",
+        "The complaints are not a representative sample of consumers or financial-market experiences.",
+        "SentinelVoice must not use complaint narratives or volumes to rank or judge financial institutions.",
+        "Public release and scrubbing do not make the free-form narratives perfectly anonymized or risk-free."
+      ],
+      "intended_use": "Offline language robustness, intent, ambiguity, long-form, multi-intent, and out-of-distribution evaluation only; not automatic intent-label training and never application customer/account data.",
+      "downloaded": false,
       "allowed_for_initial_evaluation": true,
       "allowed_for_future_training": false,
       "mapping_required": true,
-      "status": "qualified_for_robustness_review_only"
+      "status": "qualified_for_offline_evaluation_only_pending_acquisition_review"
     },
     {
       "source_id": "bitext_retail_banking",

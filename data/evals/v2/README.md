@@ -48,7 +48,7 @@ Safety invariants are fixed:
 - shadow classifier integration must not change tool execution or application
   output.
 
-V2-C implements the first offline classifier experiment using only controlled
+V2-C1 implements the first offline classifier experiment using only controlled
 synthetic and hand-reviewed SentinelVoice data under `data/evals/v2/ml/`. It
 keeps the original V2-A seed unchanged, freezes an expanded grouped test before
 selection, and reports majority, deterministic-rule, Logistic Regression, and
@@ -58,8 +58,15 @@ and it has no runtime authority or integration.
 The selected classifier must beat both the majority baseline and the
 deterministic-rule baseline on the locked grouped test set. It reports macro-F1,
 per-class metrics, protected-write recall, calibration, and abstention coverage
-and accuracy. A later, separately reviewed phase may test public-dataset
-generalization; those results must not be mixed with V2-C metrics.
+and accuracy. V2-C2 separately tests public-dataset generalization; those
+external results must not be mixed with V2-C1 metrics.
+
+The application and demo banking domain remains entirely synthetic. Offline
+evaluation may use separately governed public, de-identified real
+consumer-authored data when provenance, public-release status, privacy risk,
+and use terms are reviewed. Such external text must not become application
+customer/account data. Use of real consumer-derived data for model training
+requires a separate explicit decision.
 
 A routing experiment must use paired control and treatment live runs, preserve
 safety and required task/tool correctness, and report cost per successful task,

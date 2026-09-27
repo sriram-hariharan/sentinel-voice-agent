@@ -195,3 +195,18 @@ in an unscored review pool without forced expected labels.
 The CLINC OOS processed evaluation remains a separate benchmark for unrelated,
 non-banking language. V2-C2I runs no classifier predictions, training,
 retraining, threshold tuning, or runtime integration.
+
+## Frozen-model CLINC finance evaluation
+
+V2-C2J evaluates the unchanged V2-C1 classifier on only the two scored CLINC
+finance lanes, without retraining, remapping, or threshold tuning. The frozen
+Linear SVM is the primary classifier. Exact-match metrics and unsupported
+recall are reported separately, and the 180-example near/ambiguous review pool
+remains unscored.
+
+The frozen Logistic Regression probability path and its validation-selected
+0.2 margin abstention rule are analyzed separately from the primary SVM. CLINC
+finance results are external-source metrics and are not directly
+interchangeable with the nine-intent V2-C1 controlled-synthetic locked-test
+metrics. The evaluation remains offline and advisory only, with no runtime or
+authorization authority.

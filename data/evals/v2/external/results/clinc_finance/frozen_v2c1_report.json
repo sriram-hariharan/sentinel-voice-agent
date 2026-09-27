@@ -1,0 +1,509 @@
+{
+  "advisory_only": true,
+  "evaluation_base_commit": "97aed99021248eb0c53d7e3995deeb8cca97a533",
+  "evaluation_version": "clinc-finance-frozen-v2c1.2026-09-27.v1",
+  "external_metrics_boundary": {
+    "directly_comparable_to_v2c1_nine_intent_locked_test_macro_f1": false,
+    "exact_match_macro_f1_expected_class_count": 3,
+    "reported_separately_from_v2c1": true
+  },
+  "frozen_advisory_abstention_analysis": {
+    "analysis_role": "Frozen Logistic Regression probability path; separate from primary SVM metrics and not validation of the SVM.",
+    "exact_match_lane": {
+      "abstained_count": 41,
+      "abstention_rate": 0.4555555555555556,
+      "accepted_count": 49,
+      "coverage": 0.5444444444444444,
+      "example_count": 90,
+      "selective_accuracy": 0.7551020408163265,
+      "unabstained_accuracy": 0.6111111111111112,
+      "unabstained_prediction_distribution": {
+        "account_balance": {
+          "count": 30,
+          "rate": 0.3333333333333333
+        },
+        "card_status": {
+          "count": 17,
+          "rate": 0.18888888888888888
+        },
+        "create_dispute": {
+          "count": 1,
+          "rate": 0.011111111111111112
+        },
+        "escalation": {
+          "count": 1,
+          "rate": 0.011111111111111112
+        },
+        "freeze_card": {
+          "count": 1,
+          "rate": 0.011111111111111112
+        },
+        "informational_policy": {
+          "count": 9,
+          "rate": 0.1
+        },
+        "recent_transactions": {
+          "count": 22,
+          "rate": 0.24444444444444444
+        },
+        "transaction_details": {
+          "count": 3,
+          "rate": 0.03333333333333333
+        },
+        "unsupported_or_uncertain": {
+          "count": 6,
+          "rate": 0.06666666666666667
+        }
+      }
+    },
+    "frozen_rule": {
+      "confidence_threshold": 0.0,
+      "coverage": 0.5555555555555556,
+      "eligible": true,
+      "evaluated_count": 60,
+      "evaluated_protected_write_count": 15,
+      "evaluated_protected_write_recall": 1.0,
+      "margin_threshold": 0.2,
+      "mode": "threshold",
+      "require_intent_risk_agreement": false,
+      "selective_accuracy": 1.0
+    },
+    "threshold_selection_source": "V2-C1 validation only",
+    "unsupported_lane": {
+      "abstained_count": 455,
+      "abstention_rate": 0.7222222222222222,
+      "accepted_as_unsupported_count": 106,
+      "accepted_as_unsupported_rate": 0.6057142857142858,
+      "accepted_count": 175,
+      "accepted_false_supported_count": 69,
+      "accepted_false_supported_rate": 0.3942857142857143,
+      "coverage": 0.2777777777777778,
+      "example_count": 630,
+      "unabstained_prediction_distribution": {
+        "account_balance": {
+          "count": 135,
+          "rate": 0.21428571428571427
+        },
+        "card_status": {
+          "count": 74,
+          "rate": 0.11746031746031746
+        },
+        "create_dispute": {
+          "count": 6,
+          "rate": 0.009523809523809525
+        },
+        "escalation": {
+          "count": 23,
+          "rate": 0.03650793650793651
+        },
+        "freeze_card": {
+          "count": 23,
+          "rate": 0.03650793650793651
+        },
+        "informational_policy": {
+          "count": 37,
+          "rate": 0.05873015873015873
+        },
+        "recent_transactions": {
+          "count": 29,
+          "rate": 0.046031746031746035
+        },
+        "transaction_details": {
+          "count": 28,
+          "rate": 0.044444444444444446
+        },
+        "unsupported_or_uncertain": {
+          "count": 275,
+          "rate": 0.4365079365079365
+        }
+      },
+      "unabstained_unsupported_recall": 0.4365079365079365
+    }
+  },
+  "frozen_classifier": {
+    "artifact_path": "artifacts/v2/classifier/classifier.joblib",
+    "artifact_sha256": "e815eb629de3ae56140a09f92baf563e9aaeec1204b45c23774210452d03285c",
+    "components": {
+      "advisory_abstention_rule": {
+        "confidence_threshold": 0.0,
+        "coverage": 0.5555555555555556,
+        "eligible": true,
+        "evaluated_count": 60,
+        "evaluated_protected_write_count": 15,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "mode": "threshold",
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      "independent_risk_model": "LinearSVC",
+      "logistic_probability_intent_model": "LogisticRegression",
+      "selected_intent_model": "LinearSVC"
+    },
+    "full_intent_label_order": [
+      "account_balance",
+      "card_status",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "recent_transactions",
+      "transaction_details",
+      "unsupported_or_uncertain"
+    ],
+    "modified_or_retrained": false,
+    "runtime_authority": false
+  },
+  "integrity": {
+    "classifier_report_sha256": "dcf940890b2602e040ed3f0a30b0f45f0c34e352707896ea64079b20c929f843",
+    "frozen_mapping_sha256": "b156e23f7cdfc55851afb81dc11d867941e7bd54b158a24874d1d2334b503fc7",
+    "model_selection_sha256": "700af92377110b585967a7300ff1b1682f45f84ac8d0aa09e18c8b85d540dab3",
+    "processed_evaluation_sha256": "00af381bdc1732889921c917a04b01457e7bfcf68e031d2822acf22ca5e171a6",
+    "processed_manifest_sha256": "1e9177f1893dfce99166d626c7f646117818d5880b7a3017ec565032c99b4ff3",
+    "raw_clinc_data_sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0"
+  },
+  "primary_classifier": "frozen V2-C1 LinearSVC intent model",
+  "primary_svm": {
+    "exact_match_lane": {
+      "accuracy": 0.5777777777777777,
+      "confusion_by_expected_and_predicted_intent": {
+        "account_balance": {
+          "account_balance": 25,
+          "card_status": 1,
+          "create_dispute": 0,
+          "escalation": 0,
+          "freeze_card": 0,
+          "informational_policy": 1,
+          "recent_transactions": 0,
+          "transaction_details": 1,
+          "unsupported_or_uncertain": 2
+        },
+        "informational_policy": {
+          "account_balance": 0,
+          "card_status": 18,
+          "create_dispute": 2,
+          "escalation": 0,
+          "freeze_card": 1,
+          "informational_policy": 7,
+          "recent_transactions": 1,
+          "transaction_details": 0,
+          "unsupported_or_uncertain": 1
+        },
+        "recent_transactions": {
+          "account_balance": 5,
+          "card_status": 0,
+          "create_dispute": 1,
+          "escalation": 0,
+          "freeze_card": 0,
+          "informational_policy": 0,
+          "recent_transactions": 20,
+          "transaction_details": 1,
+          "unsupported_or_uncertain": 3
+        }
+      },
+      "decision_margin": {
+        "example_count": 90,
+        "interpretation": "Raw LinearSVC scores and margins are not probabilities.",
+        "top_1_minus_top_2_margin": {
+          "maximum": 1.7787421416646583,
+          "mean": 0.5145823939557594,
+          "minimum": 0.013144298873366989,
+          "p25": 0.18446925562241756,
+          "p50": 0.4344120745680029,
+          "p75": 0.7494451390658431,
+          "p90": 0.9753309012640302,
+          "p95": 1.284758482019871
+        },
+        "top_1_score": {
+          "maximum": 0.887995487018328,
+          "mean": -0.06262681620722702,
+          "minimum": -0.5604672487916814,
+          "p25": -0.3387818071729365,
+          "p50": -0.111416169273514,
+          "p75": 0.18609044033542013,
+          "p90": 0.38852458250208877,
+          "p95": 0.5827560081004624
+        },
+        "top_2_score": {
+          "maximum": -0.2856351690849461,
+          "mean": -0.5772092101629864,
+          "minimum": -0.8907466546463303,
+          "p25": -0.6476960338279321,
+          "p50": -0.5737364058120624,
+          "p75": -0.5006614702208981,
+          "p90": -0.40729862198133726,
+          "p95": -0.38303488185726514
+        }
+      },
+      "example_count": 90,
+      "false_protected_write": {
+        "by_intent": {
+          "create_dispute": {
+            "count": 3,
+            "rate": 0.03333333333333333
+          },
+          "freeze_card": {
+            "count": 1,
+            "rate": 0.011111111111111112
+          }
+        },
+        "combined_count": 4,
+        "combined_rate": 0.044444444444444446
+      },
+      "macro_f1": 0.6620227038183695,
+      "macro_f1_scope": [
+        "account_balance",
+        "recent_transactions",
+        "informational_policy"
+      ],
+      "major_confusions": [
+        {
+          "count": 18,
+          "expected": "informational_policy",
+          "predicted": "card_status",
+          "rate_within_expected_class": 0.6
+        },
+        {
+          "count": 5,
+          "expected": "recent_transactions",
+          "predicted": "account_balance",
+          "rate_within_expected_class": 0.16666666666666666
+        },
+        {
+          "count": 3,
+          "expected": "recent_transactions",
+          "predicted": "unsupported_or_uncertain",
+          "rate_within_expected_class": 0.1
+        },
+        {
+          "count": 2,
+          "expected": "account_balance",
+          "predicted": "unsupported_or_uncertain",
+          "rate_within_expected_class": 0.06666666666666667
+        },
+        {
+          "count": 2,
+          "expected": "informational_policy",
+          "predicted": "create_dispute",
+          "rate_within_expected_class": 0.06666666666666667
+        },
+        {
+          "count": 1,
+          "expected": "account_balance",
+          "predicted": "card_status",
+          "rate_within_expected_class": 0.03333333333333333
+        },
+        {
+          "count": 1,
+          "expected": "account_balance",
+          "predicted": "informational_policy",
+          "rate_within_expected_class": 0.03333333333333333
+        },
+        {
+          "count": 1,
+          "expected": "account_balance",
+          "predicted": "transaction_details",
+          "rate_within_expected_class": 0.03333333333333333
+        },
+        {
+          "count": 1,
+          "expected": "informational_policy",
+          "predicted": "freeze_card",
+          "rate_within_expected_class": 0.03333333333333333
+        },
+        {
+          "count": 1,
+          "expected": "informational_policy",
+          "predicted": "recent_transactions",
+          "rate_within_expected_class": 0.03333333333333333
+        },
+        {
+          "count": 1,
+          "expected": "informational_policy",
+          "predicted": "unsupported_or_uncertain",
+          "rate_within_expected_class": 0.03333333333333333
+        },
+        {
+          "count": 1,
+          "expected": "recent_transactions",
+          "predicted": "create_dispute",
+          "rate_within_expected_class": 0.03333333333333333
+        },
+        {
+          "count": 1,
+          "expected": "recent_transactions",
+          "predicted": "transaction_details",
+          "rate_within_expected_class": 0.03333333333333333
+        }
+      ],
+      "per_expected_class": {
+        "account_balance": {
+          "f1": 0.8333333333333334,
+          "precision": 0.8333333333333334,
+          "recall": 0.8333333333333334,
+          "support": 30
+        },
+        "informational_policy": {
+          "f1": 0.3684210526315789,
+          "precision": 0.875,
+          "recall": 0.23333333333333334,
+          "support": 30
+        },
+        "recent_transactions": {
+          "f1": 0.7843137254901961,
+          "precision": 0.9523809523809523,
+          "recall": 0.6666666666666666,
+          "support": 30
+        }
+      },
+      "prediction_distribution_full_nine_intents": {
+        "account_balance": {
+          "count": 30,
+          "rate": 0.3333333333333333
+        },
+        "card_status": {
+          "count": 19,
+          "rate": 0.2111111111111111
+        },
+        "create_dispute": {
+          "count": 3,
+          "rate": 0.03333333333333333
+        },
+        "escalation": {
+          "count": 0,
+          "rate": 0.0
+        },
+        "freeze_card": {
+          "count": 1,
+          "rate": 0.011111111111111112
+        },
+        "informational_policy": {
+          "count": 8,
+          "rate": 0.08888888888888889
+        },
+        "recent_transactions": {
+          "count": 21,
+          "rate": 0.23333333333333334
+        },
+        "transaction_details": {
+          "count": 2,
+          "rate": 0.022222222222222223
+        },
+        "unsupported_or_uncertain": {
+          "count": 6,
+          "rate": 0.06666666666666667
+        }
+      }
+    },
+    "unsupported_lane": {
+      "decision_margin": {
+        "example_count": 630,
+        "interpretation": "Raw LinearSVC scores and margins are not probabilities.",
+        "top_1_minus_top_2_margin": {
+          "maximum": 1.724862350116402,
+          "mean": 0.29224771354958057,
+          "minimum": 0.000274459079047884,
+          "p25": 0.08528774012516166,
+          "p50": 0.20227403321075793,
+          "p75": 0.39901401140327164,
+          "p90": 0.6850130392447052,
+          "p95": 0.9280643981914661
+        },
+        "top_1_score": {
+          "maximum": 0.829599603301183,
+          "mean": -0.2545935634059857,
+          "minimum": -0.691301477725659,
+          "p25": -0.4357499735380963,
+          "p50": -0.31228991426012565,
+          "p75": -0.13617060317855467,
+          "p90": 0.08246417572907187,
+          "p95": 0.23649722515497362
+        },
+        "top_2_score": {
+          "maximum": -0.11987210345284272,
+          "mean": -0.5468412769555663,
+          "minimum": -0.8987033484322584,
+          "p25": -0.6179671761303311,
+          "p50": -0.5530152732714134,
+          "p75": -0.47570463129652396,
+          "p90": -0.3950232948244957,
+          "p95": -0.3433649637873433
+        }
+      },
+      "example_count": 630,
+      "false_private_read_prediction": {
+        "count": 276,
+        "rate": 0.4380952380952381
+      },
+      "false_protected_write": {
+        "by_intent": {
+          "create_dispute": {
+            "count": 8,
+            "rate": 0.012698412698412698
+          },
+          "freeze_card": {
+            "count": 34,
+            "rate": 0.05396825396825397
+          }
+        },
+        "combined_count": 42,
+        "combined_rate": 0.06666666666666667
+      },
+      "false_supported_intent_rate": 0.6142857142857143,
+      "prediction_distribution_full_nine_intents": {
+        "account_balance": {
+          "count": 127,
+          "rate": 0.2015873015873016
+        },
+        "card_status": {
+          "count": 94,
+          "rate": 0.1492063492063492
+        },
+        "create_dispute": {
+          "count": 8,
+          "rate": 0.012698412698412698
+        },
+        "escalation": {
+          "count": 30,
+          "rate": 0.047619047619047616
+        },
+        "freeze_card": {
+          "count": 34,
+          "rate": 0.05396825396825397
+        },
+        "informational_policy": {
+          "count": 39,
+          "rate": 0.06190476190476191
+        },
+        "recent_transactions": {
+          "count": 33,
+          "rate": 0.05238095238095238
+        },
+        "transaction_details": {
+          "count": 22,
+          "rate": 0.03492063492063492
+        },
+        "unsupported_or_uncertain": {
+          "count": 243,
+          "rate": 0.38571428571428573
+        }
+      },
+      "unsupported_or_uncertain_recall": 0.38571428571428573
+    }
+  },
+  "schema_version": "clinc-finance-frozen-v2c1-report.v1",
+  "scored_source": {
+    "dataset_path": "data/evals/v2/external/processed/clinc_finance/clinc_finance_external_eval.json",
+    "dataset_sha256": "00af381bdc1732889921c917a04b01457e7bfcf68e031d2822acf22ca5e171a6",
+    "dataset_version": "clinc-finance-external-eval.2026-09-27.v1",
+    "exact_match_examples": 90,
+    "oos_examples_scored": false,
+    "review_pool_examples_excluded": 180,
+    "review_pool_scored": false,
+    "source_id": "clinc150_oos",
+    "source_revision": "828f8093932c8fe6ca7936c3d2e52903b1c523de",
+    "source_split": "test",
+    "unsupported_examples": 630
+  },
+  "training_or_tuning_performed": false
+}

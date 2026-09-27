@@ -317,3 +317,19 @@ narrative-semantic review examples, multi-intent/ambiguity robustness examples,
 and unsupported/OOD examples separate. V2-C2M performs no narrative-level
 classification, creates no final evaluation sample, runs no model prediction,
 and trains no model.
+
+## CFPB narrative-candidate planning
+
+V2-C2N adds a deterministic aggregate planner for the complete CFPB narrative
+corpus. It uses the frozen V2-C2M full-taxonomy assignments without promoting
+near or ambiguous complaints to exact intent labels. The planner writes no
+narrative text, complaint IDs, or individual narrative hashes to its output and
+does not materialize another narrative dataset.
+
+The future candidate plan summarizes exact duplicates within and across mapping
+lanes, narrative lengths, privacy-screening signals, structured taxonomy
+distributions, overlapping frozen candidate-intent counts, and several
+deduplicated eligibility views. These aggregates will guide a later sampling
+and semantic-review design; V2-C2N itself selects no final evaluation sample,
+assigns no narrative-level SentinelVoice intent, runs no model inference, and
+uses no CFPB data for training.

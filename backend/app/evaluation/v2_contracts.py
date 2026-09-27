@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from enum import StrEnum
 from pathlib import Path
 from typing import Any, Literal
@@ -100,7 +101,20 @@ class IntentRiskDataset(BaseModel):
         _validate_unique_ordered(example_ids, label="example_id")
 
         splits_by_group: dict[str, set[DatasetSplit]] = {}
+        normalized_texts: dict[str, str] = {}
+        duplicate_text_ids: tuple[str, str] | None = None
         for example in self.examples:
+            if not example.text.strip():
+                raise ValueError(f"text cannot be blank for {example.example_id}")
+            normalized_text = re.sub(
+                r"\s+",
+                " ",
+                re.sub(r"[^\w\s]", "", example.text.lower()),
+            ).strip()
+            duplicate_id = normalized_texts.get(normalized_text)
+            if duplicate_id is not None and duplicate_text_ids is None:
+                duplicate_text_ids = (duplicate_id, example.example_id)
+            normalized_texts[normalized_text] = example.example_id
             if example.risk != _RISK_BY_INTENT[example.intent]:
                 raise ValueError(
                     f"risk {example.risk} is incompatible with intent "
@@ -118,6 +132,11 @@ class IntentRiskDataset(BaseModel):
             raise ValueError(
                 "group_id values cannot cross dataset splits: "
                 + ", ".join(leaking_groups)
+            )
+        if duplicate_text_ids is not None:
+            raise ValueError(
+                "normalized example text must be unique: "
+                + ", ".join(duplicate_text_ids)
             )
         return self
 

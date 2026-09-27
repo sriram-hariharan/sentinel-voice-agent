@@ -2,7 +2,8 @@
 
 ## Production-Style AI Voice Customer Support Agent for a Synthetic Digital Bank
 
-**Project status:** Core V1 complete and release-validated for the synthetic banking portfolio demo.
+**Project status:** Core V1 remains release-validated; V2-C adds an offline-only
+intent/risk ML experiment over controlled SentinelVoice synthetic data.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -3488,9 +3489,12 @@ In regulated or high-risk domains, controlled autonomy is more realistic.
 
 ---
 
-# 71. Optional Machine Learning Extension
+# 71. Offline Machine Learning Experiment (V2-C)
 
-Only add an ML extension after the core system is complete.
+The core system is complete, and V2-C now implements the first ML experiment as
+an offline evaluation only. The classifier is not integrated with the agent,
+tools, authorization, confirmation, ownership checks, model routing, or voice
+path.
 
 Recommended option:
 
@@ -3499,9 +3503,7 @@ Recommended option:
 Input:
 
 ```text
-current transcript
-conversation state
-requested action
+synthetic current utterance text
 ```
 
 Output:
@@ -3509,29 +3511,31 @@ Output:
 ```text
 intent
 risk_level
-authentication_required
-confirmation_required
 ```
 
 Compare:
 
 ```text
-LLM-only classification
-vs
-base small model
-vs
-fine-tuned small model
+majority baseline
+vs deterministic rule baseline
+vs TF-IDF + Logistic Regression
+vs TF-IDF + Linear SVM
 ```
 
 Measure:
 
 ```text
-accuracy
-precision
-recall
-latency
-cost
+accuracy and macro-F1
+per-class precision, recall, and F1
+calibration and advisory abstention
+local vectorization + inference latency
 ```
+
+V2-C uses only the 54 unchanged V2-A seeds plus deterministic, inspectable,
+hand-reviewed SentinelVoice expansions. It does not use BANKING77, another
+public/external dataset, an external paraphrasing API, or production
+transcripts. Public-dataset generalization is a separate future phase whose
+metrics must remain distinct. See `data/evals/v2/ml/README.md`.
 
 ### Why this extension is useful
 
@@ -3543,9 +3547,12 @@ It adds genuine MLE signal:
 - evaluation,
 - model comparison.
 
-### Why not make it core
+### Why it is not runtime authority
 
-The project should not depend on fine-tuning to become complete.
+Risk prediction is redundant with the current deterministic intent-to-risk
+mapping and remains experimental. Authentication, confirmation, ownership,
+tool permission, and protected-action execution remain deterministic
+application properties.
 
 Otherwise the scope expands too far.
 

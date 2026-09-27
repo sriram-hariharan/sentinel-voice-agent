@@ -1,0 +1,33 @@
+{
+  "config_version": "v2-intent-expansion-config.v1",
+  "dataset_version": "2026-09-26.v2c1",
+  "generator_version": "v2-intent-dataset-builder.v1",
+  "seed": 20260926,
+  "sources": [
+    "v2_a_seed_unchanged",
+    "hand_authored_sentinelvoice",
+    "deterministic_template_expansion",
+    "contrast_challenge"
+  ],
+  "external_dataset_sources": [],
+  "target_per_intent": {
+    "train": 45,
+    "validation": 12,
+    "locked_test": 10
+  },
+  "slots": {
+    "account_types": ["checking", "savings"],
+    "amounts": ["$12.40", "$48.45", "$73.18", "$189.99"],
+    "card_endings": ["1842", "6620", "4176", "9031"],
+    "dates": ["September 12", "September 18", "September 22", "yesterday"],
+    "merchants": [
+      "Brightline Utilities",
+      "Cedar Books",
+      "Cloud Coffee",
+      "Garden State Deli",
+      "Metro Market",
+      "Orbit Digital"
+    ],
+    "statuses": ["active", "frozen", "pending", "posted", "reversed", "declined"]
+  }
+}

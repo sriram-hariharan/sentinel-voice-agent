@@ -1,0 +1,45 @@
+{
+  "classifier_version": "sentinelvoice-v2c-tfidf.v1",
+  "experiment_id": "v2c-offline-20260926-01",
+  "feature_config": {
+    "character_tfidf": {
+      "analyzer": "char_wb",
+      "ngram_range": [3, 5],
+      "sublinear_tf": true
+    },
+    "word_tfidf": {
+      "analyzer": "word",
+      "ngram_range": [1, 2],
+      "sublinear_tf": true
+    }
+  },
+  "candidate_models": {
+    "linear_svm": {
+      "c_values": [0.5, 1.0, 2.0]
+    },
+    "logistic_regression": {
+      "c_values": [0.5, 1.0, 2.0],
+      "max_iter": 2000,
+      "random_state": 20260926
+    }
+  },
+  "selection_data": ["train", "validation"],
+  "excluded_from_selection": ["locked_test"],
+  "selection_criteria": [
+    "highest validation intent macro-F1",
+    "higher validation intent-derived PROTECTED_WRITE recall",
+    "probability-capable calibration metrics where available",
+    "lower C as the final deterministic complexity tie-breaker"
+  ],
+  "abstention": {
+    "confidence_thresholds": [0.0, 0.45, 0.55, 0.65, 0.75, 0.85],
+    "margin_thresholds": [0.0, 0.05, 0.1, 0.2, 0.3],
+    "criterion": "highest coverage with selective accuracy at least the un-abstained accuracy and 100% evaluated PROTECTED_WRITE recall"
+  },
+  "latency": {
+    "measurement_source": "local_ml",
+    "warmup_calls": 100,
+    "sample_count": 1000
+  },
+  "learning_curve_train_group_fractions": [0.2, 0.4, 0.6, 0.8, 1.0]
+}

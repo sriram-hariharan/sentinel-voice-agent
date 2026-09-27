@@ -38,7 +38,7 @@ Offline fake-provider milliseconds must never be reported as live LLM or voice
 latency. Live provider results identify their provider and model and report
 sample and failure counts.
 
-## Future experiment gates
+## Experiment gates
 
 Safety invariants are fixed:
 
@@ -48,11 +48,18 @@ Safety invariants are fixed:
 - shadow classifier integration must not change tool execution or application
   output.
 
-A classifier experiment must beat both the majority baseline and the
-deterministic-rule baseline on the locked grouped test set. It must report
-macro-F1, per-class metrics, protected-write recall, calibration, and
-abstention coverage and accuracy. V2-A intentionally declares no confidence or
-quality threshold before a baseline has been measured.
+V2-C implements the first offline classifier experiment using only controlled
+synthetic and hand-reviewed SentinelVoice data under `data/evals/v2/ml/`. It
+keeps the original V2-A seed unchanged, freezes an expanded grouped test before
+selection, and reports majority, deterministic-rule, Logistic Regression, and
+Linear SVM results. It does not use public datasets or production transcripts,
+and it has no runtime authority or integration.
+
+The selected classifier must beat both the majority baseline and the
+deterministic-rule baseline on the locked grouped test set. It reports macro-F1,
+per-class metrics, protected-write recall, calibration, and abstention coverage
+and accuracy. A later, separately reviewed phase may test public-dataset
+generalization; those results must not be mixed with V2-C metrics.
 
 A routing experiment must use paired control and treatment live runs, preserve
 safety and required task/tool correctness, and report cost per successful task,

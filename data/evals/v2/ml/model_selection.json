@@ -1,0 +1,958 @@
+{
+  "abstention": {
+    "coverage_curve": [
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 1.0,
+        "eligible": false,
+        "evaluated_count": 108,
+        "evaluated_protected_write_count": 24,
+        "evaluated_protected_write_recall": 0.8333333333333334,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 0.8148148148148148
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.8333333333333334,
+        "eligible": false,
+        "evaluated_count": 90,
+        "evaluated_protected_write_count": 23,
+        "evaluated_protected_write_recall": 0.8695652173913043,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 0.9111111111111111
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.7222222222222222,
+        "eligible": false,
+        "evaluated_count": 78,
+        "evaluated_protected_write_count": 20,
+        "evaluated_protected_write_recall": 0.9,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 0.9358974358974359
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.5555555555555556,
+        "eligible": true,
+        "evaluated_count": 60,
+        "evaluated_protected_write_count": 15,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.46296296296296297,
+        "eligible": true,
+        "evaluated_count": 50,
+        "evaluated_protected_write_count": 11,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4444444444444444,
+        "eligible": true,
+        "evaluated_count": 48,
+        "evaluated_protected_write_count": 11,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4444444444444444,
+        "eligible": true,
+        "evaluated_count": 48,
+        "evaluated_protected_write_count": 11,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4351851851851852,
+        "eligible": true,
+        "evaluated_count": 47,
+        "evaluated_protected_write_count": 10,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4351851851851852,
+        "eligible": true,
+        "evaluated_count": 47,
+        "evaluated_protected_write_count": 10,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.42592592592592593,
+        "eligible": true,
+        "evaluated_count": 46,
+        "evaluated_protected_write_count": 10,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.8888888888888888,
+        "eligible": false,
+        "evaluated_count": 96,
+        "evaluated_protected_write_count": 21,
+        "evaluated_protected_write_recall": 0.9047619047619048,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 0.875
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.7685185185185185,
+        "eligible": false,
+        "evaluated_count": 83,
+        "evaluated_protected_write_count": 20,
+        "evaluated_protected_write_recall": 0.95,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 0.9397590361445783
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.6759259259259259,
+        "eligible": false,
+        "evaluated_count": 73,
+        "evaluated_protected_write_count": 18,
+        "evaluated_protected_write_recall": 0.9444444444444444,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 0.958904109589041
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.5555555555555556,
+        "eligible": true,
+        "evaluated_count": 60,
+        "evaluated_protected_write_count": 15,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.0,
+        "coverage": 0.46296296296296297,
+        "eligible": true,
+        "evaluated_count": 50,
+        "evaluated_protected_write_count": 11,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4444444444444444,
+        "eligible": true,
+        "evaluated_count": 48,
+        "evaluated_protected_write_count": 11,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4444444444444444,
+        "eligible": true,
+        "evaluated_count": 48,
+        "evaluated_protected_write_count": 11,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4351851851851852,
+        "eligible": true,
+        "evaluated_count": 47,
+        "evaluated_protected_write_count": 10,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.4351851851851852,
+        "eligible": true,
+        "evaluated_count": 47,
+        "evaluated_protected_write_count": 10,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.45,
+        "coverage": 0.42592592592592593,
+        "eligible": true,
+        "evaluated_count": 46,
+        "evaluated_protected_write_count": 10,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.55,
+        "coverage": 0.3425925925925926,
+        "eligible": true,
+        "evaluated_count": 37,
+        "evaluated_protected_write_count": 8,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.65,
+        "coverage": 0.18518518518518517,
+        "eligible": true,
+        "evaluated_count": 20,
+        "evaluated_protected_write_count": 3,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.75,
+        "coverage": 0.07407407407407407,
+        "eligible": true,
+        "evaluated_count": 8,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.0,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.05,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.1,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      },
+      {
+        "confidence_threshold": 0.85,
+        "coverage": 0.018518518518518517,
+        "eligible": true,
+        "evaluated_count": 2,
+        "evaluated_protected_write_count": 1,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.3,
+        "require_intent_risk_agreement": true,
+        "selective_accuracy": 1.0
+      }
+    ],
+    "selected": {
+      "confidence_threshold": 0.0,
+      "coverage": 0.5555555555555556,
+      "eligible": true,
+      "evaluated_count": 60,
+      "evaluated_protected_write_count": 15,
+      "evaluated_protected_write_recall": 1.0,
+      "margin_threshold": 0.2,
+      "mode": "threshold",
+      "require_intent_risk_agreement": false,
+      "selective_accuracy": 1.0
+    },
+    "selection_split": "validation",
+    "unabstained_accuracy": 0.8148148148148148
+  },
+  "classifier_version": "sentinelvoice-v2c-tfidf.v1",
+  "dataset_sha256": "5142149bd8f4b5c676d7694063d91b2d8043f810a173a30feeae270272094933",
+  "dataset_version": "2026-09-26.v2c1",
+  "excluded_split": "locked_test",
+  "experiment_id": "v2c-offline-20260926-01",
+  "experiment_timestamp": null,
+  "feature_config": {
+    "character_tfidf": {
+      "analyzer": "char_wb",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "sublinear_tf": true
+    },
+    "word_tfidf": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "sublinear_tf": true
+    }
+  },
+  "intent_candidates": [
+    {
+      "c": 0.5,
+      "model": "logistic_regression",
+      "probability_metrics": {
+        "confidence_distribution": {
+          "maximum": 0.6843107474300831,
+          "mean": 0.31760794668508324,
+          "minimum": 0.15715471553573276,
+          "p25": 0.21374325955590628,
+          "p50": 0.2846781094764712,
+          "p75": 0.39842274706759967,
+          "p90": 0.48757391412235995,
+          "p95": 0.556437430853466
+        },
+        "log_loss": 1.2755387814335128,
+        "multiclass_brier_score": 0.5681058398535819
+      },
+      "protected_write_recall": 0.8333333333333334,
+      "validation_accuracy": 0.8055555555555556,
+      "validation_macro_f1": 0.8038018735603276
+    },
+    {
+      "c": 1.0,
+      "model": "logistic_regression",
+      "probability_metrics": {
+        "confidence_distribution": {
+          "maximum": 0.8027147237306735,
+          "mean": 0.3863498545413006,
+          "minimum": 0.16999116429227343,
+          "p25": 0.2469394246903476,
+          "p50": 0.3492378728403722,
+          "p75": 0.5006687362316871,
+          "p90": 0.6099820624944401,
+          "p95": 0.6888927534776438
+        },
+        "log_loss": 1.1042366322419046,
+        "multiclass_brier_score": 0.4881432013601153
+      },
+      "protected_write_recall": 0.8333333333333334,
+      "validation_accuracy": 0.8055555555555556,
+      "validation_macro_f1": 0.8053690496863647
+    },
+    {
+      "c": 2.0,
+      "model": "logistic_regression",
+      "probability_metrics": {
+        "confidence_distribution": {
+          "maximum": 0.8805441571979825,
+          "mean": 0.45207383954635005,
+          "minimum": 0.18386047412286238,
+          "p25": 0.28544399831090317,
+          "p50": 0.4160882852811101,
+          "p75": 0.5987472269906811,
+          "p90": 0.7135286829094946,
+          "p95": 0.7936678779879698
+        },
+        "log_loss": 0.965039126385983,
+        "multiclass_brier_score": 0.4226654495079305
+      },
+      "protected_write_recall": 0.8333333333333334,
+      "validation_accuracy": 0.8148148148148148,
+      "validation_macro_f1": 0.8159776938037807
+    },
+    {
+      "c": 0.5,
+      "model": "linear_svm",
+      "probability_metrics": null,
+      "protected_write_recall": 0.875,
+      "validation_accuracy": 0.8425925925925926,
+      "validation_macro_f1": 0.8438335416596286
+    },
+    {
+      "c": 1.0,
+      "model": "linear_svm",
+      "probability_metrics": null,
+      "protected_write_recall": 0.875,
+      "validation_accuracy": 0.8425925925925926,
+      "validation_macro_f1": 0.8438335416596286
+    },
+    {
+      "c": 2.0,
+      "model": "linear_svm",
+      "probability_metrics": null,
+      "protected_write_recall": 0.875,
+      "validation_accuracy": 0.8240740740740741,
+      "validation_macro_f1": 0.8264601296002262
+    }
+  ],
+  "intent_label_order": [
+    "account_balance",
+    "card_status",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "recent_transactions",
+    "transaction_details",
+    "unsupported_or_uncertain"
+  ],
+  "locked_test_evaluated": false,
+  "locked_test_group_count": 81,
+  "model_artifact_path": "artifacts/v2/classifier/classifier.joblib",
+  "model_artifact_sha256": "e815eb629de3ae56140a09f92baf563e9aaeec1204b45c23774210452d03285c",
+  "model_artifact_size_bytes": 318080,
+  "probability_intent_model": {
+    "c": 2.0,
+    "model": "logistic_regression",
+    "probability_metrics": {
+      "confidence_distribution": {
+        "maximum": 0.8805441571979825,
+        "mean": 0.45207383954635005,
+        "minimum": 0.18386047412286238,
+        "p25": 0.28544399831090317,
+        "p50": 0.4160882852811101,
+        "p75": 0.5987472269906811,
+        "p90": 0.7135286829094946,
+        "p95": 0.7936678779879698
+      },
+      "log_loss": 0.965039126385983,
+      "multiclass_brier_score": 0.4226654495079305
+    },
+    "protected_write_recall": 0.8333333333333334,
+    "validation_accuracy": 0.8148148148148148,
+    "validation_macro_f1": 0.8159776938037807
+  },
+  "python_version": "3.14.3",
+  "risk_candidates": [
+    {
+      "c": 0.5,
+      "model": "logistic_regression",
+      "probability_metrics": {
+        "confidence_distribution": {
+          "maximum": 0.8863345252464531,
+          "mean": 0.5760141464557282,
+          "minimum": 0.28588008280012317,
+          "p25": 0.45606605090866886,
+          "p50": 0.5548081685341674,
+          "p75": 0.7091542701356578,
+          "p90": 0.7859330900248661,
+          "p95": 0.8149813349762244
+        },
+        "log_loss": 0.7399161355837175,
+        "multiclass_brier_score": 0.3863332770031436
+      },
+      "protected_write_recall": 0.5833333333333334,
+      "validation_accuracy": 0.7407407407407407,
+      "validation_macro_f1": 0.6446428571428571
+    },
+    {
+      "c": 1.0,
+      "model": "logistic_regression",
+      "probability_metrics": {
+        "confidence_distribution": {
+          "maximum": 0.9384599138659492,
+          "mean": 0.6273636422242361,
+          "minimum": 0.3224221085699755,
+          "p25": 0.4773670902074675,
+          "p50": 0.6034667013102016,
+          "p75": 0.7886501022900338,
+          "p90": 0.857417536747024,
+          "p95": 0.8778297128480397
+        },
+        "log_loss": 0.6555221926762784,
+        "multiclass_brier_score": 0.3404877058886783
+      },
+      "protected_write_recall": 0.6666666666666666,
+      "validation_accuracy": 0.7777777777777778,
+      "validation_macro_f1": 0.7023647229541375
+    },
+    {
+      "c": 2.0,
+      "model": "logistic_regression",
+      "probability_metrics": {
+        "confidence_distribution": {
+          "maximum": 0.9684391142148239,
+          "mean": 0.6736480408702887,
+          "minimum": 0.3095117219470177,
+          "p25": 0.5114164542093979,
+          "p50": 0.6649992917830376,
+          "p75": 0.8477036726660048,
+          "p90": 0.9094414243795026,
+          "p95": 0.9248971614224041
+        },
+        "log_loss": 0.5894282501583104,
+        "multiclass_brier_score": 0.30610718323955094
+      },
+      "protected_write_recall": 0.7083333333333334,
+      "validation_accuracy": 0.7962962962962963,
+      "validation_macro_f1": 0.7204228658096201
+    },
+    {
+      "c": 0.5,
+      "model": "linear_svm",
+      "probability_metrics": null,
+      "protected_write_recall": 0.8333333333333334,
+      "validation_accuracy": 0.8703703703703703,
+      "validation_macro_f1": 0.8463365946918578
+    },
+    {
+      "c": 1.0,
+      "model": "linear_svm",
+      "probability_metrics": null,
+      "protected_write_recall": 0.8333333333333334,
+      "validation_accuracy": 0.8611111111111112,
+      "validation_macro_f1": 0.8239618171683388
+    },
+    {
+      "c": 2.0,
+      "model": "linear_svm",
+      "probability_metrics": null,
+      "protected_write_recall": 0.7916666666666666,
+      "validation_accuracy": 0.8518518518518519,
+      "validation_macro_f1": 0.8155753968253968
+    }
+  ],
+  "risk_label_order": [
+    "ESCALATION_OR_UNCERTAIN",
+    "PRIVATE_READ",
+    "PROTECTED_WRITE",
+    "PUBLIC"
+  ],
+  "schema_version": "v2-model-selection.v1",
+  "scikit_learn_version": "1.9.1",
+  "selected_intent_model": {
+    "c": 0.5,
+    "model": "linear_svm",
+    "probability_metrics": null,
+    "protected_write_recall": 0.875,
+    "validation_accuracy": 0.8425925925925926,
+    "validation_macro_f1": 0.8438335416596286
+  },
+  "selected_risk_model": {
+    "c": 0.5,
+    "model": "linear_svm",
+    "probability_metrics": null,
+    "protected_write_recall": 0.8333333333333334,
+    "validation_accuracy": 0.8703703703703703,
+    "validation_macro_f1": 0.8463365946918578
+  },
+  "selection_criteria": [
+    "highest validation intent macro-F1",
+    "higher validation intent-derived PROTECTED_WRITE recall",
+    "probability-capable calibration metrics where available",
+    "lower C as the final deterministic complexity tie-breaker"
+  ],
+  "selection_reason": "Selected using validation only: highest intent macro-F1, then intent-derived PROTECTED_WRITE recall, then probability/calibration availability and log loss, then lower C as a deterministic complexity tie-breaker. Locked-test results were not available to selection.",
+  "selection_splits": [
+    "train",
+    "validation"
+  ],
+  "training_group_count": 72,
+  "v2_a_seed_sha256": "b87a9bb684b56d50c1d8aaa2428e60c9c3e1ff958e92403f9e2c6cc347ab51f1",
+  "validation_group_count": 108
+}

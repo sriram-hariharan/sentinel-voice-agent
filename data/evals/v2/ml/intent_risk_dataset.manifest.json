@@ -1,0 +1,108 @@
+{
+  "counts": {
+    "by_intent": {
+      "account_balance": 67,
+      "card_status": 67,
+      "create_dispute": 67,
+      "escalation": 67,
+      "freeze_card": 67,
+      "informational_policy": 67,
+      "recent_transactions": 67,
+      "transaction_details": 67,
+      "unsupported_or_uncertain": 67
+    },
+    "by_risk": {
+      "ESCALATION_OR_UNCERTAIN": 134,
+      "PRIVATE_READ": 268,
+      "PROTECTED_WRITE": 134,
+      "PUBLIC": 67
+    },
+    "by_source_category": {
+      "contrast_challenge": 72,
+      "deterministic_template_expansion": 378,
+      "hand_authored_sentinelvoice": 99,
+      "v2_a_seed_unchanged": 54
+    },
+    "by_split": {
+      "locked_test": 90,
+      "train": 405,
+      "validation": 108
+    },
+    "examples": 603,
+    "groups": 261,
+    "groups_by_split": {
+      "locked_test": 81,
+      "train": 72,
+      "validation": 108
+    },
+    "intent_by_split": {
+      "locked_test": {
+        "account_balance": 10,
+        "card_status": 10,
+        "create_dispute": 10,
+        "escalation": 10,
+        "freeze_card": 10,
+        "informational_policy": 10,
+        "recent_transactions": 10,
+        "transaction_details": 10,
+        "unsupported_or_uncertain": 10
+      },
+      "train": {
+        "account_balance": 45,
+        "card_status": 45,
+        "create_dispute": 45,
+        "escalation": 45,
+        "freeze_card": 45,
+        "informational_policy": 45,
+        "recent_transactions": 45,
+        "transaction_details": 45,
+        "unsupported_or_uncertain": 45
+      },
+      "validation": {
+        "account_balance": 12,
+        "card_status": 12,
+        "create_dispute": 12,
+        "escalation": 12,
+        "freeze_card": 12,
+        "informational_policy": 12,
+        "recent_transactions": 12,
+        "transaction_details": 12,
+        "unsupported_or_uncertain": 12
+      }
+    },
+    "locked_test_examples": 90,
+    "locked_test_groups": 81,
+    "risk_by_split": {
+      "locked_test": {
+        "ESCALATION_OR_UNCERTAIN": 20,
+        "PRIVATE_READ": 40,
+        "PROTECTED_WRITE": 20,
+        "PUBLIC": 10
+      },
+      "train": {
+        "ESCALATION_OR_UNCERTAIN": 90,
+        "PRIVATE_READ": 180,
+        "PROTECTED_WRITE": 90,
+        "PUBLIC": 45
+      },
+      "validation": {
+        "ESCALATION_OR_UNCERTAIN": 24,
+        "PRIVATE_READ": 48,
+        "PROTECTED_WRITE": 24,
+        "PUBLIC": 12
+      }
+    }
+  },
+  "dataset_version": "2026-09-26.v2c1",
+  "external_dataset_sources": [],
+  "generator_version": "v2-intent-dataset-builder.v1",
+  "hashes": {
+    "config_sha256": "c755a48fb1b320a17afc77f64a4fc74345a95327b00fc692040ee3042c2c5658",
+    "dataset_sha256": "5142149bd8f4b5c676d7694063d91b2d8043f810a173a30feeae270272094933",
+    "v2_a_seed_sha256": "b87a9bb684b56d50c1d8aaa2428e60c9c3e1ff958e92403f9e2c6cc347ab51f1"
+  },
+  "locked_test_policy": "Frozen before model selection; never used for feature, model, hyperparameter, calibration, or abstention selection.",
+  "provenance": "controlled synthetic and hand-reviewed SentinelVoice data only",
+  "schema_version": "v2-intent-dataset-manifest.v1",
+  "seed": 20260926
+}

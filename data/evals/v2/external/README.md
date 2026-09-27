@@ -153,3 +153,13 @@ safety/generalization benchmark. The 150 ordinary CLINC intents will not be
 mapped into the SentinelVoice taxonomy. No model training, threshold tuning,
 or classifier evaluation has been run on CLINC. Any later processed OOS
 evaluation set must be created separately under `processed/clinc_oos/`.
+
+## CLINC OOS processed evaluation data
+
+V2-C2G deterministically extracts only the official 1,000-example `oos_test`
+split into `processed/clinc_oos/`. The `oos_train` and `oos_val` splits remain
+reserved, and none of CLINC's 150 in-scope intent examples are included. Every
+processed example has expected SentinelVoice intent
+`unsupported_or_uncertain`, making this a focused external test of rejecting
+unrelated, non-banking language. No classifier predictions, model training, or
+threshold tuning have been run on the processed CLINC dataset yet.

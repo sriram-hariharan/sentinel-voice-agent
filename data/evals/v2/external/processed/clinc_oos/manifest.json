@@ -1,0 +1,37 @@
+{
+  "build_metadata": {
+    "builder_version": "clinc-oos-external-eval-builder.v1",
+    "deterministic": true,
+    "source_retrieval_date": "2026-09-27",
+    "wall_clock_timestamp_recorded": false
+  },
+  "build_script_sha256": "8c3fbf9762ede6b46e50ec055d40bbcbb76f64d35493e6fcfdf1eb99ee534841",
+  "excluded_source_data": {
+    "clinc_in_scope_intents_used": false,
+    "oos_train_used": false,
+    "oos_val_used": false
+  },
+  "expected_sentinelvoice_intent": "unsupported_or_uncertain",
+  "pinned_source_revision": "828f8093932c8fe6ca7936c3d2e52903b1c523de",
+  "processed_example_count": 1000,
+  "processed_files": {
+    "clinc_oos_external_eval.json": {
+      "byte_size": 353455,
+      "sha256": "c064ff17fb5430c8b1e8d0ce634d17b1a61be90e21a996312f95affbf0b7f815"
+    }
+  },
+  "raw_data_full_sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0",
+  "raw_manifest_sha256": "25b0c99ca673285cae49013b79710f4a08b36b48841236ae323712873c226aa5",
+  "schema_version": "clinc-oos-processed-manifest.v1",
+  "source_id": "clinc150_oos",
+  "source_split_count": 1000,
+  "source_split_used": "oos_test",
+  "validation": {
+    "all_expected_labels_are_unsupported_or_uncertain": true,
+    "all_source_labels_are_oos": true,
+    "all_texts_non_empty": true,
+    "no_duplicate_example_ids": true,
+    "no_duplicate_source_rows": true,
+    "only_oos_test_used": true
+  }
+}

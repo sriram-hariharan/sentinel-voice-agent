@@ -107,3 +107,19 @@ No classifier evaluation or model training has been run against BANKING77.
 Any later mapping, sampling, or other transformation for evaluation must write
 to a separate processed-data directory so the pinned source bytes remain
 unchanged and independently verifiable.
+
+## BANKING77 processed evaluation data
+
+V2-C2D deterministically builds the external evaluation artifacts from the
+canonical BANKING77 `test.csv` split only. The `train.csv` split is not used;
+it remains reserved for a separately reviewed future training or augmentation
+experiment so the test split stays a clean zero-shot external benchmark.
+
+The processed data keeps two scored lanes separate. `EXACT_MATCH` examples
+form the clean intent benchmark, while `UNSUPPORTED` examples form a distinct
+banking unsupported/OOS benchmark with expected intent
+`unsupported_or_uncertain`. `NEAR_MATCH` and `AMBIGUOUS` examples remain in an
+unscored review pool without forced expected labels. The generated manifest
+records input and output hashes, partition counts, coverage, and deterministic
+build metadata. No BANKING77 classifier predictions, model evaluation, model
+training, or runtime integration have occurred yet.

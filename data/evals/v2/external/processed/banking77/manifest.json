@@ -1,0 +1,519 @@
+{
+  "build_metadata": {
+    "builder_version": "banking77-external-eval-builder.v1",
+    "deterministic": true,
+    "source_retrieval_date": "2026-09-27",
+    "wall_clock_timestamp_recorded": false
+  },
+  "build_script_sha256": "2a2b8d57f069cb54063f528485bc203abb9fd7b628657bc87f60cdb4fbead788",
+  "counts": {
+    "ambiguous_review": 400,
+    "exact_match": 440,
+    "near_match_review": 520,
+    "total_review_pool": 920,
+    "total_test_examples": 3080,
+    "unsupported": 1720
+  },
+  "coverage_by_sentinelvoice_intent": {
+    "primary_evaluation_expected_intents": {
+      "informational_policy": 320,
+      "transaction_details": 120,
+      "unsupported_or_uncertain": 1720
+    },
+    "review_pool_candidate_intents": {
+      "account_balance": 80,
+      "card_status": 200,
+      "transaction_details": 240,
+      "unmapped": 400
+    }
+  },
+  "coverage_by_source_intent": {
+    "Refund_not_showing_up": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "activate_my_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "age_limit": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "apple_pay_or_google_pay": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "atm_support": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "automatic_top_up": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "balance_not_updated_after_bank_transfer": {
+      "candidate_sentinelvoice_intent": "account_balance",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "balance_not_updated_after_cheque_or_cash_deposit": {
+      "candidate_sentinelvoice_intent": "account_balance",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "beneficiary_not_allowed": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "cancel_transfer": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "card_about_to_expire": {
+      "candidate_sentinelvoice_intent": "card_status",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "card_acceptance": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "card_arrival": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "card_delivery_estimate": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "card_linking": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "card_not_working": {
+      "candidate_sentinelvoice_intent": "card_status",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "card_payment_fee_charged": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "card_payment_not_recognised": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "card_payment_wrong_exchange_rate": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "card_swallowed": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "cash_withdrawal_charge": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "cash_withdrawal_not_recognised": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "change_pin": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "compromised_card": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "contactless_not_working": {
+      "candidate_sentinelvoice_intent": "card_status",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "country_support": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "declined_card_payment": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "declined_cash_withdrawal": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "declined_transfer": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "direct_debit_payment_not_recognised": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "disposable_card_limits": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "edit_personal_details": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "exchange_charge": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "exchange_rate": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "exchange_via_app": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "extra_charge_on_statement": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "failed_transfer": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "fiat_currency_support": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "get_disposable_virtual_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "get_physical_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "getting_spare_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "getting_virtual_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "lost_or_stolen_card": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "lost_or_stolen_phone": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "order_physical_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "passcode_forgotten": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "pending_card_payment": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "pending_cash_withdrawal": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "pending_top_up": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "pending_transfer": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "pin_blocked": {
+      "candidate_sentinelvoice_intent": "card_status",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "receiving_money": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "request_refund": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "reverted_card_payment?": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "supported_cards_and_currencies": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "terminate_account": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "top_up_by_bank_transfer_charge": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "top_up_by_card_charge": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "top_up_by_cash_or_cheque": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "top_up_failed": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "top_up_limits": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "top_up_reverted": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "topping_up_by_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "transaction_charged_twice": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 40,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review"
+    },
+    "transfer_fee_charged": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "transfer_into_account": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "transfer_not_received_by_recipient": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "transfer_timing": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "unable_to_verify_identity": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "verify_my_identity": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "verify_source_of_funds": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "verify_top_up": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 40,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported"
+    },
+    "virtual_card_not_working": {
+      "candidate_sentinelvoice_intent": "card_status",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "visa_or_mastercard": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "why_verify_identity": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 40,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match"
+    },
+    "wrong_amount_of_cash_received": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    },
+    "wrong_exchange_rate_for_cash_withdrawal": {
+      "candidate_sentinelvoice_intent": "transaction_details",
+      "example_count": 40,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review"
+    }
+  },
+  "frozen_mapping_file_sha256": "cb0ff5db910d15ab59dc1fea563b09d6593cc9f7f25fa4ca99ac21e2b0dab68a",
+  "processed_files": {
+    "banking77_external_eval.json": {
+      "byte_size": 1051255,
+      "sha256": "04d0d424672cbd76c51d725d7907620fc11a926045ba40938b4cf8319aa3a91e"
+    },
+    "banking77_review_pool.json": {
+      "byte_size": 618906,
+      "sha256": "f346cf66d7144d037ce8bddaaf07054178574f18ff1a3116275f2f553955dfd2"
+    }
+  },
+  "schema_version": "banking77-processed-manifest.v1",
+  "source_id": "banking77",
+  "source_revision": "57ec275d8078af65b7731c2a98be812d844a6d6b",
+  "source_test_file_sha256": "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d",
+  "train_csv_used": false,
+  "validation": {
+    "all_source_labels_in_frozen_mapping": true,
+    "every_test_example_partitioned_once": true,
+    "mapping_statuses_copied_unchanged": true,
+    "no_duplicate_example_ids": true,
+    "no_protected_action_labels_invented": true,
+    "no_review_pool_expected_labels": true,
+    "source_split": "test"
+  }
+}

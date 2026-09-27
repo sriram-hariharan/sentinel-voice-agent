@@ -103,10 +103,10 @@ files are immutable source material: do not normalize, clean, rewrite, or
 relabel them in place. Their byte sizes, SHA-256 hashes, row counts, taxonomy
 hash, and validation results are recorded in `raw/banking77/manifest.json`.
 
-No classifier evaluation or model training has been run against BANKING77.
-Any later mapping, sampling, or other transformation for evaluation must write
-to a separate processed-data directory so the pinned source bytes remain
-unchanged and independently verifiable.
+V2-C2C did not run classifier evaluation or model training against BANKING77.
+Any mapping, sampling, or other transformation for evaluation must write to a
+separate processed-data directory so the pinned source bytes remain unchanged
+and independently verifiable.
 
 ## BANKING77 processed evaluation data
 
@@ -121,5 +121,20 @@ banking unsupported/OOS benchmark with expected intent
 `unsupported_or_uncertain`. `NEAR_MATCH` and `AMBIGUOUS` examples remain in an
 unscored review pool without forced expected labels. The generated manifest
 records input and output hashes, partition counts, coverage, and deterministic
-build metadata. No BANKING77 classifier predictions, model evaluation, model
-training, or runtime integration have occurred yet.
+build metadata. V2-C2D did not run BANKING77 classifier predictions, model
+evaluation, model training, or runtime integration.
+
+## First frozen-model external evaluation
+
+V2-C2E evaluates the unchanged V2-C1 classifier artifact on BANKING77 without
+training, retraining, remapping, or threshold tuning. The official primary
+metrics use the frozen Linear SVM intent model. The exact-match intent lane and
+unsupported/OOS banking lane are reported separately, and the near-match and
+ambiguous review pool remains unscored.
+
+The existing Logistic Regression probability path and validation-selected
+abstention rule are reported separately as a frozen advisory abstention
+analysis; they are not blended with, and do not validate, the SVM predictions.
+The two-class external exact-match macro-F1 is not directly interchangeable
+with the V2-C1 nine-intent locked-test macro-F1. All classifier outputs remain
+offline advisory evidence with no runtime or authorization authority.

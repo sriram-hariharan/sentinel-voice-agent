@@ -1,0 +1,3220 @@
+{
+  "archive_date_metadata": {
+    "declared_archive_start_date": "2011-12-01",
+    "minimum_date_received_in_records": "2011-12-01",
+    "observed_full_records_date_received_max": "2026-08-31",
+    "official_archive_declared_narrative_coverage_end": "2026-08-14",
+    "source_metadata_qualification_note": "The official archive page declares previously published narrative coverage through 2026-08-14, while the downloaded official Full Records contain Date received values through 2026-08-31. The profile retains all records and does not treat August 31 as the archive page's narrative-coverage end."
+  },
+  "company_count": 8112,
+  "distributions": {
+    "issue": [
+      {
+        "count": 7884550,
+        "value": "Incorrect information on your report"
+      },
+      {
+        "count": 3352894,
+        "value": "Improper use of your report"
+      },
+      {
+        "count": 2267391,
+        "value": "Problem with a company's investigation into an existing problem"
+      },
+      {
+        "count": 589318,
+        "value": "Problem with a credit reporting company's investigation into an existing problem"
+      },
+      {
+        "count": 478799,
+        "value": "Attempts to collect debt not owed"
+      },
+      {
+        "count": 230517,
+        "value": "Managing an account"
+      },
+      {
+        "count": 229772,
+        "value": "Written notification about debt"
+      },
+      {
+        "count": 146318,
+        "value": "Took or threatened to take negative or legal action"
+      },
+      {
+        "count": 120575,
+        "value": "False statements or representation"
+      },
+      {
+        "count": 112788,
+        "value": "Trouble during payment process"
+      },
+      {
+        "count": 112294,
+        "value": "Loan modification,collection,foreclosure"
+      },
+      {
+        "count": 111887,
+        "value": "Problem with a purchase shown on your statement"
+      },
+      {
+        "count": 102681,
+        "value": "Incorrect information on credit report"
+      },
+      {
+        "count": 77733,
+        "value": "Communication tactics"
+      },
+      {
+        "count": 77309,
+        "value": "Loan servicing, payments, escrow account"
+      },
+      {
+        "count": 71495,
+        "value": "Other transaction problem"
+      },
+      {
+        "count": 65591,
+        "value": "Dealing with your lender or servicer"
+      },
+      {
+        "count": 64436,
+        "value": "Unable to get your credit report or credit score"
+      },
+      {
+        "count": 63158,
+        "value": "Struggling to pay mortgage"
+      },
+      {
+        "count": 60520,
+        "value": "Cont'd attempts collect debt not owed"
+      },
+      {
+        "count": 55671,
+        "value": "Problem with fraud alerts or security freezes"
+      },
+      {
+        "count": 54316,
+        "value": "Getting a credit card"
+      },
+      {
+        "count": 52095,
+        "value": "Fraud or scam"
+      },
+      {
+        "count": 50701,
+        "value": "Closing an account"
+      },
+      {
+        "count": 47872,
+        "value": "Other features, terms, or problems"
+      },
+      {
+        "count": 47261,
+        "value": "Managing the loan or lease"
+      },
+      {
+        "count": 44066,
+        "value": "Problem with a lender or other company charging your account"
+      },
+      {
+        "count": 43048,
+        "value": "Fees or interest"
+      },
+      {
+        "count": 40162,
+        "value": "Credit monitoring or identity theft protection services"
+      },
+      {
+        "count": 40148,
+        "value": "Problem when making payments"
+      },
+      {
+        "count": 37959,
+        "value": "Account opening, closing, or management"
+      },
+      {
+        "count": 36162,
+        "value": "Opening an account"
+      },
+      {
+        "count": 30728,
+        "value": "Disclosure verification of debt"
+      },
+      {
+        "count": 30226,
+        "value": "Problem caused by your funds being low"
+      },
+      {
+        "count": 29931,
+        "value": "Closing your account"
+      },
+      {
+        "count": 28628,
+        "value": "Applying for a mortgage or refinancing an existing mortgage"
+      },
+      {
+        "count": 22850,
+        "value": "Deposits and withdrawals"
+      },
+      {
+        "count": 19634,
+        "value": "Struggling to repay your loan"
+      },
+      {
+        "count": 19257,
+        "value": "Advertising and marketing, including promotional offers"
+      },
+      {
+        "count": 19251,
+        "value": "Struggling to pay your loan"
+      },
+      {
+        "count": 18957,
+        "value": "Closing on a mortgage"
+      },
+      {
+        "count": 17933,
+        "value": "Unauthorized transactions or other transaction problem"
+      },
+      {
+        "count": 17620,
+        "value": "Dealing with my lender or servicer"
+      },
+      {
+        "count": 17216,
+        "value": "Application, originator, mortgage broker"
+      },
+      {
+        "count": 16883,
+        "value": "Credit reporting company's investigation"
+      },
+      {
+        "count": 16827,
+        "value": "Problems at the end of the loan or lease"
+      },
+      {
+        "count": 16417,
+        "value": "Trouble using your card"
+      },
+      {
+        "count": 16309,
+        "value": "Charged fees or interest you didn't expect"
+      },
+      {
+        "count": 15136,
+        "value": "Billing disputes"
+      },
+      {
+        "count": 14777,
+        "value": "Other"
+      },
+      {
+        "count": 14317,
+        "value": "Repossession"
+      },
+      {
+        "count": 13935,
+        "value": "Trouble using the card"
+      },
+      {
+        "count": 13821,
+        "value": "Getting a loan or lease"
+      },
+      {
+        "count": 13708,
+        "value": "Money was not available when promised"
+      },
+      {
+        "count": 13534,
+        "value": "Threatened to contact someone or share information improperly"
+      },
+      {
+        "count": 12225,
+        "value": "Managing, opening, or closing your mobile wallet account"
+      },
+      {
+        "count": 11844,
+        "value": "Problems caused by my funds being low"
+      },
+      {
+        "count": 11748,
+        "value": "Problem with a purchase or transfer"
+      },
+      {
+        "count": 10859,
+        "value": "Unable to get credit report/credit score"
+      },
+      {
+        "count": 10769,
+        "value": "Problem with a company's investigation into an existing issue"
+      },
+      {
+        "count": 10036,
+        "value": "Improper contact or sharing of info"
+      },
+      {
+        "count": 10033,
+        "value": "Electronic communications"
+      },
+      {
+        "count": 9370,
+        "value": "Problems when you are unable to pay"
+      },
+      {
+        "count": 8934,
+        "value": "Settlement process and costs"
+      },
+      {
+        "count": 8793,
+        "value": "Taking/threatening an illegal action"
+      },
+      {
+        "count": 8725,
+        "value": "Can't repay my loan"
+      },
+      {
+        "count": 8480,
+        "value": "Identity theft / Fraud / Embezzlement"
+      },
+      {
+        "count": 8203,
+        "value": "Unexpected or other fees"
+      },
+      {
+        "count": 7646,
+        "value": "Trouble accessing funds in your mobile or digital wallet"
+      },
+      {
+        "count": 7483,
+        "value": "Confusing or missing disclosures"
+      },
+      {
+        "count": 7401,
+        "value": "Making/receiving payments, sending money"
+      },
+      {
+        "count": 7331,
+        "value": "Problem getting a card or closing an account"
+      },
+      {
+        "count": 6916,
+        "value": "Struggling to pay your bill"
+      },
+      {
+        "count": 6389,
+        "value": "Closing/Cancelling account"
+      },
+      {
+        "count": 6144,
+        "value": "Using a debit or ATM card"
+      },
+      {
+        "count": 5764,
+        "value": "Problem with the payoff process at the end of the loan"
+      },
+      {
+        "count": 5751,
+        "value": "Other service problem"
+      },
+      {
+        "count": 5649,
+        "value": "Credit decision / Underwriting"
+      },
+      {
+        "count": 5614,
+        "value": "Getting the loan"
+      },
+      {
+        "count": 5579,
+        "value": "Improper use of my credit report"
+      },
+      {
+        "count": 5506,
+        "value": "APR or interest rate"
+      },
+      {
+        "count": 4954,
+        "value": "Problem with customer service"
+      },
+      {
+        "count": 4424,
+        "value": "Credit monitoring or identity protection"
+      },
+      {
+        "count": 4368,
+        "value": "Taking out the loan or lease"
+      },
+      {
+        "count": 3946,
+        "value": "Problem with additional add-on products or services"
+      },
+      {
+        "count": 3820,
+        "value": "Repaying your loan"
+      },
+      {
+        "count": 3639,
+        "value": "Late fee"
+      },
+      {
+        "count": 3504,
+        "value": "Customer service / Customer relations"
+      },
+      {
+        "count": 3266,
+        "value": "Confusing or misleading advertising or marketing"
+      },
+      {
+        "count": 3218,
+        "value": "Delinquent account"
+      },
+      {
+        "count": 3122,
+        "value": "Getting a line of credit"
+      },
+      {
+        "count": 3057,
+        "value": "Credit determination"
+      },
+      {
+        "count": 2959,
+        "value": "Advertising and marketing"
+      },
+      {
+        "count": 2916,
+        "value": "Rewards"
+      },
+      {
+        "count": 2750,
+        "value": "Charged fees or interest I didn't expect"
+      },
+      {
+        "count": 2728,
+        "value": "Credit card protection / Debt protection"
+      },
+      {
+        "count": 2715,
+        "value": "Getting a loan"
+      },
+      {
+        "count": 2706,
+        "value": "Didn't provide services promised"
+      },
+      {
+        "count": 2700,
+        "value": "Transaction issue"
+      },
+      {
+        "count": 2619,
+        "value": "Billing statement"
+      },
+      {
+        "count": 2441,
+        "value": "Identity theft protection or other monitoring services"
+      },
+      {
+        "count": 2315,
+        "value": "Payoff process"
+      },
+      {
+        "count": 2198,
+        "value": "Other fee"
+      },
+      {
+        "count": 2185,
+        "value": "Credit line increase/decrease"
+      },
+      {
+        "count": 2102,
+        "value": "Wrong amount charged or received"
+      },
+      {
+        "count": 2028,
+        "value": "Shopping for a loan or lease"
+      },
+      {
+        "count": 1853,
+        "value": "Unsolicited issuance of credit card"
+      },
+      {
+        "count": 1696,
+        "value": "Credit reporting"
+      },
+      {
+        "count": 1633,
+        "value": "Charged upfront or unexpected fees"
+      },
+      {
+        "count": 1500,
+        "value": "Received a loan you didn't apply for"
+      },
+      {
+        "count": 1491,
+        "value": "Other transaction issues"
+      },
+      {
+        "count": 1325,
+        "value": "Unauthorized transactions/trans. issues"
+      },
+      {
+        "count": 1257,
+        "value": "Can't contact lender or servicer"
+      },
+      {
+        "count": 1194,
+        "value": "Managing, opening, or closing account"
+      },
+      {
+        "count": 1117,
+        "value": "Balance transfer"
+      },
+      {
+        "count": 1114,
+        "value": "Unauthorized withdrawals or charges"
+      },
+      {
+        "count": 1100,
+        "value": "Can't contact lender"
+      },
+      {
+        "count": 1073,
+        "value": "Can't stop withdrawals from your bank account"
+      },
+      {
+        "count": 1070,
+        "value": "Problem adding money"
+      },
+      {
+        "count": 1011,
+        "value": "Lost or stolen money order"
+      },
+      {
+        "count": 1001,
+        "value": "Collection practices"
+      },
+      {
+        "count": 901,
+        "value": "Collection debt dispute"
+      },
+      {
+        "count": 831,
+        "value": "Loan payment wasn't credited to your account"
+      },
+      {
+        "count": 806,
+        "value": "Managing the line of credit"
+      },
+      {
+        "count": 723,
+        "value": "Vehicle was repossessed or sold the vehicle"
+      },
+      {
+        "count": 692,
+        "value": "Money was taken from your bank account on the wrong day or for the wrong amount"
+      },
+      {
+        "count": 613,
+        "value": "Received a loan I didn't apply for"
+      },
+      {
+        "count": 588,
+        "value": "Advertising"
+      },
+      {
+        "count": 556,
+        "value": "Forbearance / Workout plans"
+      },
+      {
+        "count": 540,
+        "value": "Application processing delay"
+      },
+      {
+        "count": 540,
+        "value": "Was approved for a loan, but didn't receive the money"
+      },
+      {
+        "count": 514,
+        "value": "Other service issues"
+      },
+      {
+        "count": 509,
+        "value": "Can't stop charges to bank account"
+      },
+      {
+        "count": 489,
+        "value": "Privacy"
+      },
+      {
+        "count": 484,
+        "value": "Account terms and changes"
+      },
+      {
+        "count": 470,
+        "value": "Lost or stolen check"
+      },
+      {
+        "count": 460,
+        "value": "Payment to acct not credited"
+      },
+      {
+        "count": 448,
+        "value": "Bankruptcy"
+      },
+      {
+        "count": 364,
+        "value": "Issues with repayment"
+      },
+      {
+        "count": 348,
+        "value": "Arbitration"
+      },
+      {
+        "count": 344,
+        "value": "Applied for loan/did not receive money"
+      },
+      {
+        "count": 344,
+        "value": "Sale of account"
+      },
+      {
+        "count": 331,
+        "value": "Excessive fees"
+      },
+      {
+        "count": 307,
+        "value": "Problem with cash advance"
+      },
+      {
+        "count": 302,
+        "value": "Shopping for a line of credit"
+      },
+      {
+        "count": 296,
+        "value": "Charged bank acct wrong day or amt"
+      },
+      {
+        "count": 287,
+        "value": "Credit limit changed"
+      },
+      {
+        "count": 283,
+        "value": "Customer service/Customer relations"
+      },
+      {
+        "count": 258,
+        "value": "Overdraft, savings, or rewards features"
+      },
+      {
+        "count": 245,
+        "value": "Cash advance"
+      },
+      {
+        "count": 232,
+        "value": "Fees"
+      },
+      {
+        "count": 221,
+        "value": "Balance transfer fee"
+      },
+      {
+        "count": 215,
+        "value": "Overlimit fee"
+      },
+      {
+        "count": 214,
+        "value": "Issue with income share agreement"
+      },
+      {
+        "count": 202,
+        "value": "Adding money"
+      },
+      {
+        "count": 202,
+        "value": "Incorrect/missing disclosures or info"
+      },
+      {
+        "count": 196,
+        "value": "Cash advance fee"
+      },
+      {
+        "count": 195,
+        "value": "Issue where my lender is my school"
+      },
+      {
+        "count": 194,
+        "value": "Vehicle was damaged or destroyed the vehicle"
+      },
+      {
+        "count": 193,
+        "value": "Incorrect exchange rate"
+      },
+      {
+        "count": 192,
+        "value": "Problems receiving the advance"
+      },
+      {
+        "count": 172,
+        "value": "Problem with overdraft"
+      },
+      {
+        "count": 171,
+        "value": "Unexpected fees"
+      },
+      {
+        "count": 149,
+        "value": "Convenience checks"
+      },
+      {
+        "count": 117,
+        "value": "Was approved for a loan, but didn't receive money"
+      },
+      {
+        "count": 103,
+        "value": "Unexpected/Other fees"
+      },
+      {
+        "count": 79,
+        "value": "Lender repossessed or sold the vehicle"
+      },
+      {
+        "count": 77,
+        "value": "Advertising, marketing or disclosures"
+      },
+      {
+        "count": 53,
+        "value": "Overdraft, savings or rewards features"
+      },
+      {
+        "count": 49,
+        "value": "Disclosures"
+      },
+      {
+        "count": 44,
+        "value": "Problem with credit report or credit score"
+      },
+      {
+        "count": 27,
+        "value": "Property was sold"
+      },
+      {
+        "count": 13,
+        "value": "Lost or stolen refund"
+      },
+      {
+        "count": 13,
+        "value": "Property was damaged or destroyed property"
+      },
+      {
+        "count": 9,
+        "value": "Problem with an overdraft"
+      },
+      {
+        "count": 8,
+        "value": "Lender damaged or destroyed vehicle"
+      },
+      {
+        "count": 7,
+        "value": "Lender sold the property"
+      },
+      {
+        "count": 3,
+        "value": "Lender damaged or destroyed property"
+      }
+    ],
+    "product": [
+      {
+        "count": 11983547,
+        "value": "Credit reporting or other personal consumer reports"
+      },
+      {
+        "count": 2163770,
+        "value": "Credit reporting, credit repair services, or other personal consumer reports"
+      },
+      {
+        "count": 1186841,
+        "value": "Debt collection"
+      },
+      {
+        "count": 459836,
+        "value": "Mortgage"
+      },
+      {
+        "count": 394323,
+        "value": "Checking or savings account"
+      },
+      {
+        "count": 341890,
+        "value": "Credit card"
+      },
+      {
+        "count": 206356,
+        "value": "Credit card or prepaid card"
+      },
+      {
+        "count": 190548,
+        "value": "Money transfer, virtual currency, or money service"
+      },
+      {
+        "count": 140426,
+        "value": "Credit reporting"
+      },
+      {
+        "count": 133125,
+        "value": "Student loan"
+      },
+      {
+        "count": 102439,
+        "value": "Vehicle loan or lease"
+      },
+      {
+        "count": 86198,
+        "value": "Bank account or service"
+      },
+      {
+        "count": 37329,
+        "value": "Payday loan, title loan, personal loan, or advance loan"
+      },
+      {
+        "count": 31559,
+        "value": "Consumer Loan"
+      },
+      {
+        "count": 30614,
+        "value": "Payday loan, title loan, or personal loan"
+      },
+      {
+        "count": 23008,
+        "value": "Prepaid card"
+      },
+      {
+        "count": 10153,
+        "value": "Debt or credit management"
+      },
+      {
+        "count": 5528,
+        "value": "Payday loan"
+      },
+      {
+        "count": 5354,
+        "value": "Money transfers"
+      },
+      {
+        "count": 1056,
+        "value": "Other financial service"
+      },
+      {
+        "count": 18,
+        "value": "Virtual currency"
+      }
+    ],
+    "sub_issue": [
+      {
+        "count": 5156719,
+        "value": "Information belongs to someone else"
+      },
+      {
+        "count": 2497046,
+        "value": "Reporting company used your report improperly"
+      },
+      {
+        "count": 1548427,
+        "value": "Their investigation did not fix an error on your report"
+      },
+      {
+        "count": 1359328,
+        "value": "Account information incorrect"
+      },
+      {
+        "count": 971776,
+        "value": "Investigation took more than 30 days"
+      },
+      {
+        "count": 839364,
+        "value": "Credit inquiries on your report that you don't recognize"
+      },
+      {
+        "count": 780678,
+        "value": "Account status incorrect"
+      },
+      {
+        "count": 347549,
+        "value": "Personal information incorrect"
+      },
+      {
+        "count": 269748,
+        "value": "Debt is not yours"
+      },
+      {
+        "count": 225443,
+        "value": "Was not notified of investigation status or results"
+      },
+      {
+        "count": 141181,
+        "value": "Debt was result of identity theft"
+      },
+      {
+        "count": 117149,
+        "value": "Didn't receive enough information to verify debt"
+      },
+      {
+        "count": 113778,
+        "value": "Threatened or suggested your credit would be damaged"
+      },
+      {
+        "count": 106824,
+        "value": "Attempted to collect wrong amount"
+      },
+      {
+        "count": 87229,
+        "value": "Information is missing that should be on the report"
+      },
+      {
+        "count": 82670,
+        "value": "Deposits and withdrawals"
+      },
+      {
+        "count": 80422,
+        "value": "Credit card company isn't resolving a dispute about a purchase on your statement"
+      },
+      {
+        "count": 76932,
+        "value": "Public record information inaccurate"
+      },
+      {
+        "count": 71583,
+        "value": "Debt was paid"
+      },
+      {
+        "count": 67841,
+        "value": "Difficulty submitting a dispute or getting information about a dispute over the phone"
+      },
+      {
+        "count": 66235,
+        "value": "Old information reappears or never goes away"
+      },
+      {
+        "count": 62905,
+        "value": "Notification didn't disclose it was an attempt to collect a debt"
+      },
+      {
+        "count": 53991,
+        "value": "Problem with personal statement of dispute"
+      },
+      {
+        "count": 50406,
+        "value": "Other problem getting your report or credit score"
+      },
+      {
+        "count": 49718,
+        "value": "Didn't receive notice of right to dispute"
+      },
+      {
+        "count": 48243,
+        "value": "Problem using a debit or ATM card"
+      },
+      {
+        "count": 45383,
+        "value": "Company closed your account"
+      },
+      {
+        "count": 42682,
+        "value": "Frequent or repeated calls"
+      },
+      {
+        "count": 37055,
+        "value": "Account status"
+      },
+      {
+        "count": 36629,
+        "value": "Debt is not mine"
+      },
+      {
+        "count": 36043,
+        "value": "Transaction was not authorized"
+      },
+      {
+        "count": 32383,
+        "value": "Information is not mine"
+      },
+      {
+        "count": 28394,
+        "value": "Card was charged for something you did not purchase with the card"
+      },
+      {
+        "count": 27322,
+        "value": "Problem with fees"
+      },
+      {
+        "count": 26190,
+        "value": "Problem during payment process"
+      },
+      {
+        "count": 25617,
+        "value": "Funds not handled or disbursed as instructed"
+      },
+      {
+        "count": 23421,
+        "value": "Received bad information about your loan"
+      },
+      {
+        "count": 23310,
+        "value": "Banking errors"
+      },
+      {
+        "count": 22971,
+        "value": "Other problem"
+      },
+      {
+        "count": 21757,
+        "value": "Not given enough info to verify debt"
+      },
+      {
+        "count": 21402,
+        "value": "Trouble with how payments are being handled"
+      },
+      {
+        "count": 21153,
+        "value": "Overdrafts and overdraft fees"
+      },
+      {
+        "count": 21049,
+        "value": "Card opened without my consent or knowledge"
+      },
+      {
+        "count": 20175,
+        "value": "You told them to stop contacting you, but they keep trying"
+      },
+      {
+        "count": 18382,
+        "value": "Problem accessing account"
+      },
+      {
+        "count": 17655,
+        "value": "Problem canceling credit monitoring or identify theft protection service"
+      },
+      {
+        "count": 16837,
+        "value": "Funds not received from closed account"
+      },
+      {
+        "count": 16673,
+        "value": "Can't close your account"
+      },
+      {
+        "count": 16169,
+        "value": "Billing problem"
+      },
+      {
+        "count": 14030,
+        "value": "Problem getting your free annual credit report"
+      },
+      {
+        "count": 13792,
+        "value": "Problem making or receiving payments"
+      },
+      {
+        "count": 13546,
+        "value": "Problem with customer service"
+      },
+      {
+        "count": 13050,
+        "value": "Application denied"
+      },
+      {
+        "count": 12869,
+        "value": "Debt was already discharged in bankruptcy and is no longer owed"
+      },
+      {
+        "count": 12647,
+        "value": "Escrow, taxes, or insurance"
+      },
+      {
+        "count": 12014,
+        "value": "Card opened as result of identity theft or fraud"
+      },
+      {
+        "count": 11747,
+        "value": "Report provided to employer without your written authorization"
+      },
+      {
+        "count": 11488,
+        "value": "Charged too much interest"
+      },
+      {
+        "count": 11353,
+        "value": "Unable to open an account"
+      },
+      {
+        "count": 11279,
+        "value": "Threatened to sue you for very old debt"
+      },
+      {
+        "count": 11147,
+        "value": "Didn't receive advertised or promotional terms"
+      },
+      {
+        "count": 11119,
+        "value": "Problem with rewards from credit card"
+      },
+      {
+        "count": 10995,
+        "value": "Account terms"
+      },
+      {
+        "count": 10703,
+        "value": "Can't use card to make purchases"
+      },
+      {
+        "count": 10270,
+        "value": "Trying to communicate with the company to fix an issue while managing or servicing your loan"
+      },
+      {
+        "count": 10066,
+        "value": "Didn't receive services that were advertised"
+      },
+      {
+        "count": 9860,
+        "value": "Billing dispute for services"
+      },
+      {
+        "count": 9842,
+        "value": "Didn't receive terms that were advertised"
+      },
+      {
+        "count": 9444,
+        "value": "Fee problem"
+      },
+      {
+        "count": 8886,
+        "value": "Trouble using the card to spend money in a store or online"
+      },
+      {
+        "count": 8875,
+        "value": "Public record"
+      },
+      {
+        "count": 8365,
+        "value": "Information is incorrect"
+      },
+      {
+        "count": 8195,
+        "value": "Trying to communicate with the company to fix an issue related to modification, forbearance, short sale, deed-in-lieu, bankruptcy, or foreclosure"
+      },
+      {
+        "count": 8110,
+        "value": "Confusing or misleading advertising about the credit card"
+      },
+      {
+        "count": 8015,
+        "value": "Payment process"
+      },
+      {
+        "count": 7791,
+        "value": "Talked to a third-party about your debt"
+      },
+      {
+        "count": 7626,
+        "value": "Sued you without properly notifying you of lawsuit"
+      },
+      {
+        "count": 7529,
+        "value": "Personal information"
+      },
+      {
+        "count": 7392,
+        "value": "Unable to receive car title or other problem after the loan is paid off"
+      },
+      {
+        "count": 7192,
+        "value": "Card company isn't resolving a dispute about a purchase or transfer"
+      },
+      {
+        "count": 7174,
+        "value": "Right to dispute notice not received"
+      },
+      {
+        "count": 6685,
+        "value": "Cashing a check"
+      },
+      {
+        "count": 6673,
+        "value": "Account opened as a result of fraud"
+      },
+      {
+        "count": 6568,
+        "value": "Account opened without my consent or knowledge"
+      },
+      {
+        "count": 6469,
+        "value": "Problem getting my free annual report"
+      },
+      {
+        "count": 6452,
+        "value": "Used obscene, profane, or other abusive language"
+      },
+      {
+        "count": 6418,
+        "value": "No notice of investigation status/result"
+      },
+      {
+        "count": 6363,
+        "value": "Impersonated attorney, law enforcement, or government official"
+      },
+      {
+        "count": 6333,
+        "value": "Loan balance remaining after the vehicle is repossessed and sold"
+      },
+      {
+        "count": 6146,
+        "value": "Credit card company won't work with you while you're going through financial hardship"
+      },
+      {
+        "count": 6110,
+        "value": "Can't get other flexible options for repaying your loan"
+      },
+      {
+        "count": 6075,
+        "value": "Frequent or repeated messages"
+      },
+      {
+        "count": 5907,
+        "value": "Problem with statement of dispute"
+      },
+      {
+        "count": 5844,
+        "value": "Reinserted previously deleted info"
+      },
+      {
+        "count": 5657,
+        "value": "Trouble with how payments are handled"
+      },
+      {
+        "count": 5467,
+        "value": "Don't agree with the fees charged"
+      },
+      {
+        "count": 5426,
+        "value": "Credit card company won't increase or decrease your credit limit"
+      },
+      {
+        "count": 5317,
+        "value": "Problem with fees charged"
+      },
+      {
+        "count": 5287,
+        "value": "Problem with forgiveness, cancellation, or discharge"
+      },
+      {
+        "count": 5282,
+        "value": "Seized or attempted to seize your property"
+      },
+      {
+        "count": 5268,
+        "value": "Non-sufficient funds and associated fees"
+      },
+      {
+        "count": 5242,
+        "value": "Report improperly shared by CRC"
+      },
+      {
+        "count": 5210,
+        "value": "Money was taken from your account on the wrong day or for the wrong amount"
+      },
+      {
+        "count": 5044,
+        "value": "Problem with additional products or services purchased with the loan"
+      },
+      {
+        "count": 5037,
+        "value": "Talked to a third party about my debt"
+      },
+      {
+        "count": 5003,
+        "value": "Need information about your loan balance or loan terms"
+      },
+      {
+        "count": 4970,
+        "value": "Denied request to lower payments"
+      },
+      {
+        "count": 4899,
+        "value": "Debt resulted from identity theft"
+      },
+      {
+        "count": 4880,
+        "value": "You never received your bill or did not know a payment was due"
+      },
+      {
+        "count": 4736,
+        "value": "Received unsolicited financial product or insurance offers after opting out"
+      },
+      {
+        "count": 4669,
+        "value": "Threatened to take legal action"
+      },
+      {
+        "count": 4390,
+        "value": "Problem getting report or credit score"
+      },
+      {
+        "count": 4336,
+        "value": "Charged for a purchase or transfer you did not make with the card"
+      },
+      {
+        "count": 4286,
+        "value": "Loan sold or transferred to another company"
+      },
+      {
+        "count": 4277,
+        "value": "Lender trying to repossess or disable the vehicle"
+      },
+      {
+        "count": 4238,
+        "value": "Unexpected increase in interest rate"
+      },
+      {
+        "count": 4216,
+        "value": "Foreclosure"
+      },
+      {
+        "count": 4192,
+        "value": "Problem lowering your monthly payments"
+      },
+      {
+        "count": 4141,
+        "value": "Applying for or obtaining a modification, forbearance plan, short sale, or deed-in-lieu"
+      },
+      {
+        "count": 4054,
+        "value": "Can't decrease my monthly payments"
+      },
+      {
+        "count": 3988,
+        "value": "Problem with paying off the loan"
+      },
+      {
+        "count": 3959,
+        "value": "Received bad information about my loan"
+      },
+      {
+        "count": 3865,
+        "value": "Sent card you never applied for"
+      },
+      {
+        "count": 3572,
+        "value": "Fraudulent loan"
+      },
+      {
+        "count": 3567,
+        "value": "Problem with the interest rate"
+      },
+      {
+        "count": 3538,
+        "value": "Threatened to arrest you or take you to jail if you do not pay"
+      },
+      {
+        "count": 3495,
+        "value": "Indicated you were committing crime by not paying debt"
+      },
+      {
+        "count": 3370,
+        "value": "Problem with product or service terms changing"
+      },
+      {
+        "count": 3241,
+        "value": "Can't get flexible payment options"
+      },
+      {
+        "count": 3209,
+        "value": "Confusing or misleading advertising or marketing"
+      },
+      {
+        "count": 3180,
+        "value": "Problem with balance transfer"
+      },
+      {
+        "count": 3071,
+        "value": "Overcharged for something you did purchase with the card"
+      },
+      {
+        "count": 3065,
+        "value": "Collected or attempted to collect exempt funds"
+      },
+      {
+        "count": 3028,
+        "value": "Contacted you after you asked them to stop"
+      },
+      {
+        "count": 3016,
+        "value": "Trouble getting, activating, or registering a card"
+      },
+      {
+        "count": 2847,
+        "value": "An existing modification, forbearance plan, short sale, or other loss mitigation relief"
+      },
+      {
+        "count": 2826,
+        "value": "Privacy issues"
+      },
+      {
+        "count": 2813,
+        "value": "Can't stop withdrawals from your account"
+      },
+      {
+        "count": 2803,
+        "value": "Having problems with customer service"
+      },
+      {
+        "count": 2781,
+        "value": "Investigation took too long"
+      },
+      {
+        "count": 2767,
+        "value": "Don't agree with fees charged"
+      },
+      {
+        "count": 2690,
+        "value": "Threatened to sue on too old debt"
+      },
+      {
+        "count": 2679,
+        "value": "Credit denial"
+      },
+      {
+        "count": 2567,
+        "value": "Contacted me after I asked not to"
+      },
+      {
+        "count": 2512,
+        "value": "Contacted your employer"
+      },
+      {
+        "count": 2416,
+        "value": "Delay in processing application"
+      },
+      {
+        "count": 2413,
+        "value": "Loan opened without my consent or knowledge"
+      },
+      {
+        "count": 2410,
+        "value": "Debt was discharged in bankruptcy"
+      },
+      {
+        "count": 2404,
+        "value": "Called before 8am or after 9pm"
+      },
+      {
+        "count": 2342,
+        "value": "Can't temporarily delay making payments"
+      },
+      {
+        "count": 2253,
+        "value": "Threatened arrest/jail if do not pay"
+      },
+      {
+        "count": 2192,
+        "value": "Contacted employer after asked not to"
+      },
+      {
+        "count": 2116,
+        "value": "Trouble closing card"
+      },
+      {
+        "count": 2104,
+        "value": "Problem with fraud alerts"
+      },
+      {
+        "count": 2009,
+        "value": "Fees charged"
+      },
+      {
+        "count": 1985,
+        "value": "Trouble getting information about the card"
+      },
+      {
+        "count": 1935,
+        "value": "Account reinstatement or redemption after repossession"
+      },
+      {
+        "count": 1934,
+        "value": "Bounced checks or returned payments"
+      },
+      {
+        "count": 1922,
+        "value": "Problem getting a working replacement card"
+      },
+      {
+        "count": 1871,
+        "value": "Late or other fees"
+      },
+      {
+        "count": 1868,
+        "value": "Problem with your payment plan"
+      },
+      {
+        "count": 1852,
+        "value": "Called after sent written cease of comm"
+      },
+      {
+        "count": 1832,
+        "value": "Used obscene/profane/abusive language"
+      },
+      {
+        "count": 1797,
+        "value": "Not disclosed as an attempt to collect"
+      },
+      {
+        "count": 1790,
+        "value": "Paying off the loan"
+      },
+      {
+        "count": 1777,
+        "value": "Inadequate help over the phone"
+      },
+      {
+        "count": 1775,
+        "value": "Deficiency balance after repossession"
+      },
+      {
+        "count": 1773,
+        "value": "Trying to communicate with the company to fix an issue with the application process"
+      },
+      {
+        "count": 1739,
+        "value": "Fees charged for closing account"
+      },
+      {
+        "count": 1726,
+        "value": "Confusing or missing disclosures"
+      },
+      {
+        "count": 1652,
+        "value": "Received unwanted marketing or advertising"
+      },
+      {
+        "count": 1607,
+        "value": "Notice to repossess"
+      },
+      {
+        "count": 1573,
+        "value": "Keep getting calls about your loan"
+      },
+      {
+        "count": 1552,
+        "value": "Deposits or withdrawals"
+      },
+      {
+        "count": 1548,
+        "value": "Application denials"
+      },
+      {
+        "count": 1541,
+        "value": "Voluntary repossession"
+      },
+      {
+        "count": 1534,
+        "value": "Private mortgage insurance (PMI)"
+      },
+      {
+        "count": 1512,
+        "value": "Information that should be on the report is missing"
+      },
+      {
+        "count": 1497,
+        "value": "Problem while selling or giving up the vehicle"
+      },
+      {
+        "count": 1496,
+        "value": "Trying to communicate with the company to fix an issue with the loan closing"
+      },
+      {
+        "count": 1485,
+        "value": "Sued you in a state where you do not live or did not sign for the debt"
+      },
+      {
+        "count": 1481,
+        "value": "Changes in terms mid-deal or after closing"
+      },
+      {
+        "count": 1430,
+        "value": "Can't temporarily postpone payments"
+      },
+      {
+        "count": 1424,
+        "value": "Trouble getting a working replacement card"
+      },
+      {
+        "count": 1387,
+        "value": "Sued w/o proper notification of suit"
+      },
+      {
+        "count": 1378,
+        "value": "Closing disclosure or other related disclosures"
+      },
+      {
+        "count": 1373,
+        "value": "Add-on products and services"
+      },
+      {
+        "count": 1345,
+        "value": "Problem related to refinancing"
+      },
+      {
+        "count": 1284,
+        "value": "Impersonated an attorney or official"
+      },
+      {
+        "count": 1252,
+        "value": "Told you not to respond to a lawsuit they filed against you"
+      },
+      {
+        "count": 1244,
+        "value": "Keep getting calls about my loan"
+      },
+      {
+        "count": 1191,
+        "value": "Delays in the application process"
+      },
+      {
+        "count": 1190,
+        "value": "Need information about my balance/terms"
+      },
+      {
+        "count": 1159,
+        "value": "Seized/Attempted to seize property"
+      },
+      {
+        "count": 1115,
+        "value": "Delays with the closing process"
+      },
+      {
+        "count": 1112,
+        "value": "Problem using the card to withdraw money from an ATM"
+      },
+      {
+        "count": 1049,
+        "value": "Changes in loan terms during or after closing"
+      },
+      {
+        "count": 1038,
+        "value": "Excess mileage, damage, or wear fees, or other problem after the lease is finished"
+      },
+      {
+        "count": 1015,
+        "value": "Damage caused or loss of personal items in vehicle during the actual repossession"
+      },
+      {
+        "count": 1012,
+        "value": "Indicated committed crime not paying"
+      },
+      {
+        "count": 912,
+        "value": "Called outside of 8am-9pm"
+      },
+      {
+        "count": 903,
+        "value": "Attempted to/Collected exempt funds"
+      },
+      {
+        "count": 900,
+        "value": "Problem with direct deposit"
+      },
+      {
+        "count": 883,
+        "value": "Termination fees or other problem when ending the lease early"
+      },
+      {
+        "count": 881,
+        "value": "Billing dispute"
+      },
+      {
+        "count": 839,
+        "value": "Changes in loan terms during the application process"
+      },
+      {
+        "count": 775,
+        "value": "Don't want a card provided by your employer or the government"
+      },
+      {
+        "count": 754,
+        "value": "High-pressure sales tactics"
+      },
+      {
+        "count": 747,
+        "value": "Problem with signing the paperwork"
+      },
+      {
+        "count": 721,
+        "value": "Account terms and changes"
+      },
+      {
+        "count": 712,
+        "value": "Contacted before 8am or after 9pm"
+      },
+      {
+        "count": 709,
+        "value": "Company explaining amount owed"
+      },
+      {
+        "count": 633,
+        "value": "Fees or costs after closing"
+      },
+      {
+        "count": 626,
+        "value": "Trouble using the card to pay a bill"
+      },
+      {
+        "count": 621,
+        "value": "Lien release"
+      },
+      {
+        "count": 605,
+        "value": "Company communicating payment assistance or payment extension options"
+      },
+      {
+        "count": 602,
+        "value": "Confusing or misleading advertising"
+      },
+      {
+        "count": 558,
+        "value": "Problem with additional add-on products or services purchased with the loan"
+      },
+      {
+        "count": 528,
+        "value": "Credit card company forcing arbitration"
+      },
+      {
+        "count": 524,
+        "value": "Problem with cash advances"
+      },
+      {
+        "count": 515,
+        "value": "Problem after you declared or threatened to declare bankruptcy"
+      },
+      {
+        "count": 513,
+        "value": "Problem when attempting to purchase vehicle at the end of the lease"
+      },
+      {
+        "count": 502,
+        "value": "Interest rate"
+      },
+      {
+        "count": 500,
+        "value": "Fees or costs during the application process"
+      },
+      {
+        "count": 489,
+        "value": "Problem cancelling or closing account"
+      },
+      {
+        "count": 485,
+        "value": "Loan estimate or other related disclosures"
+      },
+      {
+        "count": 442,
+        "value": "Problem with renewal"
+      },
+      {
+        "count": 401,
+        "value": "Sued where didn't live/sign for debt"
+      },
+      {
+        "count": 395,
+        "value": "Confusing or misleading advertising about the card"
+      },
+      {
+        "count": 375,
+        "value": "Problem with fees or penalties"
+      },
+      {
+        "count": 350,
+        "value": "Bankruptcy"
+      },
+      {
+        "count": 345,
+        "value": "Indicated shouldn't respond to lawsuit"
+      },
+      {
+        "count": 327,
+        "value": "Co-signer"
+      },
+      {
+        "count": 306,
+        "value": "High pressure sales tactics or recruiting"
+      },
+      {
+        "count": 302,
+        "value": "Can't qualify for a loan"
+      },
+      {
+        "count": 288,
+        "value": "Account sold or transferred to another company"
+      },
+      {
+        "count": 265,
+        "value": "Negative impact of inaccurate appraisal"
+      },
+      {
+        "count": 265,
+        "value": "Threatened to turn you in to immigration or deport you"
+      },
+      {
+        "count": 255,
+        "value": "Filed for bankruptcy"
+      },
+      {
+        "count": 240,
+        "value": "Contacted me instead of my attorney"
+      },
+      {
+        "count": 223,
+        "value": "Receiving unwanted marketing/advertising"
+      },
+      {
+        "count": 220,
+        "value": "Overcharged for a purchase or transfer you did make with the card"
+      },
+      {
+        "count": 204,
+        "value": "Denied loan"
+      },
+      {
+        "count": 203,
+        "value": "Contacted you instead of your attorney"
+      },
+      {
+        "count": 202,
+        "value": "Problem with convenience check"
+      },
+      {
+        "count": 200,
+        "value": "Problem adding money"
+      },
+      {
+        "count": 193,
+        "value": "Changes in terms from what was offered or advertised"
+      },
+      {
+        "count": 172,
+        "value": "Problem with a trade-in"
+      },
+      {
+        "count": 171,
+        "value": "Problem extending the lease"
+      },
+      {
+        "count": 170,
+        "value": "Received marketing offer after opted out"
+      },
+      {
+        "count": 167,
+        "value": "Overdraft charges"
+      },
+      {
+        "count": 167,
+        "value": "Report shared with employer w/o consent"
+      },
+      {
+        "count": 157,
+        "value": "Qualify for a better loan than offered"
+      },
+      {
+        "count": 147,
+        "value": "Trouble using the card to send money to another person"
+      },
+      {
+        "count": 135,
+        "value": "Setting up an escrow account for taxes and insurance"
+      },
+      {
+        "count": 117,
+        "value": "Issues with fees connected to the loan"
+      },
+      {
+        "count": 97,
+        "value": "Did not receive car title"
+      },
+      {
+        "count": 79,
+        "value": "Problem with a check written from your prepaid card account"
+      },
+      {
+        "count": 78,
+        "value": "Cannot graduate, receive diploma, or get transcript due to money owed"
+      },
+      {
+        "count": 72,
+        "value": "Dealing with provider of income share agreement"
+      },
+      {
+        "count": 59,
+        "value": "Marketing or disclosure issues"
+      },
+      {
+        "count": 50,
+        "value": "Payment issues"
+      },
+      {
+        "count": 48,
+        "value": "Issues with financial aid services"
+      },
+      {
+        "count": 35,
+        "value": "Qualified for a better loan than the one offered"
+      },
+      {
+        "count": 33,
+        "value": "Billing or statement issues"
+      },
+      {
+        "count": 33,
+        "value": "Incorrect information on your report"
+      },
+      {
+        "count": 14,
+        "value": "Was signed up for overdraft on card, but don't want to be"
+      },
+      {
+        "count": 6,
+        "value": "Insurance terms"
+      },
+      {
+        "count": 5,
+        "value": "Problem with a credit reporting company's investigation into an existing problem"
+      },
+      {
+        "count": 1,
+        "value": "Credit monitoring or identity theft protection services"
+      },
+      {
+        "count": 1,
+        "value": "Improper use of your report"
+      },
+      {
+        "count": 1,
+        "value": "Problem with fraud alerts or security freezes"
+      }
+    ],
+    "sub_product": [
+      {
+        "count": 14080505,
+        "value": "Credit reporting"
+      },
+      {
+        "count": 485940,
+        "value": "I do not know"
+      },
+      {
+        "count": 383685,
+        "value": "General-purpose credit card or charge card"
+      },
+      {
+        "count": 378871,
+        "value": "Checking account"
+      },
+      {
+        "count": 198043,
+        "value": "Other debt"
+      },
+      {
+        "count": 179642,
+        "value": "Credit card debt"
+      },
+      {
+        "count": 138357,
+        "value": "Conventional home mortgage"
+      },
+      {
+        "count": 87850,
+        "value": "Loan"
+      },
+      {
+        "count": 87740,
+        "value": "Domestic (US) money transfer"
+      },
+      {
+        "count": 86612,
+        "value": "Other mortgage"
+      },
+      {
+        "count": 85554,
+        "value": "Federal student loan servicing"
+      },
+      {
+        "count": 77481,
+        "value": "Medical debt"
+      },
+      {
+        "count": 70593,
+        "value": "Conventional fixed mortgage"
+      },
+      {
+        "count": 63752,
+        "value": "FHA mortgage"
+      },
+      {
+        "count": 61748,
+        "value": "Other personal consumer report"
+      },
+      {
+        "count": 59703,
+        "value": "Mobile or digital wallet"
+      },
+      {
+        "count": 55806,
+        "value": "Store credit card"
+      },
+      {
+        "count": 44436,
+        "value": "Other (i.e. phone, health club, etc.)"
+      },
+      {
+        "count": 43225,
+        "value": "Installment loan"
+      },
+      {
+        "count": 36909,
+        "value": "Other banking product or service"
+      },
+      {
+        "count": 34876,
+        "value": "Savings account"
+      },
+      {
+        "count": 32475,
+        "value": "Auto debt"
+      },
+      {
+        "count": 30943,
+        "value": "Telecommunications debt"
+      },
+      {
+        "count": 29497,
+        "value": "Rental debt"
+      },
+      {
+        "count": 28626,
+        "value": "Credit card"
+      },
+      {
+        "count": 25380,
+        "value": "Conventional adjustable mortgage (ARM)"
+      },
+      {
+        "count": 25289,
+        "value": "Private student loan"
+      },
+      {
+        "count": 25160,
+        "value": "Non-federal student loan"
+      },
+      {
+        "count": 23483,
+        "value": "VA mortgage"
+      },
+      {
+        "count": 21686,
+        "value": "Virtual currency"
+      },
+      {
+        "count": 21143,
+        "value": "Medical"
+      },
+      {
+        "count": 20321,
+        "value": "Payday loan"
+      },
+      {
+        "count": 19087,
+        "value": "General-purpose prepaid card"
+      },
+      {
+        "count": 17880,
+        "value": "Other type of mortgage"
+      },
+      {
+        "count": 17822,
+        "value": "Other bank product/service"
+      },
+      {
+        "count": 17769,
+        "value": "Vehicle loan"
+      },
+      {
+        "count": 17287,
+        "value": "International money transfer"
+      },
+      {
+        "count": 16533,
+        "value": "Payday loan debt"
+      },
+      {
+        "count": 15791,
+        "value": "Personal line of credit"
+      },
+      {
+        "count": 14543,
+        "value": "Lease"
+      },
+      {
+        "count": 14514,
+        "value": "Home equity loan or line of credit (HELOC)"
+      },
+      {
+        "count": 14203,
+        "value": "Government benefit card"
+      },
+      {
+        "count": 11622,
+        "value": "Home equity loan or line of credit"
+      },
+      {
+        "count": 9286,
+        "value": "Credit repair services"
+      },
+      {
+        "count": 8544,
+        "value": "Mortgage debt"
+      },
+      {
+        "count": 7902,
+        "value": "CD (Certificate of Deposit)"
+      },
+      {
+        "count": 6675,
+        "value": "Debt settlement"
+      },
+      {
+        "count": 6113,
+        "value": "Private student loan debt"
+      },
+      {
+        "count": 6026,
+        "value": "Federal student loan debt"
+      },
+      {
+        "count": 5797,
+        "value": "Title loan"
+      },
+      {
+        "count": 5391,
+        "value": "Reverse mortgage"
+      },
+      {
+        "count": 4807,
+        "value": "Mortgage"
+      },
+      {
+        "count": 3748,
+        "value": "Auto"
+      },
+      {
+        "count": 3499,
+        "value": "Gift card"
+      },
+      {
+        "count": 3416,
+        "value": "(CD) Certificate of deposit"
+      },
+      {
+        "count": 2654,
+        "value": "Vehicle lease"
+      },
+      {
+        "count": 2537,
+        "value": "Money order, traveler's check or cashier's check"
+      },
+      {
+        "count": 2473,
+        "value": "Federal student loan"
+      },
+      {
+        "count": 2321,
+        "value": "Payroll card"
+      },
+      {
+        "count": 2255,
+        "value": "Check cashing service"
+      },
+      {
+        "count": 1752,
+        "value": "General purpose card"
+      },
+      {
+        "count": 1438,
+        "value": "Foreign currency exchange"
+      },
+      {
+        "count": 983,
+        "value": "Traveler's check or cashier's check"
+      },
+      {
+        "count": 919,
+        "value": "Money order"
+      },
+      {
+        "count": 826,
+        "value": "Manufactured home loan"
+      },
+      {
+        "count": 765,
+        "value": "USDA mortgage"
+      },
+      {
+        "count": 712,
+        "value": "Other advances of future income"
+      },
+      {
+        "count": 695,
+        "value": "Refund anticipation check"
+      },
+      {
+        "count": 662,
+        "value": "Second mortgage"
+      },
+      {
+        "count": 625,
+        "value": "Cashing a check without an account"
+      },
+      {
+        "count": 418,
+        "value": "Mobile wallet"
+      },
+      {
+        "count": 402,
+        "value": "Gift or merchant card"
+      },
+      {
+        "count": 389,
+        "value": "Government benefit payment card"
+      },
+      {
+        "count": 386,
+        "value": "Earned wage access"
+      },
+      {
+        "count": 385,
+        "value": "Mortgage modification or foreclosure avoidance"
+      },
+      {
+        "count": 292,
+        "value": "Pawn loan"
+      },
+      {
+        "count": 266,
+        "value": "Check cashing"
+      },
+      {
+        "count": 207,
+        "value": "ID prepaid card"
+      },
+      {
+        "count": 191,
+        "value": "Other special purpose card"
+      },
+      {
+        "count": 148,
+        "value": "Student loan debt relief"
+      },
+      {
+        "count": 102,
+        "value": "Credit repair"
+      },
+      {
+        "count": 88,
+        "value": "Traveler’s/Cashier’s checks"
+      },
+      {
+        "count": 60,
+        "value": "Tax refund anticipation loan or check"
+      },
+      {
+        "count": 57,
+        "value": "Student prepaid card"
+      },
+      {
+        "count": 37,
+        "value": "Transit card"
+      },
+      {
+        "count": 12,
+        "value": "Electronic Benefit Transfer / EBT card"
+      }
+    ]
+  },
+  "duplicate_statistics": {
+    "complaint_id_duplicate_occurrences": 0,
+    "complaint_ids_with_duplicates": 0,
+    "duplicate_narrative_groups_by_sha256": 246328,
+    "duplicate_narrative_occurrences_beyond_first": 1254760,
+    "narratives_in_duplicate_groups": 1501088,
+    "unique_complaint_ids": 17533918,
+    "unique_narratives_by_sha256": 2596655
+  },
+  "field_names": [
+    "Date received",
+    "Product",
+    "Sub-product",
+    "Issue",
+    "Sub-issue",
+    "Consumer complaint narrative",
+    "Company public response",
+    "Company",
+    "State",
+    "ZIP code",
+    "Tags",
+    "Submitted via",
+    "Date sent to company",
+    "Company response to consumer",
+    "Timely response?",
+    "Complaint ID"
+  ],
+  "manifest_sha256": "9d03f2e2eb615240e91661b74f30b934f77a59f626f7d573dcc9dad1c4c68bb0",
+  "missingness": {
+    "Company": {
+      "missing_or_empty": 0,
+      "missing_or_empty_percent": 0.0,
+      "present": 17533918
+    },
+    "Company public response": {
+      "missing_or_empty": 7829307,
+      "missing_or_empty_percent": 44.652353,
+      "present": 9704611
+    },
+    "Company response to consumer": {
+      "missing_or_empty": 21,
+      "missing_or_empty_percent": 0.00012,
+      "present": 17533897
+    },
+    "Complaint ID": {
+      "missing_or_empty": 0,
+      "missing_or_empty_percent": 0.0,
+      "present": 17533918
+    },
+    "Consumer complaint narrative": {
+      "missing_or_empty": 13682503,
+      "missing_or_empty_percent": 78.034487,
+      "present": 3851415
+    },
+    "Date received": {
+      "missing_or_empty": 0,
+      "missing_or_empty_percent": 0.0,
+      "present": 17533918
+    },
+    "Date sent to company": {
+      "missing_or_empty": 0,
+      "missing_or_empty_percent": 0.0,
+      "present": 17533918
+    },
+    "Issue": {
+      "missing_or_empty": 6,
+      "missing_or_empty_percent": 3.4e-05,
+      "present": 17533912
+    },
+    "Product": {
+      "missing_or_empty": 0,
+      "missing_or_empty_percent": 0.0,
+      "present": 17533918
+    },
+    "State": {
+      "missing_or_empty": 62658,
+      "missing_or_empty_percent": 0.357353,
+      "present": 17471260
+    },
+    "Sub-issue": {
+      "missing_or_empty": 933490,
+      "missing_or_empty_percent": 5.32391,
+      "present": 16600428
+    },
+    "Sub-product": {
+      "missing_or_empty": 235275,
+      "missing_or_empty_percent": 1.341828,
+      "present": 17298643
+    },
+    "Submitted via": {
+      "missing_or_empty": 0,
+      "missing_or_empty_percent": 0.0,
+      "present": 17533918
+    },
+    "Tags": {
+      "missing_or_empty": 16731296,
+      "missing_or_empty_percent": 95.422461,
+      "present": 802622
+    },
+    "Timely response?": {
+      "missing_or_empty": 0,
+      "missing_or_empty_percent": 0.0,
+      "present": 17533918
+    },
+    "ZIP code": {
+      "missing_or_empty": 2435,
+      "missing_or_empty_percent": 0.013887,
+      "present": 17531483
+    }
+  },
+  "narrative_length_characters": {
+    "maximum": 35984,
+    "mean": 1023.949,
+    "median": 670,
+    "minimum": 4,
+    "p90_nearest_rank": 2128,
+    "p95_nearest_rank": 3007
+  },
+  "privacy_pattern_aggregates": {
+    "method": "Regex heuristics over non-empty narratives; counts are aggregate signals, not confirmation of personal information. No matched strings are retained.",
+    "narratives_with_any_pattern": 13677,
+    "patterns": {
+      "email_like": {
+        "narratives_with_pattern": 314,
+        "total_matches": 441
+      },
+      "long_digit_sequence_9_plus": {
+        "narratives_with_pattern": 200,
+        "total_matches": 316
+      },
+      "phone_like": {
+        "narratives_with_pattern": 136,
+        "total_matches": 154
+      },
+      "url_like": {
+        "narratives_with_pattern": 13079,
+        "total_matches": 15598
+      }
+    }
+  },
+  "profile_scope": "Complete official CFPB Consumer Complaint Database Narratives Archive Full Records ZIP collection; acquisition/profiling only.",
+  "schema_version": "cfpb-narratives-profile.v1",
+  "sentinelvoice_relevance": {
+    "group_counts_overlap": true,
+    "groups": {
+      "account_access": {
+        "rows": 212790,
+        "rows_with_nonempty_narrative": 93657
+      },
+      "card_transactions": {
+        "rows": 182565,
+        "rows_with_nonempty_narrative": 91033
+      },
+      "cash_withdrawals_atm": {
+        "rows": 55499,
+        "rows_with_nonempty_narrative": 22579
+      },
+      "checking_savings_accounts": {
+        "rows": 480521,
+        "rows_with_nonempty_narrative": 204233
+      },
+      "credit_debit_cards": {
+        "rows": 571254,
+        "rows_with_nonempty_narrative": 249611
+      },
+      "disputes_chargebacks": {
+        "rows": 169929,
+        "rows_with_nonempty_narrative": 77640
+      },
+      "other_banking_related_categories": {
+        "rows": 1056,
+        "rows_with_nonempty_narrative": 292
+      },
+      "transfers": {
+        "rows": 216760,
+        "rows_with_nonempty_narrative": 133995
+      },
+      "unauthorized_transactions_fraud_related": {
+        "rows": 162476,
+        "rows_with_nonempty_narrative": 68781
+      }
+    },
+    "method": "Deterministic rules over CFPB Product, Sub-product, Issue, and Sub-issue values only; narrative text is not used for relevance classification.",
+    "relevant_issue_distribution": [
+      {
+        "issue": "Managing an account",
+        "rows": 230516,
+        "rows_with_nonempty_narrative": 103210
+      },
+      {
+        "issue": "Problem with a purchase shown on your statement",
+        "rows": 111885,
+        "rows_with_nonempty_narrative": 55291
+      },
+      {
+        "issue": "Other transaction problem",
+        "rows": 71495,
+        "rows_with_nonempty_narrative": 54959
+      },
+      {
+        "issue": "Problem with fraud alerts or security freezes",
+        "rows": 55671,
+        "rows_with_nonempty_narrative": 16037
+      },
+      {
+        "issue": "Getting a credit card",
+        "rows": 54310,
+        "rows_with_nonempty_narrative": 22895
+      },
+      {
+        "issue": "Fraud or scam",
+        "rows": 52095,
+        "rows_with_nonempty_narrative": 28689
+      },
+      {
+        "issue": "Closing an account",
+        "rows": 50699,
+        "rows_with_nonempty_narrative": 26195
+      },
+      {
+        "issue": "Other features, terms, or problems",
+        "rows": 47868,
+        "rows_with_nonempty_narrative": 25509
+      },
+      {
+        "issue": "Problem with a lender or other company charging your account",
+        "rows": 44066,
+        "rows_with_nonempty_narrative": 23689
+      },
+      {
+        "issue": "Fees or interest",
+        "rows": 43047,
+        "rows_with_nonempty_narrative": 23515
+      },
+      {
+        "issue": "Incorrect information on your report",
+        "rows": 41109,
+        "rows_with_nonempty_narrative": 10073
+      },
+      {
+        "issue": "Account opening, closing, or management",
+        "rows": 37959,
+        "rows_with_nonempty_narrative": 6345
+      },
+      {
+        "issue": "Opening an account",
+        "rows": 36162,
+        "rows_with_nonempty_narrative": 16503
+      },
+      {
+        "issue": "Problem when making payments",
+        "rows": 31070,
+        "rows_with_nonempty_narrative": 15628
+      },
+      {
+        "issue": "Problem caused by your funds being low",
+        "rows": 30226,
+        "rows_with_nonempty_narrative": 18747
+      },
+      {
+        "issue": "Closing your account",
+        "rows": 29930,
+        "rows_with_nonempty_narrative": 15858
+      },
+      {
+        "issue": "Problem with a company's investigation into an existing problem",
+        "rows": 26972,
+        "rows_with_nonempty_narrative": 9361
+      },
+      {
+        "issue": "Deposits and withdrawals",
+        "rows": 22850,
+        "rows_with_nonempty_narrative": 3425
+      },
+      {
+        "issue": "Advertising and marketing, including promotional offers",
+        "rows": 19256,
+        "rows_with_nonempty_narrative": 11499
+      },
+      {
+        "issue": "Unauthorized transactions or other transaction problem",
+        "rows": 17933,
+        "rows_with_nonempty_narrative": 9831
+      },
+      {
+        "issue": "Trouble using your card",
+        "rows": 16416,
+        "rows_with_nonempty_narrative": 9245
+      },
+      {
+        "issue": "Billing disputes",
+        "rows": 15136,
+        "rows_with_nonempty_narrative": 3102
+      },
+      {
+        "issue": "Trouble using the card",
+        "rows": 13935,
+        "rows_with_nonempty_narrative": 7182
+      },
+      {
+        "issue": "Money was not available when promised",
+        "rows": 13708,
+        "rows_with_nonempty_narrative": 7596
+      },
+      {
+        "issue": "Managing, opening, or closing your mobile wallet account",
+        "rows": 12225,
+        "rows_with_nonempty_narrative": 5895
+      },
+      {
+        "issue": "Problems caused by my funds being low",
+        "rows": 11844,
+        "rows_with_nonempty_narrative": 2084
+      },
+      {
+        "issue": "Problem with a purchase or transfer",
+        "rows": 11748,
+        "rows_with_nonempty_narrative": 5949
+      },
+      {
+        "issue": "Other",
+        "rows": 9351,
+        "rows_with_nonempty_narrative": 1940
+      },
+      {
+        "issue": "Identity theft / Fraud / Embezzlement",
+        "rows": 8480,
+        "rows_with_nonempty_narrative": 1722
+      },
+      {
+        "issue": "Unexpected or other fees",
+        "rows": 7720,
+        "rows_with_nonempty_narrative": 4876
+      },
+      {
+        "issue": "Trouble accessing funds in your mobile or digital wallet",
+        "rows": 7646,
+        "rows_with_nonempty_narrative": 4367
+      },
+      {
+        "issue": "Making/receiving payments, sending money",
+        "rows": 7401,
+        "rows_with_nonempty_narrative": 1432
+      },
+      {
+        "issue": "Problem with a credit reporting company's investigation into an existing problem",
+        "rows": 7340,
+        "rows_with_nonempty_narrative": 5775
+      },
+      {
+        "issue": "Problem getting a card or closing an account",
+        "rows": 7331,
+        "rows_with_nonempty_narrative": 3167
+      },
+      {
+        "issue": "Struggling to pay your bill",
+        "rows": 6916,
+        "rows_with_nonempty_narrative": 3040
+      },
+      {
+        "issue": "Closing/Cancelling account",
+        "rows": 6389,
+        "rows_with_nonempty_narrative": 1440
+      },
+      {
+        "issue": "Using a debit or ATM card",
+        "rows": 6144,
+        "rows_with_nonempty_narrative": 1597
+      },
+      {
+        "issue": "Other service problem",
+        "rows": 5751,
+        "rows_with_nonempty_narrative": 3528
+      },
+      {
+        "issue": "APR or interest rate",
+        "rows": 5506,
+        "rows_with_nonempty_narrative": 785
+      },
+      {
+        "issue": "Confusing or missing disclosures",
+        "rows": 4566,
+        "rows_with_nonempty_narrative": 2774
+      },
+      {
+        "issue": "Improper use of your report",
+        "rows": 4136,
+        "rows_with_nonempty_narrative": 1716
+      },
+      {
+        "issue": "Late fee",
+        "rows": 3639,
+        "rows_with_nonempty_narrative": 771
+      },
+      {
+        "issue": "Customer service / Customer relations",
+        "rows": 3504,
+        "rows_with_nonempty_narrative": 973
+      },
+      {
+        "issue": "Delinquent account",
+        "rows": 3218,
+        "rows_with_nonempty_narrative": 834
+      },
+      {
+        "issue": "Getting a loan or lease",
+        "rows": 3077,
+        "rows_with_nonempty_narrative": 1707
+      },
+      {
+        "issue": "Credit determination",
+        "rows": 3057,
+        "rows_with_nonempty_narrative": 506
+      },
+      {
+        "issue": "Advertising and marketing",
+        "rows": 2959,
+        "rows_with_nonempty_narrative": 830
+      },
+      {
+        "issue": "Rewards",
+        "rows": 2916,
+        "rows_with_nonempty_narrative": 900
+      },
+      {
+        "issue": "Problem with customer service",
+        "rows": 2731,
+        "rows_with_nonempty_narrative": 1518
+      },
+      {
+        "issue": "Credit card protection / Debt protection",
+        "rows": 2728,
+        "rows_with_nonempty_narrative": 712
+      },
+      {
+        "issue": "Transaction issue",
+        "rows": 2700,
+        "rows_with_nonempty_narrative": 681
+      },
+      {
+        "issue": "Billing statement",
+        "rows": 2619,
+        "rows_with_nonempty_narrative": 620
+      },
+      {
+        "issue": "Payoff process",
+        "rows": 2315,
+        "rows_with_nonempty_narrative": 513
+      },
+      {
+        "issue": "Trouble during payment process",
+        "rows": 2281,
+        "rows_with_nonempty_narrative": 1200
+      },
+      {
+        "issue": "Other fee",
+        "rows": 2198,
+        "rows_with_nonempty_narrative": 502
+      },
+      {
+        "issue": "Credit line increase/decrease",
+        "rows": 2185,
+        "rows_with_nonempty_narrative": 451
+      },
+      {
+        "issue": "Credit monitoring or identity protection",
+        "rows": 2104,
+        "rows_with_nonempty_narrative": 292
+      },
+      {
+        "issue": "Wrong amount charged or received",
+        "rows": 2102,
+        "rows_with_nonempty_narrative": 1132
+      },
+      {
+        "issue": "Managing the loan or lease",
+        "rows": 2005,
+        "rows_with_nonempty_narrative": 1204
+      },
+      {
+        "issue": "Unsolicited issuance of credit card",
+        "rows": 1853,
+        "rows_with_nonempty_narrative": 491
+      },
+      {
+        "issue": "Credit reporting",
+        "rows": 1696,
+        "rows_with_nonempty_narrative": 0
+      },
+      {
+        "issue": "Other transaction issues",
+        "rows": 1491,
+        "rows_with_nonempty_narrative": 471
+      },
+      {
+        "issue": "Unauthorized transactions/trans. issues",
+        "rows": 1325,
+        "rows_with_nonempty_narrative": 543
+      },
+      {
+        "issue": "Managing, opening, or closing account",
+        "rows": 1194,
+        "rows_with_nonempty_narrative": 386
+      },
+      {
+        "issue": "Confusing or misleading advertising or marketing",
+        "rows": 1170,
+        "rows_with_nonempty_narrative": 720
+      },
+      {
+        "issue": "Balance transfer",
+        "rows": 1117,
+        "rows_with_nonempty_narrative": 298
+      },
+      {
+        "issue": "Unauthorized withdrawals or charges",
+        "rows": 1114,
+        "rows_with_nonempty_narrative": 627
+      },
+      {
+        "issue": "Problem adding money",
+        "rows": 1070,
+        "rows_with_nonempty_narrative": 652
+      },
+      {
+        "issue": "Credit monitoring or identity theft protection services",
+        "rows": 1025,
+        "rows_with_nonempty_narrative": 518
+      },
+      {
+        "issue": "Lost or stolen money order",
+        "rows": 1011,
+        "rows_with_nonempty_narrative": 475
+      },
+      {
+        "issue": "Collection practices",
+        "rows": 1001,
+        "rows_with_nonempty_narrative": 0
+      },
+      {
+        "issue": "Collection debt dispute",
+        "rows": 901,
+        "rows_with_nonempty_narrative": 0
+      },
+      {
+        "issue": "Advertising",
+        "rows": 588,
+        "rows_with_nonempty_narrative": 365
+      },
+      {
+        "issue": "Forbearance / Workout plans",
+        "rows": 556,
+        "rows_with_nonempty_narrative": 85
+      },
+      {
+        "issue": "Application processing delay",
+        "rows": 540,
+        "rows_with_nonempty_narrative": 107
+      },
+      {
+        "issue": "Other service issues",
+        "rows": 514,
+        "rows_with_nonempty_narrative": 138
+      },
+      {
+        "issue": "Getting a loan",
+        "rows": 495,
+        "rows_with_nonempty_narrative": 280
+      },
+      {
+        "issue": "Privacy",
+        "rows": 489,
+        "rows_with_nonempty_narrative": 105
+      },
+      {
+        "issue": "Lost or stolen check",
+        "rows": 470,
+        "rows_with_nonempty_narrative": 260
+      },
+      {
+        "issue": "Bankruptcy",
+        "rows": 448,
+        "rows_with_nonempty_narrative": 96
+      },
+      {
+        "issue": "Arbitration",
+        "rows": 348,
+        "rows_with_nonempty_narrative": 83
+      },
+      {
+        "issue": "Sale of account",
+        "rows": 344,
+        "rows_with_nonempty_narrative": 98
+      },
+      {
+        "issue": "Unable to get your credit report or credit score",
+        "rows": 293,
+        "rows_with_nonempty_narrative": 124
+      },
+      {
+        "issue": "Customer service/Customer relations",
+        "rows": 283,
+        "rows_with_nonempty_narrative": 55
+      },
+      {
+        "issue": "Overdraft, savings, or rewards features",
+        "rows": 258,
+        "rows_with_nonempty_narrative": 138
+      },
+      {
+        "issue": "Cash advance",
+        "rows": 245,
+        "rows_with_nonempty_narrative": 44
+      },
+      {
+        "issue": "Fees",
+        "rows": 232,
+        "rows_with_nonempty_narrative": 77
+      },
+      {
+        "issue": "Balance transfer fee",
+        "rows": 221,
+        "rows_with_nonempty_narrative": 51
+      },
+      {
+        "issue": "Overlimit fee",
+        "rows": 215,
+        "rows_with_nonempty_narrative": 31
+      },
+      {
+        "issue": "Adding money",
+        "rows": 202,
+        "rows_with_nonempty_narrative": 92
+      },
+      {
+        "issue": "Incorrect/missing disclosures or info",
+        "rows": 202,
+        "rows_with_nonempty_narrative": 58
+      },
+      {
+        "issue": "Cash advance fee",
+        "rows": 196,
+        "rows_with_nonempty_narrative": 41
+      },
+      {
+        "issue": "Incorrect exchange rate",
+        "rows": 193,
+        "rows_with_nonempty_narrative": 102
+      },
+      {
+        "issue": "Problem with overdraft",
+        "rows": 172,
+        "rows_with_nonempty_narrative": 107
+      },
+      {
+        "issue": "Convenience checks",
+        "rows": 149,
+        "rows_with_nonempty_narrative": 37
+      },
+      {
+        "issue": "Unexpected/Other fees",
+        "rows": 103,
+        "rows_with_nonempty_narrative": 22
+      },
+      {
+        "issue": "Excessive fees",
+        "rows": 99,
+        "rows_with_nonempty_narrative": 36
+      },
+      {
+        "issue": "Advertising, marketing or disclosures",
+        "rows": 77,
+        "rows_with_nonempty_narrative": 25
+      },
+      {
+        "issue": "Overdraft, savings or rewards features",
+        "rows": 53,
+        "rows_with_nonempty_narrative": 17
+      },
+      {
+        "issue": "Disclosures",
+        "rows": 49,
+        "rows_with_nonempty_narrative": 13
+      },
+      {
+        "issue": "Problem with credit report or credit score",
+        "rows": 19,
+        "rows_with_nonempty_narrative": 0
+      },
+      {
+        "issue": "Lost or stolen refund",
+        "rows": 13,
+        "rows_with_nonempty_narrative": 7
+      },
+      {
+        "issue": "Problem with an overdraft",
+        "rows": 9,
+        "rows_with_nonempty_narrative": 4
+      },
+      {
+        "issue": "Getting a line of credit",
+        "rows": 2,
+        "rows_with_nonempty_narrative": 1
+      }
+    ]
+  },
+  "source_id": "cfpb_consumer_complaint_narratives_archive",
+  "state_availability": {
+    "distinct_nonempty_values": 63,
+    "distribution": [
+      {
+        "count": 2409377,
+        "value": "TX"
+      },
+      {
+        "count": 2399318,
+        "value": "FL"
+      },
+      {
+        "count": 1741737,
+        "value": "CA"
+      },
+      {
+        "count": 1293106,
+        "value": "GA"
+      },
+      {
+        "count": 1017032,
+        "value": "NY"
+      },
+      {
+        "count": 749065,
+        "value": "IL"
+      },
+      {
+        "count": 685461,
+        "value": "PA"
+      },
+      {
+        "count": 601329,
+        "value": "NC"
+      },
+      {
+        "count": 559341,
+        "value": "NJ"
+      },
+      {
+        "count": 429070,
+        "value": "MD"
+      },
+      {
+        "count": 423903,
+        "value": "AL"
+      },
+      {
+        "count": 389397,
+        "value": "SC"
+      },
+      {
+        "count": 388030,
+        "value": "LA"
+      },
+      {
+        "count": 376030,
+        "value": "MI"
+      },
+      {
+        "count": 373021,
+        "value": "OH"
+      },
+      {
+        "count": 351045,
+        "value": "VA"
+      },
+      {
+        "count": 296998,
+        "value": "MS"
+      },
+      {
+        "count": 285871,
+        "value": "AZ"
+      },
+      {
+        "count": 272072,
+        "value": "TN"
+      },
+      {
+        "count": 230665,
+        "value": "NV"
+      },
+      {
+        "count": 225458,
+        "value": "MA"
+      },
+      {
+        "count": 197396,
+        "value": "IN"
+      },
+      {
+        "count": 196161,
+        "value": "MO"
+      },
+      {
+        "count": 161798,
+        "value": "WA"
+      },
+      {
+        "count": 129576,
+        "value": "WI"
+      },
+      {
+        "count": 126996,
+        "value": "CT"
+      },
+      {
+        "count": 124680,
+        "value": "CO"
+      },
+      {
+        "count": 119600,
+        "value": "AR"
+      },
+      {
+        "count": 92562,
+        "value": "MN"
+      },
+      {
+        "count": 79601,
+        "value": "OK"
+      },
+      {
+        "count": 77836,
+        "value": "DE"
+      },
+      {
+        "count": 75461,
+        "value": "KY"
+      },
+      {
+        "count": 64644,
+        "value": "PR"
+      },
+      {
+        "count": 60112,
+        "value": "DC"
+      },
+      {
+        "count": 59424,
+        "value": "OR"
+      },
+      {
+        "count": 54768,
+        "value": "UT"
+      },
+      {
+        "count": 43990,
+        "value": "KS"
+      },
+      {
+        "count": 39798,
+        "value": "RI"
+      },
+      {
+        "count": 36842,
+        "value": "IA"
+      },
+      {
+        "count": 34555,
+        "value": "NM"
+      },
+      {
+        "count": 30549,
+        "value": "NE"
+      },
+      {
+        "count": 30547,
+        "value": "HI"
+      },
+      {
+        "count": 21349,
+        "value": "WV"
+      },
+      {
+        "count": 20296,
+        "value": "NH"
+      },
+      {
+        "count": 20106,
+        "value": "ID"
+      },
+      {
+        "count": 13962,
+        "value": "ME"
+      },
+      {
+        "count": 10599,
+        "value": "ND"
+      },
+      {
+        "count": 9922,
+        "value": "AK"
+      },
+      {
+        "count": 9862,
+        "value": "MT"
+      },
+      {
+        "count": 7368,
+        "value": "SD"
+      },
+      {
+        "count": 5952,
+        "value": "WY"
+      },
+      {
+        "count": 5752,
+        "value": "VT"
+      },
+      {
+        "count": 4761,
+        "value": "VI"
+      },
+      {
+        "count": 2722,
+        "value": "AE"
+      },
+      {
+        "count": 1474,
+        "value": "UNITED STATES MINOR OUTLYING ISLANDS"
+      },
+      {
+        "count": 1446,
+        "value": "AP"
+      },
+      {
+        "count": 628,
+        "value": "GU"
+      },
+      {
+        "count": 358,
+        "value": "AS"
+      },
+      {
+        "count": 164,
+        "value": "AA"
+      },
+      {
+        "count": 116,
+        "value": "FM"
+      },
+      {
+        "count": 115,
+        "value": "MP"
+      },
+      {
+        "count": 53,
+        "value": "PW"
+      },
+      {
+        "count": 33,
+        "value": "MH"
+      }
+    ],
+    "rows_missing_or_empty": 62658,
+    "rows_with_state": 17471260
+  },
+  "summary": {
+    "rows_with_nonempty_narrative": 3851415,
+    "rows_without_narrative": 13682503,
+    "total_rows": 17533918,
+    "unique_complaint_ids": 17533918
+  }
+}

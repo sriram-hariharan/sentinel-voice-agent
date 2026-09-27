@@ -23,5 +23,8 @@ __pycache__/
 # Generated evaluation reports
 evaluation-reports/
 
+# Large reproducible CFPB source payloads (manifests/profiles remain tracked)
+data/evals/v2/external/raw/cfpb_narratives/files/
+
 # Python package metadata
 *.egg-info/

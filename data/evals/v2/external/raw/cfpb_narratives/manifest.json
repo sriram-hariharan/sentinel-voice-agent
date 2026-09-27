@@ -1,0 +1,874 @@
+{
+  "archive_partition_count": 21,
+  "archive_start_date": "2011-12-01",
+  "archives": [
+    {
+      "compressed_byte_size": 10501839,
+      "extracted_byte_size": 177212547,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 10501609,
+          "extracted_byte_size": 177212547,
+          "name": "CCDB_Export_21_August_2026.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_21_August_2026.zip",
+      "official_archive_label": "CCDB Export August 2026",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_21_August_2026.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:42:09 GMT",
+      "row_count": 667140,
+      "rows_with_nonempty_consumer_narrative": 1,
+      "sha256": "c64b8147b499d6236d7d591bfdbe8db45af80694a1afb6bd6a739f2789b8b2b1",
+      "source_date_range": {
+        "maximum_date_received": "2026-08-31",
+        "minimum_date_received": "2026-08-01"
+      }
+    },
+    {
+      "compressed_byte_size": 16958404,
+      "extracted_byte_size": 216250982,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 16958178,
+          "extracted_byte_size": 216250982,
+          "name": "CCDB_Export_20_July_2026.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_20_July_2026.zip",
+      "official_archive_label": "CCDB Export July 2026",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_20_July_2026.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:52:26 GMT",
+      "row_count": 672036,
+      "rows_with_nonempty_consumer_narrative": 10002,
+      "sha256": "aafebbaaf0962c3d29532411ac2133c01bae830b7ea6ed1931a6e42278437d18",
+      "source_date_range": {
+        "maximum_date_received": "2026-07-31",
+        "minimum_date_received": "2026-07-01"
+      }
+    },
+    {
+      "compressed_byte_size": 19624767,
+      "extracted_byte_size": 219864163,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 19624541,
+          "extracted_byte_size": 219864163,
+          "name": "CCDB_Export_19_June_2026.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_19_June_2026.zip",
+      "official_archive_label": "CCDB Export June 2026",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_19_June_2026.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:37:46 GMT",
+      "row_count": 620794,
+      "rows_with_nonempty_consumer_narrative": 16820,
+      "sha256": "3021c8af9eeed4971a92f15be21c7ce08cf3c1337151de255e5b12bf782049df",
+      "source_date_range": {
+        "maximum_date_received": "2026-06-30",
+        "minimum_date_received": "2026-06-01"
+      }
+    },
+    {
+      "compressed_byte_size": 21033928,
+      "extracted_byte_size": 219622001,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 21033704,
+          "extracted_byte_size": 219622001,
+          "name": "CCDB_Export_18_May_2026.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_18_May_2026.zip",
+      "official_archive_label": "CCDB Export May 2026",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_18_May_2026.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:37:28 GMT",
+      "row_count": 619940,
+      "rows_with_nonempty_consumer_narrative": 17528,
+      "sha256": "311fe537afac63230d52f41529bb91361ce5a9844d7450866538bb0456bceade",
+      "source_date_range": {
+        "maximum_date_received": "2026-05-31",
+        "minimum_date_received": "2026-05-01"
+      }
+    },
+    {
+      "compressed_byte_size": 22963936,
+      "extracted_byte_size": 223480946,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 22963708,
+          "extracted_byte_size": 223480946,
+          "name": "CCDB_Export_17_April_2026.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_17_April_2026.zip",
+      "official_archive_label": "CCDB Export April 2026",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_17_April_2026.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:37:12 GMT",
+      "row_count": 618293,
+      "rows_with_nonempty_consumer_narrative": 21052,
+      "sha256": "6f2ef5624c1bd76abcf2d39f693a0571c91fc8c08edf4dd7338516a3f913b30c",
+      "source_date_range": {
+        "maximum_date_received": "2026-04-30",
+        "minimum_date_received": "2026-04-01"
+      }
+    },
+    {
+      "compressed_byte_size": 22053643,
+      "extracted_byte_size": 219594182,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 22053415,
+          "extracted_byte_size": 219594182,
+          "name": "CCDB_Export_16_March_2026.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_16_March_2026.zip",
+      "official_archive_label": "CCDB Export March 2026",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_16_March_2026.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:35:04 GMT",
+      "row_count": 614945,
+      "rows_with_nonempty_consumer_narrative": 21640,
+      "sha256": "0d337dac973d1fdf874c1d9cd5909502bb29a71334543572f0b1aedcd5a58d24",
+      "source_date_range": {
+        "maximum_date_received": "2026-03-31",
+        "minimum_date_received": "2026-03-01"
+      }
+    },
+    {
+      "compressed_byte_size": 36832036,
+      "extracted_byte_size": 366507123,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 36831760,
+          "extracted_byte_size": 366507123,
+          "name": "CCDB_Export_15_January_2026_through_February_2026.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_15_January_2026_through_February_2026.zip",
+      "official_archive_label": "CCDB Export January 2026 through February 2026",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_15_January_2026_through_February_2026.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:34:51 GMT",
+      "row_count": 1038383,
+      "rows_with_nonempty_consumer_narrative": 34351,
+      "sha256": "437eee7adcc3e4342d1eafd8d716c4ef149e29c6a68c5ce3c379d1dc82c14b22",
+      "source_date_range": {
+        "maximum_date_received": "2026-02-28",
+        "minimum_date_received": "2026-01-01"
+      }
+    },
+    {
+      "compressed_byte_size": 63867562,
+      "extracted_byte_size": 462623262,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 63867284,
+          "extracted_byte_size": 462623262,
+          "name": "CCDB_Export_14_November_2025_through_December_2025.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_14_November_2025_through_December_2025.zip",
+      "official_archive_label": "CCDB Export November 2025 through December 2025",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_14_November_2025_through_December_2025.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:34:35 GMT",
+      "row_count": 1009132,
+      "rows_with_nonempty_consumer_narrative": 134641,
+      "sha256": "44fd05c01c9e90ae1abd6e0659898ec7362e7a6a53740e6b18a8d0a0ff3749e7",
+      "source_date_range": {
+        "maximum_date_received": "2025-12-31",
+        "minimum_date_received": "2025-11-01"
+      }
+    },
+    {
+      "compressed_byte_size": 67340083,
+      "extracted_byte_size": 488115601,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 67339805,
+          "extracted_byte_size": 488115601,
+          "name": "CCDB_Export_13_September_2025_through_October_2025.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_13_September_2025_through_October_2025.zip",
+      "official_archive_label": "CCDB Export September 2025 through October 2025",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_13_September_2025_through_October_2025.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:34:18 GMT",
+      "row_count": 1023636,
+      "rows_with_nonempty_consumer_narrative": 157821,
+      "sha256": "4a48c4e32ab78d8b1c3c910c4e14a62cd9fb50355e60708c1f85e5601858bc9f",
+      "source_date_range": {
+        "maximum_date_received": "2025-10-31",
+        "minimum_date_received": "2025-09-01"
+      }
+    },
+    {
+      "compressed_byte_size": 84153614,
+      "extracted_byte_size": 548876081,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 84153348,
+          "extracted_byte_size": 548876081,
+          "name": "CCDB_Export_12_July_2025_through_August_2025.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_12_July_2025_through_August_2025.zip",
+      "official_archive_label": "CCDB Export July 2025 through August 2025",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_12_July_2025_through_August_2025.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:33:59 GMT",
+      "row_count": 968761,
+      "rows_with_nonempty_consumer_narrative": 234404,
+      "sha256": "dcc75521581b124f13d6d4b62c2947ccd06a017a09b1dfa7ddeb2d73548554fa",
+      "source_date_range": {
+        "maximum_date_received": "2025-08-31",
+        "minimum_date_received": "2025-07-01"
+      }
+    },
+    {
+      "compressed_byte_size": 74546009,
+      "extracted_byte_size": 482807488,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 74545749,
+          "extracted_byte_size": 482807488,
+          "name": "CCDB_Export_11_May_2025_through_June_2025.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_11_May_2025_through_June_2025.zip",
+      "official_archive_label": "CCDB Export May 2025 through June 2025",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_11_May_2025_through_June_2025.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:33:15 GMT",
+      "row_count": 827343,
+      "rows_with_nonempty_consumer_narrative": 219632,
+      "sha256": "b7c8475a183e5a01f72aec794d6bc9d8a12a98cce272b3b406d9a0b067479adb",
+      "source_date_range": {
+        "maximum_date_received": "2025-06-30",
+        "minimum_date_received": "2025-05-01"
+      }
+    },
+    {
+      "compressed_byte_size": 68866998,
+      "extracted_byte_size": 452458891,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 68866732,
+          "extracted_byte_size": 452458891,
+          "name": "CCDB_Export_10_March_2025_through_April_2025.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_10_March_2025_through_April_2025.zip",
+      "official_archive_label": "CCDB Export March 2025 through April 2025",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_10_March_2025_through_April_2025.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:32:52 GMT",
+      "row_count": 803073,
+      "rows_with_nonempty_consumer_narrative": 210147,
+      "sha256": "356822a5e9f295398f2e75bfff25b4760365845432c31e87e689be2c2c0c88ef",
+      "source_date_range": {
+        "maximum_date_received": "2025-04-30",
+        "minimum_date_received": "2025-03-01"
+      }
+    },
+    {
+      "compressed_byte_size": 75475199,
+      "extracted_byte_size": 491908736,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 75474925,
+          "extracted_byte_size": 491908736,
+          "name": "CCDB_Export_9_January_2025_through_February_2025.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_9_January_2025_through_February_2025.zip",
+      "official_archive_label": "CCDB Export January 2025 through February 2025",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_9_January_2025_through_February_2025.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:50:18 GMT",
+      "row_count": 811019,
+      "rows_with_nonempty_consumer_narrative": 265405,
+      "sha256": "11c18bb0973eed8f5e4f66e2979346af0671a3aefcb5a6b9eec73009d53cff64",
+      "source_date_range": {
+        "maximum_date_received": "2025-02-28",
+        "minimum_date_received": "2025-01-01"
+      }
+    },
+    {
+      "compressed_byte_size": 52563546,
+      "extracted_byte_size": 347911485,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 52563270,
+          "extracted_byte_size": 347911485,
+          "name": "CCDB_Export_8_November_2024_through_December_2024.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_8_November_2024_through_December_2024.zip",
+      "official_archive_label": "CCDB Export November 2024 through December 2024",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_8_November_2024_through_December_2024.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:49:06 GMT",
+      "row_count": 591058,
+      "rows_with_nonempty_consumer_narrative": 154916,
+      "sha256": "24b3326a954c0edeff33318b157d12eef5a59547f6f274f9236f1ceaba988a74",
+      "source_date_range": {
+        "maximum_date_received": "2024-12-31",
+        "minimum_date_received": "2024-11-01"
+      }
+    },
+    {
+      "compressed_byte_size": 71365591,
+      "extracted_byte_size": 484574093,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 71365321,
+          "extracted_byte_size": 484574093,
+          "name": "CCDB_Export_7_August_2024_through_October_2024.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_7_August_2024_through_October_2024.zip",
+      "official_archive_label": "CCDB Export August 2024 through October 2024",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_7_August_2024_through_October_2024.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:48:14 GMT",
+      "row_count": 824514,
+      "rows_with_nonempty_consumer_narrative": 229944,
+      "sha256": "f053000c342bfd08bc6f8f382290f623e34b166cb56760c0726ed15e296a6d74",
+      "source_date_range": {
+        "maximum_date_received": "2024-10-31",
+        "minimum_date_received": "2024-08-01"
+      }
+    },
+    {
+      "compressed_byte_size": 77142558,
+      "extracted_byte_size": 517112772,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 77142296,
+          "extracted_byte_size": 517112772,
+          "name": "CCDB_Export_6_April_2024_through_July_2024.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_6_April_2024_through_July_2024.zip",
+      "official_archive_label": "CCDB Export April 2024 through July 2024",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_6_April_2024_through_July_2024.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:47:50 GMT",
+      "row_count": 839903,
+      "rows_with_nonempty_consumer_narrative": 276332,
+      "sha256": "c8a6fb0d98287958e2c19b47e1a4211c4e43225d27123a3ca08d730a2b4ae0a5",
+      "source_date_range": {
+        "maximum_date_received": "2024-07-31",
+        "minimum_date_received": "2024-04-01"
+      }
+    },
+    {
+      "compressed_byte_size": 100880669,
+      "extracted_byte_size": 618266146,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 100880397,
+          "extracted_byte_size": 618266146,
+          "name": "CCDB_Export_5_September_2023_through_March_2024.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_5_September_2023_through_March_2024.zip",
+      "official_archive_label": "CCDB Export September 2023 through March 2024",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_5_September_2023_through_March_2024.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:47:22 GMT",
+      "row_count": 945532,
+      "rows_with_nonempty_consumer_narrative": 318804,
+      "sha256": "993747363e52239e4762b804662d7f604f976a139de4f729f613329d3d8c7206",
+      "source_date_range": {
+        "maximum_date_received": "2024-03-31",
+        "minimum_date_received": "2023-09-01"
+      }
+    },
+    {
+      "compressed_byte_size": 115518181,
+      "extracted_byte_size": 728813229,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 115517909,
+          "extracted_byte_size": 728813229,
+          "name": "CCDB_Export_4_November_2022_through_August_2023.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_4_November_2022_through_August_2023.zip",
+      "official_archive_label": "CCDB Export November 2022 through August 2023",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_4_November_2022_through_August_2023.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:46:45 GMT",
+      "row_count": 987495,
+      "rows_with_nonempty_consumer_narrative": 388495,
+      "sha256": "547e8bdb07961861d4bacabff74fd2dd7358c04d225b492b286c37920cb39921",
+      "source_date_range": {
+        "maximum_date_received": "2023-08-31",
+        "minimum_date_received": "2022-11-01"
+      }
+    },
+    {
+      "compressed_byte_size": 128680448,
+      "extracted_byte_size": 708907289,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 128680184,
+          "extracted_byte_size": 708907289,
+          "name": "CCDB_Export_3_May_2021_through_October_2022.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_3_May_2021_through_October_2022.zip",
+      "official_archive_label": "CCDB Export May 2021 through October 2022",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_3_May_2021_through_October_2022.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:45:43 GMT",
+      "row_count": 977426,
+      "rows_with_nonempty_consumer_narrative": 408046,
+      "sha256": "b8b195ff7d6b8e137bd0f37d13d90c0efb4f216c08dff3c4af91f02af3756130",
+      "source_date_range": {
+        "maximum_date_received": "2022-10-31",
+        "minimum_date_received": "2021-05-01"
+      }
+    },
+    {
+      "compressed_byte_size": 164598156,
+      "extracted_byte_size": 782853241,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 164597896,
+          "extracted_byte_size": 782853241,
+          "name": "CCDB_Export_2_May_2018_through_April_2021.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_2_May_2018_through_April_2021.zip",
+      "official_archive_label": "CCDB Export May 2018 through April 2021",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_2_May_2018_through_April_2021.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:40:57 GMT",
+      "row_count": 1041632,
+      "rows_with_nonempty_consumer_narrative": 439860,
+      "sha256": "4b33ffc92fa0236836228c5618b7247f0f59ffef35760a45175c858a0d5aaf45",
+      "source_date_range": {
+        "maximum_date_received": "2021-04-30",
+        "minimum_date_received": "2018-05-01"
+      }
+    },
+    {
+      "compressed_byte_size": 134688697,
+      "extracted_byte_size": 546136740,
+      "extracted_members": [
+        {
+          "compressed_byte_size": 134688427,
+          "extracted_byte_size": 546136740,
+          "name": "CCDB_Export_1_December_2011_through_April_2018.csv"
+        }
+      ],
+      "field_names": [
+        "Date received",
+        "Product",
+        "Sub-product",
+        "Issue",
+        "Sub-issue",
+        "Consumer complaint narrative",
+        "Company public response",
+        "Company",
+        "State",
+        "ZIP code",
+        "Tags",
+        "Submitted via",
+        "Date sent to company",
+        "Company response to consumer",
+        "Timely response?",
+        "Complaint ID"
+      ],
+      "local_filename": "CCDB_Export_1_December_2011_through_April_2018.zip",
+      "official_archive_label": "CCDB Export December 2011 through April 2018",
+      "official_file_url": "https://files.consumerfinance.gov/f/documents/CCDB_Export_1_December_2011_through_April_2018.zip",
+      "official_last_modified": "Mon, 14 Sep 2026 14:24:32 GMT",
+      "row_count": 1031863,
+      "rows_with_nonempty_consumer_narrative": 291574,
+      "sha256": "9d4fabeb5db925ce4303e81ab448f44531303a995aec1a935abc09156f2fc533",
+      "source_date_range": {
+        "maximum_date_received": "2018-04-30",
+        "minimum_date_received": "2011-12-01"
+      }
+    }
+  ],
+  "license_and_use_notes": "Previously published narratives are public CFPB records; use and redistribution terms remain subject to the documented V2-C2K review.",
+  "privacy_and_provenance_notes": [
+    "This is real consumer-authored complaint data prepared by CFPB for public release, not synthetic application data.",
+    "Narratives were subject to publication consent and personal-information scrubbing, but residual privacy risk is not assumed to be zero.",
+    "Complaint narratives are unverified, one-sided allegations and are not a representative sample.",
+    "Complaint counts must not be used to rank or judge financial institutions.",
+    "The local ZIP payloads are immutable, Git-ignored source files for offline evaluation only."
+  ],
+  "publisher": "Consumer Financial Protection Bureau",
+  "retrieval_date": "2026-09-27",
+  "official_archive_declared_narrative_coverage_end": "2026-08-14",
+  "observed_full_records_date_received_max": "2026-08-31",
+  "schema_version": "cfpb-narratives-raw-manifest.v1",
+  "source_id": "cfpb_consumer_complaint_narratives_archive",
+  "source_page": "https://www.consumerfinance.gov/foia-requests/foia-electronic-reading-room/cfpb-consumer-complaint-database-narratives-archive/",
+  "source_page_last_modified": "2026-09-14T15:00:08-0400",
+  "source_page_sha256": "39bdd54cd8586a8996c46b4e0dc0759e988f569784f7662eb28d38e5f3f0d5c2",
+  "source_metadata_qualification_note": "The official archive page declares previously published narrative coverage through 2026-08-14, while the downloaded official Full Records contain Date received values through 2026-08-31. No records are filtered or discarded.",
+  "source_type": "real consumer-authored complaint data",
+  "summary": {
+    "complaint_ids_with_duplicates": 0,
+    "duplicate_complaint_id_count": 0,
+    "total_compressed_bytes": 1429655864,
+    "total_extracted_bytes": 9303896998,
+    "total_nonempty_narratives": 3851415,
+    "total_rows": 17533918,
+    "unique_complaint_id_count": 17533918
+  }
+}

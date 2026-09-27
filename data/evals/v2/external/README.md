@@ -253,3 +253,41 @@ finance results are external-source metrics and are not directly
 interchangeable with the nine-intent V2-C1 controlled-synthetic locked-test
 metrics. The evaluation remains offline and advisory only, with no runtime or
 authorization authority.
+
+## CFPB complete narratives-archive acquisition and profile
+
+V2-C2L acquires and profiles all 21 official Full Records ZIP partitions from
+the CFPB Consumer Complaint Database Narratives Archive. The archive declares
+coverage from December 1, 2011 through August 14, 2026. The Full Records files
+contain complaint rows received through August 31, 2026; this later record date
+does not change the archive's declared narrative-publication cutoff. The raw
+collection contains real consumer-authored complaint data and remains strictly
+separate from SentinelVoice's synthetic application data.
+
+This is recorded as a source-metadata discrepancy and qualification note:
+`official_archive_declared_narrative_coverage_end` is `2026-08-14`, while
+`observed_full_records_date_received_max` is `2026-08-31`. August 31 is not
+claimed as the archive page's narrative-coverage end, and records received
+after August 14 are retained without alteration or filtering.
+
+The large ZIP payloads stay local and Git-ignored. Reproducibility comes from
+the official source page and per-partition URLs, byte sizes, SHA-256 hashes,
+member inventories, row counts, and date ranges in `raw/cfpb_narratives/manifest.json`,
+plus the acquisition and profiling scripts. `raw/cfpb_narratives/profile.json`
+contains deterministic aggregate statistics over the complete archive,
+including structured CFPB product and issue distributions, broad
+SentinelVoice-relevance groups, missingness, duplicate counts, narrative-length
+statistics, and aggregate privacy-pattern signals. It retains no strings
+matched by the privacy checks.
+
+This phase performs acquisition and profiling only. It assigns no
+SentinelVoice intent labels, runs no classifier predictions or evaluation,
+trains no model, changes no classifier artifact, and adds no CFPB data to
+application or runtime code. Any later intent labeling or evaluation must use
+separately generated processed data and preserve the external-source boundary.
+
+CFPB complaints are unverified, one-sided allegations and are not a
+representative sample of consumers or institutions. Complaint counts must not
+be used to rank companies. CFPB's publication and scrubbing controls reduce,
+but do not eliminate, residual privacy risk, so raw narratives remain local and
+must be handled as real consumer-authored data.

@@ -68,3 +68,28 @@ authority.
 `allowed_for_initial_evaluation` field means only that a later phase may design
 and approve an evaluation protocol; it does not authorize downloading during
 V2-C2A.
+
+## BANKING77 taxonomy mapping
+
+V2-C2B qualifies the canonical BANKING77 taxonomy before any utterance data is
+downloaded. `banking77_intent_mapping.json` records all 77 labels from PolyAI's
+official `categories.json` at repository revision
+`57ec275d8078af65b7731c2a98be812d844a6d6b`. The taxonomy file was retrieved on
+September 26, 2026, and has SHA-256
+`53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63`.
+
+The qualification finds 11 exact matches, 13 near matches, 43 unsupported
+categories, and 10 ambiguous categories. Exact and near candidate coverage is
+recorded by SentinelVoice intent in the mapping artifact. A near match is not
+clean evaluation data, and ambiguous entries require utterance-level review.
+In particular, a source label about a lost, compromised, duplicate, or
+unrecognized payment/card never authorizes `freeze_card` or `create_dispute`.
+Protected writes still require explicit utterance semantics and the existing
+deterministic confirmation boundary.
+
+The unsupported taxonomy areas cluster around card issuance and delivery,
+top-ups, transfers and beneficiaries, ATM/cash issue resolution, refunds,
+identity/profile/account administration, and currency-conversion operations.
+These are capability-gap observations only, not proposed intents or tools.
+V2-C1 artifacts remain frozen, and no classifier training, evaluation, or
+runtime integration occurs in V2-C2B.

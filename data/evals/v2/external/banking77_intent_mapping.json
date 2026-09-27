@@ -1,0 +1,871 @@
+{
+  "schema_version": "banking77-intent-mapping.v1",
+  "mapping_version": "2026-09-26.v1",
+  "qualification_phase": "V2-C2B",
+  "source_id": "banking77",
+  "source_publisher": "PolyAI",
+  "source_repository_url": "https://github.com/PolyAI-LDN/task-specific-datasets",
+  "source_url": "https://github.com/PolyAI-LDN/task-specific-datasets/blob/57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data/categories.json",
+  "source_revision": "57ec275d8078af65b7731c2a98be812d844a6d6b",
+  "source_taxonomy_last_modified_revision": "9d081458ff52e53cf7e848f414e6e9344e4e6696",
+  "source_taxonomy_path": "banking_data/categories.json",
+  "source_taxonomy_sha256": "53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63",
+  "retrieval_date": "2026-09-26",
+  "source_intent_count": 77,
+  "sentinelvoice_taxonomy_version": "sentinelvoice-v2c1-intent-taxonomy.v1",
+  "sentinelvoice_intents": [
+    "informational_policy",
+    "account_balance",
+    "recent_transactions",
+    "transaction_details",
+    "card_status",
+    "freeze_card",
+    "create_dispute",
+    "escalation",
+    "unsupported_or_uncertain"
+  ],
+  "allowed_mapping_statuses": [
+    "EXACT_MATCH",
+    "NEAR_MATCH",
+    "UNSUPPORTED",
+    "AMBIGUOUS"
+  ],
+  "protected_action_risk_values": [
+    "NONE",
+    "POTENTIAL_PROTECTED_WRITE",
+    "EXPLICIT_UNSUPPORTED_WRITE"
+  ],
+  "protected_action_policy": "A source taxonomy label never authorizes a protected write. freeze_card and create_dispute require explicit utterance-level action semantics and the existing deterministic confirmation controls.",
+  "summary": {
+    "mapping_status_counts": {
+      "EXACT_MATCH": 11,
+      "NEAR_MATCH": 13,
+      "UNSUPPORTED": 43,
+      "AMBIGUOUS": 10
+    },
+    "candidate_sentinelvoice_coverage": {
+      "informational_policy": {
+        "exact_match": 8,
+        "near_match": 0
+      },
+      "account_balance": {
+        "exact_match": 0,
+        "near_match": 2
+      },
+      "recent_transactions": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "transaction_details": {
+        "exact_match": 3,
+        "near_match": 6
+      },
+      "card_status": {
+        "exact_match": 0,
+        "near_match": 5
+      },
+      "freeze_card": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "create_dispute": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "escalation": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "unsupported_or_uncertain": {
+        "unsupported": 43
+      },
+      "unassigned_ambiguous": 10
+    }
+  },
+  "mappings": [
+    {
+      "source_intent": "card_arrival",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Tracking physical-card arrival is not a current SentinelVoice capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; delivery tracking is a future capability gap."
+    },
+    {
+      "source_intent": "card_linking",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Linking a card is an unsupported account-changing operation, not a card-status lookup.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no linking tool exists."
+    },
+    {
+      "source_intent": "exchange_rate",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "A general exchange-rate question is an informational banking-policy request.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This does not cover a specific transaction with an allegedly wrong rate."
+    },
+    {
+      "source_intent": "card_payment_wrong_exchange_rate",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "The request concerns attributes of a particular card payment, but diagnosing an incorrect exchange rate exceeds ordinary transaction lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Use only after utterance review confirms a specific payment-information request rather than a complaint or remedy request."
+    },
+    {
+      "source_intent": "extra_charge_on_statement",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "An utterance may ask what a statement charge is or may ask to contest it.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Distinguish transaction_details from an explicit create_dispute request at utterance level."
+    },
+    {
+      "source_intent": "pending_cash_withdrawal",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "A pending withdrawal resembles a request for one transaction's status, but cash-withdrawal troubleshooting is broader than the current lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Accept only informational status/detail utterances; remediation requests remain unsupported."
+    },
+    {
+      "source_intent": "fiat_currency_support",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Asking which fiat currencies are supported is a general product-policy question.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "No currency exchange action is implied."
+    },
+    {
+      "source_intent": "card_delivery_estimate",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Estimating physical-card delivery is not a current SentinelVoice capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "automatic_top_up",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Automatic top-up configuration is outside the current product scope.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no top-up tool exists."
+    },
+    {
+      "source_intent": "card_not_working",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "card_status",
+      "rationale": "A nonworking card can motivate a status check, but the category also includes troubleshooting beyond reading current card state.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Map only status-oriented utterances; do not imply repair or card replacement capability."
+    },
+    {
+      "source_intent": "exchange_via_app",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Performing currency exchange in an application is not a current SentinelVoice capability.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; informational rate questions are classified separately."
+    },
+    {
+      "source_intent": "lost_or_stolen_card",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "Reporting a lost card may seek policy, card state, escalation, or an explicit freeze action.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "The category name alone must never trigger freeze_card; explicit action semantics and confirmation are required."
+    },
+    {
+      "source_intent": "age_limit",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Asking about an age requirement is a general eligibility-policy question.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "No account-opening action is implied by the taxonomy goal."
+    },
+    {
+      "source_intent": "pin_blocked",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "card_status",
+      "rationale": "A blocked PIN concerns card usability, but PIN remediation is not the same as reading card status.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "The word blocked is not a freeze_card instruction."
+    },
+    {
+      "source_intent": "contactless_not_working",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "card_status",
+      "rationale": "Contactless failure is related to card usability but can require unsupported troubleshooting.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Map only status-oriented questions, not requests to repair or replace a card."
+    },
+    {
+      "source_intent": "top_up_by_bank_transfer_charge",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Fees on bank-transfer top-ups concern an unsupported funding workflow.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain rather than broad informational_policy."
+    },
+    {
+      "source_intent": "pending_top_up",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Top-up status is outside the current transaction and account resource model.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "cancel_transfer",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Cancelling a transfer is an unsupported state-changing operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no transfer-cancellation tool exists."
+    },
+    {
+      "source_intent": "top_up_limits",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Top-up limits are product policy for an unsupported funding capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain rather than claiming top-up support."
+    },
+    {
+      "source_intent": "wrong_amount_of_cash_received",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "The utterance may identify a specific withdrawal, but resolving an ATM cash discrepancy exceeds normal transaction lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Use only for informational withdrawal details; remedy requests remain unsupported."
+    },
+    {
+      "source_intent": "card_payment_fee_charged",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "The user may ask a general fee-policy question or ask about a fee on one card payment.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Distinguish informational_policy from transaction_details using the utterance."
+    },
+    {
+      "source_intent": "transfer_not_received_by_recipient",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Recipient-side transfer tracing is not supported by current SentinelVoice transaction resources.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "supported_cards_and_currencies",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "This category concerns cards and currencies accepted by the unsupported top-up workflow.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; it is not treated as generic banking policy."
+    },
+    {
+      "source_intent": "getting_virtual_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Issuing a virtual card is not a current SentinelVoice capability.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no card-issuance tool exists."
+    },
+    {
+      "source_intent": "card_acceptance",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Asking where a card can be used is a general card-acceptance policy question.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "No card action is implied."
+    },
+    {
+      "source_intent": "top_up_reverted",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "A reverted top-up belongs to an unsupported funding workflow.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "balance_not_updated_after_cheque_or_cash_deposit",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "account_balance",
+      "rationale": "The user refers to account balance, but the goal is diagnosing a missing deposit rather than simply reading the balance.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Do not count as clean account_balance evaluation data without confirming that a balance lookup is actually requested."
+    },
+    {
+      "source_intent": "card_payment_not_recognised",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "An unrecognized payment can prompt investigation/details or an explicit dispute request.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Unrecognized does not authorize create_dispute; explicit action language and confirmation remain required."
+    },
+    {
+      "source_intent": "edit_personal_details",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Editing personal details is an unsupported profile-changing operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "why_verify_identity",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Asking why identity verification is required is an informational policy request.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This does not request identity verification itself."
+    },
+    {
+      "source_intent": "unable_to_verify_identity",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Troubleshooting failed identity verification is not a current SentinelVoice capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; operational escalation may later be considered by product policy."
+    },
+    {
+      "source_intent": "get_physical_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Requesting physical-card issuance is outside current SentinelVoice scope.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "visa_or_mastercard",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Asking which card network is supplied is a general product-policy question.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "No card issuance action is implied."
+    },
+    {
+      "source_intent": "topping_up_by_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Adding funds by card is not a current SentinelVoice capability.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no top-up tool exists."
+    },
+    {
+      "source_intent": "disposable_card_limits",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Disposable virtual cards and their limits are outside current SentinelVoice scope.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "compromised_card",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "A compromised-card report may seek status, transaction investigation, a freeze, a dispute, or human escalation.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Do not infer freeze_card or create_dispute from the category; explicit utterance intent is required."
+    },
+    {
+      "source_intent": "atm_support",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Asking which ATMs are supported is a general access-policy question.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This does not cover a particular failed withdrawal."
+    },
+    {
+      "source_intent": "direct_debit_payment_not_recognised",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "The source category mixes an unsupported direct-debit domain with possible investigation or dispute goals.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Unrecognized does not authorize create_dispute; some utterances should remain unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "passcode_forgotten",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Application passcode recovery is not a current SentinelVoice capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "declined_cash_withdrawal",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "A declined withdrawal can be represented as a transaction status, but ATM troubleshooting is broader than lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Map only informational requests about a specific withdrawal."
+    },
+    {
+      "source_intent": "pending_card_payment",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "Asking about a pending card payment is a request for the status/details of a transaction.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "No remediation or dispute action is implied by this category."
+    },
+    {
+      "source_intent": "lost_or_stolen_phone",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Lost-phone account security handling is not a current SentinelVoice capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; future product policy could choose escalation."
+    },
+    {
+      "source_intent": "request_refund",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Requesting a merchant refund is a state-changing operation distinct from SentinelVoice's dispute flow and is unsupported.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Review later utterances for explicit dispute semantics, but do not equate refund with create_dispute by taxonomy label."
+    },
+    {
+      "source_intent": "declined_transfer",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Transfer-status troubleshooting is outside the current transaction resource model.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "Refund_not_showing_up",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "A missing refund may be investigated through transaction details, but refund tracing is not a fully supported capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Canonical source capitalization is preserved; map only a specific informational transaction lookup."
+    },
+    {
+      "source_intent": "declined_card_payment",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "Asking about a declined card payment is a request for a transaction's status/details.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This mapping does not promise diagnosis or remediation beyond available transaction details."
+    },
+    {
+      "source_intent": "pending_transfer",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Transfer status is outside the current SentinelVoice transaction resource model.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "terminate_account",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Closing an account is an unsupported high-impact state-changing operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no account-closure tool exists."
+    },
+    {
+      "source_intent": "card_swallowed",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "ATM card-retention assistance is not a current SentinelVoice capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; future product policy could choose escalation."
+    },
+    {
+      "source_intent": "transaction_charged_twice",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "A duplicate charge may prompt a detail investigation or an explicit dispute request.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Duplicate-charge wording alone does not authorize create_dispute."
+    },
+    {
+      "source_intent": "verify_source_of_funds",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Source-of-funds verification is an unsupported compliance workflow.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "transfer_timing",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Transfer timing belongs to an unsupported transfer capability rather than current transaction lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "reverted_card_payment?",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "Asking whether a card payment was reverted is a request for that transaction's status/details.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Canonical source punctuation is preserved; this does not imply remediation."
+    },
+    {
+      "source_intent": "change_pin",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Changing a PIN is an unsupported credential-changing operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "beneficiary_not_allowed",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Beneficiary-management troubleshooting is outside current SentinelVoice scope.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "transfer_fee_charged",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Transfer fees concern an unsupported transfer workflow and are not clean transaction-detail evidence.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "receiving_money",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Instructions for receiving money belong to an unsupported transfer capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "failed_transfer",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Failed-transfer troubleshooting is outside the current transaction resource model.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "transfer_into_account",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Initiating a transfer into an account is not a current SentinelVoice capability.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no transfer tool exists."
+    },
+    {
+      "source_intent": "verify_top_up",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Top-up verification is outside current SentinelVoice scope.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "getting_spare_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Issuing an additional physical card is not a current SentinelVoice capability.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "top_up_by_cash_or_cheque",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Cash or cheque top-ups are outside current SentinelVoice scope.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "order_physical_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Ordering a physical card is an unsupported state-changing operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "virtual_card_not_working",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "card_status",
+      "rationale": "A nonworking virtual card is related to card usability, but virtual-card troubleshooting exceeds current status lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Map only status-oriented questions and do not imply virtual-card remediation support."
+    },
+    {
+      "source_intent": "wrong_exchange_rate_for_cash_withdrawal",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "transaction_details",
+      "rationale": "The request concerns attributes of a particular withdrawal, but rate-discrepancy diagnosis exceeds ordinary lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Use only after confirming an informational request about a specific withdrawal."
+    },
+    {
+      "source_intent": "get_disposable_virtual_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Issuing a disposable virtual card is not a current SentinelVoice capability.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "top_up_failed",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Failed-top-up troubleshooting belongs to an unsupported funding workflow.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "balance_not_updated_after_bank_transfer",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "account_balance",
+      "rationale": "The user refers to account balance, but the goal is diagnosing a missing transfer rather than simply reading the balance.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Do not count as clean account_balance data unless the utterance genuinely asks for a balance lookup."
+    },
+    {
+      "source_intent": "cash_withdrawal_not_recognised",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "An unrecognized cash withdrawal can prompt investigation/details or an explicit dispute request.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Unrecognized does not authorize create_dispute; explicit action language and confirmation remain required."
+    },
+    {
+      "source_intent": "exchange_charge",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "The user may ask about exchange-fee policy generally or a charge attached to a specific transaction.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Distinguish informational_policy from transaction_details using the utterance."
+    },
+    {
+      "source_intent": "top_up_by_card_charge",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "A fee on a card top-up belongs to an unsupported funding workflow.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "activate_my_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Card activation is an unsupported state-changing operation, not a card-status lookup.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; no activation tool exists."
+    },
+    {
+      "source_intent": "cash_withdrawal_charge",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "The user may ask a general ATM-fee policy question or ask about a fee on one withdrawal.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Distinguish informational_policy from transaction_details using the utterance."
+    },
+    {
+      "source_intent": "card_about_to_expire",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "card_status",
+      "rationale": "Card expiry is an aspect of card state, but renewal and replacement handling exceed current status lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Map only status-oriented questions; replacement requests remain unsupported."
+    },
+    {
+      "source_intent": "apple_pay_or_google_pay",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Digital-wallet setup and compatibility are outside current SentinelVoice scope.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain."
+    },
+    {
+      "source_intent": "verify_my_identity",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Performing identity verification is an unsupported account operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Expected evaluation behavior is unsupported_or_uncertain; why verification is needed is separately informational_policy."
+    },
+    {
+      "source_intent": "country_support",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Asking which countries are supported is a general availability-policy question.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "No account-opening or profile-change action is implied."
+    }
+  ],
+  "future_capability_gaps": [
+    {
+      "group": "card lifecycle and provisioning",
+      "source_intent_examples": [
+        "card_arrival",
+        "card_linking",
+        "card_delivery_estimate",
+        "getting_virtual_card",
+        "get_physical_card",
+        "getting_spare_card",
+        "order_physical_card",
+        "activate_my_card",
+        "apple_pay_or_google_pay"
+      ],
+      "note": "The external taxonomy reveals delivery, issuance, activation, linking, and wallet-management needs; it does not authorize adding these capabilities."
+    },
+    {
+      "group": "top-ups and funding",
+      "source_intent_examples": [
+        "automatic_top_up",
+        "top_up_by_bank_transfer_charge",
+        "pending_top_up",
+        "top_up_limits",
+        "supported_cards_and_currencies",
+        "top_up_reverted",
+        "topping_up_by_card",
+        "verify_top_up",
+        "top_up_by_cash_or_cheque",
+        "top_up_failed",
+        "top_up_by_card_charge"
+      ],
+      "note": "SentinelVoice has no top-up product or tool surface."
+    },
+    {
+      "group": "transfers and beneficiaries",
+      "source_intent_examples": [
+        "cancel_transfer",
+        "transfer_not_received_by_recipient",
+        "declined_transfer",
+        "pending_transfer",
+        "transfer_timing",
+        "beneficiary_not_allowed",
+        "transfer_fee_charged",
+        "receiving_money",
+        "failed_transfer",
+        "transfer_into_account"
+      ],
+      "note": "SentinelVoice does not initiate, cancel, trace, or troubleshoot transfers or manage beneficiaries."
+    },
+    {
+      "group": "ATM and cash issue resolution",
+      "source_intent_examples": [
+        "pending_cash_withdrawal",
+        "wrong_amount_of_cash_received",
+        "declined_cash_withdrawal",
+        "card_swallowed",
+        "wrong_exchange_rate_for_cash_withdrawal",
+        "cash_withdrawal_not_recognised",
+        "cash_withdrawal_charge"
+      ],
+      "note": "Some utterances may be near transaction lookup, but ATM troubleshooting and remedies remain product gaps."
+    },
+    {
+      "group": "refund handling",
+      "source_intent_examples": [
+        "request_refund",
+        "Refund_not_showing_up"
+      ],
+      "note": "Refund initiation and tracing are distinct from the existing protected dispute action."
+    },
+    {
+      "group": "identity, profile, credentials, and account administration",
+      "source_intent_examples": [
+        "edit_personal_details",
+        "unable_to_verify_identity",
+        "passcode_forgotten",
+        "terminate_account",
+        "verify_source_of_funds",
+        "change_pin",
+        "verify_my_identity"
+      ],
+      "note": "These administrative and compliance workflows need separate product and safety decisions before any implementation."
+    },
+    {
+      "group": "currency conversion operations",
+      "source_intent_examples": [
+        "exchange_via_app"
+      ],
+      "note": "SentinelVoice can classify general policy questions but cannot perform currency exchanges."
+    }
+  ]
+}

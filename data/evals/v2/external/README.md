@@ -93,3 +93,17 @@ identity/profile/account administration, and currency-conversion operations.
 These are capability-gap observations only, not proposed intents or tools.
 V2-C1 artifacts remain frozen, and no classifier training, evaluation, or
 runtime integration occurs in V2-C2B.
+
+## BANKING77 frozen raw data
+
+V2-C2C stores the official `categories.json`, `train.csv`, and `test.csv`
+bytes from PolyAI repository revision
+`57ec275d8078af65b7731c2a98be812d844a6d6b` under `raw/banking77/`. The raw
+files are immutable source material: do not normalize, clean, rewrite, or
+relabel them in place. Their byte sizes, SHA-256 hashes, row counts, taxonomy
+hash, and validation results are recorded in `raw/banking77/manifest.json`.
+
+No classifier evaluation or model training has been run against BANKING77.
+Any later mapping, sampling, or other transformation for evaluation must write
+to a separate processed-data directory so the pinned source bytes remain
+unchanged and independently verifiable.

@@ -1,0 +1,78 @@
+{
+  "schema_version": "banking77-raw-manifest.v1",
+  "source_id": "banking77",
+  "publisher": "PolyAI",
+  "source_repository": "https://github.com/PolyAI-LDN/task-specific-datasets",
+  "source_directory": "https://github.com/PolyAI-LDN/task-specific-datasets/tree/57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data",
+  "source_revision": "57ec275d8078af65b7731c2a98be812d844a6d6b",
+  "retrieval_date": "2026-09-27",
+  "license": {
+    "name": "Creative Commons Attribution 4.0 International",
+    "identifier": "CC-BY-4.0",
+    "source_url": "https://github.com/PolyAI-LDN/task-specific-datasets/blob/57ec275d8078af65b7731c2a98be812d844a6d6b/LICENSE"
+  },
+  "files": [
+    {
+      "path": "categories.json",
+      "source_url": "https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data/categories.json",
+      "byte_size": 2036,
+      "sha256": "53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63",
+      "record_count": 77,
+      "record_type": "intent labels"
+    },
+    {
+      "path": "train.csv",
+      "source_url": "https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data/train.csv",
+      "byte_size": 839073,
+      "sha256": "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b",
+      "row_count": 10003,
+      "csv_columns": [
+        "text",
+        "category"
+      ]
+    },
+    {
+      "path": "test.csv",
+      "source_url": "https://raw.githubusercontent.com/PolyAI-LDN/task-specific-datasets/57ec275d8078af65b7731c2a98be812d844a6d6b/banking_data/test.csv",
+      "byte_size": 239961,
+      "sha256": "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d",
+      "row_count": 3080,
+      "csv_columns": [
+        "text",
+        "category"
+      ]
+    }
+  ],
+  "row_counts": {
+    "train": 10003,
+    "test": 3080
+  },
+  "total_example_count": 13083,
+  "unique_intent_count": 77,
+  "train_test_split_counts": {
+    "train": 10003,
+    "test": 3080
+  },
+  "taxonomy_hash": {
+    "algorithm": "SHA-256",
+    "value": "53261da888122daf2d120d925458631d9619e15d82e56052e7a42e535ce32b63",
+    "matches_banking77_intent_mapping": true
+  },
+  "validation": {
+    "categories_json_parsed": true,
+    "train_csv_parsed": true,
+    "test_csv_parsed": true,
+    "all_train_labels_in_taxonomy": true,
+    "all_test_labels_in_taxonomy": true,
+    "unexpected_extra_labels": 0,
+    "empty_text_rows": 0,
+    "empty_label_rows": 0,
+    "taxonomy_matches_frozen_mapping_labels_and_order": true
+  },
+  "notes": [
+    "These files are byte-for-byte downloads from the pinned PolyAI revision and are immutable source material.",
+    "Do not normalize, rewrite, relabel, or clean these raw files in place.",
+    "Any later mapped or transformed evaluation data must be written under a separate processed-data directory.",
+    "No classifier training, retraining, or evaluation was performed while freezing these files."
+  ]
+}

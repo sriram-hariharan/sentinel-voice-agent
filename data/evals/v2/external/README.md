@@ -147,12 +147,13 @@ V2-C2F pins the official CLINC OOS evaluation repository at commit
 `raw/clinc_oos/`. These files are immutable; their byte sizes, hashes, split
 structure, and verified counts are recorded in `raw/clinc_oos/manifest.json`.
 
-SentinelVoice is interested only in CLINC's `oos_train`, `oos_val`, and
-`oos_test` examples as a future non-banking `unsupported_or_uncertain`
-safety/generalization benchmark. The 150 ordinary CLINC intents will not be
-mapped into the SentinelVoice taxonomy. No model training, threshold tuning,
-or classifier evaluation has been run on CLINC. Any later processed OOS
-evaluation set must be created separately under `processed/clinc_oos/`.
+The CLINC OOS benchmark is interested only in the `oos_train`, `oos_val`, and
+`oos_test` examples as non-banking `unsupported_or_uncertain`
+safety/generalization data; it does not map CLINC's 150 ordinary intents into
+that OOS dataset. A separately qualified finance subset is documented below.
+No model training, threshold tuning, or classifier evaluation was run in this
+raw-data phase. Any processed OOS evaluation set must be created separately
+under `processed/clinc_oos/`.
 
 ## CLINC OOS processed evaluation data
 
@@ -181,3 +182,16 @@ evaluation, and ambiguous protected-action categories such as reporting fraud
 or a lost card are not treated as authorization to dispute a transaction or
 freeze a card. No predictions, model changes, training, or runtime integration
 occur in V2-C2H.
+
+## CLINC finance processed evaluation data
+
+V2-C2I deterministically selects only the 900 examples belonging to the 30
+qualified finance intents from CLINC's official `test` split. The `train`,
+`val`, and all OOS splits remain excluded, as do non-finance test examples.
+Frozen `EXACT_MATCH` and `UNSUPPORTED` mappings become separate scored lanes;
+their metrics must not be combined. `NEAR_MATCH` and `AMBIGUOUS` examples stay
+in an unscored review pool without forced expected labels.
+
+The CLINC OOS processed evaluation remains a separate benchmark for unrelated,
+non-banking language. V2-C2I runs no classifier predictions, training,
+retraining, threshold tuning, or runtime integration.

@@ -1,0 +1,280 @@
+{
+  "build_metadata": {
+    "builder_version": "clinc-finance-external-eval-builder.v1",
+    "deterministic": true,
+    "source_retrieval_date": "2026-09-27",
+    "wall_clock_timestamp_recorded": false
+  },
+  "build_script_sha256": "24022826e32d85daf74fb91dbab19aeec7cdda9a00d0605dd56d034989c6f984",
+  "counts": {
+    "ambiguous_review": 60,
+    "exact_match": 90,
+    "near_match_review": 120,
+    "total_finance_test_examples": 900,
+    "total_review_pool": 180,
+    "unsupported": 630
+  },
+  "coverage_by_sentinelvoice_intent": {
+    "review_pool_candidate_intents": {
+      "card_status": 60,
+      "informational_policy": 30,
+      "recent_transactions": 30,
+      "unmapped": 60
+    },
+    "scored_expected_intents": {
+      "account_balance": 30,
+      "informational_policy": 30,
+      "recent_transactions": 30,
+      "unsupported_or_uncertain": 630
+    }
+  },
+  "coverage_by_source_intent": {
+    "account_blocked": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "application_status": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "apr": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "balance": {
+      "candidate_sentinelvoice_intent": "account_balance",
+      "example_count": 30,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match",
+      "source_domain": "banking"
+    },
+    "bill_balance": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "bill_due": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "card_declined": {
+      "candidate_sentinelvoice_intent": "card_status",
+      "example_count": 30,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review",
+      "source_domain": "credit_cards"
+    },
+    "credit_limit": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "credit_limit_change": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "credit_score": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "damaged_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "expiration_date": {
+      "candidate_sentinelvoice_intent": "card_status",
+      "example_count": 30,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review",
+      "source_domain": "credit_cards"
+    },
+    "freeze_account": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "improve_credit_score": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "interest_rate": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "international_fees": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 30,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match",
+      "source_domain": "credit_cards"
+    },
+    "min_payment": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "new_card": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "order_checks": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "pay_bill": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "pin_change": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "redeem_rewards": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "replacement_card_duration": {
+      "candidate_sentinelvoice_intent": "informational_policy",
+      "example_count": 30,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review",
+      "source_domain": "credit_cards"
+    },
+    "report_fraud": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 30,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review",
+      "source_domain": "banking"
+    },
+    "report_lost_card": {
+      "candidate_sentinelvoice_intent": null,
+      "example_count": 30,
+      "mapping_status": "AMBIGUOUS",
+      "output_partition": "ambiguous_review",
+      "source_domain": "credit_cards"
+    },
+    "rewards_balance": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "credit_cards"
+    },
+    "routing": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    },
+    "spending_history": {
+      "candidate_sentinelvoice_intent": "recent_transactions",
+      "example_count": 30,
+      "mapping_status": "NEAR_MATCH",
+      "output_partition": "near_match_review",
+      "source_domain": "banking"
+    },
+    "transactions": {
+      "candidate_sentinelvoice_intent": "recent_transactions",
+      "example_count": 30,
+      "mapping_status": "EXACT_MATCH",
+      "output_partition": "exact_match",
+      "source_domain": "banking"
+    },
+    "transfer": {
+      "candidate_sentinelvoice_intent": "unsupported_or_uncertain",
+      "example_count": 30,
+      "mapping_status": "UNSUPPORTED",
+      "output_partition": "unsupported",
+      "source_domain": "banking"
+    }
+  },
+  "excluded_source_data": {
+    "non_finance_test_examples_used": false,
+    "oos_test_used": false,
+    "oos_train_used": false,
+    "oos_val_used": false,
+    "train_used": false,
+    "val_used": false
+  },
+  "frozen_mapping_file_sha256": "b156e23f7cdfc55851afb81dc11d867941e7bd54b158a24874d1d2334b503fc7",
+  "processed_files": {
+    "clinc_finance_external_eval.json": {
+      "byte_size": 370134,
+      "sha256": "00af381bdc1732889921c917a04b01457e7bfcf68e031d2822acf22ca5e171a6"
+    },
+    "clinc_finance_review_pool.json": {
+      "byte_size": 133777,
+      "sha256": "1c4ee0924de60acd0ea930b1cce6ddd72e143bb7a094b6acac1de50ae877bd44"
+    }
+  },
+  "raw_data_full_sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0",
+  "raw_manifest_sha256": "25b0c99ca673285cae49013b79710f4a08b36b48841236ae323712873c226aa5",
+  "schema_version": "clinc-finance-processed-manifest.v1",
+  "source_id": "clinc150_oos",
+  "source_revision": "828f8093932c8fe6ca7936c3d2e52903b1c523de",
+  "source_split_count": 4500,
+  "source_split_used": "test",
+  "validation": {
+    "all_30_finance_intents_represented": true,
+    "all_finance_intents_have_30_examples": true,
+    "all_selected_rows_partitioned_once": true,
+    "mapping_statuses_copied_unchanged": true,
+    "no_duplicate_example_ids": true,
+    "no_duplicate_selected_source_rows": true,
+    "no_protected_action_labels_invented": true,
+    "no_review_pool_expected_labels": true,
+    "only_finance_test_examples_used": true
+  }
+}

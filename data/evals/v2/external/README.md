@@ -359,3 +359,31 @@ consumer-authored text is written only to the ignored local file
 `processed/cfpb/local/cfpb_review_pool.jsonl`. This pool is not the final CFPB
 evaluation set: V2-C2O assigns no final intent labels, runs no model inference,
 performs no training, and defers semantic review to the next phase.
+
+## CFPB human semantic review
+
+V2-C2P defines independent human review for only the 600 `NEAR_MATCH` and
+1,200 `AMBIGUOUS` records. These 1,800 exact narrative hashes are an external
+evaluation holdout: they cannot be used for training, hyperparameter tuning,
+or model selection. Any future CFPB training data must use disjoint narrative
+hashes. The separate 2,000-record `UNSUPPORTED`/OOD lane is not annotated in
+this phase.
+
+Reviewers assign one of `SINGLE_SUPPORTED_INTENT`,
+`MULTI_SUPPORTED_INTENT`, `UNSUPPORTED`, `UNCLEAR_OR_INSUFFICIENT`, or
+`NO_CURRENT_REQUEST`. Multi-intent annotations retain every independently
+present supported intent rather than forcing a single primary label.
+`freeze_card` and `create_dispute` require explicit present action requests;
+fraud, loss, theft, unauthorized activity, or prior disputes alone are not
+protected-write labels.
+
+Reviewers must not see classifier predictions, SVM scores, logistic
+probabilities, or abstention results before labeling. CFPB taxonomy and frozen
+candidate intents may be shown only as nonbinding context. The ignored local
+`processed/cfpb/local/cfpb_semantic_review.jsonl` workfile contains narrative
+text and editable review fields. The later trackable
+`processed/cfpb/cfpb_semantic_labels.json` export contains hashes, mapping
+metadata, annotations, and aggregate counts but no consumer narrative text or
+reviewer identifiers. See `cfpb_semantic_review_guidelines.md` for the complete
+human-review protocol. V2-C2P runs no classifier or LLM labeling and performs
+no model training.

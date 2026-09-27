@@ -1,0 +1,84 @@
+{
+  "schema_version": "clinc-oos-raw-manifest.v1",
+  "source_id": "clinc150_oos",
+  "publisher": "Clinc",
+  "official_repository": "https://github.com/clinc/oos-eval",
+  "pinned_source_url": "https://github.com/clinc/oos-eval/tree/828f8093932c8fe6ca7936c3d2e52903b1c523de",
+  "pinned_revision": "828f8093932c8fe6ca7936c3d2e52903b1c523de",
+  "retrieval_date": "2026-09-27",
+  "license": {
+    "name": "Creative Commons Attribution 3.0 Unported",
+    "identifier": "CC-BY-3.0",
+    "local_file": "LICENSE",
+    "source_url": "https://github.com/clinc/oos-eval/blob/828f8093932c8fe6ca7936c3d2e52903b1c523de/LICENSE"
+  },
+  "raw_files": [
+    {
+      "path": "data_full.json",
+      "source_path": "data/data_full.json",
+      "source_url": "https://raw.githubusercontent.com/clinc/oos-eval/828f8093932c8fe6ca7936c3d2e52903b1c523de/data/data_full.json",
+      "role": "Canonical full dataset containing all official in-scope and out-of-scope splits",
+      "byte_size": 2495390,
+      "sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0"
+    },
+    {
+      "path": "LICENSE",
+      "source_path": "LICENSE",
+      "source_url": "https://raw.githubusercontent.com/clinc/oos-eval/828f8093932c8fe6ca7936c3d2e52903b1c523de/LICENSE",
+      "role": "Exact license text distributed with the pinned official repository",
+      "byte_size": 19467,
+      "sha256": "e6bc9e9c474700b708f568bac9e5a8a9bcb2b1dad53442f5ba449fcb848b8e76"
+    }
+  ],
+  "available_split_names": [
+    "train",
+    "val",
+    "test",
+    "oos_train",
+    "oos_val",
+    "oos_test"
+  ],
+  "all_split_counts": {
+    "train": 15000,
+    "val": 3000,
+    "test": 4500,
+    "oos_train": 100,
+    "oos_val": 100,
+    "oos_test": 1000
+  },
+  "in_scope_summary": {
+    "intent_count": 150,
+    "train_examples_per_intent": 100,
+    "validation_examples_per_intent": 20,
+    "test_examples_per_intent": 30,
+    "total_example_count": 22500
+  },
+  "oos_counts_by_split": {
+    "oos_train": 100,
+    "oos_val": 100,
+    "oos_test": 1000
+  },
+  "total_oos_example_count": 1200,
+  "total_full_dataset_example_count": 23700,
+  "record_structure": {
+    "format": "Each data_full.json split is an array of [text, label] pairs.",
+    "oos_label": "oos",
+    "source_ids_present": false
+  },
+  "validation": {
+    "data_full_json_parsed": true,
+    "official_oos_splits_present": true,
+    "all_oos_texts_non_empty": true,
+    "all_oos_labels_non_empty": true,
+    "all_oos_labels_equal_oos": true,
+    "counts_match_pinned_official_readme": true,
+    "duplicate_source_id_check": "not_applicable_source_has_no_ids"
+  },
+  "notes": [
+    "SentinelVoice will use only the three OOS splits as a non-banking unsupported_or_uncertain safety/generalization benchmark.",
+    "The 150 normal CLINC intent classes will not be mapped into the SentinelVoice taxonomy in this experiment.",
+    "No classifier prediction, model training, retraining, or threshold tuning was performed while pinning these files.",
+    "The downloaded files are immutable raw source material and must not be normalized, rewritten, relabeled, or cleaned in place.",
+    "Any later SentinelVoice-specific transformation must be written under data/evals/v2/external/processed/clinc_oos/."
+  ]
+}

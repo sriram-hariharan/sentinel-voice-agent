@@ -138,3 +138,18 @@ analysis; they are not blended with, and do not validate, the SVM predictions.
 The two-class external exact-match macro-F1 is not directly interchangeable
 with the V2-C1 nine-intent locked-test macro-F1. All classifier outputs remain
 offline advisory evidence with no runtime or authorization authority.
+
+## CLINC150/OOS frozen raw data
+
+V2-C2F pins the official CLINC OOS evaluation repository at commit
+`828f8093932c8fe6ca7936c3d2e52903b1c523de` and stores its canonical
+`data/data_full.json` plus the repository's CC BY 3.0 license under
+`raw/clinc_oos/`. These files are immutable; their byte sizes, hashes, split
+structure, and verified counts are recorded in `raw/clinc_oos/manifest.json`.
+
+SentinelVoice is interested only in CLINC's `oos_train`, `oos_val`, and
+`oos_test` examples as a future non-banking `unsupported_or_uncertain`
+safety/generalization benchmark. The 150 ordinary CLINC intents will not be
+mapped into the SentinelVoice taxonomy. No model training, threshold tuning,
+or classifier evaluation has been run on CLINC. Any later processed OOS
+evaluation set must be created separately under `processed/clinc_oos/`.

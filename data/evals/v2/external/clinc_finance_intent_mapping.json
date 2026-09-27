@@ -1,0 +1,465 @@
+{
+  "schema_version": "clinc-finance-intent-mapping.v1",
+  "mapping_version": "2026-09-27.v1",
+  "qualification_phase": "V2-C2H",
+  "source_id": "clinc150_oos",
+  "source_publisher": "Clinc",
+  "source_repository_url": "https://github.com/clinc/oos-eval",
+  "source_revision": "828f8093932c8fe6ca7936c3d2e52903b1c523de",
+  "source_domain_taxonomy_url": "https://github.com/clinc/oos-eval/blob/828f8093932c8fe6ca7936c3d2e52903b1c523de/data/domains.json",
+  "source_domain_taxonomy_path": "data/domains.json",
+  "source_domain_taxonomy_sha256": "b947b579d3b8e74b06f93b01083d8efaff2888b43a3e362533bd88a6e1211b3a",
+  "source_dataset_path": "data/evals/v2/external/raw/clinc_oos/data_full.json",
+  "source_dataset_sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0",
+  "qualification_date": "2026-09-27",
+  "source_intent_count": 150,
+  "finance_domains": [
+    "banking",
+    "credit_cards"
+  ],
+  "finance_intent_count": 30,
+  "finance_intents_by_domain": {
+    "banking": [
+      "freeze_account",
+      "routing",
+      "pin_change",
+      "bill_due",
+      "pay_bill",
+      "account_blocked",
+      "interest_rate",
+      "min_payment",
+      "bill_balance",
+      "transfer",
+      "order_checks",
+      "balance",
+      "spending_history",
+      "transactions",
+      "report_fraud"
+    ],
+    "credit_cards": [
+      "replacement_card_duration",
+      "expiration_date",
+      "damaged_card",
+      "improve_credit_score",
+      "report_lost_card",
+      "card_declined",
+      "credit_limit_change",
+      "apr",
+      "redeem_rewards",
+      "credit_limit",
+      "rewards_balance",
+      "application_status",
+      "credit_score",
+      "new_card",
+      "international_fees"
+    ]
+  },
+  "qualification_sample_policy": {
+    "method": "For every finance intent, inspect the first three matching train examples, the first matching validation example, and the first matching test example in the pinned data_full.json order.",
+    "examples_reviewed_per_intent": 5,
+    "model_predictions_used": false
+  },
+  "sentinelvoice_taxonomy_version": "sentinelvoice-v2c1-intent-taxonomy.v1",
+  "sentinelvoice_intents": [
+    "informational_policy",
+    "account_balance",
+    "recent_transactions",
+    "transaction_details",
+    "card_status",
+    "freeze_card",
+    "create_dispute",
+    "escalation",
+    "unsupported_or_uncertain"
+  ],
+  "allowed_mapping_statuses": [
+    "EXACT_MATCH",
+    "NEAR_MATCH",
+    "UNSUPPORTED",
+    "AMBIGUOUS"
+  ],
+  "protected_action_risk_values": [
+    "NONE",
+    "POTENTIAL_PROTECTED_WRITE",
+    "EXPLICIT_UNSUPPORTED_WRITE"
+  ],
+  "protected_action_policy": "A CLINC taxonomy label never authorizes a protected write. freeze_card and create_dispute require explicit utterance-level action semantics plus the existing deterministic authorization and confirmation controls.",
+  "summary": {
+    "mapping_status_counts": {
+      "EXACT_MATCH": 3,
+      "NEAR_MATCH": 4,
+      "UNSUPPORTED": 21,
+      "AMBIGUOUS": 2
+    },
+    "candidate_sentinelvoice_coverage": {
+      "informational_policy": {
+        "exact_match": 1,
+        "near_match": 1
+      },
+      "account_balance": {
+        "exact_match": 1,
+        "near_match": 0
+      },
+      "recent_transactions": {
+        "exact_match": 1,
+        "near_match": 1
+      },
+      "transaction_details": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "card_status": {
+        "exact_match": 0,
+        "near_match": 2
+      },
+      "freeze_card": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "create_dispute": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "escalation": {
+        "exact_match": 0,
+        "near_match": 0
+      },
+      "unsupported_or_uncertain": {
+        "unsupported": 21
+      },
+      "unassigned_ambiguous": 2
+    }
+  },
+  "mappings": [
+    {
+      "source_domain": "banking",
+      "source_intent": "freeze_account",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples explicitly request blocking or freezing a bank account, while SentinelVoice supports only card freezing.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Do not map account freeze to freeze_card; the resource and action are different."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "routing",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request a bank routing number, which no current SentinelVoice lookup provides.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This is a private account-information capability gap, not account_balance."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "pin_change",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask to change or recover a banking PIN, which is outside current SentinelVoice capabilities.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "No PIN-management tool exists."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "bill_due",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for the due date of a bill, which is not available through a current SentinelVoice read capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "A bill-due lookup is not an account-balance or transaction lookup."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "pay_bill",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request payment of a bill, an unsupported state-changing banking operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "No bill-payment tool exists."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "account_blocked",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask why a bank account is locked or blocked, while SentinelVoice has no bank-account status capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Do not map an account state to card_status."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "interest_rate",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for an account or loan's current interest rate, a customer-specific lookup that SentinelVoice does not provide.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "The sampled goal is not merely a general public-policy explanation."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "min_payment",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for the minimum amount due on a bill, which is not a supported read capability.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This is not the available balance of an account."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "bill_balance",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask how much is owed on a bill, which is not exposed by current SentinelVoice tools.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "A bill balance is distinct from an account balance."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "transfer",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request moving funds between accounts, an unsupported state-changing operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "No funds-transfer tool exists."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "order_checks",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request ordering or mailing checkbooks, which is outside current SentinelVoice capabilities.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "No check-ordering tool exists."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "balance",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "account_balance",
+      "rationale": "Reviewed examples consistently ask for the current balance of a bank, checking, or savings account.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This matches the account_balance user goal directly."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "spending_history",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "recent_transactions",
+      "rationale": "Reviewed examples ask for historical or category-level spending, which overlaps transaction history but may require aggregation beyond listing recent transactions.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Use only after checking that the utterance can be judged as a transaction-history request rather than an unsupported spending analysis."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "transactions",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "recent_transactions",
+      "rationale": "Reviewed examples request a list of recent or prior account transactions and purchases.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This matches the recent_transactions user goal."
+    },
+    {
+      "source_domain": "banking",
+      "source_intent": "report_fraud",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "Reviewed examples ask to report suspected fraud, but do not consistently identify a single transaction dispute and may instead require escalation or broader account remediation.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Do not infer create_dispute from the source label; an explicit dispute action and owned transaction selector are required."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "replacement_card_duration",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Most reviewed examples ask generally how long replacement-card delivery takes, which resembles policy information, but the sample also contains noisy wording and a servicing-workflow context.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Only general timing questions are candidates; requests to order or track a replacement remain unsupported."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "expiration_date",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "card_status",
+      "rationale": "Reviewed examples ask when a specific card expires, a card attribute related to status but narrower than SentinelVoice's active, frozen, or usability status lookup.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Treat as near rather than exact because the current card-status contract does not promise expiration-date data."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "damaged_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples report a damaged card and seek servicing or replacement, which current SentinelVoice does not provide.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "Do not treat a replacement workflow as a card-status lookup."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "improve_credit_score",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request credit-improvement advice, which is outside current SentinelVoice banking policy and tool scope.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This is financial guidance, not a supported account or card lookup."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "report_lost_card",
+      "mapping_status": "AMBIGUOUS",
+      "sentinelvoice_intent": null,
+      "rationale": "Reviewed examples report a lost or stolen card, but do not consistently make an explicit freeze request and may instead seek reporting, replacement, or escalation.",
+      "protected_action_risk": "POTENTIAL_PROTECTED_WRITE",
+      "requires_utterance_review": true,
+      "notes": "Do not infer freeze_card from loss alone; explicit action semantics are required."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "card_declined",
+      "mapping_status": "NEAR_MATCH",
+      "sentinelvoice_intent": "card_status",
+      "rationale": "Reviewed examples ask why a card was declined, which overlaps card usability status but may require decline diagnostics beyond reading current card state.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": true,
+      "notes": "Only status-oriented utterances are candidates; troubleshooting and remediation remain unsupported."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "credit_limit_change",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request changing a credit limit, an unsupported state-changing card operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "No credit-limit management tool exists."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "apr",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for a credit card's APR, a customer-specific product lookup SentinelVoice does not provide.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "The sampled goal is not a general policy explanation."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "redeem_rewards",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request using or cashing out rewards, an unsupported state-changing operation.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "No rewards-redemption tool exists."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "credit_limit",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for a specific card's credit limit, which is not available through current SentinelVoice reads.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "A credit limit is not an account balance."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "rewards_balance",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for a rewards-points balance, which no current SentinelVoice lookup provides.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "A rewards balance is not an account balance."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "application_status",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for credit-card application status, which is outside current SentinelVoice capabilities.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "Do not map application state to card_status."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "credit_score",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples ask for a personal credit score, which current SentinelVoice cannot retrieve.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "This is a private credit-data lookup capability gap."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "new_card",
+      "mapping_status": "UNSUPPORTED",
+      "sentinelvoice_intent": "unsupported_or_uncertain",
+      "rationale": "Reviewed examples request applying for or obtaining a new credit card, an unsupported state-changing workflow.",
+      "protected_action_risk": "EXPLICIT_UNSUPPORTED_WRITE",
+      "requires_utterance_review": false,
+      "notes": "No card-application tool exists."
+    },
+    {
+      "source_domain": "credit_cards",
+      "source_intent": "international_fees",
+      "mapping_status": "EXACT_MATCH",
+      "sentinelvoice_intent": "informational_policy",
+      "rationale": "Reviewed examples consistently ask the general policy for fees when using a card internationally.",
+      "protected_action_risk": "NONE",
+      "requires_utterance_review": false,
+      "notes": "No card or payment action is implied."
+    }
+  ],
+  "unsupported_capability_groups": {
+    "bank_account_administration_and_security": [
+      "freeze_account",
+      "routing",
+      "pin_change",
+      "account_blocked",
+      "order_checks"
+    ],
+    "billing_payments_and_transfers": [
+      "bill_due",
+      "pay_bill",
+      "min_payment",
+      "bill_balance",
+      "transfer"
+    ],
+    "credit_rates_limits_and_guidance": [
+      "interest_rate",
+      "improve_credit_score",
+      "credit_limit_change",
+      "apr",
+      "credit_limit",
+      "credit_score"
+    ],
+    "card_servicing_rewards_and_applications": [
+      "damaged_card",
+      "redeem_rewards",
+      "rewards_balance",
+      "application_status",
+      "new_card"
+    ]
+  }
+}

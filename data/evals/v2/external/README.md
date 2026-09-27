@@ -163,3 +163,21 @@ processed example has expected SentinelVoice intent
 `unsupported_or_uncertain`, making this a focused external test of rejecting
 unrelated, non-banking language. No classifier predictions, model training, or
 threshold tuning have been run on the processed CLINC dataset yet.
+
+## CLINC finance-intent qualification
+
+V2-C2H keeps the CLINC OOS benchmark unchanged and separately qualifies the
+30 intents in CLINC's official `banking` and `credit_cards` domains. The
+finance domains come from `data/domains.json` at the same pinned CLINC revision,
+`828f8093932c8fe6ca7936c3d2e52903b1c523de`; they were not selected by keyword
+matching. `clinc_finance_intent_mapping.json` records the source taxonomy hash,
+the deterministic example-review method, and conservative user-goal mappings
+to the existing SentinelVoice intent taxonomy.
+
+This qualification does not add finance examples to the existing OOS set. It
+may support a separate external banking benchmark in a later phase, after a
+processed-data protocol is reviewed. Mappings are frozen before any classifier
+evaluation, and ambiguous protected-action categories such as reporting fraud
+or a lost card are not treated as authorization to dispute a transaction or
+freeze a card. No predictions, model changes, training, or runtime integration
+occur in V2-C2H.

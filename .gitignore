@@ -29,5 +29,8 @@ data/evals/v2/external/raw/cfpb_narratives/files/
 # Local CFPB review material contains real consumer-authored narrative text
 data/evals/v2/external/processed/cfpb/local/
 
+# Reproducible local V2-C3 embedding/model-tournament working data
+data/evals/v2/ml/local/
+
 # Python package metadata
 *.egg-info/

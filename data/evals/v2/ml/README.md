@@ -181,6 +181,47 @@ sentinelvoice_env/bin/python scripts/build_v2c3_challenge_set.py --write
 sentinelvoice_env/bin/python scripts/build_v2c3_challenge_set.py --check
 ```
 
+## V2-C3 Step 4 fixed-preset tournament
+
+Step 4 is a broad, predeclared model and representation tournament, not a
+hyperparameter search. `v2c3_tournament_config.json` freezes exactly 14
+candidates before scores exist. They compare the exact V2-C1 word-plus-character
+TF-IDF anchor, one bounded alternative word-plus-character preset, word-only
+and character-only TF-IDF, fold-local TF-IDF plus 256-component LSA, and frozen
+local `BAAI/bge-small-en-v1.5` features. The lightweight classifier families
+are LinearSVC, LogisticRegression, SGDClassifier, and RidgeClassifier. Direct
+nine-way classification is compared with a two-stage supported/current-then-
+intent architecture.
+
+All candidates use the same frozen five `StratifiedGroupKFold` validation
+assignments with seed `20260928`; related groups never cross folds. TF-IDF and
+LSA are fit anew inside each training fold. BGE is never fine-tuned: a separate,
+ignored, label-free cache contains embeddings for the development examples in
+their deterministic order, and tournament execution refuses to regenerate a
+missing or invalid cache.
+
+The runner has four explicit modes:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c3_model_tournament.py preflight
+sentinelvoice_env/bin/python scripts/run_v2c3_model_tournament.py prepare-folds
+sentinelvoice_env/bin/python scripts/run_v2c3_model_tournament.py prepare-embeddings
+sentinelvoice_env/bin/python scripts/run_v2c3_model_tournament.py run
+```
+
+`preflight` and `prepare-folds` perform no model fitting. `prepare-embeddings`
+uses FastEmbed locally and only the frozen development text. `run` requires the
+already frozen fold artifact and validated BGE cache, creates one OOF prediction
+per development example, applies the predeclared safety gates and ranking, and
+writes `v2c3_tournament_report.json` without raw text or final-test metrics.
+
+The 1,922 external fresh-lockbox examples and 270 challenge examples remain
+untouched. V2-C1 locked test, BANKING77 test, CLINC test/OOS test, and CFPB are
+also prohibited. Step 4 can nominate at most three technically distinct,
+safety-eligible finalists. Step 5 may perform bounded tuning only for those
+finalists. No performance result is recorded here because the tournament has
+not been run.
+
 ## Reproduce V2-C1
 
 ```bash

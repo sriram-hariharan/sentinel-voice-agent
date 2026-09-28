@@ -6,8 +6,9 @@
 intent/risk ML experiment over controlled SentinelVoice synthetic data, and
 V2-C2 measures frozen-model generalization on separately governed public
 external benchmarks. V2-C3 now freezes the next model-development and
-data-governance contract and provides a deterministic development-data and
-fresh-lockbox builder before any new training or evaluation.
+data-governance contract, provides deterministic development-data and
+fresh-lockbox builders, and defines a fixed-preset Step 4 model tournament
+before any tournament score is observed.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -152,6 +153,20 @@ may enter later development under the frozen mapping, review, leakage, and
 fresh-lockbox rules. Consumed test splits remain evaluation-only. Real
 consumer-derived CFPB data remains prohibited for training, as do Bitext until
 a later amendment and unverified bank-support transcripts.
+
+Step 4 is a broad fixed-preset tournament over the single frozen V2-C3
+development artifact. It compares lexical TF-IDF variants, fold-local LSA,
+frozen local BGE-small embeddings, four lightweight classifier families, and
+direct versus supported-then-intent hierarchical classification. Every
+candidate uses the same precomputed five `StratifiedGroupKFold` assignments.
+This is representation/model-family selection, not hyperparameter tuning.
+
+The 1,922-example fresh external lockbox and the 270-example synthetic
+challenge set remain untouched, as do historical test splits and CFPB. Step 4
+may nominate at most three technically distinct, safety-eligible finalists.
+Step 5 will conduct bounded tuning only for those finalists, still without
+using final evaluation data. No Step 4 performance result is documented before
+the tournament is run locally.
 
 ### Local voice setup
 

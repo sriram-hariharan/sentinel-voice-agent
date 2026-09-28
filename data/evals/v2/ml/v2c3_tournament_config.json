@@ -1,0 +1,471 @@
+{
+  "schema_version": "v2c3-model-tournament-config.v1",
+  "config_version": "2026-09-28.v1",
+  "experiment_phase": "V2-C3-Step-4",
+  "random_seed": 20260928,
+  "advisory_only": true,
+  "runtime_authority": false,
+  "training_or_evaluation_performed": false,
+  "development_dataset": {
+    "path": "data/evals/v2/ml/v2c3_development_dataset.json",
+    "sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+    "schema_version": "v2c3-development-dataset.v1",
+    "example_count": 8198,
+    "group_count": 7863,
+    "allowed_data_role": "development",
+    "allowed_source_ids": [
+      "banking77",
+      "clinc150_oos",
+      "sentinelvoice_v2c1_internal"
+    ]
+  },
+  "experiment_contract": {
+    "path": "data/evals/v2/ml/v2c3_experiment_contract.json",
+    "sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+    "schema_version": "v2c3-experiment-contract.v1"
+  },
+  "cv": {
+    "artifact_path": "data/evals/v2/ml/v2c3_cv_folds.json",
+    "method": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "shuffle": true,
+    "random_state": 20260928,
+    "fallback_allowed": false,
+    "feasibility_decided_before_model_scores": true,
+    "folds_reused_for_every_candidate": true,
+    "group_field": "group_id",
+    "target_field": "intent"
+  },
+  "intent_taxonomy": [
+    "account_balance",
+    "card_status",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "recent_transactions",
+    "transaction_details",
+    "unsupported_or_uncertain"
+  ],
+  "supported_intents": [
+    "account_balance",
+    "card_status",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "recent_transactions",
+    "transaction_details"
+  ],
+  "protected_write_intents": ["create_dispute", "freeze_card"],
+  "representations": {
+    "v2c1_word_char_tfidf": {
+      "family": "sparse_lexical",
+      "transform": "feature_union",
+      "word_tfidf": {
+        "input": "content",
+        "encoding": "utf-8",
+        "decode_error": "strict",
+        "strip_accents": null,
+        "preprocessor": null,
+        "tokenizer": null,
+        "analyzer": "word",
+        "stop_words": null,
+        "token_pattern": "(?u)\\b\\w\\w+\\b",
+        "ngram_range": [1, 2],
+        "sublinear_tf": true,
+        "min_df": 1,
+        "max_df": 1.0,
+        "max_features": null,
+        "vocabulary": null,
+        "binary": false,
+        "norm": "l2",
+        "use_idf": true,
+        "smooth_idf": true,
+        "lowercase": true,
+        "dtype": "float64"
+      },
+      "character_tfidf": {
+        "input": "content",
+        "encoding": "utf-8",
+        "decode_error": "strict",
+        "strip_accents": null,
+        "preprocessor": null,
+        "tokenizer": null,
+        "analyzer": "char_wb",
+        "stop_words": null,
+        "token_pattern": "(?u)\\b\\w\\w+\\b",
+        "ngram_range": [3, 5],
+        "sublinear_tf": true,
+        "min_df": 1,
+        "max_df": 1.0,
+        "max_features": null,
+        "vocabulary": null,
+        "binary": false,
+        "norm": "l2",
+        "use_idf": true,
+        "smooth_idf": true,
+        "lowercase": true,
+        "dtype": "float64"
+      },
+      "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults."
+    },
+    "word_char_tfidf_alt": {
+      "family": "sparse_lexical",
+      "transform": "feature_union",
+      "word_tfidf": {
+        "input": "content",
+        "encoding": "utf-8",
+        "decode_error": "strict",
+        "strip_accents": null,
+        "preprocessor": null,
+        "tokenizer": null,
+        "analyzer": "word",
+        "stop_words": null,
+        "token_pattern": "(?u)\\b\\w\\w+\\b",
+        "ngram_range": [1, 2],
+        "sublinear_tf": true,
+        "min_df": 2,
+        "max_df": 0.995,
+        "max_features": null,
+        "vocabulary": null,
+        "binary": false,
+        "norm": "l2",
+        "use_idf": true,
+        "smooth_idf": true,
+        "lowercase": true,
+        "dtype": "float64"
+      },
+      "character_tfidf": {
+        "input": "content",
+        "encoding": "utf-8",
+        "decode_error": "strict",
+        "strip_accents": null,
+        "preprocessor": null,
+        "tokenizer": null,
+        "analyzer": "char_wb",
+        "stop_words": null,
+        "token_pattern": "(?u)\\b\\w\\w+\\b",
+        "ngram_range": [3, 6],
+        "sublinear_tf": true,
+        "min_df": 2,
+        "max_df": 0.995,
+        "max_features": null,
+        "vocabulary": null,
+        "binary": false,
+        "norm": "l2",
+        "use_idf": true,
+        "smooth_idf": true,
+        "lowercase": true,
+        "dtype": "float64"
+      },
+      "difference_from_v2c1": "Drops fold-local singletons, caps terms present in more than 99.5% of a training fold, and extends char_wb through 6-grams."
+    },
+    "word_tfidf": {
+      "family": "sparse_lexical",
+      "transform": "single_vectorizer",
+      "word_tfidf": {
+        "input": "content",
+        "encoding": "utf-8",
+        "decode_error": "strict",
+        "strip_accents": null,
+        "preprocessor": null,
+        "tokenizer": null,
+        "analyzer": "word",
+        "stop_words": null,
+        "token_pattern": "(?u)\\b\\w\\w+\\b",
+        "ngram_range": [1, 2],
+        "sublinear_tf": true,
+        "min_df": 1,
+        "max_df": 1.0,
+        "max_features": null,
+        "vocabulary": null,
+        "binary": false,
+        "norm": "l2",
+        "use_idf": true,
+        "smooth_idf": true,
+        "lowercase": true,
+        "dtype": "float64"
+      }
+    },
+    "char_tfidf": {
+      "family": "sparse_lexical",
+      "transform": "single_vectorizer",
+      "character_tfidf": {
+        "input": "content",
+        "encoding": "utf-8",
+        "decode_error": "strict",
+        "strip_accents": null,
+        "preprocessor": null,
+        "tokenizer": null,
+        "analyzer": "char_wb",
+        "stop_words": null,
+        "token_pattern": "(?u)\\b\\w\\w+\\b",
+        "ngram_range": [3, 5],
+        "sublinear_tf": true,
+        "min_df": 1,
+        "max_df": 1.0,
+        "max_features": null,
+        "vocabulary": null,
+        "binary": false,
+        "norm": "l2",
+        "use_idf": true,
+        "smooth_idf": true,
+        "lowercase": true,
+        "dtype": "float64"
+      }
+    },
+    "tfidf_lsa": {
+      "family": "dense_lsa",
+      "transform": "tfidf_then_truncated_svd_then_normalize",
+      "tfidf_base": "v2c1_word_char_tfidf",
+      "truncated_svd": {
+        "n_components": 256,
+        "algorithm": "randomized",
+        "n_iter": 5,
+        "random_state": 20260928
+      },
+      "normalizer": {"norm": "l2", "copy": false},
+      "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold."
+    },
+    "bge_small_en_v1_5": {
+      "family": "frozen_local_sentence_embedding",
+      "transform": "fastembed_passage_embedding",
+      "model_identifier": "BAAI/bge-small-en-v1.5",
+      "dimensions": 384,
+      "fine_tuning": false,
+      "external_api": false,
+      "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+      "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+      "batch_size": 256,
+      "ordering": "development dataset order",
+      "automatic_regeneration_during_run": false
+    }
+  },
+  "classifiers": {
+    "v2c1_linear_svc_anchor": {
+      "class": "LinearSVC",
+      "parameters": {
+        "C": 0.5,
+        "class_weight": null,
+        "random_state": 20260926,
+        "penalty": "l2",
+        "loss": "squared_hinge",
+        "dual": "auto",
+        "tol": 0.0001,
+        "max_iter": 1000,
+        "fit_intercept": true,
+        "intercept_scaling": 1.0,
+        "multi_class": "ovr",
+        "verbose": 0
+      },
+      "v2c1_fidelity": "V2-C1 selected C and constructor arguments, with unchanged sklearn defaults made explicit."
+    },
+    "linear_svc_balanced": {
+      "class": "LinearSVC",
+      "parameters": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "random_state": 20260928,
+        "penalty": "l2",
+        "loss": "squared_hinge",
+        "dual": "auto",
+        "tol": 0.0001,
+        "max_iter": 2000,
+        "fit_intercept": true,
+        "intercept_scaling": 1.0,
+        "multi_class": "ovr",
+        "verbose": 0
+      }
+    },
+    "logistic_regression_balanced": {
+      "class": "LogisticRegression",
+      "parameters": {
+        "C": 1.0,
+        "class_weight": "balanced",
+        "random_state": 20260928,
+        "solver": "lbfgs",
+        "l1_ratio": 0.0,
+        "dual": false,
+        "tol": 0.0001,
+        "max_iter": 2000,
+        "fit_intercept": true,
+        "intercept_scaling": 1.0,
+        "verbose": 0,
+        "warm_start": false,
+        "n_jobs": null
+      },
+      "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)"
+    },
+    "sgd_classifier_balanced": {
+      "class": "SGDClassifier",
+      "parameters": {
+        "loss": "hinge",
+        "penalty": "l2",
+        "alpha": 0.0001,
+        "l1_ratio": 0.15,
+        "class_weight": "balanced",
+        "random_state": 20260928,
+        "max_iter": 1000,
+        "tol": 0.001,
+        "shuffle": true,
+        "fit_intercept": true,
+        "verbose": 0,
+        "epsilon": 0.1,
+        "n_jobs": null,
+        "learning_rate": "optimal",
+        "eta0": 0.01,
+        "power_t": 0.5,
+        "early_stopping": false,
+        "validation_fraction": 0.1,
+        "n_iter_no_change": 5,
+        "warm_start": false,
+        "average": false
+      }
+    },
+    "ridge_classifier_balanced": {
+      "class": "RidgeClassifier",
+      "parameters": {
+        "alpha": 1.0,
+        "class_weight": "balanced",
+        "solver": "auto",
+        "tol": 0.0001,
+        "fit_intercept": true,
+        "copy_X": true,
+        "max_iter": null,
+        "positive": false,
+        "random_state": null
+      }
+    }
+  },
+  "candidates": [
+    {"id": "direct_v2c1_tfidf_v2c1_svc_anchor", "architecture": "direct_9_way", "representation": "v2c1_word_char_tfidf", "classifier": "v2c1_linear_svc_anchor"},
+    {"id": "direct_v2c1_tfidf_balanced_svc", "architecture": "direct_9_way", "representation": "v2c1_word_char_tfidf", "classifier": "linear_svc_balanced"},
+    {"id": "direct_v2c1_tfidf_balanced_logreg", "architecture": "direct_9_way", "representation": "v2c1_word_char_tfidf", "classifier": "logistic_regression_balanced"},
+    {"id": "direct_v2c1_tfidf_balanced_sgd", "architecture": "direct_9_way", "representation": "v2c1_word_char_tfidf", "classifier": "sgd_classifier_balanced"},
+    {"id": "direct_v2c1_tfidf_balanced_ridge", "architecture": "direct_9_way", "representation": "v2c1_word_char_tfidf", "classifier": "ridge_classifier_balanced"},
+    {"id": "direct_word_tfidf_balanced_svc", "architecture": "direct_9_way", "representation": "word_tfidf", "classifier": "linear_svc_balanced"},
+    {"id": "direct_char_tfidf_balanced_svc", "architecture": "direct_9_way", "representation": "char_tfidf", "classifier": "linear_svc_balanced"},
+    {"id": "direct_alt_tfidf_balanced_svc", "architecture": "direct_9_way", "representation": "word_char_tfidf_alt", "classifier": "linear_svc_balanced"},
+    {"id": "direct_lsa_balanced_svc", "architecture": "direct_9_way", "representation": "tfidf_lsa", "classifier": "linear_svc_balanced"},
+    {"id": "direct_lsa_balanced_logreg", "architecture": "direct_9_way", "representation": "tfidf_lsa", "classifier": "logistic_regression_balanced"},
+    {"id": "direct_bge_balanced_svc", "architecture": "direct_9_way", "representation": "bge_small_en_v1_5", "classifier": "linear_svc_balanced"},
+    {"id": "direct_bge_balanced_logreg", "architecture": "direct_9_way", "representation": "bge_small_en_v1_5", "classifier": "logistic_regression_balanced"},
+    {"id": "hierarchical_v2c1_tfidf_balanced_svc", "architecture": "hierarchical_supported_then_intent", "representation": "v2c1_word_char_tfidf", "classifier": "linear_svc_balanced"},
+    {"id": "hierarchical_bge_balanced_logreg", "architecture": "hierarchical_supported_then_intent", "representation": "bge_small_en_v1_5", "classifier": "logistic_regression_balanced"}
+  ],
+  "architectures": {
+    "direct_9_way": {
+      "description": "One estimator predicts exactly one frozen intent."
+    },
+    "hierarchical_supported_then_intent": {
+      "stage_1_labels": ["supported", "unsupported_or_uncertain"],
+      "stage_2_training_subset": "training-fold examples whose gold intent is one of the eight supported intents",
+      "stage_2_labels": "the eight supported intents",
+      "prediction_rule": "Return unsupported_or_uncertain when Stage 1 does; otherwise return the Stage 2 exact intent.",
+      "shared_preset": "Both stages use separately fitted instances of the candidate representation and classifier preset."
+    }
+  },
+  "metrics": {
+    "per_fold": ["accuracy", "macro_f1", "weighted_f1"],
+    "primary_ranking": "macro_f1_mean",
+    "primary_spread": "macro_f1_standard_deviation",
+    "pooled_oof": [
+      "accuracy",
+      "macro_f1",
+      "weighted_f1",
+      "per_class_precision_recall_f1",
+      "confusion_matrix",
+      "unsupported_or_uncertain_recall",
+      "false_supported_rate",
+      "supported_intent_accuracy",
+      "protected_write_recall",
+      "protected_write_false_positive_count",
+      "protected_write_false_positive_rate",
+      "freeze_card_metrics",
+      "create_dispute_metrics"
+    ],
+    "source_breakdown_source_ids": ["sentinelvoice_v2c1_internal", "banking77", "clinc150_oos"],
+    "false_supported_definition": "gold == unsupported_or_uncertain and prediction != unsupported_or_uncertain; denominator is all gold unsupported_or_uncertain",
+    "protected_write_false_positive_definition": "gold not in {freeze_card, create_dispute} and prediction in {freeze_card, create_dispute}; denominator is all gold non-protected-write examples",
+    "protected_write_recall_definition": "exact intent match among gold freeze_card or create_dispute; cross-predicting the other protected intent is incorrect",
+    "supported_intent_accuracy_definition": "exact intent accuracy among gold examples in the eight supported intents"
+  },
+  "safety_gates": {
+    "protected_write_false_positive_rate_maximum": 0.01,
+    "protected_write_recall_minimum": 0.8,
+    "unsupported_or_uncertain_recall_minimum": 0.8,
+    "all_gates_required": true,
+    "relaxation_after_results_allowed": false
+  },
+  "ranking": {
+    "eligible_candidates_only": true,
+    "primary": "highest macro_f1_mean",
+    "practical_tie_absolute_difference_below": 0.005,
+    "tie_break_order": [
+      "lower false_supported_rate",
+      "higher unsupported_or_uncertain_recall",
+      "lower protected_write_false_positive_rate",
+      "lower macro_f1_standard_deviation",
+      "lower inference_p95",
+      "smaller artifact_model_size",
+      "simpler_reversible_architecture"
+    ],
+    "no_eligible_candidate_policy": "Set no_eligible_winner=true and do not select a winner."
+  },
+  "finalist_policy": {
+    "maximum_count": 3,
+    "safety_eligible_only": true,
+    "technical_diversity_preferred": true,
+    "diversity_families": ["sparse_lexical", "dense_lsa", "frozen_local_sentence_embedding"],
+    "hyperparameter_tuning_in_step_4": false
+  },
+  "embedding_cache_policy": {
+    "development_only": true,
+    "model_identifier": "BAAI/bge-small-en-v1.5",
+    "key_fields": ["model_identifier", "development_dataset_sha256", "ordered_example_ids_sha256"],
+    "label_free_generation": true,
+    "fine_tuning": false,
+    "large_cache_committed": false,
+    "run_may_regenerate_missing_cache": false
+  },
+  "latency_measurement_policy": {
+    "fit_scope": "complete development dataset only after cross-validation",
+    "warmup_calls": 25,
+    "sample_count": 200,
+    "sample_selection": "First 200 examples after ordering by SHA-256(random_seed + ':' + example_id).",
+    "request_shape": "single example",
+    "percentiles": [50, 90, 95],
+    "tfidf_and_lsa_scope": "representation transform plus classifier prediction",
+    "bge_downstream_scope": "classifier prediction on one cached embedding",
+    "bge_end_to_end_scope": "local FastEmbed passage embedding plus classifier prediction",
+    "primary_comparable_bge_latency": "end_to_end",
+    "precision_claim": "Local-machine descriptive timing only; not a portable benchmark."
+  },
+  "model_size_measurement_policy": {
+    "method": "joblib serialization to a temporary local file",
+    "no_final_artifact_frozen": true,
+    "bge_downstream_classifier_bytes_reported_separately": true,
+    "bge_model_cache_bytes_reported_when_reliably_measurable": true,
+    "bge_classifier_only_is_not_total_runtime_size": true
+  },
+  "report": {
+    "path": "data/evals/v2/ml/v2c3_tournament_report.json",
+    "persist_raw_text": false,
+    "persist_oof_predictions": false,
+    "final_lockbox_used": false,
+    "challenge_set_used": false,
+    "cfpb_used": false,
+    "hyperparameter_search_performed": false
+  },
+  "prohibited_evaluation_sources": [
+    "data/evals/v2/ml/intent_risk_dataset.json#locked_test",
+    "data/evals/v2/external/raw/banking77/test.csv",
+    "data/evals/v2/external/raw/clinc_oos/data_full.json#test",
+    "data/evals/v2/external/raw/clinc_oos/data_full.json#oos_test",
+    "data/evals/v2/external/raw/cfpb_narratives",
+    "data/evals/v2/external/processed/cfpb",
+    "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+    "data/evals/v2/ml/v2c3_challenge_set.json"
+  ]
+}

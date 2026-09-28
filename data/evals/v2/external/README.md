@@ -527,8 +527,73 @@ zero unresolved records.
 
 Label construction and scoring-contract definition consumed only the source
 holdout plus Pass A/B/C stores. They did not read V2-C1 classifier outputs or
-evaluation artifacts. V2-C1 remains frozen and may be run only after this
-tracked label/scoring freeze; no classifier performance is claimed here.
+evaluation artifacts. That freeze phase claimed no classifier performance;
+the subsequent frozen-model evaluation is documented separately below.
+
+## Frozen-model CFPB external evaluation
+
+`scripts/run_cfpb_external_evaluation.py` reproduces the final CFPB
+external-generalization baseline and writes deterministic aggregate results to
+`results/cfpb/frozen_v2c1_report.json`. Before loading the trusted artifact it
+pins the classifier, model-selection report, V2-C1 report, final labels, and
+review-pool manifest by SHA-256. It then verifies the manifest-pinned ignored
+source pool and joins the exact 1,800 final-label hashes against its 3,800
+narratives. The extra 2,000 `UNSUPPORTED` review-pool narratives are not
+scored. Complaint IDs, mapping strata, source hashes, label counts, and the
+1,776/24 scoring split must all reconcile.
+
+The primary path is the unchanged word/character TF-IDF LinearSVC with
+`C=0.5`. On the 1,776 exact single-label records, the supplied frozen local run
+produced:
+
+- accuracy `0.399212`;
+- nine-class macro-F1 `0.113558`;
+- weighted-F1 `0.503277`; and
+- primary coverage `1776 / 1800 = 0.986667`.
+
+The 24 `MULTI_SUPPORTED_INTENT` records remain separate: 9 predictions were
+members of the frozen supported-intent sets, for `0.375000` membership
+accuracy. This remains a single-label classifier and is not presented as a
+multi-label solution.
+
+Protected-write gold membership comes only from final semantic intents across
+all 1,800 records. `freeze_card` had 1 gold-supported record, 7 predicted
+positives, 0 true positives, and 7 false positives. `create_dispute` had 28
+gold-supported records (including multi-intent membership), 79 predicted
+positives, 7 true positives, and 72 false positives. These are evaluation
+observations only and have no authorization or runtime effect.
+
+The separate frozen Logistic Regression probability path (`C=2.0`) uses the
+validation-selected confidence threshold `0.0`, top-two margin `0.2`, and no
+required intent/risk agreement. On the 1,776 primary records it accepted 183
+and abstained on 1,593, giving `0.103041` coverage and `0.896959` abstention.
+Unabstained accuracy was `0.503378`; selective accuracy was `0.721311`, and
+selective nine-class macro-F1 was `0.111918`. Abstention removed 831 Logistic
+errors and 762 correct predictions, leaving 51 errors. It accepted no
+`freeze_card` or `create_dispute` predictions. This advisory path neither
+replaces nor validates the primary SVM.
+
+The report contains aggregate metrics and integrity metadata only. It emits no
+consumer narrative text and no per-record predictions, uses stable sorted JSON
+without wall-clock timestamps, and explicitly records that no training or
+tuning occurred. CFPB performance shows substantial domain shift and must not
+be described as strong generalization or directly compared with the balanced
+internal nine-intent test as a like-for-like benchmark. It did not alter the
+frozen model, features, taxonomy, hyperparameters, or abstention rule.
+
+Future model-development work may investigate better classical models,
+feature changes, embeddings, calibration and OOD methods,
+`StratifiedGroupKFold` or other group-aware validation, training augmentation,
+and separately governed external training sources. This is not approval to
+train on CFPB or other real consumer-derived narratives. Such training requires
+a separate explicit V2-C3 data-governance decision, and any approved future
+training hashes must remain disjoint from this consumed CFPB holdout.
+
+Reproduction is intentionally explicit and inference-only:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_cfpb_external_evaluation.py
+```
 
 Before beginning this changed methodology, inspect the canonical workfile with
 the reviewer CLI's `--status`. If prior manual annotations must be cleared, the

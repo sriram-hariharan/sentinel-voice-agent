@@ -3587,6 +3587,17 @@ this label/scoring freeze. Neither CFPB narratives nor resulting labels may be
 used for training, feature selection, hyperparameter or threshold tuning, or
 model selection.
 
+The frozen V2-C1 CFPB external baseline is reproduced by
+`scripts/run_cfpb_external_evaluation.py` and recorded separately at
+`data/evals/v2/external/results/cfpb/frozen_v2c1_report.json`. On the 1,776
+single-label records, the supplied frozen local run reached 39.92% accuracy,
+0.1136 macro-F1, and 0.5033 weighted-F1; the separate 24-record multi-intent
+membership score was 37.5%. This is substantial domain-shift evidence, not a
+claim that V2-C1 generalized well. Frozen Logistic abstention raised selective
+accuracy to 72.13% but accepted only 183 records (10.30% coverage). The result
+does not alter the model, features, taxonomy, or thresholds and remains
+offline-only with no runtime authority.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

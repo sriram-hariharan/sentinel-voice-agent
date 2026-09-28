@@ -1,0 +1,845 @@
+{
+  "advisory_only": true,
+  "consumer_narrative_text_emitted": false,
+  "evaluation_base_commit": "b7f52f29fd81e17a604604af45d0cca551e15162",
+  "evaluation_version": "cfpb-frozen-v2c1.2026-09-28.v1",
+  "external_metrics_boundary": {
+    "directly_comparable_to_v2c1_balanced_nine_intent_test": false,
+    "external_results_used_to_select_v2c1": false,
+    "label_and_scoring_contract_frozen_before_inference": true,
+    "reported_separately_from_v2c1": true
+  },
+  "frozen_advisory_abstention_analysis": {
+    "abstained_count": 1593,
+    "abstention_rate": 0.8969594594594594,
+    "accepted_count": 183,
+    "accepted_protected_write_predictions": {
+      "by_intent": {
+        "create_dispute": {
+          "false_discovery_rate": 0.0,
+          "false_positive_count": 0,
+          "false_positive_rate": 0.0,
+          "gold_negative_count": 183,
+          "gold_supported_count": 0,
+          "predicted_positive_count": 0,
+          "true_positive_count": 0
+        },
+        "freeze_card": {
+          "false_discovery_rate": 0.0,
+          "false_positive_count": 0,
+          "false_positive_rate": 0.0,
+          "gold_negative_count": 183,
+          "gold_supported_count": 0,
+          "predicted_positive_count": 0,
+          "true_positive_count": 0
+        }
+      },
+      "evaluated_example_count": 183,
+      "gold_rule": "intent membership in final_supported_intents"
+    },
+    "analysis_role": "Frozen Logistic Regression probability path; separate from the primary SVM and not validation or replacement of it.",
+    "correct_predictions_removed": 762,
+    "coverage": 0.10304054054054054,
+    "errors_remaining": 51,
+    "errors_removed_by_abstention": 831,
+    "example_count": 1776,
+    "frozen_rule": {
+      "confidence_threshold": 0.0,
+      "coverage": 0.5555555555555556,
+      "eligible": true,
+      "evaluated_count": 60,
+      "evaluated_protected_write_count": 15,
+      "evaluated_protected_write_recall": 1.0,
+      "margin_threshold": 0.2,
+      "mode": "threshold",
+      "require_intent_risk_agreement": false,
+      "selective_accuracy": 1.0
+    },
+    "selective_accuracy": 0.7213114754098361,
+    "selective_macro_f1_full_nine_intents": 0.11191848325398815,
+    "threshold_selection_source": "V2-C1 validation only",
+    "unabstained_accuracy": 0.5033783783783784,
+    "unabstained_prediction_distribution": {
+      "account_balance": {
+        "count": 223,
+        "rate": 0.12556306306306306
+      },
+      "card_status": {
+        "count": 28,
+        "rate": 0.015765765765765764
+      },
+      "create_dispute": {
+        "count": 43,
+        "rate": 0.02421171171171171
+      },
+      "escalation": {
+        "count": 216,
+        "rate": 0.12162162162162163
+      },
+      "freeze_card": {
+        "count": 2,
+        "rate": 0.0011261261261261261
+      },
+      "informational_policy": {
+        "count": 28,
+        "rate": 0.015765765765765764
+      },
+      "recent_transactions": {
+        "count": 49,
+        "rate": 0.02759009009009009
+      },
+      "transaction_details": {
+        "count": 188,
+        "rate": 0.10585585585585586
+      },
+      "unsupported_or_uncertain": {
+        "count": 999,
+        "rate": 0.5625
+      }
+    }
+  },
+  "frozen_classifier": {
+    "artifact_path": "artifacts/v2/classifier/classifier.joblib",
+    "artifact_sha256": "e815eb629de3ae56140a09f92baf563e9aaeec1204b45c23774210452d03285c",
+    "components": {
+      "advisory_abstention_rule": {
+        "confidence_threshold": 0.0,
+        "coverage": 0.5555555555555556,
+        "eligible": true,
+        "evaluated_count": 60,
+        "evaluated_protected_write_count": 15,
+        "evaluated_protected_write_recall": 1.0,
+        "margin_threshold": 0.2,
+        "mode": "threshold",
+        "require_intent_risk_agreement": false,
+        "selective_accuracy": 1.0
+      },
+      "independent_risk_model": "LinearSVC",
+      "logistic_probability_intent_model": "LogisticRegression C=2.0",
+      "selected_intent_model": "LinearSVC C=0.5",
+      "text_features": "word 1-2 + char_wb 3-5 TF-IDF"
+    },
+    "full_intent_label_order": [
+      "account_balance",
+      "card_status",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "recent_transactions",
+      "transaction_details",
+      "unsupported_or_uncertain"
+    ],
+    "modified_or_retrained": false,
+    "runtime_authority": false
+  },
+  "integrity": {
+    "classifier_report_sha256": "dcf940890b2602e040ed3f0a30b0f45f0c34e352707896ea64079b20c929f843",
+    "final_labels_sha256": "40da78787aa5eb7d2a0542d51a9af007b4c836b899559d9185052d24f24f490e",
+    "model_selection_sha256": "700af92377110b585967a7300ff1b1682f45f84ac8d0aa09e18c8b85d540dab3",
+    "review_pool_manifest_sha256": "d078cc46dcf705261f13a713e778168d681bc5fb8c8397979383f85bbe273576",
+    "source_pool_sha256": "d3c840d173a8021c707468bde6165ab186dec71bfb858b6db2520f432994ce33"
+  },
+  "label_contract": {
+    "category_counts": {
+      "MULTI_SUPPORTED_INTENT": 24,
+      "NO_CURRENT_REQUEST": 616,
+      "SINGLE_SUPPORTED_INTENT": 303,
+      "UNCLEAR_OR_INSUFFICIENT": 37,
+      "UNSUPPORTED": 820
+    },
+    "excluded_multi_intent_count": 24,
+    "multi_intent_scoring_rule": "prediction in final_supported_intents",
+    "primary_evaluation_coverage": 0.9866666666666667,
+    "primary_scoring_mapping": {
+      "MULTI_SUPPORTED_INTENT": null,
+      "NO_CURRENT_REQUEST": "unsupported_or_uncertain",
+      "SINGLE_SUPPORTED_INTENT": "sole final_supported_intent",
+      "UNCLEAR_OR_INSUFFICIENT": "unsupported_or_uncertain",
+      "UNSUPPORTED": "unsupported_or_uncertain"
+    },
+    "primary_single_label_evaluable_count": 1776,
+    "protected_write_supported_counts": {
+      "create_dispute": 28,
+      "freeze_card": 1
+    },
+    "scoring_contract_version": "cfpb-semantic-scoring.v1",
+    "total_holdout_count": 1800
+  },
+  "multi_intent_secondary": {
+    "example_count": 24,
+    "interpretation": "Secondary set-membership metric only; this does not make the frozen classifier multi-label.",
+    "prediction_distribution_full_nine_intents": {
+      "account_balance": {
+        "count": 8,
+        "rate": 0.3333333333333333
+      },
+      "card_status": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "create_dispute": {
+        "count": 1,
+        "rate": 0.041666666666666664
+      },
+      "escalation": {
+        "count": 5,
+        "rate": 0.20833333333333334
+      },
+      "freeze_card": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "informational_policy": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "recent_transactions": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "transaction_details": {
+        "count": 1,
+        "rate": 0.041666666666666664
+      },
+      "unsupported_or_uncertain": {
+        "count": 9,
+        "rate": 0.375
+      }
+    },
+    "prediction_is_supported_intent_accuracy": 0.375,
+    "prediction_is_supported_intent_hit_count": 9,
+    "scoring_rule": "prediction in final_supported_intents"
+  },
+  "primary_classifier": "frozen V2-C1 LinearSVC intent model",
+  "primary_svm": {
+    "accuracy": 0.3992117117117117,
+    "confusion_by_expected_and_predicted_intent": {
+      "account_balance": {
+        "account_balance": 1,
+        "card_status": 1,
+        "create_dispute": 0,
+        "escalation": 1,
+        "freeze_card": 0,
+        "informational_policy": 0,
+        "recent_transactions": 0,
+        "transaction_details": 0,
+        "unsupported_or_uncertain": 3
+      },
+      "card_status": {
+        "account_balance": 0,
+        "card_status": 1,
+        "create_dispute": 0,
+        "escalation": 4,
+        "freeze_card": 0,
+        "informational_policy": 0,
+        "recent_transactions": 1,
+        "transaction_details": 1,
+        "unsupported_or_uncertain": 9
+      },
+      "create_dispute": {
+        "account_balance": 0,
+        "card_status": 0,
+        "create_dispute": 6,
+        "escalation": 5,
+        "freeze_card": 0,
+        "informational_policy": 1,
+        "recent_transactions": 0,
+        "transaction_details": 1,
+        "unsupported_or_uncertain": 10
+      },
+      "escalation": {
+        "account_balance": 2,
+        "card_status": 2,
+        "create_dispute": 0,
+        "escalation": 15,
+        "freeze_card": 0,
+        "informational_policy": 0,
+        "recent_transactions": 0,
+        "transaction_details": 1,
+        "unsupported_or_uncertain": 10
+      },
+      "freeze_card": {
+        "account_balance": 0,
+        "card_status": 0,
+        "create_dispute": 0,
+        "escalation": 0,
+        "freeze_card": 0,
+        "informational_policy": 0,
+        "recent_transactions": 0,
+        "transaction_details": 0,
+        "unsupported_or_uncertain": 1
+      },
+      "informational_policy": {
+        "account_balance": 21,
+        "card_status": 3,
+        "create_dispute": 3,
+        "escalation": 14,
+        "freeze_card": 1,
+        "informational_policy": 1,
+        "recent_transactions": 1,
+        "transaction_details": 10,
+        "unsupported_or_uncertain": 34
+      },
+      "recent_transactions": {
+        "account_balance": 1,
+        "card_status": 3,
+        "create_dispute": 1,
+        "escalation": 2,
+        "freeze_card": 0,
+        "informational_policy": 0,
+        "recent_transactions": 1,
+        "transaction_details": 2,
+        "unsupported_or_uncertain": 7
+      },
+      "transaction_details": {
+        "account_balance": 29,
+        "card_status": 1,
+        "create_dispute": 5,
+        "escalation": 19,
+        "freeze_card": 0,
+        "informational_policy": 1,
+        "recent_transactions": 7,
+        "transaction_details": 21,
+        "unsupported_or_uncertain": 39
+      },
+      "unsupported_or_uncertain": {
+        "account_balance": 245,
+        "card_status": 46,
+        "create_dispute": 63,
+        "escalation": 247,
+        "freeze_card": 6,
+        "informational_policy": 30,
+        "recent_transactions": 38,
+        "transaction_details": 135,
+        "unsupported_or_uncertain": 663
+      }
+    },
+    "decision_margin": {
+      "example_count": 1776,
+      "interpretation": "Raw LinearSVC scores and margins are not probabilities.",
+      "top_1_minus_top_2_margin": {
+        "maximum": 1.0800538279533614,
+        "mean": 0.17572589429254262,
+        "minimum": 8.189857935281264e-05,
+        "p25": 0.05905186129890472,
+        "p50": 0.13094029321740047,
+        "p75": 0.252985871514371,
+        "p90": 0.38660525571082516,
+        "p95": 0.47729257649685497
+      },
+      "top_1_score": {
+        "maximum": 0.49093972415708964,
+        "mean": -0.42804170842468314,
+        "minimum": -0.7463789486354151,
+        "p25": -0.5360339872243028,
+        "p50": -0.45014427255635064,
+        "p75": -0.34328722939695744,
+        "p90": -0.23833696360057738,
+        "p95": -0.14909710940249427
+      },
+      "top_2_score": {
+        "maximum": -0.30384551837992724,
+        "mean": -0.6037676027172258,
+        "minimum": -0.8382864523857138,
+        "p25": -0.6681783660227424,
+        "p50": -0.607579105183462,
+        "p75": -0.548770302321116,
+        "p90": -0.4824313179551512,
+        "p95": -0.44279589544978226
+      }
+    },
+    "example_count": 1776,
+    "false_supported_behavior": {
+      "false_supported_prediction_count": 810,
+      "false_supported_prediction_distribution": {
+        "account_balance": {
+          "count": 245,
+          "rate": 0.30246913580246915
+        },
+        "card_status": {
+          "count": 46,
+          "rate": 0.056790123456790124
+        },
+        "create_dispute": {
+          "count": 63,
+          "rate": 0.07777777777777778
+        },
+        "escalation": {
+          "count": 247,
+          "rate": 0.30493827160493825
+        },
+        "freeze_card": {
+          "count": 6,
+          "rate": 0.007407407407407408
+        },
+        "informational_policy": {
+          "count": 30,
+          "rate": 0.037037037037037035
+        },
+        "recent_transactions": {
+          "count": 38,
+          "rate": 0.04691358024691358
+        },
+        "transaction_details": {
+          "count": 135,
+          "rate": 0.16666666666666666
+        },
+        "unsupported_or_uncertain": {
+          "count": 0,
+          "rate": 0.0
+        }
+      },
+      "false_supported_rate_within_gold_unsupported": 0.5498981670061099,
+      "gold_unsupported_count": 1473
+    },
+    "gold_distribution_full_nine_intents": {
+      "account_balance": {
+        "count": 6,
+        "rate": 0.0033783783783783786
+      },
+      "card_status": {
+        "count": 16,
+        "rate": 0.009009009009009009
+      },
+      "create_dispute": {
+        "count": 23,
+        "rate": 0.01295045045045045
+      },
+      "escalation": {
+        "count": 30,
+        "rate": 0.016891891891891893
+      },
+      "freeze_card": {
+        "count": 1,
+        "rate": 0.0005630630630630631
+      },
+      "informational_policy": {
+        "count": 88,
+        "rate": 0.04954954954954955
+      },
+      "recent_transactions": {
+        "count": 17,
+        "rate": 0.009572072072072071
+      },
+      "transaction_details": {
+        "count": 122,
+        "rate": 0.0686936936936937
+      },
+      "unsupported_or_uncertain": {
+        "count": 1473,
+        "rate": 0.8293918918918919
+      }
+    },
+    "macro_f1": 0.11355839244820497,
+    "major_confusions": [
+      {
+        "count": 247,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "escalation",
+        "rate_within_expected_class": 0.16768499660556688
+      },
+      {
+        "count": 245,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "account_balance",
+        "rate_within_expected_class": 0.16632722335369993
+      },
+      {
+        "count": 135,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "transaction_details",
+        "rate_within_expected_class": 0.09164969450101833
+      },
+      {
+        "count": 63,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "create_dispute",
+        "rate_within_expected_class": 0.04276985743380855
+      },
+      {
+        "count": 46,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "card_status",
+        "rate_within_expected_class": 0.031228784792939578
+      },
+      {
+        "count": 39,
+        "expected": "transaction_details",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 0.319672131147541
+      },
+      {
+        "count": 38,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "recent_transactions",
+        "rate_within_expected_class": 0.025797691785471828
+      },
+      {
+        "count": 34,
+        "expected": "informational_policy",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 0.38636363636363635
+      },
+      {
+        "count": 30,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "informational_policy",
+        "rate_within_expected_class": 0.020366598778004074
+      },
+      {
+        "count": 29,
+        "expected": "transaction_details",
+        "predicted": "account_balance",
+        "rate_within_expected_class": 0.23770491803278687
+      },
+      {
+        "count": 21,
+        "expected": "informational_policy",
+        "predicted": "account_balance",
+        "rate_within_expected_class": 0.23863636363636365
+      },
+      {
+        "count": 19,
+        "expected": "transaction_details",
+        "predicted": "escalation",
+        "rate_within_expected_class": 0.1557377049180328
+      },
+      {
+        "count": 14,
+        "expected": "informational_policy",
+        "predicted": "escalation",
+        "rate_within_expected_class": 0.1590909090909091
+      },
+      {
+        "count": 10,
+        "expected": "create_dispute",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 0.43478260869565216
+      },
+      {
+        "count": 10,
+        "expected": "escalation",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 0.3333333333333333
+      },
+      {
+        "count": 10,
+        "expected": "informational_policy",
+        "predicted": "transaction_details",
+        "rate_within_expected_class": 0.11363636363636363
+      },
+      {
+        "count": 9,
+        "expected": "card_status",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 0.5625
+      },
+      {
+        "count": 7,
+        "expected": "recent_transactions",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 0.4117647058823529
+      },
+      {
+        "count": 7,
+        "expected": "transaction_details",
+        "predicted": "recent_transactions",
+        "rate_within_expected_class": 0.05737704918032787
+      },
+      {
+        "count": 6,
+        "expected": "unsupported_or_uncertain",
+        "predicted": "freeze_card",
+        "rate_within_expected_class": 0.004073319755600814
+      },
+      {
+        "count": 5,
+        "expected": "create_dispute",
+        "predicted": "escalation",
+        "rate_within_expected_class": 0.21739130434782608
+      },
+      {
+        "count": 5,
+        "expected": "transaction_details",
+        "predicted": "create_dispute",
+        "rate_within_expected_class": 0.040983606557377046
+      },
+      {
+        "count": 4,
+        "expected": "card_status",
+        "predicted": "escalation",
+        "rate_within_expected_class": 0.25
+      },
+      {
+        "count": 3,
+        "expected": "account_balance",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 0.5
+      },
+      {
+        "count": 3,
+        "expected": "informational_policy",
+        "predicted": "card_status",
+        "rate_within_expected_class": 0.03409090909090909
+      },
+      {
+        "count": 3,
+        "expected": "informational_policy",
+        "predicted": "create_dispute",
+        "rate_within_expected_class": 0.03409090909090909
+      },
+      {
+        "count": 3,
+        "expected": "recent_transactions",
+        "predicted": "card_status",
+        "rate_within_expected_class": 0.17647058823529413
+      },
+      {
+        "count": 2,
+        "expected": "escalation",
+        "predicted": "account_balance",
+        "rate_within_expected_class": 0.06666666666666667
+      },
+      {
+        "count": 2,
+        "expected": "escalation",
+        "predicted": "card_status",
+        "rate_within_expected_class": 0.06666666666666667
+      },
+      {
+        "count": 2,
+        "expected": "recent_transactions",
+        "predicted": "escalation",
+        "rate_within_expected_class": 0.11764705882352941
+      },
+      {
+        "count": 2,
+        "expected": "recent_transactions",
+        "predicted": "transaction_details",
+        "rate_within_expected_class": 0.11764705882352941
+      },
+      {
+        "count": 1,
+        "expected": "account_balance",
+        "predicted": "card_status",
+        "rate_within_expected_class": 0.16666666666666666
+      },
+      {
+        "count": 1,
+        "expected": "account_balance",
+        "predicted": "escalation",
+        "rate_within_expected_class": 0.16666666666666666
+      },
+      {
+        "count": 1,
+        "expected": "card_status",
+        "predicted": "recent_transactions",
+        "rate_within_expected_class": 0.0625
+      },
+      {
+        "count": 1,
+        "expected": "card_status",
+        "predicted": "transaction_details",
+        "rate_within_expected_class": 0.0625
+      },
+      {
+        "count": 1,
+        "expected": "create_dispute",
+        "predicted": "informational_policy",
+        "rate_within_expected_class": 0.043478260869565216
+      },
+      {
+        "count": 1,
+        "expected": "create_dispute",
+        "predicted": "transaction_details",
+        "rate_within_expected_class": 0.043478260869565216
+      },
+      {
+        "count": 1,
+        "expected": "escalation",
+        "predicted": "transaction_details",
+        "rate_within_expected_class": 0.03333333333333333
+      },
+      {
+        "count": 1,
+        "expected": "freeze_card",
+        "predicted": "unsupported_or_uncertain",
+        "rate_within_expected_class": 1.0
+      },
+      {
+        "count": 1,
+        "expected": "informational_policy",
+        "predicted": "freeze_card",
+        "rate_within_expected_class": 0.011363636363636364
+      },
+      {
+        "count": 1,
+        "expected": "informational_policy",
+        "predicted": "recent_transactions",
+        "rate_within_expected_class": 0.011363636363636364
+      },
+      {
+        "count": 1,
+        "expected": "recent_transactions",
+        "predicted": "account_balance",
+        "rate_within_expected_class": 0.058823529411764705
+      },
+      {
+        "count": 1,
+        "expected": "recent_transactions",
+        "predicted": "create_dispute",
+        "rate_within_expected_class": 0.058823529411764705
+      },
+      {
+        "count": 1,
+        "expected": "transaction_details",
+        "predicted": "card_status",
+        "rate_within_expected_class": 0.00819672131147541
+      },
+      {
+        "count": 1,
+        "expected": "transaction_details",
+        "predicted": "informational_policy",
+        "rate_within_expected_class": 0.00819672131147541
+      }
+    ],
+    "per_class": {
+      "account_balance": {
+        "f1": 0.006557377049180328,
+        "precision": 0.0033444816053511705,
+        "recall": 0.16666666666666666,
+        "support": 6
+      },
+      "card_status": {
+        "f1": 0.0273972602739726,
+        "precision": 0.017543859649122806,
+        "recall": 0.0625,
+        "support": 16
+      },
+      "create_dispute": {
+        "f1": 0.1188118811881188,
+        "precision": 0.07692307692307693,
+        "recall": 0.2608695652173913,
+        "support": 23
+      },
+      "escalation": {
+        "f1": 0.08902077151335312,
+        "precision": 0.048859934853420196,
+        "recall": 0.5,
+        "support": 30
+      },
+      "freeze_card": {
+        "f1": 0.0,
+        "precision": 0.0,
+        "recall": 0.0,
+        "support": 1
+      },
+      "informational_policy": {
+        "f1": 0.01652892561983471,
+        "precision": 0.030303030303030304,
+        "recall": 0.011363636363636364,
+        "support": 88
+      },
+      "recent_transactions": {
+        "f1": 0.03076923076923077,
+        "precision": 0.020833333333333332,
+        "recall": 0.058823529411764705,
+        "support": 17
+      },
+      "transaction_details": {
+        "f1": 0.14334470989761092,
+        "precision": 0.12280701754385964,
+        "recall": 0.1721311475409836,
+        "support": 122
+      },
+      "unsupported_or_uncertain": {
+        "f1": 0.5895953757225434,
+        "precision": 0.854381443298969,
+        "recall": 0.45010183299389,
+        "support": 1473
+      }
+    },
+    "prediction_distribution_full_nine_intents": {
+      "account_balance": {
+        "count": 299,
+        "rate": 0.16835585585585586
+      },
+      "card_status": {
+        "count": 57,
+        "rate": 0.03209459459459459
+      },
+      "create_dispute": {
+        "count": 78,
+        "rate": 0.04391891891891892
+      },
+      "escalation": {
+        "count": 307,
+        "rate": 0.17286036036036037
+      },
+      "freeze_card": {
+        "count": 7,
+        "rate": 0.003941441441441441
+      },
+      "informational_policy": {
+        "count": 33,
+        "rate": 0.018581081081081082
+      },
+      "recent_transactions": {
+        "count": 48,
+        "rate": 0.02702702702702703
+      },
+      "transaction_details": {
+        "count": 171,
+        "rate": 0.09628378378378379
+      },
+      "unsupported_or_uncertain": {
+        "count": 776,
+        "rate": 0.4369369369369369
+      }
+    },
+    "protected_write_behavior_all_1800": {
+      "by_intent": {
+        "create_dispute": {
+          "false_discovery_rate": 0.9113924050632911,
+          "false_positive_count": 72,
+          "false_positive_rate": 0.040632054176072234,
+          "gold_negative_count": 1772,
+          "gold_supported_count": 28,
+          "predicted_positive_count": 79,
+          "true_positive_count": 7
+        },
+        "freeze_card": {
+          "false_discovery_rate": 1.0,
+          "false_positive_count": 7,
+          "false_positive_rate": 0.0038910505836575876,
+          "gold_negative_count": 1799,
+          "gold_supported_count": 1,
+          "predicted_positive_count": 7,
+          "true_positive_count": 0
+        }
+      },
+      "evaluated_example_count": 1800,
+      "gold_rule": "intent membership in final_supported_intents"
+    },
+    "unsupported_or_uncertain_recall": 0.45010183299389,
+    "weighted_f1": 0.5032773999233352
+  },
+  "report_content_boundary": {
+    "contains_classifier_aggregate_metrics": true,
+    "contains_consumer_narrative_text": false,
+    "contains_per_record_predictions": false
+  },
+  "schema_version": "cfpb-frozen-v2c1-report.v1",
+  "scored_source": {
+    "extra_review_pool_records_not_scored": 2000,
+    "final_label_path": "data/evals/v2/external/processed/cfpb/cfpb_semantic_final_labels.jsonl",
+    "final_label_schema_version": "cfpb-semantic-final-label.v1",
+    "multi_intent_examples": 24,
+    "primary_single_label_examples": 1776,
+    "selected_holdout_examples": 1800,
+    "source_pool_examples": 3800,
+    "source_pool_path": "data/evals/v2/external/processed/cfpb/local/cfpb_review_pool.jsonl"
+  },
+  "training_or_tuning_performed": false
+}

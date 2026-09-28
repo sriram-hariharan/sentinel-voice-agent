@@ -74,6 +74,32 @@ carefully reviewed examples rather than more variants of the same templates.
 Synthetic phrasing also cannot establish generalization to public banking
 corpora or real conversations.
 
+## Frozen CFPB external evidence
+
+The CFPB external evaluation loads the unchanged V2-C1 artifact only after its
+model-selection metadata, internal report, artifact SHA-256, text-free labels,
+and narrative-source linkage have been verified. The primary LinearSVC is
+scored on 1,776 records with exact single-label targets; 24 genuine
+multi-intent records remain in the 1,800-record holdout and receive only a
+separate supported-intent membership score.
+
+The supplied frozen local run reached 39.92% primary accuracy, 0.1136 macro-F1,
+and 0.5033 weighted-F1, while the multi-intent membership score was 37.5%.
+This exposes substantial domain shift and is not directly comparable to the
+balanced controlled-synthetic locked test as a like-for-like benchmark. The
+separate frozen Logistic path improved selective accuracy to 72.13% but
+collapsed coverage to 10.30% (183 of 1,776 records). It does not replace or
+validate the primary SVM.
+
+These external results did not select, retrain, tune, or modify V2-C1. Future
+model-development work may separately investigate stronger classical models,
+feature changes, embeddings, calibration/OOD methods, group-aware
+`StratifiedGroupKFold` validation, and carefully governed augmentation. Public
+consumer-derived CFPB narratives remain approved for offline evaluation and
+review only. Any use for training requires a separate V2-C3 data-governance
+decision, and any approved future training set must be hash-disjoint from this
+consumed evaluation holdout.
+
 ## Reproduce
 
 ```bash

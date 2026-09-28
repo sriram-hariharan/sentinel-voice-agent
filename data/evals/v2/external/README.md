@@ -419,7 +419,7 @@ text-free export rather than copied into that workfile.
 The offline first pass is coordinated by
 `scripts/annotate_cfpb_semantic_with_codex.py`. Its `prepare` command writes the
 next deterministic ignored batch of 25 records by default, with a hard maximum
-of 50. Codex reads that local batch and writes concise structured result rows;
+of 200. Codex reads that local batch and writes concise structured result rows;
 the script itself invokes no model or external API. The `import` command
 validates every result against the frozen C2P contract, records invalid or
 missing results without accepting them as labels, prevents duplicate or

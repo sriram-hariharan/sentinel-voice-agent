@@ -286,6 +286,19 @@ def test_resume_skips_successes_and_requeues_unresolved_rows() -> None:
     }
 
 
+def test_prepare_accepts_limit_200_and_rejects_above_cap() -> None:
+    rows = [
+        source_row(str(index), f"Synthetic batch-limit narrative {index}.")
+        for index in range(201)
+    ]
+
+    _, batch = codex_workflow.prepare_batch(rows, [], limit=200)
+
+    assert len(batch) == 200
+    with pytest.raises(ValueError, match="between 1 and 200"):
+        codex_workflow.prepare_batch(rows, [], limit=201)
+
+
 def test_atomic_first_pass_persistence_round_trip(tmp_path: Path) -> None:
     rows = [
         source_row("1", "Synthetic atomic first row."),

@@ -1,0 +1,333 @@
+{
+  "schema_version": "v2c3-experiment-contract.v1",
+  "contract_version": "2026-09-28.v1",
+  "experiment_phase": "V2-C3",
+  "status": "design_frozen_before_experiment_execution",
+  "random_seed": 20260928,
+  "advisory_only": true,
+  "runtime_authority": false,
+  "training_or_evaluation_performed": false,
+  "intent_taxonomy": [
+    "account_balance",
+    "card_status",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "recent_transactions",
+    "transaction_details",
+    "unsupported_or_uncertain"
+  ],
+  "supported_intents": [
+    "account_balance",
+    "card_status",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "recent_transactions",
+    "transaction_details"
+  ],
+  "risk_taxonomy": [
+    "ESCALATION_OR_UNCERTAIN",
+    "PRIVATE_READ",
+    "PROTECTED_WRITE",
+    "PUBLIC"
+  ],
+  "risk_by_intent": {
+    "account_balance": "PRIVATE_READ",
+    "card_status": "PRIVATE_READ",
+    "create_dispute": "PROTECTED_WRITE",
+    "escalation": "ESCALATION_OR_UNCERTAIN",
+    "freeze_card": "PROTECTED_WRITE",
+    "informational_policy": "PUBLIC",
+    "recent_transactions": "PRIVATE_READ",
+    "transaction_details": "PRIVATE_READ",
+    "unsupported_or_uncertain": "ESCALATION_OR_UNCERTAIN"
+  },
+  "data_registry": {
+    "path": "data/evals/v2/ml/v2c3_data_registry.json",
+    "schema_version": "v2c3-data-registry.v1",
+    "registry_version": "2026-09-28.v1"
+  },
+  "prohibited_data": {
+    "record_ids": [
+      "banking77_test",
+      "bitext_retail_banking",
+      "cfpb_frozen_1800",
+      "cfpb_remaining_narratives",
+      "clinc_finance_test",
+      "clinc_oos_test",
+      "clinc_oos_train",
+      "clinc_oos_val",
+      "internal_locked_test",
+      "unverified_bank_support_transcripts"
+    ],
+    "prohibited_uses": [
+      "classifier fitting",
+      "feature fitting",
+      "cross-validation",
+      "hyperparameter selection",
+      "threshold selection",
+      "representation selection",
+      "model selection"
+    ],
+    "consumed_external_benchmark_policy": "BANKING77 test, CLINC processed/test evaluation data, and the CFPB frozen 1,800 may be rerun only after V2-C3 is frozen and must be reported as previously consumed historical external benchmarks, never as fresh V2-C3 holdouts.",
+    "cfpb_policy": "Every CFPB narrative, annotation, semantic label, and structured metadata-derived target remains prohibited for V2-C3 training and model selection, including narratives outside the frozen 1,800."
+  },
+  "fresh_lockbox_policy": {
+    "materialized": false,
+    "seed": 20260928,
+    "split_version": "v2c3-fresh-lockbox.v1",
+    "eligible_registry_record_ids": [
+      "banking77_train",
+      "clinc_finance_train",
+      "clinc_finance_val"
+    ],
+    "development_fraction": 0.8,
+    "fresh_lockbox_fraction": 0.2,
+    "split_before_any_training_or_selection": true,
+    "stratify_by_mapped_target_where_feasible": true,
+    "source_aware": true,
+    "normalized_duplicate_groups_may_cross": false,
+    "available_lineage_groups_may_cross": false,
+    "model_output_may_influence_membership": false,
+    "confidence_score_may_influence_membership": false,
+    "lockbox_allowed_for_cv": false,
+    "lockbox_allowed_for_model_selection": false,
+    "lockbox_allowed_for_threshold_selection": false,
+    "evaluation_timing": "after model, representation, hyperparameters, and thresholds are frozen",
+    "new_synthetic_augmentation": {
+      "split_by_lineage_or_group_id_before_cv": true,
+      "normalized_duplicates_share_group": true,
+      "separate_frozen_synthetic_challenge_subset_may_be_retained": true
+    }
+  },
+  "cross_validation": {
+    "method": "StratifiedGroupKFold",
+    "default": {
+      "n_splits": 5,
+      "shuffle": true,
+      "random_state": 20260928
+    },
+    "fallback": {
+      "n_splits": 3,
+      "condition": "Five folds are mathematically infeasible because at least one target lacks enough independent groups.",
+      "decision_recorded_before_model_scores": true,
+      "model_scores_may_change_fold_count": false
+    },
+    "pre_score_feasibility_check": "Verify independent group support for every target class before constructing folds.",
+    "group_rules": {
+      "internal": "existing group_id",
+      "new_synthetic": "seed or lineage group_id",
+      "external": "deterministic source/example group plus available lineage",
+      "normalized_duplicates_share_group": true
+    },
+    "ordinary_stratified_kfold_allowed_when_related_examples_exist": false,
+    "folds_reused_across_candidate_comparisons": true
+  },
+  "representation_candidates": [
+    {
+      "id": "v2c1_word_char_tfidf",
+      "family": "sparse_lexical",
+      "description": "Frozen V2-C1 word TF-IDF 1-2 grams plus char_wb TF-IDF 3-5 grams baseline.",
+      "preset_count": 1
+    },
+    {
+      "id": "tuned_word_char_tfidf",
+      "family": "sparse_lexical",
+      "description": "Bounded predeclared word plus character TF-IDF presets.",
+      "preset_count_maximum": 3
+    },
+    {
+      "id": "word_tfidf",
+      "family": "sparse_lexical",
+      "description": "Word-only TF-IDF preset.",
+      "preset_count": 1
+    },
+    {
+      "id": "char_tfidf",
+      "family": "sparse_lexical",
+      "description": "Character-only char_wb TF-IDF preset.",
+      "preset_count": 1
+    },
+    {
+      "id": "tfidf_truncated_svd_lsa",
+      "family": "dense_lsa",
+      "description": "TF-IDF followed by bounded TruncatedSVD/LSA.",
+      "preset_count_maximum": 3
+    },
+    {
+      "id": "bge_small_en_v1_5_frozen",
+      "family": "frozen_local_sentence_embedding",
+      "model_identifier": "BAAI/bge-small-en-v1.5",
+      "fine_tuning_allowed": false,
+      "external_api_inference_allowed": false,
+      "deterministic_cache_required_when_implemented": true,
+      "description": "One frozen local embedding family consistent with SentinelVoice policy RAG."
+    }
+  ],
+  "classifier_candidates": [
+    {
+      "id": "LinearSVC",
+      "compatible_representation_families": ["sparse_lexical", "dense_lsa", "frozen_local_sentence_embedding"]
+    },
+    {
+      "id": "LogisticRegression",
+      "compatible_representation_families": ["sparse_lexical", "dense_lsa", "frozen_local_sentence_embedding"]
+    },
+    {
+      "id": "SGDClassifier",
+      "compatible_representation_families": ["sparse_lexical", "dense_lsa", "frozen_local_sentence_embedding"]
+    },
+    {
+      "id": "RidgeClassifier",
+      "compatible_representation_families": ["sparse_lexical", "dense_lsa", "frozen_local_sentence_embedding"]
+    }
+  ],
+  "excluded_classifier_families": [
+    "deep_neural_networks",
+    "LightGBM",
+    "random_forests",
+    "transformer_fine_tuning",
+    "XGBoost"
+  ],
+  "transformer_fine_tuning_future_condition": "Not part of the first V2-C3 tournament; it may be proposed only after simpler representations and lightweight classifiers fail acceptable generalization and a separate amendment is frozen.",
+  "combination_policy": "The future runner may use only technically compatible, reasonable representation/classifier combinations; it must not create a blind Cartesian product.",
+  "architecture_candidates": [
+    {
+      "id": "direct_9_way",
+      "stage_1": "Directly predict one of the nine frozen SentinelVoice intents."
+    },
+    {
+      "id": "hierarchical_supported_then_intent",
+      "stage_1": "Classify supported/current request versus unsupported/uncertain/no-current-request.",
+      "stage_2": "For supported/current requests, classify among the eight supported intents."
+    }
+  ],
+  "architecture_authority_boundary": "Neither architecture can authenticate, confirm, authorize, select tools, establish ownership, or execute protected actions.",
+  "broad_tournament": {
+    "purpose": "Compare representation and lightweight classifier families using fixed predeclared presets.",
+    "group_aware_cv_required": true,
+    "fixed_presets_only": true,
+    "large_parameter_search_allowed": false,
+    "ranking_uses_raw_classifier_metrics": true
+  },
+  "finalist_hyperparameter_search": {
+    "runs_after_broad_tournament": true,
+    "maximum_finalist_combinations": 3,
+    "finalists_must_be_technically_distinct": true,
+    "allowed_search_methods": ["GridSearchCV", "RandomizedSearchCV"],
+    "bounded_search_required": true,
+    "same_group_aware_folds_required": true,
+    "fresh_lockbox_allowed": false,
+    "consumed_external_test_results_allowed": false
+  },
+  "bounded_search_spaces": {
+    "LinearSVC": {
+      "C": [0.1, 0.25, 0.5, 1.0, 2.0, 4.0],
+      "class_weight": [null, "balanced"]
+    },
+    "LogisticRegression": {
+      "C": [0.1, 0.25, 0.5, 1.0, 2.0, 4.0],
+      "class_weight": [null, "balanced"],
+      "max_iter": [2000]
+    },
+    "SGDClassifier": {
+      "loss": ["hinge", "log_loss", "modified_huber"],
+      "alpha": [0.00001, 0.0001, 0.001],
+      "class_weight": [null, "balanced"]
+    },
+    "RidgeClassifier": {
+      "alpha": [0.1, 1.0, 10.0],
+      "class_weight": [null, "balanced"]
+    },
+    "representations": {
+      "word_ngram_range": [[1, 1], [1, 2], [1, 3]],
+      "character_ngram_range": [[3, 5], [3, 6], [4, 6]],
+      "min_df": [1, 2, 3],
+      "max_df": [0.95, 1.0],
+      "sublinear_tf": [true, false],
+      "lsa_component_count": [64, 128, 256],
+      "combination_limit_policy": "Use bounded named presets in the broad tournament and tune only the dimensions relevant to each finalist."
+    }
+  },
+  "metrics": {
+    "primary_raw_classifier_ranking": [
+      "macro_f1_mean",
+      "macro_f1_standard_deviation"
+    ],
+    "required_raw_classifier_metrics": [
+      "accuracy",
+      "weighted_f1",
+      "per_class_precision_recall_f1",
+      "unsupported_or_uncertain_recall",
+      "false_supported_rate",
+      "supported_intent_accuracy",
+      "protected_write_recall",
+      "protected_write_false_positive_count",
+      "protected_write_false_positive_rate",
+      "confusion_matrix",
+      "fold_to_fold_variance",
+      "source_domain_breakdown",
+      "inference_p50",
+      "inference_p90",
+      "inference_p95",
+      "artifact_model_size"
+    ],
+    "later_abstention_ood_metrics": [
+      "coverage",
+      "selective_accuracy",
+      "selective_macro_f1",
+      "error_removal",
+      "protected_write_behavior_after_abstention"
+    ],
+    "ranking_boundary": "Raw-classifier ranking and later abstention/OOD ranking must be reported separately and never silently mixed."
+  },
+  "safety_gates": {
+    "scope": "pooled raw-classifier predictions from group-aware cross-validation",
+    "protected_write_false_positive_rate_maximum": 0.01,
+    "protected_write_recall_minimum": 0.8,
+    "unsupported_or_uncertain_recall_minimum": 0.8,
+    "all_gates_required": true,
+    "if_no_candidate_passes": "Record no eligible winner; do not relax gates after observing results, and move to data, architecture, or OOD improvements."
+  },
+  "winner_selection": {
+    "eligibility": "Candidate must pass every safety gate.",
+    "primary_ranking": "highest macro_f1_mean",
+    "practical_tie_macro_f1_difference_below": 0.005,
+    "tie_break_order": [
+      "lower false_supported_rate",
+      "higher unsupported_or_uncertain_recall",
+      "lower protected_write_false_positive_rate",
+      "lower macro_f1_standard_deviation",
+      "lower inference_p95",
+      "smaller artifact_model_size",
+      "simpler_reversible_architecture"
+    ]
+  },
+  "latency_and_size_reporting": {
+    "measurement_source": "local_ml",
+    "percentiles": [50, 90, 95],
+    "include_representation_and_prediction_path": true,
+    "sample_count_and_environment_required": true,
+    "artifact_bytes_required": true
+  },
+  "final_freeze_procedure": [
+    "Complete the broad tournament and any bounded finalist search using development data and frozen group-aware folds only.",
+    "Apply the predeclared safety gates and winner/tie-break rules; record no eligible winner if none pass.",
+    "Freeze the selected architecture, representation, classifier, hyperparameters, preprocessing, thresholds, taxonomy, code revision, input hashes, and deterministic seeds.",
+    "Write selection metadata before opening or evaluating the fresh V2-C3 lockbox.",
+    "Evaluate the frozen configuration once on the fresh V2-C3 lockbox and report it separately.",
+    "Only after that freeze may consumed historical external benchmarks be rerun; identify them as historical, never fresh holdouts."
+  ],
+  "test_set_tuning_rules": {
+    "v2c1_locked_test_allowed_for_selection": false,
+    "fresh_v2c3_lockbox_allowed_for_selection": false,
+    "banking77_test_allowed_for_selection": false,
+    "clinc_test_or_processed_evaluation_allowed_for_selection": false,
+    "cfpb_allowed_for_selection": false,
+    "historical_external_results_may_change_candidate_or_threshold": false,
+    "lockbox_results_may_trigger_same_phase_retuning": false
+  }
+}

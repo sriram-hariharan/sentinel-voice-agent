@@ -1,9 +1,9 @@
-# SentinelVoice V2-C offline intent/risk experiment
+# SentinelVoice V2-C offline intent/risk experiments
 
-V2-C uses only controlled synthetic and hand-reviewed SentinelVoice utterances.
-It does not download, ingest, or train on BANKING77 or any other public or
-external dataset. Production transcripts are not repository data. These three
-possible sources remain separate in every artifact and report.
+V2-C1 uses only controlled synthetic and hand-reviewed SentinelVoice
+utterances. It did not download, ingest, or train on BANKING77 or any other
+public or external dataset. Production transcripts are not repository data.
+These sources remain separate in every artifact and report.
 
 The classifier is offline and advisory. It is not imported by the agent or
 voice runtime and has no authority over authentication, confirmation,
@@ -91,16 +91,44 @@ separate frozen Logistic path improved selective accuracy to 72.13% but
 collapsed coverage to 10.30% (183 of 1,776 records). It does not replace or
 validate the primary SVM.
 
-These external results did not select, retrain, tune, or modify V2-C1. Future
-model-development work may separately investigate stronger classical models,
-feature changes, embeddings, calibration/OOD methods, group-aware
-`StratifiedGroupKFold` validation, and carefully governed augmentation. Public
-consumer-derived CFPB narratives remain approved for offline evaluation and
-review only. Any use for training requires a separate V2-C3 data-governance
-decision, and any approved future training set must be hash-disjoint from this
-consumed evaluation holdout.
+These external results did not select, retrain, tune, or modify V2-C1.
 
-## Reproduce
+## Frozen V2-C3 development contract
+
+V2-C3 is a systematic next-generation model-development phase motivated by
+the measured external domain shift. It does not tune against the already seen
+BANKING77 test, CLINC test/processed evaluation, CFPB, or V2-C1 locked-test
+results. Those remain historical evaluation evidence and may be rerun only
+after a future V2-C3 configuration is frozen.
+
+The configuration-only `v2c3_data_registry.json` and
+`v2c3_experiment_contract.json` freeze the rules before execution. Later work
+may compare bounded word/character TF-IDF, LSA, and frozen local
+`BAAI/bge-small-en-v1.5` representations with LinearSVC,
+LogisticRegression, SGDClassifier, and RidgeClassifier. It may compare direct
+nine-way classification with a supported/current-then-intent hierarchy, using
+group-aware `StratifiedGroupKFold`, bounded finalist optimization, predeclared
+safety gates, and separately reported uncertainty/OOD behavior. No training,
+embedding, cross-validation, model selection, or lockbox materialization occurs
+in the contract step.
+
+V2-C3 development may later use the existing internal train/validation splits
+and conditionally eligible BANKING77 train and CLINC finance train/validation
+examples. External eligibility is mapping-status-specific: exact and
+unsupported categories are automatic candidates, while near and ambiguous
+examples require utterance-level review. A taxonomy mapping can never invent
+a protected-write request. A deterministic 80/20 development/fresh-lockbox
+split must be made before training, with duplicate and lineage groups kept
+together. Generic CLINC OOS examples are not automatically SentinelVoice
+unsupported examples.
+
+CFPB remains evaluation/research-only in full. Neither the frozen 1,800 nor
+other available narratives, annotations, semantic labels, or structured
+metadata-derived targets may be used for V2-C3 fitting or selection. Bitext
+remains pending acquisition, mapping, and a later governance amendment;
+unverified bank-support transcripts remain prohibited.
+
+## Reproduce V2-C1
 
 ```bash
 sentinelvoice_env/bin/python scripts/build_v2_intent_dataset.py

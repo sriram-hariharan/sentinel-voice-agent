@@ -1,8 +1,8 @@
 {
-  "schema_version": "external-dataset-sources.v2",
+  "schema_version": "external-dataset-sources.v3",
   "qualification_phase": "V2-C2A",
-  "policy_update_phase": "V2-C2K",
-  "reviewed_on": "2026-09-27",
+  "policy_update_phase": "V2-C3",
+  "reviewed_on": "2026-09-28",
   "datasets_downloaded": true,
   "models_retrained": false,
   "data_governance_policy": {
@@ -10,6 +10,9 @@
     "public_deidentified_real_consumer_authored_data_allowed_for_offline_evaluation": true,
     "real_consumer_derived_data_allowed_for_training": false,
     "training_requires_separate_explicit_decision": true,
+    "v2c3_training_decision_recorded": true,
+    "public_crowdsourced_benchmark_training_requires_split_specific_approval": true,
+    "v2c3_data_registry": "data/evals/v2/ml/v2c3_data_registry.json",
     "private_leaked_proprietary_or_scraped_customer_records_allowed": false,
     "external_raw_data_must_remain_separate_from_application_data": true
   },
@@ -27,11 +30,27 @@
       "license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
       "provenance_notes": "Published by PolyAI in its official task-specific-datasets repository and associated with the ACL 2020 paper Efficient Intent Detection with Dual Sentence Encoders.",
       "privacy_notes": "The official source describes annotated online-banking queries, not released bank call logs or production transcripts. Treat utterances as public benchmark text and preserve attribution.",
-      "intended_use": "Primary external intent-generalization benchmark after a separate mapping and evaluation plan is frozen.",
+      "intended_use": "The test split is a consumed historical external intent-generalization benchmark. Under the later V2-C3 decision, only train.csv may contribute to conditional development and fresh-lockbox allocation under the frozen registry restrictions.",
       "allowed_for_initial_evaluation": true,
-      "allowed_for_future_training": false,
+      "allowed_for_future_training": true,
       "mapping_required": true,
-      "status": "qualified_for_evaluation_only"
+      "status": "qualified_for_evaluation_and_restricted_v2c3_train_use",
+      "v2c3_training_policy": {
+        "decision": "approved_with_restrictions",
+        "approved_splits": ["train.csv"],
+        "prohibited_splits": ["test.csv"],
+        "automatically_eligible_mapping_statuses": [
+          "EXACT_MATCH",
+          "UNSUPPORTED"
+        ],
+        "utterance_review_required_mapping_statuses": [
+          "NEAR_MATCH",
+          "AMBIGUOUS"
+        ],
+        "protected_write_from_taxonomy_mapping_allowed": false,
+        "fresh_lockbox_allocation_required": true,
+        "registry_reference": "data/evals/v2/ml/v2c3_data_registry.json"
+      }
     },
     {
       "source_id": "cfpb_consumer_complaint_narratives_archive",
@@ -98,11 +117,29 @@
       "license": "Creative Commons Attribution 3.0 Unported (CC BY 3.0)",
       "provenance_notes": "Official repository accompanying the EMNLP 2019 paper An Evaluation Dataset for Intent Classification and Out-of-Scope Prediction. The creators state that examples were crowdsourced and are single-intent.",
       "privacy_notes": "Crowdsourced benchmark utterances are not authenticated customer interactions or bank support transcripts.",
-      "intended_use": "Evaluate unsupported_or_uncertain and out-of-scope detection after a separate mapping and sampling protocol is frozen.",
+      "intended_use": "The test and processed evaluation splits remain historical external benchmarks. Under the later V2-C3 decision, only qualifying finance-domain train/val examples may contribute to conditional development and fresh-lockbox allocation; generic OOS examples remain excluded.",
       "allowed_for_initial_evaluation": true,
-      "allowed_for_future_training": false,
+      "allowed_for_future_training": true,
       "mapping_required": true,
-      "status": "qualified_oos_evaluation_only"
+      "status": "qualified_for_evaluation_and_restricted_v2c3_finance_train_val_use",
+      "v2c3_training_policy": {
+        "decision": "approved_with_restrictions",
+        "approved_splits": ["train", "val"],
+        "approved_scope": "finance-domain examples only",
+        "prohibited_splits": ["test", "oos_train", "oos_val", "oos_test"],
+        "automatically_eligible_mapping_statuses": [
+          "EXACT_MATCH",
+          "UNSUPPORTED"
+        ],
+        "utterance_review_required_mapping_statuses": [
+          "NEAR_MATCH",
+          "AMBIGUOUS"
+        ],
+        "generic_oos_automatically_mapped_to_unsupported": false,
+        "protected_write_from_taxonomy_mapping_allowed": false,
+        "fresh_lockbox_allocation_required": true,
+        "registry_reference": "data/evals/v2/ml/v2c3_data_registry.json"
+      }
     },
     {
       "source_id": "bank_of_america_support_transcripts",
@@ -160,6 +197,20 @@
       "allowed_for_future_training": false,
       "mapping_required": true,
       "status": "not_found_officially"
+    }
+  ],
+  "policy_history": [
+    {
+      "schema_version": "external-dataset-sources.v2",
+      "phase": "V2-C2K",
+      "reviewed_on": "2026-09-27",
+      "decision": "All external sources remained evaluation-only pending a separate training-governance decision."
+    },
+    {
+      "schema_version": "external-dataset-sources.v3",
+      "phase": "V2-C3",
+      "reviewed_on": "2026-09-28",
+      "decision": "Approved only BANKING77 train and qualifying CLINC finance train/val examples under the V2-C3 registry; CFPB, Bitext, unverified transcripts, and every consumed evaluation split remain prohibited."
     }
   ]
 }

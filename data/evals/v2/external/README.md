@@ -35,9 +35,10 @@ External evaluation comes before any retraining. The frozen V2-C1 model should
 first be measured without adapting to the new source. That gives an honest
 generalization result. Training on the evaluation source first would erase that
 baseline and make it impossible to distinguish transfer from memorization or
-source-specific tuning. Every source currently has
-`allowed_for_future_training: false`; training would require a new, explicit
-review.
+source-specific tuning. V2-C2 therefore marked every source
+`allowed_for_future_training: false`. V2-C3 later records a narrow explicit
+amendment for only BANKING77 train and qualifying CLINC finance train/val;
+consumed test splits and every other source retain their prior prohibition.
 
 ## Qualified evaluation candidates
 
@@ -581,13 +582,30 @@ be described as strong generalization or directly compared with the balanced
 internal nine-intent test as a like-for-like benchmark. It did not alter the
 frozen model, features, taxonomy, hyperparameters, or abstention rule.
 
-Future model-development work may investigate better classical models,
-feature changes, embeddings, calibration and OOD methods,
-`StratifiedGroupKFold` or other group-aware validation, training augmentation,
-and separately governed external training sources. This is not approval to
-train on CFPB or other real consumer-derived narratives. Such training requires
-a separate explicit V2-C3 data-governance decision, and any approved future
-training hashes must remain disjoint from this consumed CFPB holdout.
+## V2-C3 training-governance amendment
+
+V2-C3 is motivated by the frozen external evidence, but does not tune against
+it. `dataset_sources.json` version 3 and the V2-C3 data registry now approve
+only BANKING77 `train.csv` and the previously unused CLINC finance `train` and
+`val` examples for conditional future development. Frozen `EXACT_MATCH` and
+`UNSUPPORTED` source categories are automatic candidates; `NEAR_MATCH` and
+`AMBIGUOUS` examples require utterance-level semantic review. Category mapping
+cannot create `freeze_card` or `create_dispute`: those targets require an
+explicit current action request.
+
+Before any fitting or selection, eligible external examples must be divided
+deterministically into 80% development and a fresh 20% lockbox, with source,
+lineage, and normalized-duplicate isolation. BANKING77 test, CLINC test and
+processed evaluation data, and CLINC OOS test remain consumed historical
+benchmarks. Generic CLINC `oos_train`/`oos_val` examples are not automatically
+`unsupported_or_uncertain`, because CLINC's scope is not SentinelVoice's.
+
+CFPB remains evaluation/research-only without exception: the frozen 1,800,
+other available narratives, semantic annotations, and CFPB metadata-derived
+intent targets are all prohibited for V2-C3 training and selection. Bitext is
+`candidate_pending_acquisition_mapping_and_governance`, and unverified bank
+support transcripts remain prohibited. The contract step trains and evaluates
+no model and creates no external transformation or lockbox.
 
 Reproduction is intentionally explicit and inference-only:
 

@@ -5,7 +5,8 @@
 **Project status:** Core V1 remains release-validated; V2-C1 adds an offline-only
 intent/risk ML experiment over controlled SentinelVoice synthetic data, and
 V2-C2 measures frozen-model generalization on separately governed public
-external benchmarks.
+external benchmarks. V2-C3 now freezes the next model-development and
+data-governance contract before any new training or evaluation.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -144,9 +145,12 @@ secrets, and PII are not intentionally retained; and it does not come from
 private, leaked, proprietary, or scraped customer records. Raw external data
 must remain segregated from the synthetic application data.
 
-This permission is for offline evaluation. Using real consumer-derived data
-for model training requires a separate explicit project-owner decision and
-review.
+V2-C3 records a split-specific training decision for public benchmark data:
+only BANKING77 train and qualifying CLINC finance train/validation examples
+may enter later development under the frozen mapping, review, leakage, and
+fresh-lockbox rules. Consumed test splits remain evaluation-only. Real
+consumer-derived CFPB data remains prohibited for training, as do Bitext until
+a later amendment and unverified bank-support transcripts.
 
 ### Local voice setup
 
@@ -3597,6 +3601,26 @@ claim that V2-C1 generalized well. Frozen Logistic abstention raised selective
 accuracy to 72.13% but accepted only 183 records (10.30% coverage). The result
 does not alter the model, features, taxonomy, or thresholds and remains
 offline-only with no runtime authority.
+
+V2-C3 is the systematic next-generation model-development phase motivated by
+that measured domain shift; it is not a retrospective tuning pass over known
+external test results. Its configuration-only contract freezes group-aware
+`StratifiedGroupKFold`, a fresh pre-training external lockbox, bounded lexical,
+LSA, and frozen local embedding representations, four lightweight classifier
+families, direct versus hierarchical classification, bounded finalist search,
+safety gates, metrics, and deterministic tie-breaks. No V2-C3 dataset,
+lockbox, embedding cache, model, or evaluation result is created by this
+contract step.
+
+Only the existing internal train/validation data and conditionally eligible
+BANKING77 train plus CLINC finance train/validation examples may support later
+V2-C3 development. V2-C1 `locked_test`, BANKING77 test, CLINC test/processed
+evaluation data, and the CFPB holdout are historical evaluation evidence and
+cannot select V2-C3 features, models, hyperparameters, or thresholds. All CFPB
+narratives and annotations—including records outside the 1,800 holdout—remain
+evaluation/research-only. See
+`data/evals/v2/ml/v2c3_data_registry.json` and
+`data/evals/v2/ml/v2c3_experiment_contract.json`.
 
 ### Why this extension is useful
 

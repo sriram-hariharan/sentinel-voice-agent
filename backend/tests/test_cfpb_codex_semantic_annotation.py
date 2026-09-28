@@ -6,6 +6,7 @@ import pytest
 
 from scripts import annotate_cfpb_semantic_with_codex as codex_workflow
 from scripts import build_cfpb_annotation_workfile as contract
+from scripts import export_cfpb_semantic_final_labels as final_export
 from scripts import review_cfpb_semantic_annotations as reviewer
 
 
@@ -1069,3 +1070,331 @@ def test_workflow_status_is_deterministic_and_internally_consistent() -> None:
     assert first["pass_b_pending"] == first["pass_c_required"] == 0
     assert first["final_labels_currently_available"] == 1
     assert first["human_review_remaining"] == 0
+
+
+def final_adjudication_record(
+    row: dict[str, Any],
+    first_pass: dict[str, Any],
+    second_pass: dict[str, Any],
+    *,
+    resolution_status: str = "RESOLVED",
+    category: str | None = "SINGLE_SUPPORTED_INTENT",
+    intents: list[str] | None = None,
+    confidence: str | None = "HIGH",
+) -> dict[str, Any]:
+    _, batch = codex_workflow.prepare_adjudication_batch(
+        [row],
+        [first_pass],
+        [second_pass],
+        [],
+        limit=1,
+        batch_id="synthetic-final-export-adjudication",
+    )
+    unresolved = resolution_status == "UNRESOLVED"
+    result = adjudication_result_for(
+        batch[0],
+        resolution_status=resolution_status,
+        category=None if unresolved else category,
+        intents=[] if unresolved else intents,
+        confidence=None if unresolved else confidence,
+        note="" if unresolved else "Synthetic final adjudication rationale.",
+        unresolved_reason=(
+            "Synthetic record cannot be resolved." if unresolved else ""
+        ),
+    )
+    return codex_workflow.successful_adjudication_record(result, batch[0])
+
+
+def test_final_export_pass_a_only_record_uses_pass_a() -> None:
+    row = non_qc_source("Synthetic final Pass-A-only narrative")
+    first_pass = successful_record(row, intents=["transaction_details"])
+
+    records = final_export.build_final_labels(
+        [row], [first_pass], [], [], expected_count=1
+    )
+
+    assert records[0]["final_annotation_source"] == "CODEX_FIRST_PASS"
+    assert records[0]["final_supported_intents"] == ["transaction_details"]
+    assert records[0]["pass_b_required"] is False
+    assert records[0]["pass_c_required"] is False
+
+
+def test_final_export_safe_ab_agreement_uses_agreed_semantics() -> None:
+    row = qc_source("Synthetic final safe agreement narrative")
+    first_pass = successful_record(row, intents=["recent_transactions"])
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        intents=["recent_transactions"],
+    )
+
+    records = final_export.build_final_labels(
+        [row], [first_pass], [second_pass], [], expected_count=1
+    )
+
+    assert records[0]["final_annotation_source"] == "CODEX_DUAL_PASS_AGREEMENT"
+    assert records[0]["final_supported_intents"] == ["recent_transactions"]
+    assert records[0]["pass_b_required"] is True
+    assert records[0]["pass_c_required"] is False
+
+
+def test_final_export_resolved_pass_c_overrides_ab() -> None:
+    row = qc_source("Synthetic final Pass-C override narrative")
+    first_pass = successful_record(row, intents=["account_balance"])
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        intents=["card_status"],
+    )
+    adjudication = final_adjudication_record(
+        row,
+        first_pass,
+        second_pass,
+        intents=["transaction_details"],
+    )
+
+    records = final_export.build_final_labels(
+        [row],
+        [first_pass],
+        [second_pass],
+        [adjudication],
+        expected_count=1,
+    )
+
+    assert records[0]["final_annotation_source"] == "CODEX_ADJUDICATOR"
+    assert records[0]["final_supported_intents"] == ["transaction_details"]
+    assert records[0]["pass_c_required"] is True
+
+
+def test_final_export_rejects_unresolved_pass_c() -> None:
+    row = qc_source("Synthetic final unresolved Pass-C narrative")
+    first_pass = successful_record(row, intents=["account_balance"])
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        intents=["card_status"],
+    )
+    adjudication = final_adjudication_record(
+        row,
+        first_pass,
+        second_pass,
+        resolution_status="UNRESOLVED",
+    )
+
+    with pytest.raises(ValueError, match="UNRESOLVED Pass-C"):
+        final_export.build_final_labels(
+            [row],
+            [first_pass],
+            [second_pass],
+            [adjudication],
+            expected_count=1,
+        )
+
+
+@pytest.mark.parametrize(
+    ("category", "intents", "expected"),
+    [
+        ("SINGLE_SUPPORTED_INTENT", ["account_balance"], "account_balance"),
+        ("UNSUPPORTED", [], "unsupported_or_uncertain"),
+        ("UNCLEAR_OR_INSUFFICIENT", [], "unsupported_or_uncertain"),
+        ("NO_CURRENT_REQUEST", [], "unsupported_or_uncertain"),
+    ],
+)
+def test_frozen_primary_single_label_mapping(
+    category: str,
+    intents: list[str],
+    expected: str,
+) -> None:
+    assert final_export.primary_single_label_target(category, intents) == expected
+
+
+def test_multi_intent_has_no_forced_single_label_target() -> None:
+    assert (
+        final_export.primary_single_label_target(
+            "MULTI_SUPPORTED_INTENT",
+            ["account_balance", "recent_transactions"],
+        )
+        is None
+    )
+
+
+def test_multi_intent_set_membership_metric_semantics() -> None:
+    intents = ["account_balance", "recent_transactions"]
+
+    assert final_export.multi_intent_prediction_is_hit(
+        "recent_transactions", intents
+    )
+    assert not final_export.multi_intent_prediction_is_hit("card_status", intents)
+    assert not final_export.multi_intent_prediction_is_hit(
+        "unsupported_or_uncertain", intents
+    )
+
+
+def test_final_export_is_text_free_and_rejects_extra_narrative_field() -> None:
+    row = non_qc_source("SECRET_SYNTHETIC_FINAL_NARRATIVE")
+    first_pass = successful_record(row)
+    records = final_export.build_final_labels(
+        [row], [first_pass], [], [], expected_count=1
+    )
+    payload = contract.stable_jsonl_bytes(records).decode("utf-8")
+
+    assert "SECRET_SYNTHETIC_FINAL_NARRATIVE" not in payload
+    assert "narrative" not in records[0]
+    invalid = {**records[0], "narrative": row["narrative"]}
+    with pytest.raises(ValueError, match="fields differ"):
+        final_export.validate_final_export_records([invalid], expected_count=1)
+
+
+def test_final_export_omits_annotation_and_adjudication_notes() -> None:
+    row = qc_source("Synthetic final omitted-note narrative")
+    first_pass = successful_record(row, intents=["account_balance"])
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        intents=["card_status"],
+    )
+    adjudication = final_adjudication_record(
+        row,
+        first_pass,
+        second_pass,
+        intents=["recent_transactions"],
+    )
+
+    record = final_export.build_final_labels(
+        [row],
+        [first_pass],
+        [second_pass],
+        [adjudication],
+        expected_count=1,
+    )[0]
+
+    assert "annotation_note" not in record
+    assert "final_annotation_note" not in record
+    assert "unresolved_reason" not in record
+
+
+def test_final_export_omits_classifier_derived_source_fields() -> None:
+    row = {
+        **non_qc_source("Synthetic final classifier-blind narrative"),
+        "classifier_prediction": "SECRET_CLASSIFIER",
+        "svm_score": "SECRET_SVM",
+        "logistic_probability": "SECRET_LOGISTIC",
+    }
+    first_pass = successful_record(row)
+
+    records = final_export.build_final_labels(
+        [row], [first_pass], [], [], expected_count=1
+    )
+    serialized = json.dumps(records)
+
+    assert "SECRET_" not in serialized
+    assert not contract.FORBIDDEN_MODEL_FIELDS.intersection(records[0])
+
+
+def test_final_export_rejects_duplicate_hashes() -> None:
+    first = non_qc_source("Synthetic final duplicate-hash narrative")
+    second = {**first, "complaint_id": "2"}
+    first_pass = successful_record(first)
+
+    with pytest.raises(ValueError, match="hashes must be unique"):
+        final_export.build_final_labels(
+            [first, second],
+            [first_pass, {**first_pass, "complaint_id": "2"}],
+            [],
+            [],
+            expected_count=2,
+        )
+
+
+def test_final_export_rejects_invalid_category_intent_contract() -> None:
+    row = non_qc_source("Synthetic final invalid-category narrative")
+    first_pass = {
+        **successful_record(row),
+        "supported_intents": [],
+    }
+
+    with pytest.raises(ValueError, match="exactly one intent"):
+        final_export.build_final_labels(
+            [row], [first_pass], [], [], expected_count=1
+        )
+
+
+def test_final_export_order_and_bytes_are_deterministic() -> None:
+    rows = [
+        non_qc_source("Synthetic final deterministic second narrative"),
+        non_qc_source("Synthetic final deterministic first narrative"),
+    ]
+    rows[0]["complaint_id"] = "2"
+    rows[1]["complaint_id"] = "1"
+    first_pass = [successful_record(row) for row in rows]
+
+    first = final_export.build_final_labels(
+        rows, first_pass, [], [], expected_count=2
+    )
+    second = final_export.build_final_labels(
+        rows, first_pass, [], [], expected_count=2
+    )
+
+    assert [record["complaint_id"] for record in first] == ["2", "1"]
+    assert contract.stable_jsonl_bytes(first) == contract.stable_jsonl_bytes(second)
+
+
+def test_final_export_write_is_atomic_and_reproducible(tmp_path: Path) -> None:
+    row = non_qc_source("Synthetic final atomic-write narrative")
+    first_pass = successful_record(row)
+    records = final_export.build_final_labels(
+        [row], [first_pass], [], [], expected_count=1
+    )
+    output_path = tmp_path / "final-labels.jsonl"
+
+    first_payload = final_export.write_final_labels(
+        output_path, records, expected_count=1
+    )
+    second_payload = final_export.write_final_labels(
+        output_path, records, expected_count=1
+    )
+
+    assert first_payload == second_payload == output_path.read_bytes()
+    assert not list(tmp_path.glob(".final-labels.jsonl.*.tmp"))
+
+
+def test_final_export_requires_exactly_1800_by_default() -> None:
+    row = non_qc_source("Synthetic final completeness narrative")
+    first_pass = successful_record(row)
+
+    with pytest.raises(ValueError, match="expected 1800 source"):
+        final_export.build_final_labels([row], [first_pass], [], [])
+
+
+def test_final_export_preserves_protected_write_label() -> None:
+    row = non_qc_source("Synthetic explicit protected-write request")
+    first_pass = successful_record(row, intents=["freeze_card"])
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        intents=["freeze_card"],
+    )
+    adjudication = final_adjudication_record(
+        row,
+        first_pass,
+        second_pass,
+        intents=["freeze_card"],
+    )
+
+    record = final_export.build_final_labels(
+        [row],
+        [first_pass],
+        [second_pass],
+        [adjudication],
+        expected_count=1,
+    )[0]
+
+    assert record["final_supported_intents"] == ["freeze_card"]
+    assert record["primary_single_label_target"] == "freeze_card"
+
+
+def test_final_export_schema_contains_no_v2_c1_prediction_field() -> None:
+    assert "prediction" not in final_export.FINAL_LABEL_FIELDS
+    assert "predicted_intent" not in final_export.FINAL_LABEL_FIELDS
+    assert "svm_score" not in final_export.FINAL_LABEL_FIELDS
+    assert "logistic_probability" not in final_export.FINAL_LABEL_FIELDS

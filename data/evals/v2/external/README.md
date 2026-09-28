@@ -364,13 +364,12 @@ performs no training, and defers semantic review to the next phase.
 
 V2-C2P originally defined purely manual independent review for the 600
 `NEAR_MATCH` and 1,200 `AMBIGUOUS` records. The methodology now used is
-"Codex-assisted independent dual-pass annotation with Codex adjudication and
-targeted human review for genuinely unresolved cases." Pass A independently
-annotates all 1,800 records. Pass B independently re-annotates every record
-selected by the existing review-required logic, including the deterministic
-10% QC sample. Pass C adjudicates every completed A/B pair that cannot be
-safely resolved by exact agreement. These labels are not purely human ground
-truth.
+"Codex-assisted independent dual-pass annotation with Codex adjudication."
+Pass A independently annotates all 1,800 records. Pass B independently
+re-annotates every record selected by the existing review-required logic,
+including the deterministic 10% QC sample. Pass C adjudicates every completed
+A/B pair that cannot be safely resolved by exact agreement. These labels are
+not purely human ground truth.
 
 The exact narrative hashes remain a protected external-evaluation holdout.
 Neither narratives nor annotations may be used for training, feature
@@ -431,10 +430,9 @@ resumable and cannot be overwritten without an explicit replacement option.
 The standard-library residual reviewer CLI remains at
 `scripts/review_cfpb_semantic_annotations.py`. It is not Pass B and it is not
 Pass C. If genuine `UNRESOLVED` rows remain after Pass C, they remain in the
-1,800-record holdout and are reported as unresolved. Before V2-C1 runs, a
-separate frozen decision will either manually adjudicate a tiny residual set or
-exclude genuinely non-adjudicable records from primary intent scoring while
-still reporting benchmark coverage. No record is silently dropped.
+1,800-record holdout and cannot be exported as finalized. The completed
+workflow has zero unresolved rows, so no residual human adjudication was used
+and no record was dropped.
 
 The Codex workflow is coordinated by
 `scripts/annotate_cfpb_semantic_with_codex.py`. Existing Pass-A commands remain
@@ -470,6 +468,68 @@ remaining. An optional local preview is text-free and records whether each
 available provisional label came from Pass A, safe A/B agreement, or Pass C.
 It is not a final frozen export.
 
+## CFPB final semantic-label freeze and scoring contract
+
+The tracked final artifact is
+`processed/cfpb/cfpb_semantic_final_labels.jsonl`. It is generated and checked
+by `scripts/export_cfpb_semantic_final_labels.py`:
+
+```bash
+python3 scripts/export_cfpb_semantic_final_labels.py --write
+python3 scripts/export_cfpb_semantic_final_labels.py --check
+```
+
+The exporter makes no new semantic decision. For a record that never required
+Pass B it uses the valid Pass-A annotation. For a record with a safe exact A/B
+agreement it uses the agreed semantics. For a record routed to Pass C it
+requires a successful `RESOLVED` decision and uses the Pass-C final semantics.
+Missing, invalid, or `UNRESOLVED` required decisions make export fail.
+
+The JSONL contains only versioned identity, source stratum, final semantic
+category/intents/confidence, resolution provenance, Pass-B/Pass-C routing
+flags, and the frozen primary scoring target. It contains no narrative,
+complaint text, annotation/adjudication note, unresolved reason, classifier
+prediction, score, probability, margin, abstention result, or V2-C1 evaluation
+field. Rows preserve deterministic frozen source order, keys are serialized
+deterministically, and writes use flush/fsync plus atomic replacement.
+
+The exporter validates exactly 1,800 unique complaint IDs and narrative
+hashes, complete one-to-one Pass-A/Pass-B/Pass-C coverage where required,
+source linkage, the five-category contract, sorted unique intents from the
+frozen eight supported intents, category/intent cardinality, provenance, and
+the allowlisted output schema. Repeated runs from identical inputs must produce
+identical bytes. Protected-write subsets (`freeze_card` and `create_dispute`)
+are derived only from the final frozen semantic intents, never from keywords.
+
+The frozen nine-class single-label scoring mapping is:
+
+- `SINGLE_SUPPORTED_INTENT` -> its sole `final_supported_intents` value;
+- `UNSUPPORTED` -> `unsupported_or_uncertain`;
+- `UNCLEAR_OR_INSUFFICIENT` -> `unsupported_or_uncertain`;
+- `NO_CURRENT_REQUEST` -> `unsupported_or_uncertain`; and
+- `MULTI_SUPPORTED_INTENT` -> no forced single-label target.
+
+Multi-intent records remain part of the 1,800-record holdout. They are excluded
+only from primary metrics that require one exact target, including nine-class
+accuracy and macro-F1. They must be reported separately using
+`prediction_is_supported_intent = classifier_prediction in
+final_supported_intents`, with multi-intent count, membership-hit count, and
+membership accuracy. `unsupported_or_uncertain` is not a hit for a true
+multi-intent record because it cannot appear among the frozen eight supported
+intents.
+
+The frozen label distribution has 24 multi-intent records. Therefore the
+primary single-label subset contains 1,776 records, the excluded count is 24,
+and primary coverage is `1776 / 1800 = 0.986666...` (98.6667%). This is scoring
+coverage, not holdout deletion. The full export provenance is 1,541 Pass-A-only
+labels, 120 safe A/B agreements, and 139 resolved Pass-C labels. Pass C has
+zero unresolved records.
+
+Label construction and scoring-contract definition consumed only the source
+holdout plus Pass A/B/C stores. They did not read V2-C1 classifier outputs or
+evaluation artifacts. V2-C1 remains frozen and may be run only after this
+tracked label/scoring freeze; no classifier performance is claimed here.
+
 Before beginning this changed methodology, inspect the canonical workfile with
 the reviewer CLI's `--status`. If prior manual annotations must be cleared, the
 only supported reset is the explicit command below. It first writes a
@@ -485,6 +545,5 @@ python scripts/review_cfpb_semantic_annotations.py \
 Legacy Pass-A preparation/import refuses to start while the canonical workfile
 still has reviewed rows, preventing pre-methodology labels from being silently
 mixed into the provenance model. Status and comparison commands are
-non-mutating. Final tracked export and V2-C1 evaluation remain forbidden until
-annotation construction, unresolved handling, and scoring rules are explicitly
-frozen.
+non-mutating. The final tracked export and scoring rules are now frozen; V2-C1
+evaluation remains a later, separate step and was not run in this phase.

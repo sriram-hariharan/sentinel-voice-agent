@@ -3567,12 +3567,25 @@ qualified public datasets; those external metrics remain distinct from V2-C1.
 See `data/evals/v2/ml/README.md` and `data/evals/v2/external/README.md`.
 
 The CFPB semantic holdout uses Codex-assisted independent dual-pass annotation
-with Codex adjudication and targeted human review for genuinely unresolved
-cases. It is neither purely human ground truth nor classifier-assisted
-labeling. Frozen V2-C1 predictions and scores remain hidden until CFPB labels
-and scoring rules are frozen, and neither CFPB narratives nor resulting labels
-may be used for training, feature selection, hyperparameter or threshold
-tuning, or model selection.
+with Codex adjudication. It is neither purely human ground truth nor
+classifier-assisted labeling. The deterministic, text-free final labels are
+tracked at
+`data/evals/v2/external/processed/cfpb/cfpb_semantic_final_labels.jsonl`.
+Pass-A-only labels, safe exact A/B agreements, and resolved Pass-C decisions
+are the only permitted sources; all 1,800 records are finalized and none
+remain unresolved.
+
+The scoring contract was frozen before inspecting any V2-C1 output. A
+`SINGLE_SUPPORTED_INTENT` maps to its sole intent; `UNSUPPORTED`,
+`UNCLEAR_OR_INSUFFICIENT`, and `NO_CURRENT_REQUEST` map to
+`unsupported_or_uncertain`. `MULTI_SUPPORTED_INTENT` is not forced into one
+class: its 24 records remain in the holdout but are excluded from primary
+single-label accuracy/macro-F1, leaving 1,776 evaluable records and 98.6667%
+coverage. A separate multi-intent metric tests whether the prediction belongs
+to `final_supported_intents`. V2-C1 remains frozen and may be run only after
+this label/scoring freeze. Neither CFPB narratives nor resulting labels may be
+used for training, feature selection, hyperparameter or threshold tuning, or
+model selection.
 
 ### Why this extension is useful
 

@@ -1,0 +1,2414 @@
+{
+  "challenge_version": "2026-09-28.v2c3-challenge.v1",
+  "description": "Newly authored SentinelVoice-specific final challenge examples. This source definition is never training, augmentation, model-selection, CV, or threshold-selection data.",
+  "examples_by_intent": {
+    "account_balance": [
+      {
+        "lineage_id": "policy_balance_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "indirect_current_request",
+          "private_read"
+        ],
+        "text": "Enough about the general overdraft rules\u2014what can I actually spend from checking today?"
+      },
+      {
+        "lineage_id": "balance_direct_02",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "Read me the available balance in savings."
+      },
+      {
+        "lineage_id": "balance_conversational_03",
+        "tags": [
+          "conversational",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Hey, before I head out, how much is left in my checking account?"
+      },
+      {
+        "lineage_id": "balance_correction_04",
+        "tags": [
+          "correction",
+          "contrast",
+          "private_read"
+        ],
+        "text": "Actually, skip the purchase list and just tell me my current balance."
+      },
+      {
+        "lineage_id": "balance_indirect_05",
+        "tags": [
+          "indirect_current_request",
+          "short",
+          "private_read"
+        ],
+        "text": "Do I have enough available for a seventy-dollar grocery run?"
+      },
+      {
+        "lineage_id": "balance_noisy_06",
+        "tags": [
+          "noisy",
+          "long_form",
+          "private_read"
+        ],
+        "text": "I may have moved some money yesterday and lost track\u2014could you check what is spendable in savings now?"
+      },
+      {
+        "lineage_id": "balance_account_choice_07",
+        "tags": [
+          "account_selection",
+          "direct",
+          "private_read"
+        ],
+        "text": "What's the balance on checking, not the joint savings account?"
+      },
+      {
+        "lineage_id": "balance_spoken_amount_08",
+        "tags": [
+          "conversational",
+          "accessibility",
+          "private_read"
+        ],
+        "text": "Please say the amount I have available out loud."
+      },
+      {
+        "lineage_id": "balance_after_activity_09",
+        "tags": [
+          "context_like",
+          "current_request",
+          "private_read"
+        ],
+        "text": "After those bills cleared, what does my account balance show now?"
+      },
+      {
+        "lineage_id": "balance_not_history_10",
+        "tags": [
+          "contrast",
+          "direct",
+          "private_read"
+        ],
+        "text": "I don't need the history; I only need the money currently available."
+      },
+      {
+        "lineage_id": "balance_weekend_11",
+        "tags": [
+          "conversational",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Can you check whether my checking balance will cover this weekend?"
+      },
+      {
+        "lineage_id": "balance_savings_12",
+        "tags": [
+          "direct",
+          "account_selection",
+          "private_read"
+        ],
+        "text": "How much is sitting in my savings account right now?"
+      },
+      {
+        "lineage_id": "balance_pending_context_13",
+        "tags": [
+          "long_form",
+          "context_like",
+          "private_read"
+        ],
+        "text": "I'm not asking which charges are pending; I want the available account total after they are considered."
+      },
+      {
+        "lineage_id": "balance_simple_14",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "Check my spendable funds."
+      },
+      {
+        "lineage_id": "balance_transfer_context_15",
+        "tags": [
+          "context_like",
+          "indirect_current_request",
+          "private_read"
+        ],
+        "text": "I transferred rent money earlier\u2014what remains available in checking?"
+      },
+      {
+        "lineage_id": "balance_payday_16",
+        "tags": [
+          "conversational",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Did my pay leave me with more than five hundred dollars available?"
+      },
+      {
+        "lineage_id": "balance_two_accounts_17",
+        "tags": [
+          "account_selection",
+          "correction",
+          "private_read"
+        ],
+        "text": "Use the savings account this time and give me its current balance."
+      },
+      {
+        "lineage_id": "balance_voice_filler_18",
+        "tags": [
+          "noisy",
+          "spoken_style",
+          "private_read"
+        ],
+        "text": "Um, could you just, like, tell me how much money is in the account at the moment?"
+      },
+      {
+        "lineage_id": "balance_before_purchase_19",
+        "tags": [
+          "indirect_current_request",
+          "context_like",
+          "private_read"
+        ],
+        "text": "Before I place this order, tell me what I can spend without overdrawing."
+      },
+      {
+        "lineage_id": "balance_current_not_old_20",
+        "tags": [
+          "contrast",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Give me today's balance, not the figure from my last statement."
+      },
+      {
+        "lineage_id": "balance_checking_suffix_21",
+        "tags": [
+          "direct",
+          "account_selection",
+          "private_read"
+        ],
+        "text": "What is available in the checking account ending in 2841?"
+      },
+      {
+        "lineage_id": "balance_low_funds_22",
+        "tags": [
+          "conversational",
+          "indirect_current_request",
+          "private_read"
+        ],
+        "text": "Am I running low, or is there still money available in savings?"
+      },
+      {
+        "lineage_id": "balance_posted_context_23",
+        "tags": [
+          "context_like",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Now that the utility payment posted, please check the remaining balance."
+      },
+      {
+        "lineage_id": "balance_plain_24",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "Tell me my account total as of now."
+      },
+      {
+        "lineage_id": "balance_correction_savings_25",
+        "tags": [
+          "correction",
+          "account_selection",
+          "private_read"
+        ],
+        "text": "Sorry, I meant the available savings balance rather than checking."
+      },
+      {
+        "lineage_id": "balance_budget_26",
+        "tags": [
+          "indirect_current_request",
+          "conversational",
+          "private_read"
+        ],
+        "text": "How much room do I have left in the account for today's budget?"
+      },
+      {
+        "lineage_id": "balance_long_noisy_27",
+        "tags": [
+          "long_form",
+          "noisy",
+          "private_read"
+        ],
+        "text": "I've been moving funds around and the numbers are blending together, so can you read the current available balance for me?"
+      },
+      {
+        "lineage_id": "balance_after_withdrawal_28",
+        "tags": [
+          "context_like",
+          "direct",
+          "private_read"
+        ],
+        "text": "What balance remains after my cash withdrawal?"
+      },
+      {
+        "lineage_id": "balance_only_29",
+        "tags": [
+          "contrast",
+          "short",
+          "private_read"
+        ],
+        "text": "Balance only, please\u2014no transaction details."
+      },
+      {
+        "lineage_id": "balance_question_30",
+        "tags": [
+          "direct",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Could you look up the amount currently available to me?"
+      }
+    ],
+    "card_status": [
+      {
+        "lineage_id": "prior_frozen_card_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "prior_frozen_card",
+          "status_only",
+          "private_read"
+        ],
+        "text": "My card was frozen earlier; is it still frozen now?"
+      },
+      {
+        "lineage_id": "card_status_freeze_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "status_only",
+          "contrast",
+          "private_read"
+        ],
+        "text": "Don't change anything\u2014just tell me whether this card is active."
+      },
+      {
+        "lineage_id": "card_status_decline_03",
+        "tags": [
+          "indirect_current_request",
+          "status_only",
+          "private_read"
+        ],
+        "text": "The terminal rejected my card; can you see whether the card itself is disabled?"
+      },
+      {
+        "lineage_id": "card_status_direct_04",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "Check the current status of my debit card."
+      },
+      {
+        "lineage_id": "card_status_suffix_05",
+        "tags": [
+          "direct",
+          "card_selection",
+          "private_read"
+        ],
+        "text": "Is the card ending 6618 active or locked?"
+      },
+      {
+        "lineage_id": "card_status_no_action_06",
+        "tags": [
+          "contrast",
+          "status_only",
+          "private_read"
+        ],
+        "text": "I only want to know if the card works; please don't freeze it."
+      },
+      {
+        "lineage_id": "card_status_wallet_07",
+        "tags": [
+          "context_like",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Before I put this card back in my wallet, is it currently usable?"
+      },
+      {
+        "lineage_id": "card_status_replacement_08",
+        "tags": [
+          "card_selection",
+          "conversational",
+          "private_read"
+        ],
+        "text": "Can you tell me whether my replacement card has become active yet?"
+      },
+      {
+        "lineage_id": "card_status_unsure_09",
+        "tags": [
+          "conversational",
+          "status_only",
+          "private_read"
+        ],
+        "text": "I'm not sure what I did yesterday\u2014does the card show as blocked?"
+      },
+      {
+        "lineage_id": "card_status_correction_10",
+        "tags": [
+          "correction",
+          "contrast",
+          "private_read"
+        ],
+        "text": "Actually, don't lock it; I meant to ask what its status is."
+      },
+      {
+        "lineage_id": "card_status_long_11",
+        "tags": [
+          "long_form",
+          "noisy",
+          "private_read"
+        ],
+        "text": "I tried paying twice and both attempts failed, so could you check whether the card is currently enabled without changing it?"
+      },
+      {
+        "lineage_id": "card_status_physical_12",
+        "tags": [
+          "direct",
+          "card_selection",
+          "private_read"
+        ],
+        "text": "What state is my physical card in right now?"
+      },
+      {
+        "lineage_id": "card_status_frozen_question_13",
+        "tags": [
+          "status_only",
+          "short",
+          "private_read"
+        ],
+        "text": "Does the account show my card as frozen?"
+      },
+      {
+        "lineage_id": "card_status_travel_14",
+        "tags": [
+          "context_like",
+          "indirect_current_request",
+          "private_read"
+        ],
+        "text": "I'm about to travel; verify that this card is still active for me."
+      },
+      {
+        "lineage_id": "card_status_two_cards_15",
+        "tags": [
+          "card_selection",
+          "correction",
+          "private_read"
+        ],
+        "text": "Check 9042, not my other card\u2014is that one usable?"
+      },
+      {
+        "lineage_id": "card_status_spoken_16",
+        "tags": [
+          "spoken_style",
+          "noisy",
+          "private_read"
+        ],
+        "text": "Uh, is my card, the blue one, currently on or off?"
+      },
+      {
+        "lineage_id": "card_status_previous_lock_17",
+        "tags": [
+          "prior_frozen_card",
+          "current_request",
+          "private_read"
+        ],
+        "text": "I locked the card through the app last night; confirm its status today."
+      },
+      {
+        "lineage_id": "card_status_no_freeze_18",
+        "tags": [
+          "contrast",
+          "status_only",
+          "private_read"
+        ],
+        "text": "Without making any changes, can you see if purchases are enabled?"
+      },
+      {
+        "lineage_id": "card_status_online_19",
+        "tags": [
+          "context_like",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Is my card active even though the online payment did not go through?"
+      },
+      {
+        "lineage_id": "card_status_simple_20",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "Is this card locked right now?"
+      },
+      {
+        "lineage_id": "card_status_after_call_21",
+        "tags": [
+          "prior_frozen_card",
+          "conversational",
+          "private_read"
+        ],
+        "text": "Support changed something earlier\u2014what status does my card have now?"
+      },
+      {
+        "lineage_id": "card_status_contactless_22",
+        "tags": [
+          "indirect_current_request",
+          "context_like",
+          "private_read"
+        ],
+        "text": "Contactless stopped working; does the card still show as active?"
+      },
+      {
+        "lineage_id": "card_status_specific_23",
+        "tags": [
+          "card_selection",
+          "direct",
+          "private_read"
+        ],
+        "text": "Look up the active status for the card ending in 1170."
+      },
+      {
+        "lineage_id": "card_status_not_policy_24",
+        "tags": [
+          "contrast",
+          "current_request",
+          "private_read"
+        ],
+        "text": "I know the freeze policy; I need the actual status of my card."
+      },
+      {
+        "lineage_id": "card_status_available_25",
+        "tags": [
+          "conversational",
+          "status_only",
+          "private_read"
+        ],
+        "text": "Can I use this card today, or is it still disabled?"
+      },
+      {
+        "lineage_id": "card_status_change_mind_26",
+        "tags": [
+          "correction",
+          "status_only",
+          "private_read"
+        ],
+        "text": "Wait, no action yet\u2014first check whether the card is already frozen."
+      },
+      {
+        "lineage_id": "card_status_cash_context_27",
+        "tags": [
+          "context_like",
+          "indirect_current_request",
+          "private_read"
+        ],
+        "text": "The ATM would not accept it; please see what the card status says."
+      },
+      {
+        "lineage_id": "card_status_longer_28",
+        "tags": [
+          "long_form",
+          "contrast",
+          "private_read"
+        ],
+        "text": "Before we discuss replacing anything, I need you to tell me whether my existing card is active, frozen, or otherwise blocked."
+      },
+      {
+        "lineage_id": "card_status_one_question_29",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "What is my card's current state?"
+      },
+      {
+        "lineage_id": "card_status_enabled_30",
+        "tags": [
+          "status_only",
+          "current_request",
+          "private_read"
+        ],
+        "text": "Please confirm whether card payments are enabled on my card."
+      }
+    ],
+    "create_dispute": [
+      {
+        "lineage_id": "unrecognized_charge_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "explicit_current_action",
+          "protected_write_positive",
+          "unfamiliar_transaction"
+        ],
+        "text": "I want to dispute the charge I don't recognize from North Harbor Market."
+      },
+      {
+        "lineage_id": "historical_dispute_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "explicit_current_action",
+          "protected_write_positive",
+          "new_request_after_history"
+        ],
+        "text": "The claim last week was for something else; please open a new dispute for today's debit."
+      },
+      {
+        "lineage_id": "charge_detail_dispute_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "explicit_current_action",
+          "protected_write_positive",
+          "specific_transaction"
+        ],
+        "text": "I've reviewed the details, and now I want to contest the 42-dollar Harbor Cafe payment."
+      },
+      {
+        "lineage_id": "dispute_direct_04",
+        "tags": [
+          "direct",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "File a dispute for the Metro Fuel transaction."
+      },
+      {
+        "lineage_id": "dispute_card_suffix_05",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Please challenge the purchase made on card 3186 yesterday."
+      },
+      {
+        "lineage_id": "dispute_conversational_06",
+        "tags": [
+          "conversational",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Yeah, that payment definitely wasn't mine\u2014go ahead and dispute it."
+      },
+      {
+        "lineage_id": "dispute_correction_07",
+        "tags": [
+          "correction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Actually, I don't just need the merchant name; start a dispute on that charge."
+      },
+      {
+        "lineage_id": "dispute_long_08",
+        "tags": [
+          "long_form",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "After checking the date and amount, I am certain I did not authorize the River Pharmacy purchase, so please file a dispute now."
+      },
+      {
+        "lineage_id": "dispute_duplicate_09",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Open a dispute for the second of those two identical bookstore charges."
+      },
+      {
+        "lineage_id": "dispute_subscription_10",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I canceled that service months ago; contest its latest subscription charge for me."
+      },
+      {
+        "lineage_id": "dispute_spoken_11",
+        "tags": [
+          "spoken_style",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Um, yes, please file a claim against the payment we were just discussing."
+      },
+      {
+        "lineage_id": "dispute_pending_12",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I understand it's pending, but I still want to challenge that card payment."
+      },
+      {
+        "lineage_id": "dispute_amount_13",
+        "tags": [
+          "direct",
+          "specific_transaction",
+          "protected_write_positive",
+          "explicit_current_action"
+        ],
+        "text": "Dispute the 189-dollar transaction from Monday."
+      },
+      {
+        "lineage_id": "dispute_not_card_freeze_14",
+        "tags": [
+          "contrast",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Leave the card active, but open a dispute for the unauthorized purchase."
+      },
+      {
+        "lineage_id": "dispute_two_transactions_15",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Create a dispute for the later taxi charge, not the earlier one."
+      },
+      {
+        "lineage_id": "dispute_confirm_action_16",
+        "tags": [
+          "conversational",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I've made up my mind\u2014please begin the dispute process for it."
+      },
+      {
+        "lineage_id": "dispute_wrong_amount_17",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "The restaurant charged twice the receipt amount; I want to contest that transaction."
+      },
+      {
+        "lineage_id": "dispute_cashlike_18",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "File a dispute against the card purchase labeled QuickCash Services."
+      },
+      {
+        "lineage_id": "dispute_family_19",
+        "tags": [
+          "long_form",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Nobody in my household made the gaming purchase, so start a claim for that exact charge."
+      },
+      {
+        "lineage_id": "dispute_after_details_20",
+        "tags": [
+          "context_like",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Those transaction details confirm it isn't mine; proceed with disputing the payment."
+      },
+      {
+        "lineage_id": "dispute_reversed_confusion_21",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "The credit never returned as promised, and I want to dispute the original debit."
+      },
+      {
+        "lineage_id": "dispute_travel_22",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I was not in Denver that day; challenge the Denver Electronics charge."
+      },
+      {
+        "lineage_id": "dispute_noisy_23",
+        "tags": [
+          "noisy",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Okay, sorry, the one for 58.20\u2014that's the charge I need you to open a dispute on."
+      },
+      {
+        "lineage_id": "dispute_tip_24",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Contest the cafe payment because the final amount includes a tip I never approved."
+      },
+      {
+        "lineage_id": "dispute_delivery_25",
+        "tags": [
+          "unsupported_context",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "The seller never delivered, and I want to file a dispute for that purchase."
+      },
+      {
+        "lineage_id": "dispute_declined_but_posted_26",
+        "tags": [
+          "long_form",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "The store said the payment failed, yet it posted anyway; please dispute the posted transaction."
+      },
+      {
+        "lineage_id": "dispute_recent_27",
+        "tags": [
+          "direct",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Start a dispute for the newest charge on my account."
+      },
+      {
+        "lineage_id": "dispute_not_info_28",
+        "tags": [
+          "contrast",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I'm not asking how disputes work; I am asking you to file one for this charge."
+      },
+      {
+        "lineage_id": "dispute_merchant_29",
+        "tags": [
+          "specific_transaction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Please open a claim against the payment marked Solstice Media."
+      },
+      {
+        "lineage_id": "dispute_final_30",
+        "tags": [
+          "current_request",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I did not approve that debit, and I want it formally disputed now."
+      }
+    ],
+    "escalation": [
+      {
+        "lineage_id": "escalation_direct_01",
+        "tags": [
+          "direct",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Put me through to a human support agent."
+      },
+      {
+        "lineage_id": "escalation_frustrated_02",
+        "tags": [
+          "conversational",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I'm getting nowhere with this; I need a person to take over."
+      },
+      {
+        "lineage_id": "escalation_callback_03",
+        "tags": [
+          "indirect_current_request",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Can someone from the support team contact me about this today?"
+      },
+      {
+        "lineage_id": "escalation_specialist_04",
+        "tags": [
+          "direct",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Transfer me to a dispute specialist, please."
+      },
+      {
+        "lineage_id": "escalation_noisy_05",
+        "tags": [
+          "noisy",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Uh, yeah, I think I'd rather speak with an actual representative now."
+      },
+      {
+        "lineage_id": "escalation_correction_06",
+        "tags": [
+          "correction",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Actually, stop the automated steps and connect me with support."
+      },
+      {
+        "lineage_id": "escalation_long_07",
+        "tags": [
+          "long_form",
+          "human_request",
+          "current_request"
+        ],
+        "text": "This involves several charges and I don't want to explain it piecemeal, so please bring in a human agent."
+      },
+      {
+        "lineage_id": "escalation_manager_08",
+        "tags": [
+          "direct",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I need to speak with a supervisor about the issue."
+      },
+      {
+        "lineage_id": "escalation_live_help_09",
+        "tags": [
+          "short",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Get me live help."
+      },
+      {
+        "lineage_id": "escalation_after_answer_10",
+        "tags": [
+          "context_like",
+          "human_request",
+          "current_request"
+        ],
+        "text": "That answers part of it, but I still want a representative."
+      },
+      {
+        "lineage_id": "escalation_accessibility_11",
+        "tags": [
+          "conversational",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Could a person walk me through this instead?"
+      },
+      {
+        "lineage_id": "escalation_complaint_12",
+        "tags": [
+          "direct",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Please escalate my complaint to the support team."
+      },
+      {
+        "lineage_id": "escalation_not_tool_13",
+        "tags": [
+          "contrast",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Don't make any account changes; just connect me to an agent."
+      },
+      {
+        "lineage_id": "escalation_card_issue_14",
+        "tags": [
+          "context_like",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I need a human to help with this card problem."
+      },
+      {
+        "lineage_id": "escalation_uncertain_15",
+        "tags": [
+          "indirect_current_request",
+          "human_request",
+          "current_request"
+        ],
+        "text": "This seems beyond what the assistant can handle\u2014can a person step in?"
+      },
+      {
+        "lineage_id": "escalation_immediate_16",
+        "tags": [
+          "urgency",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Please transfer me to somebody now."
+      },
+      {
+        "lineage_id": "escalation_repeat_17",
+        "tags": [
+          "frustration",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I've already tried twice; let me talk to customer support."
+      },
+      {
+        "lineage_id": "escalation_language_18",
+        "tags": [
+          "accessibility",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I would be more comfortable explaining this to a live representative."
+      },
+      {
+        "lineage_id": "escalation_complex_19",
+        "tags": [
+          "long_form",
+          "human_request",
+          "current_request"
+        ],
+        "text": "There are too many details to sort out here, and I am requesting a human review of the situation."
+      },
+      {
+        "lineage_id": "escalation_simple_20",
+        "tags": [
+          "direct",
+          "short",
+          "human_request"
+        ],
+        "text": "Human agent, please."
+      },
+      {
+        "lineage_id": "escalation_after_policy_21",
+        "tags": [
+          "context_like",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I understand the policy; now connect me with someone who can help."
+      },
+      {
+        "lineage_id": "escalation_phone_22",
+        "tags": [
+          "indirect_current_request",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Is there a representative I can speak to directly?"
+      },
+      {
+        "lineage_id": "escalation_not_repeat_23",
+        "tags": [
+          "contrast",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Please don't repeat the instructions\u2014send this to a person."
+      },
+      {
+        "lineage_id": "escalation_takeover_24",
+        "tags": [
+          "direct",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Have a support specialist take over this conversation."
+      },
+      {
+        "lineage_id": "escalation_formal_25",
+        "tags": [
+          "formal",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I am requesting escalation to a human customer-service representative."
+      },
+      {
+        "lineage_id": "escalation_spoken_26",
+        "tags": [
+          "spoken_style",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Yeah, no, can I just talk with somebody from the bank?"
+      },
+      {
+        "lineage_id": "escalation_sensitive_27",
+        "tags": [
+          "context_like",
+          "human_request",
+          "current_request"
+        ],
+        "text": "I'd prefer to discuss the rest of this with a person."
+      },
+      {
+        "lineage_id": "escalation_unresolved_28",
+        "tags": [
+          "frustration",
+          "human_request",
+          "current_request"
+        ],
+        "text": "The issue is still unresolved, so route me to support."
+      },
+      {
+        "lineage_id": "escalation_question_29",
+        "tags": [
+          "indirect_current_request",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Can you bring a live agent into the conversation?"
+      },
+      {
+        "lineage_id": "escalation_final_30",
+        "tags": [
+          "direct",
+          "human_request",
+          "current_request"
+        ],
+        "text": "Escalate this case to a person who can assist me."
+      }
+    ],
+    "freeze_card": [
+      {
+        "lineage_id": "card_theft_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "explicit_current_action",
+          "protected_write_positive",
+          "lost_stolen_card"
+        ],
+        "text": "Please lock the card that was stolen from my bag yesterday."
+      },
+      {
+        "lineage_id": "card_status_freeze_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "explicit_current_action",
+          "protected_write_positive",
+          "status_to_action"
+        ],
+        "text": "I know the card is active; freeze it now."
+      },
+      {
+        "lineage_id": "freeze_direct_03",
+        "tags": [
+          "direct",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Disable my debit card immediately."
+      },
+      {
+        "lineage_id": "freeze_suffix_04",
+        "tags": [
+          "card_selection",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Block the card ending in 7429 right now."
+      },
+      {
+        "lineage_id": "freeze_conversational_05",
+        "tags": [
+          "conversational",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Yeah, I can't find it anywhere, so go ahead and freeze the card."
+      },
+      {
+        "lineage_id": "freeze_correction_06",
+        "tags": [
+          "correction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Actually, don't just check its status\u2014lock the card for me."
+      },
+      {
+        "lineage_id": "freeze_long_07",
+        "tags": [
+          "long_form",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "My wallet may have been left on the train and I do not want to risk another purchase, so please disable my card now."
+      },
+      {
+        "lineage_id": "freeze_specific_08",
+        "tags": [
+          "card_selection",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Freeze only the physical card numbered 2057; leave the other one alone."
+      },
+      {
+        "lineage_id": "freeze_spoken_09",
+        "tags": [
+          "spoken_style",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Um, can you, like, block my card before anybody uses it?"
+      },
+      {
+        "lineage_id": "freeze_after_charge_10",
+        "tags": [
+          "context_like",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "That charge wasn't mine; for now, lock the card immediately."
+      },
+      {
+        "lineage_id": "freeze_temporary_11",
+        "tags": [
+          "direct",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Temporarily freeze this card while I search for it."
+      },
+      {
+        "lineage_id": "freeze_not_dispute_12",
+        "tags": [
+          "contrast",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Don't open a dispute yet, but do disable the card now."
+      },
+      {
+        "lineage_id": "freeze_travel_13",
+        "tags": [
+          "lost_stolen_card",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I lost the card during my trip; please block it from further use."
+      },
+      {
+        "lineage_id": "freeze_phone_wallet_14",
+        "tags": [
+          "context_like",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "The card disappeared from my wallet, and I need you to freeze it."
+      },
+      {
+        "lineage_id": "freeze_simple_15",
+        "tags": [
+          "direct",
+          "short",
+          "protected_write_positive",
+          "explicit_current_action"
+        ],
+        "text": "Lock my card now."
+      },
+      {
+        "lineage_id": "freeze_merchant_context_16",
+        "tags": [
+          "context_like",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "After that suspicious purchase, disable the card used for it."
+      },
+      {
+        "lineage_id": "freeze_two_cards_17",
+        "tags": [
+          "card_selection",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Block the older card, not the replacement card."
+      },
+      {
+        "lineage_id": "freeze_request_confirm_18",
+        "tags": [
+          "conversational",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Yes, I am asking you to freeze it\u2014please proceed."
+      },
+      {
+        "lineage_id": "freeze_noisy_19",
+        "tags": [
+          "noisy",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Wait, sorry, the card ending 8890\u2014that's the one you should shut off."
+      },
+      {
+        "lineage_id": "freeze_before_search_20",
+        "tags": [
+          "urgency",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Before I retrace my steps, stop purchases on the missing card."
+      },
+      {
+        "lineage_id": "freeze_expired_confusion_21",
+        "tags": [
+          "correction",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "It isn't the expired card; freeze my current card ending 4302."
+      },
+      {
+        "lineage_id": "freeze_child_context_22",
+        "tags": [
+          "context_like",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "My child may have taken the card, so please disable it until I know."
+      },
+      {
+        "lineage_id": "freeze_public_place_23",
+        "tags": [
+          "lost_stolen_card",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I left my card at a crowded venue; lock it immediately."
+      },
+      {
+        "lineage_id": "freeze_not_policy_24",
+        "tags": [
+          "contrast",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I don't need an explanation of card locks; please block this card now."
+      },
+      {
+        "lineage_id": "freeze_after_status_25",
+        "tags": [
+          "status_to_action",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "You confirmed it is still active, so turn the card off now."
+      },
+      {
+        "lineage_id": "freeze_card_not_account_26",
+        "tags": [
+          "contrast",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Leave the account alone and freeze only my debit card."
+      },
+      {
+        "lineage_id": "freeze_delivery_27",
+        "tags": [
+          "long_form",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "A card I expected to have at home is missing, so please disable that card before anything else happens."
+      },
+      {
+        "lineage_id": "freeze_clear_28",
+        "tags": [
+          "direct",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Please make the card unusable for new transactions."
+      },
+      {
+        "lineage_id": "freeze_now_29",
+        "tags": [
+          "urgency",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "Block all use of this card effective now."
+      },
+      {
+        "lineage_id": "freeze_final_30",
+        "tags": [
+          "current_request",
+          "explicit_current_action",
+          "protected_write_positive"
+        ],
+        "text": "I am requesting a freeze on my card ending in 5164."
+      }
+    ],
+    "informational_policy": [
+      {
+        "lineage_id": "policy_balance_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "public_general",
+          "contrast"
+        ],
+        "text": "In general, how do banks calculate the available balance after pending payments?"
+      },
+      {
+        "lineage_id": "policy_dispute_timing_02",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "How long does the usual card-dispute process take?"
+      },
+      {
+        "lineage_id": "policy_freeze_effect_03",
+        "tags": [
+          "public_general",
+          "protected_action_information"
+        ],
+        "text": "What normally happens to recurring payments when a card is frozen?"
+      },
+      {
+        "lineage_id": "policy_pending_04",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "Why can a pending card payment take several days to post?"
+      },
+      {
+        "lineage_id": "policy_overdraft_05",
+        "tags": [
+          "public_general",
+          "direct"
+        ],
+        "text": "Explain the general overdraft policy without looking at my account."
+      },
+      {
+        "lineage_id": "policy_card_security_06",
+        "tags": [
+          "public_general",
+          "security_information"
+        ],
+        "text": "What should someone generally do after noticing a missing bank card?"
+      },
+      {
+        "lineage_id": "policy_chargeback_07",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "What information is typically needed before filing a charge dispute?"
+      },
+      {
+        "lineage_id": "policy_exchange_08",
+        "tags": [
+          "public_general",
+          "direct"
+        ],
+        "text": "How are foreign purchase exchange rates usually determined?"
+      },
+      {
+        "lineage_id": "policy_decline_09",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "What are common reasons a card payment gets declined?"
+      },
+      {
+        "lineage_id": "policy_reversal_10",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "Can you explain how a reversed card payment differs from a refund?"
+      },
+      {
+        "lineage_id": "policy_privacy_11",
+        "tags": [
+          "public_general",
+          "security_information"
+        ],
+        "text": "Why does the bank verify identity before showing private account data?"
+      },
+      {
+        "lineage_id": "policy_contactless_12",
+        "tags": [
+          "public_general",
+          "direct"
+        ],
+        "text": "How does contactless card payment security work in general?"
+      },
+      {
+        "lineage_id": "policy_statement_13",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "What's the difference between a statement balance and an available balance?"
+      },
+      {
+        "lineage_id": "policy_dispute_scope_14",
+        "tags": [
+          "public_general",
+          "contrast"
+        ],
+        "text": "Which kinds of card transactions are generally eligible for a dispute?"
+      },
+      {
+        "lineage_id": "policy_freeze_unfreeze_15",
+        "tags": [
+          "public_general",
+          "protected_action_information"
+        ],
+        "text": "Does freezing a card usually close the account, or is it temporary?"
+      },
+      {
+        "lineage_id": "policy_pending_balance_16",
+        "tags": [
+          "public_general",
+          "long_form"
+        ],
+        "text": "Without checking any of my details, explain why pending transactions can make the displayed and spendable balances differ."
+      },
+      {
+        "lineage_id": "policy_card_network_17",
+        "tags": [
+          "public_general",
+          "direct"
+        ],
+        "text": "What is the practical difference between Visa and Mastercard acceptance?"
+      },
+      {
+        "lineage_id": "policy_atm_18",
+        "tags": [
+          "public_general",
+          "direct"
+        ],
+        "text": "What are the usual rules for using another bank's ATM?"
+      },
+      {
+        "lineage_id": "policy_age_19",
+        "tags": [
+          "public_general",
+          "direct"
+        ],
+        "text": "What age requirements generally apply when opening a bank account?"
+      },
+      {
+        "lineage_id": "policy_supported_country_20",
+        "tags": [
+          "public_general",
+          "direct"
+        ],
+        "text": "Which countries are normally supported for card usage?"
+      },
+      {
+        "lineage_id": "policy_charge_visibility_21",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "Why might a merchant name on a statement differ from the store's sign?"
+      },
+      {
+        "lineage_id": "policy_duplicate_22",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "How do temporary duplicate card authorizations usually resolve?"
+      },
+      {
+        "lineage_id": "policy_lost_card_23",
+        "tags": [
+          "public_general",
+          "security_information"
+        ],
+        "text": "What options are generally available when a customer loses a card?"
+      },
+      {
+        "lineage_id": "policy_not_action_24",
+        "tags": [
+          "public_general",
+          "contrast"
+        ],
+        "text": "I'm only asking for the dispute policy; do not start a claim."
+      },
+      {
+        "lineage_id": "policy_posting_order_25",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "How does posting order work when several purchases arrive together?"
+      },
+      {
+        "lineage_id": "policy_available_funds_26",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "Generally speaking, when does a deposit become available to spend?"
+      },
+      {
+        "lineage_id": "policy_card_lock_27",
+        "tags": [
+          "public_general",
+          "protected_action_information"
+        ],
+        "text": "Can a frozen card still receive refunds under typical bank rules?"
+      },
+      {
+        "lineage_id": "policy_transaction_status_28",
+        "tags": [
+          "public_general",
+          "process_question"
+        ],
+        "text": "What do pending, posted, and reversed mean for card transactions?"
+      },
+      {
+        "lineage_id": "policy_general_only_29",
+        "tags": [
+          "public_general",
+          "contrast"
+        ],
+        "text": "Give me the general rule, not information from my personal account."
+      },
+      {
+        "lineage_id": "policy_dispute_credit_30",
+        "tags": [
+          "public_general",
+          "long_form"
+        ],
+        "text": "How do provisional credits normally work while a disputed card charge is investigated?"
+      }
+    ],
+    "recent_transactions": [
+      {
+        "lineage_id": "recent_specific_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "plural_activity",
+          "contrast",
+          "private_read"
+        ],
+        "text": "Show me the latest few transactions first; I don't need details on any single one yet."
+      },
+      {
+        "lineage_id": "recent_direct_02",
+        "tags": [
+          "direct",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "List the newest activity in my checking account."
+      },
+      {
+        "lineage_id": "recent_week_03",
+        "tags": [
+          "time_range",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "What payments have posted since the start of this week?"
+      },
+      {
+        "lineage_id": "recent_conversational_04",
+        "tags": [
+          "conversational",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Can you catch me up on what has come in or gone out lately?"
+      },
+      {
+        "lineage_id": "recent_correction_05",
+        "tags": [
+          "correction",
+          "contrast",
+          "private_read"
+        ],
+        "text": "Actually, show the recent list rather than my balance."
+      },
+      {
+        "lineage_id": "recent_noisy_06",
+        "tags": [
+          "noisy",
+          "spoken_style",
+          "private_read"
+        ],
+        "text": "Um, what were, like, the last several things charged to the account?"
+      },
+      {
+        "lineage_id": "recent_savings_07",
+        "tags": [
+          "account_selection",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Pull up the most recent savings-account transactions."
+      },
+      {
+        "lineage_id": "recent_weekend_08",
+        "tags": [
+          "time_range",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Show everything that posted over the weekend."
+      },
+      {
+        "lineage_id": "recent_incoming_09",
+        "tags": [
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Which deposits and withdrawals appeared most recently?"
+      },
+      {
+        "lineage_id": "recent_card_10",
+        "tags": [
+          "card_selection",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "List the latest purchases made with card 4812."
+      },
+      {
+        "lineage_id": "recent_today_11",
+        "tags": [
+          "time_range",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "What account activity has shown up today?"
+      },
+      {
+        "lineage_id": "recent_after_trip_12",
+        "tags": [
+          "context_like",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "I just got back from traveling; let me see my newest transactions."
+      },
+      {
+        "lineage_id": "recent_not_one_13",
+        "tags": [
+          "contrast",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Don't open one purchase\u2014I want the whole recent activity list."
+      },
+      {
+        "lineage_id": "recent_last_five_14",
+        "tags": [
+          "direct",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Read back my last five account entries."
+      },
+      {
+        "lineage_id": "recent_since_payday_15",
+        "tags": [
+          "time_range",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Show the transactions that occurred after payday."
+      },
+      {
+        "lineage_id": "recent_pending_posted_16",
+        "tags": [
+          "plural_activity",
+          "long_form",
+          "private_read"
+        ],
+        "text": "I want a quick view of the newest pending and posted items, not an explanation of each one."
+      },
+      {
+        "lineage_id": "recent_two_days_17",
+        "tags": [
+          "time_range",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "What moved through my account in the past two days?"
+      },
+      {
+        "lineage_id": "recent_joint_18",
+        "tags": [
+          "account_selection",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Display the latest activity for the joint checking account."
+      },
+      {
+        "lineage_id": "recent_spoken_19",
+        "tags": [
+          "spoken_style",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Could you read me the newest charges, starting with the latest?"
+      },
+      {
+        "lineage_id": "recent_subscription_scan_20",
+        "tags": [
+          "context_like",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Let me look through the recent payments for any new subscriptions."
+      },
+      {
+        "lineage_id": "recent_month_21",
+        "tags": [
+          "time_range",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "List the account activity so far this month."
+      },
+      {
+        "lineage_id": "recent_cash_and_card_22",
+        "tags": [
+          "plural_activity",
+          "long_form",
+          "private_read"
+        ],
+        "text": "Show my latest card purchases and cash withdrawals together."
+      },
+      {
+        "lineage_id": "recent_simple_23",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "Show recent transactions."
+      },
+      {
+        "lineage_id": "recent_after_transfer_24",
+        "tags": [
+          "context_like",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "After that transfer, what other transactions appeared?"
+      },
+      {
+        "lineage_id": "recent_not_statement_25",
+        "tags": [
+          "contrast",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "I don't need an old statement; show what happened most recently."
+      },
+      {
+        "lineage_id": "recent_correction_account_26",
+        "tags": [
+          "correction",
+          "account_selection",
+          "private_read"
+        ],
+        "text": "Sorry, make that the recent activity from savings, not checking."
+      },
+      {
+        "lineage_id": "recent_unfamiliar_scan_27",
+        "tags": [
+          "context_like",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Bring up my latest charges so I can scan them for anything unfamiliar."
+      },
+      {
+        "lineage_id": "recent_long_noisy_28",
+        "tags": [
+          "long_form",
+          "noisy",
+          "private_read"
+        ],
+        "text": "I've been busy and haven't checked in a while, so please give me a rundown of the newest account activity."
+      },
+      {
+        "lineage_id": "recent_credit_29",
+        "tags": [
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Which credits or refunds have appeared lately?"
+      },
+      {
+        "lineage_id": "recent_final_30",
+        "tags": [
+          "current_request",
+          "plural_activity",
+          "private_read"
+        ],
+        "text": "Please retrieve the latest transactions across my account."
+      }
+    ],
+    "transaction_details": [
+      {
+        "lineage_id": "charge_detail_dispute_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "specific_transaction",
+          "no_dispute_action",
+          "private_read"
+        ],
+        "text": "Before I decide what to do, tell me the date, amount, and merchant for that 42-dollar Harbor Cafe payment."
+      },
+      {
+        "lineage_id": "recent_specific_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "specific_transaction",
+          "contrast",
+          "private_read"
+        ],
+        "text": "From that recent list, open only the Cedar Books transaction and show its details."
+      },
+      {
+        "lineage_id": "details_direct_03",
+        "tags": [
+          "direct",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Tell me more about the 27.14 card charge."
+      },
+      {
+        "lineage_id": "details_merchant_04",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Who is the merchant behind the payment labeled Aster Online?"
+      },
+      {
+        "lineage_id": "details_time_05",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "What time did yesterday's coffee-shop transaction occur?"
+      },
+      {
+        "lineage_id": "details_card_used_06",
+        "tags": [
+          "specific_transaction",
+          "card_selection",
+          "private_read"
+        ],
+        "text": "Which of my cards was used for the 63-dollar purchase?"
+      },
+      {
+        "lineage_id": "details_pending_07",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Show me the details for the pending hotel authorization."
+      },
+      {
+        "lineage_id": "details_conversational_08",
+        "tags": [
+          "conversational",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "That grocery payment looks odd\u2014can you pull up exactly what it says?"
+      },
+      {
+        "lineage_id": "details_no_dispute_09",
+        "tags": [
+          "contrast",
+          "no_dispute_action",
+          "private_read"
+        ],
+        "text": "Don't dispute anything; I only want information about the unfamiliar charge."
+      },
+      {
+        "lineage_id": "details_correction_10",
+        "tags": [
+          "correction",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Actually, inspect the second taxi payment, not the first one."
+      },
+      {
+        "lineage_id": "details_reversed_11",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Was the Pine Street Market payment posted, reversed, or still pending?"
+      },
+      {
+        "lineage_id": "details_location_12",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Where was the charge from Orion Fitness made?"
+      },
+      {
+        "lineage_id": "details_long_13",
+        "tags": [
+          "long_form",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "I'm trying to match my receipt, so give me the merchant, date, amount, and status of the purchase from last Thursday."
+      },
+      {
+        "lineage_id": "details_spoken_14",
+        "tags": [
+          "spoken_style",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Uh, the one for ninety-one dollars\u2014what are the details on that transaction?"
+      },
+      {
+        "lineage_id": "details_subscription_15",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Identify the company that submitted this recurring subscription payment."
+      },
+      {
+        "lineage_id": "details_declined_16",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Why does the Garden Bistro item show a declined status?"
+      },
+      {
+        "lineage_id": "details_refund_17",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Open the refund entry and tell me which original purchase it references."
+      },
+      {
+        "lineage_id": "details_transfer_label_18",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "What description is attached to the transfer from Tuesday?"
+      },
+      {
+        "lineage_id": "details_duplicate_19",
+        "tags": [
+          "specific_transaction",
+          "contrast",
+          "private_read"
+        ],
+        "text": "Compare the timestamps on those two identical restaurant charges."
+      },
+      {
+        "lineage_id": "details_not_list_20",
+        "tags": [
+          "contrast",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Skip the full history and open the single payment for 16.80."
+      },
+      {
+        "lineage_id": "details_online_21",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Does that online purchase record show a physical or digital card?"
+      },
+      {
+        "lineage_id": "details_amount_correction_22",
+        "tags": [
+          "correction",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "I said 74.30, not 47.30\u2014find the transaction with the larger amount."
+      },
+      {
+        "lineage_id": "details_weekend_23",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Give me the metadata for the fuel purchase made Saturday morning."
+      },
+      {
+        "lineage_id": "details_cash_24",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Tell me which ATM is associated with this withdrawal entry."
+      },
+      {
+        "lineage_id": "details_no_action_25",
+        "tags": [
+          "no_dispute_action",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "I am not requesting any action yet; show me who charged 35 dollars."
+      },
+      {
+        "lineage_id": "details_currency_26",
+        "tags": [
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "What currency and converted amount appear on the Lisbon purchase?"
+      },
+      {
+        "lineage_id": "details_context_27",
+        "tags": [
+          "context_like",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "The recent list showed Metro Parking; open that item so I can inspect it."
+      },
+      {
+        "lineage_id": "details_simple_28",
+        "tags": [
+          "direct",
+          "short",
+          "private_read"
+        ],
+        "text": "Open the details for my latest card payment."
+      },
+      {
+        "lineage_id": "details_noisy_29",
+        "tags": [
+          "noisy",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Wait, sorry, can you pull up that weird little charge from, I think, Monday night?"
+      },
+      {
+        "lineage_id": "details_final_30",
+        "tags": [
+          "current_request",
+          "specific_transaction",
+          "private_read"
+        ],
+        "text": "Please identify the merchant and status for the selected transaction."
+      }
+    ],
+    "unsupported_or_uncertain": [
+      {
+        "lineage_id": "card_theft_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "hard_negative",
+          "lost_stolen_no_action",
+          "no_current_request"
+        ],
+        "text": "My wallet was stolen yesterday with my bank card inside."
+      },
+      {
+        "lineage_id": "unrecognized_charge_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "hard_negative",
+          "unfamiliar_transaction_no_dispute",
+          "no_current_request"
+        ],
+        "text": "I noticed a North Harbor Market charge that I don't recognize."
+      },
+      {
+        "lineage_id": "historical_dispute_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "hard_negative",
+          "historical_dispute",
+          "no_current_request"
+        ],
+        "text": "I already disputed a different charge last week."
+      },
+      {
+        "lineage_id": "prior_frozen_card_boundary_01",
+        "tags": [
+          "boundary_pair",
+          "hard_negative",
+          "prior_frozen_card",
+          "no_current_request"
+        ],
+        "text": "My card was frozen earlier this morning."
+      },
+      {
+        "lineage_id": "unsupported_vague_complaint_05",
+        "tags": [
+          "hard_negative",
+          "vague_complaint",
+          "unclear_no_current_request"
+        ],
+        "text": "This whole banking situation is ridiculous."
+      },
+      {
+        "lineage_id": "unsupported_transfer_06",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Send two hundred dollars to my landlord."
+      },
+      {
+        "lineage_id": "unsupported_new_card_07",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Order a replacement debit card for me."
+      },
+      {
+        "lineage_id": "unsupported_pin_08",
+        "tags": [
+          "unsupported_operation",
+          "protected_credential"
+        ],
+        "text": "Change my card PIN to something new."
+      },
+      {
+        "lineage_id": "unsupported_address_09",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Update the mailing address on my account."
+      },
+      {
+        "lineage_id": "unsupported_cash_10",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Withdraw fifty dollars from the account for me."
+      },
+      {
+        "lineage_id": "unsupported_loan_11",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Approve me for a personal loan today."
+      },
+      {
+        "lineage_id": "unsupported_check_12",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Mail a cashier's check to my apartment."
+      },
+      {
+        "lineage_id": "unsupported_billpay_13",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Pay my electricity bill from checking."
+      },
+      {
+        "lineage_id": "unsupported_close_account_14",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Close my savings account permanently."
+      },
+      {
+        "lineage_id": "unsupported_interest_15",
+        "tags": [
+          "unsupported_operation",
+          "private_account_request"
+        ],
+        "text": "What exact interest rate am I earning on my personal account?"
+      },
+      {
+        "lineage_id": "unsupported_cash_deposit_16",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Deposit this stack of cash into my account remotely."
+      },
+      {
+        "lineage_id": "unsupported_crypto_17",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Buy some bitcoin using my checking balance."
+      },
+      {
+        "lineage_id": "unsupported_recipient_18",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Add my roommate as a new transfer beneficiary."
+      },
+      {
+        "lineage_id": "unsupported_unclear_19",
+        "tags": [
+          "unclear_no_current_request",
+          "hard_negative"
+        ],
+        "text": "Maybe something happened with the account, I'm not really sure."
+      },
+      {
+        "lineage_id": "unsupported_fragment_20",
+        "tags": [
+          "unclear_no_current_request",
+          "fragment"
+        ],
+        "text": "The card thing from before."
+      },
+      {
+        "lineage_id": "unsupported_historical_charge_21",
+        "tags": [
+          "hard_negative",
+          "historical_statement",
+          "no_current_request"
+        ],
+        "text": "There was a strange restaurant charge on my statement last spring."
+      },
+      {
+        "lineage_id": "unsupported_lost_no_action_22",
+        "tags": [
+          "hard_negative",
+          "lost_stolen_no_action",
+          "no_current_request"
+        ],
+        "text": "I haven't seen my spare card since moving apartments."
+      },
+      {
+        "lineage_id": "unsupported_dispute_question_vague_23",
+        "tags": [
+          "unclear_no_current_request",
+          "vague_complaint"
+        ],
+        "text": "That dispute was a mess, honestly."
+      },
+      {
+        "lineage_id": "unsupported_future_hypothetical_24",
+        "tags": [
+          "hypothetical",
+          "no_current_request"
+        ],
+        "text": "If I lost a card someday, that would be stressful."
+      },
+      {
+        "lineage_id": "unsupported_card_delivery_25",
+        "tags": [
+          "unsupported_operation",
+          "current_request"
+        ],
+        "text": "Track the delivery truck carrying my new card."
+      },
+      {
+        "lineage_id": "unsupported_reward_points_26",
+        "tags": [
+          "unsupported_operation",
+          "private_account_request"
+        ],
+        "text": "Redeem all the reward points on my card."
+      },
+      {
+        "lineage_id": "unsupported_charge_no_request_27",
+        "tags": [
+          "hard_negative",
+          "unfamiliar_transaction_no_dispute",
+          "no_current_request"
+        ],
+        "text": "There's a payment from Solstice Media that means nothing to me."
+      },
+      {
+        "lineage_id": "unsupported_card_broken_28",
+        "tags": [
+          "vague_complaint",
+          "unclear_no_current_request"
+        ],
+        "text": "My card has been acting weird lately."
+      },
+      {
+        "lineage_id": "unsupported_account_freeze_29",
+        "tags": [
+          "unsupported_operation",
+          "contrast",
+          "current_request"
+        ],
+        "text": "Freeze my entire bank account, not just a card."
+      },
+      {
+        "lineage_id": "unsupported_no_request_30",
+        "tags": [
+          "unclear_no_current_request",
+          "no_current_request"
+        ],
+        "text": "I was only mentioning what happened; I don't need anything done right now."
+      }
+    ]
+  },
+  "schema_version": "v2c3-challenge-seed.v1",
+  "source_policy": {
+    "authorship": "New synthetic SentinelVoice challenge text authored for V2-C3 before model experimentation.",
+    "cfpb_used": false,
+    "consumer_authored_text_used": false,
+    "model_selection_eligible": false,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  }
+}

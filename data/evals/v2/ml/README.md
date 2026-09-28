@@ -128,6 +128,59 @@ metadata-derived targets may be used for V2-C3 fitting or selection. Bitext
 remains pending acquisition, mapping, and a later governance amendment;
 unverified bank-support transcripts remain prohibited.
 
+## V2-C3 development dataset and fresh lockbox
+
+Step 3 implements the frozen data decision without training a model.
+`scripts/build_v2c3_development_dataset.py` reads only the internal V2-C1
+train/validation splits, BANKING77 `train.csv`, and CLINC finance `train`/`val`.
+It includes external `EXACT_MATCH` and `UNSUPPORTED` mappings, while recording
+`NEAR_MATCH` and `AMBIGUOUS` rows only as excluded pending semantic review.
+CLINC OOS, all test splits, CFPB, Bitext, and unverified transcripts are never
+eligible inputs.
+
+The builder freezes Unicode NFKC/lowercase/whitespace normalization and groups
+exact-normalized duplicates across every eligible source. Conflicting targets
+fail the build. External duplicate groups that overlap internal development
+cannot enter the lockbox. Remaining external groups are assigned by stable
+seeded ordering within source/target strata to approximately 80% development
+and 20% fresh lockbox. Model predictions and confidence never affect membership.
+
+The development artifact contains text for future fitting and group-aware CV.
+The fresh-lockbox artifact contains only reconstruction identities and hashes,
+not text. Its members cannot be used until the V2-C3 representation, model,
+hyperparameters, and thresholds are frozen. The dataset manifest records input
+and output hashes, exclusions, distributions, duplicate controls, actual split
+ratios, and leakage checks. Generate or verify the artifacts explicitly:
+
+```bash
+sentinelvoice_env/bin/python scripts/build_v2c3_development_dataset.py --write
+sentinelvoice_env/bin/python scripts/build_v2c3_development_dataset.py --check
+```
+
+V2-C3 also freezes a separate synthetic final challenge set before any Step 4
+experiment. It contains exactly 270 newly authored examples: 30 for each of the
+nine frozen intents. Contrast families cover task boundaries, especially
+protected-write positives versus lost/stolen-card statements, unfamiliar-charge
+statements, historical disputes, prior card freezes, vague complaints, and
+unsupported operations that do not contain a current protected-action request.
+Lineage-related contrasts share a group ID.
+
+The challenge set is not development data and is not the external fresh
+lockbox. Its text may be used only for the one final challenge evaluation after
+the representation, model, hyperparameters, and thresholds are frozen. It is
+permanently ineligible for fitting, feature construction, cross-validation,
+model selection, and threshold selection. The deterministic builder verifies
+balance, derives risk from the frozen contract, and rejects normalized-text
+overlap with V2-C3 development, the external fresh lockbox, the internal locked
+test, BANKING77 test, or CLINC test/OOS test. It does not read CFPB data, train a
+model, or run an evaluation. Development, the external lockbox, and this
+challenge definition are all frozen before Step 4 experimentation:
+
+```bash
+sentinelvoice_env/bin/python scripts/build_v2c3_challenge_set.py --write
+sentinelvoice_env/bin/python scripts/build_v2c3_challenge_set.py --check
+```
+
 ## Reproduce V2-C1
 
 ```bash

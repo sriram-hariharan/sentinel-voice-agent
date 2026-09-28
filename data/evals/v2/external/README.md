@@ -607,6 +607,35 @@ intent targets are all prohibited for V2-C3 training and selection. Bitext is
 support transcripts remain prohibited. The contract step trains and evaluates
 no model and creates no external transformation or lockbox.
 
+V2-C3 Step 3 implements that contract as a data-only deterministic builder.
+All internal train/validation examples enter development. Automatically
+eligible BANKING77 train and CLINC finance train/val groups are divided before
+experimentation into approximately 80% development and 20% fresh lockbox using
+the frozen seed, source/target strata, and normalized-duplicate boundaries.
+Near and ambiguous external mappings remain excluded pending later semantic
+review rather than being forced into a target.
+
+The tracked fresh-lockbox manifest contains no utterance text; it records only
+the source split/row identity, frozen target, group, and raw/normalized hashes
+needed for later reconstruction. The lockbox remains unavailable to fitting,
+feature construction, CV, tuning, and selection until the complete V2-C3
+configuration is frozen. BANKING77 test, CLINC test/OOS, CFPB, and every other
+prohibited source remain outside both generated partitions and retain their
+historical evaluation or research-only roles.
+
+Step 3 separately freezes a new 270-example synthetic challenge set, balanced
+at 30 examples for each frozen intent. It is neither external development nor
+the fresh external lockbox: it is reserved for final balanced task/safety
+evaluation after representation, model, hyperparameters, and thresholds are
+frozen. Its manually authored contrast families include explicit current
+protected-action requests and matched no-action, historical, vague, and
+unsupported hard negatives. The challenge builder checks normalized-text
+separation from external development/lockbox membership and the previously
+consumed internal, BANKING77, and CLINC test references. It does not read CFPB
+data, and the challenge artifact is never eligible for fitting or selection.
+Development, the external lockbox, and this challenge definition are all frozen
+before Step 4 experimentation.
+
 Reproduction is intentionally explicit and inference-only:
 
 ```bash

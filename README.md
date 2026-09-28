@@ -6,7 +6,8 @@
 intent/risk ML experiment over controlled SentinelVoice synthetic data, and
 V2-C2 measures frozen-model generalization on separately governed public
 external benchmarks. V2-C3 now freezes the next model-development and
-data-governance contract before any new training or evaluation.
+data-governance contract and provides a deterministic development-data and
+fresh-lockbox builder before any new training or evaluation.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -3621,6 +3622,31 @@ narratives and annotations—including records outside the 1,800 holdout—remai
 evaluation/research-only. See
 `data/evals/v2/ml/v2c3_data_registry.json` and
 `data/evals/v2/ml/v2c3_experiment_contract.json`.
+
+V2-C3 Step 3 prepares data only. The deterministic builder places all internal
+train/validation examples in development, then divides automatically eligible
+BANKING77 train and CLINC finance train/validation duplicate groups into an
+approximately 80% external development portion and 20% fresh lockbox. Near and
+ambiguous mappings remain excluded pending later semantic review. The tracked
+lockbox manifest contains source identities and hashes but no utterance text;
+its members remain unavailable until the model, representation, hyperparameters,
+and thresholds are frozen. CFPB and all previously consumed test sets remain
+outside development.
+
+A third, distinct Step 3 artifact is frozen before Step 4: a newly authored,
+balanced synthetic challenge set with 30 examples for each of the nine intents
+(270 total). It is final-evaluation-only and cannot be used for training, CV,
+feature or representation choice, model/hyperparameter selection, or threshold
+selection. Its protected-action boundary families deliberately separate an
+explicit current `freeze_card` or `create_dispute` request from hard negatives
+such as a lost-card statement without an action request, an unfamiliar charge
+without a dispute request, a historical dispute, or a prior freeze. The builder
+checks normalized-text separation from development, the fresh external lockbox,
+and the pre-existing internal/public test references. Therefore the three roles
+remain separate: development is for fitting and group-aware CV, the external
+fresh lockbox is for final historical-domain generalization, and the synthetic
+challenge set is for final balanced task/safety behavior after every model and
+threshold decision is frozen.
 
 ### Why this extension is useful
 

@@ -1,0 +1,267 @@
+{
+  "build_metadata": {
+    "builder_version": "v2c3-development-dataset-builder.v1",
+    "deterministic": true,
+    "wall_clock_timestamp_recorded": false
+  },
+  "build_script_sha256": "00dcac10555ce04040a23361ead310a236de7ba1d6c5dc96d63d30565e0b9d53",
+  "contract_sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+  "counts": {
+    "actual_external_lockbox_fraction": 0.20006245446028936,
+    "conflicting_duplicate_count": 0,
+    "development_group_count": 7863,
+    "development_total": 8198,
+    "duplicate_groups_forced_away_from_lockbox": 0,
+    "duplicate_groups_found": 2,
+    "duplicate_records": 4,
+    "excluded_ambiguous_count": 1744,
+    "excluded_near_match_count": 2252,
+    "excluded_non_finance_clinc_count": 14400,
+    "excluded_pending_semantic_review": 3996,
+    "external_automatically_eligible_total": 9607,
+    "external_development": 7685,
+    "fresh_lockbox": 1922,
+    "fresh_lockbox_group_count": 1922,
+    "internal_development": 513,
+    "prohibited_source_count": 0,
+    "total_group_count": 9785
+  },
+  "counts_by_mapping_status": {
+    "EXACT_MATCH": {
+      "development": 1369,
+      "fresh_lockbox": 343,
+      "total": 1712
+    },
+    "INTERNAL_FROZEN": {
+      "development": 513,
+      "fresh_lockbox": 0,
+      "total": 513
+    },
+    "UNSUPPORTED": {
+      "development": 6316,
+      "fresh_lockbox": 1579,
+      "total": 7895
+    }
+  },
+  "counts_by_source": {
+    "banking77": {
+      "development": 5381,
+      "fresh_lockbox": 1346,
+      "total": 6727
+    },
+    "clinc150_oos": {
+      "development": 2304,
+      "fresh_lockbox": 576,
+      "total": 2880
+    },
+    "sentinelvoice_v2c1_internal": {
+      "development": 513,
+      "fresh_lockbox": 0,
+      "total": 513
+    }
+  },
+  "counts_by_source_split": {
+    "banking77:train": {
+      "development": 5381,
+      "fresh_lockbox": 1346,
+      "total": 6727
+    },
+    "clinc150_oos:train": {
+      "development": 1924,
+      "fresh_lockbox": 476,
+      "total": 2400
+    },
+    "clinc150_oos:val": {
+      "development": 380,
+      "fresh_lockbox": 100,
+      "total": 480
+    },
+    "sentinelvoice_v2c1_internal:train": {
+      "development": 405,
+      "fresh_lockbox": 0,
+      "total": 405
+    },
+    "sentinelvoice_v2c1_internal:validation": {
+      "development": 108,
+      "fresh_lockbox": 0,
+      "total": 108
+    }
+  },
+  "counts_by_target_intent": {
+    "account_balance": {
+      "development": 153,
+      "fresh_lockbox": 24,
+      "total": 177
+    },
+    "card_status": {
+      "development": 57,
+      "fresh_lockbox": 0,
+      "total": 57
+    },
+    "create_dispute": {
+      "development": 57,
+      "fresh_lockbox": 0,
+      "total": 57
+    },
+    "escalation": {
+      "development": 57,
+      "fresh_lockbox": 0,
+      "total": 57
+    },
+    "freeze_card": {
+      "development": 57,
+      "fresh_lockbox": 0,
+      "total": 57
+    },
+    "informational_policy": {
+      "development": 856,
+      "fresh_lockbox": 200,
+      "total": 1056
+    },
+    "recent_transactions": {
+      "development": 153,
+      "fresh_lockbox": 24,
+      "total": 177
+    },
+    "transaction_details": {
+      "development": 435,
+      "fresh_lockbox": 95,
+      "total": 530
+    },
+    "unsupported_or_uncertain": {
+      "development": 6373,
+      "fresh_lockbox": 1579,
+      "total": 7952
+    }
+  },
+  "data_roles": {
+    "development": "Eligible internal train/validation plus external groups not assigned to the fresh lockbox.",
+    "fresh_lockbox": "Text-free tracked membership; unavailable to fitting, CV, tuning, or selection."
+  },
+  "excluded_counts_by_source": {
+    "banking77": {
+      "AMBIGUOUS": 1504,
+      "NEAR_MATCH": 1772
+    },
+    "clinc150_oos": {
+      "AMBIGUOUS": 240,
+      "NEAR_MATCH": 480,
+      "NON_FINANCE": 14400
+    }
+  },
+  "input_hashes": {
+    "banking77_mapping_sha256": "cb0ff5db910d15ab59dc1fea563b09d6593cc9f7f25fa4ca99ac21e2b0dab68a",
+    "banking77_raw_manifest_sha256": "44c0d68cec41ba18d3d95a9f93cc87ea633b0379bc099c0b6d441fd09525a3cf",
+    "banking77_train_sha256": "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b",
+    "clinc_data_full_sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0",
+    "clinc_mapping_sha256": "b156e23f7cdfc55851afb81dc11d867941e7bd54b158a24874d1d2334b503fc7",
+    "clinc_raw_manifest_sha256": "25b0c99ca673285cae49013b79710f4a08b36b48841236ae323712873c226aa5",
+    "contract_sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+    "internal_dataset_sha256": "5142149bd8f4b5c676d7694063d91b2d8043f810a173a30feeae270272094933",
+    "registry_sha256": "978dd7b04fcad23e3a01add65598ffda73aee9323118ffcc382dcd2bdce01316"
+  },
+  "input_paths": {
+    "banking77_mapping": "data/evals/v2/external/banking77_intent_mapping.json",
+    "banking77_raw_manifest": "data/evals/v2/external/raw/banking77/manifest.json",
+    "banking77_train": "data/evals/v2/external/raw/banking77/train.csv",
+    "clinc_data": "data/evals/v2/external/raw/clinc_oos/data_full.json",
+    "clinc_mapping": "data/evals/v2/external/clinc_finance_intent_mapping.json",
+    "clinc_raw_manifest": "data/evals/v2/external/raw/clinc_oos/manifest.json",
+    "contract": "data/evals/v2/ml/v2c3_experiment_contract.json",
+    "internal_dataset": "data/evals/v2/ml/intent_risk_dataset.json",
+    "registry": "data/evals/v2/ml/v2c3_data_registry.json"
+  },
+  "lockbox_policy": {
+    "actual_external_lockbox_fraction": 0.20006245446028936,
+    "configured_fraction": 0.2,
+    "group_level": true,
+    "model_output_or_confidence_used": false,
+    "seed": 20260928,
+    "source_and_target_strata": {
+      "banking77:informational_policy": {
+        "actual_lockbox_group_count": 176,
+        "external_group_count": 878,
+        "forced_development_group_count": 0,
+        "lockbox_eligible_group_count": 878,
+        "target_lockbox_group_count": 176
+      },
+      "banking77:transaction_details": {
+        "actual_lockbox_group_count": 95,
+        "external_group_count": 473,
+        "forced_development_group_count": 0,
+        "lockbox_eligible_group_count": 473,
+        "target_lockbox_group_count": 95
+      },
+      "banking77:unsupported_or_uncertain": {
+        "actual_lockbox_group_count": 1075,
+        "external_group_count": 5374,
+        "forced_development_group_count": 0,
+        "lockbox_eligible_group_count": 5374,
+        "target_lockbox_group_count": 1075
+      },
+      "clinc150_oos:account_balance": {
+        "actual_lockbox_group_count": 24,
+        "external_group_count": 120,
+        "forced_development_group_count": 0,
+        "lockbox_eligible_group_count": 120,
+        "target_lockbox_group_count": 24
+      },
+      "clinc150_oos:informational_policy": {
+        "actual_lockbox_group_count": 24,
+        "external_group_count": 120,
+        "forced_development_group_count": 0,
+        "lockbox_eligible_group_count": 120,
+        "target_lockbox_group_count": 24
+      },
+      "clinc150_oos:recent_transactions": {
+        "actual_lockbox_group_count": 24,
+        "external_group_count": 120,
+        "forced_development_group_count": 0,
+        "lockbox_eligible_group_count": 120,
+        "target_lockbox_group_count": 24
+      },
+      "clinc150_oos:unsupported_or_uncertain": {
+        "actual_lockbox_group_count": 504,
+        "external_group_count": 2520,
+        "forced_development_group_count": 0,
+        "lockbox_eligible_group_count": 2520,
+        "target_lockbox_group_count": 504
+      }
+    },
+    "text_tracked": false
+  },
+  "normalization": {
+    "hash_algorithm": "SHA-256",
+    "steps": [
+      "Unicode NFKC normalization",
+      "Unicode lowercase",
+      "trim leading and trailing whitespace",
+      "collapse every whitespace run to one ASCII space"
+    ],
+    "version": "unicode-nfkc-lower-whitespace.v1"
+  },
+  "output_hashes": {
+    "v2c3_development_dataset.json": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+    "v2c3_fresh_lockbox_manifest.json": "651bbe2ebe61bb5b1e9139c24cacac340973172f5637278c12d50cf596334364"
+  },
+  "registry_sha256": "978dd7b04fcad23e3a01add65598ffda73aee9323118ffcc382dcd2bdce01316",
+  "schema_version": "v2c3-dataset-manifest.v1",
+  "seed": 20260928,
+  "training_or_evaluation_performed": false,
+  "validation": {
+    "automatic_protected_write_targets_absent": true,
+    "banking77_test_used": false,
+    "cfpb_used": false,
+    "clinc_oos_used": false,
+    "clinc_test_used": false,
+    "conflicting_normalized_targets": 0,
+    "development_lockbox_group_overlap": 0,
+    "development_lockbox_normalized_hash_overlap": 0,
+    "internal_locked_test_used": false,
+    "lockbox_contains_text": false,
+    "near_or_ambiguous_included": false,
+    "prohibited_sources_used": false,
+    "risk_derived_from_frozen_contract": true,
+    "taxonomy_matches_frozen_contract": true
+  }
+}

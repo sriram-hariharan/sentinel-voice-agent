@@ -1,0 +1,153 @@
+{
+  "build_metadata": {
+    "builder_version": "v2c3-challenge-set-builder.v1",
+    "deterministic": true,
+    "wall_clock_timestamp_recorded": false
+  },
+  "build_script_sha256": "3b27f0e3d1d9342284a907befeba0cbb8bf7b9ba45b79d28673b8f3539ecaead",
+  "challenge_version": "2026-09-28.v2c3-challenge.v1",
+  "contract_sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+  "counts": {
+    "boundary_pair_family_count": 8,
+    "example_count": 270,
+    "group_count": 262
+  },
+  "counts_by_intent": {
+    "account_balance": 30,
+    "card_status": 30,
+    "create_dispute": 30,
+    "escalation": 30,
+    "freeze_card": 30,
+    "informational_policy": 30,
+    "recent_transactions": 30,
+    "transaction_details": 30,
+    "unsupported_or_uncertain": 30
+  },
+  "counts_by_risk": {
+    "ESCALATION_OR_UNCERTAIN": 60,
+    "PRIVATE_READ": 120,
+    "PROTECTED_WRITE": 60,
+    "PUBLIC": 30
+  },
+  "counts_by_tag": {
+    "accessibility": 2,
+    "account_selection": 8,
+    "boundary_pair": 16,
+    "card_selection": 10,
+    "context_like": 25,
+    "contrast": 30,
+    "conversational": 18,
+    "correction": 14,
+    "current_request": 58,
+    "direct": 41,
+    "explicit_current_action": 60,
+    "formal": 1,
+    "fragment": 1,
+    "frustration": 2,
+    "hard_negative": 9,
+    "historical_dispute": 1,
+    "historical_statement": 1,
+    "human_request": 30,
+    "hypothetical": 1,
+    "indirect_current_request": 14,
+    "long_form": 18,
+    "lost_stolen_card": 3,
+    "lost_stolen_no_action": 2,
+    "new_request_after_history": 1,
+    "no_current_request": 9,
+    "no_dispute_action": 3,
+    "noisy": 11,
+    "plural_activity": 25,
+    "prior_frozen_card": 4,
+    "private_account_request": 2,
+    "private_read": 120,
+    "process_question": 11,
+    "protected_action_information": 3,
+    "protected_credential": 1,
+    "protected_write_positive": 60,
+    "public_general": 30,
+    "security_information": 3,
+    "short": 14,
+    "specific_transaction": 41,
+    "spoken_style": 8,
+    "status_only": 10,
+    "status_to_action": 2,
+    "time_range": 6,
+    "unclear_no_current_request": 6,
+    "unfamiliar_transaction": 1,
+    "unfamiliar_transaction_no_dispute": 2,
+    "unsupported_context": 1,
+    "unsupported_operation": 16,
+    "urgency": 3,
+    "vague_complaint": 3
+  },
+  "evaluation_policy": {
+    "data_role": "final_challenge_evaluation",
+    "evaluation_timing": "after model, representation, hyperparameters, and thresholds are frozen",
+    "model_selection_eligible": false,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  },
+  "input_hashes": {
+    "banking77_test": "d12d6e3bc4c3103966ae786dc435913c0c563dfa328f5a3646d0e62cfeeb474d",
+    "clinc_data": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0",
+    "contract": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+    "development_dataset": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+    "fresh_lockbox_manifest": "651bbe2ebe61bb5b1e9139c24cacac340973172f5637278c12d50cf596334364",
+    "internal_dataset": "5142149bd8f4b5c676d7694063d91b2d8043f810a173a30feeae270272094933",
+    "seed": "a3e9c748e42b71bd341c8f8bea4d10842006084bcaa9eb0dcf7524b827b235f3"
+  },
+  "input_paths": {
+    "banking77_test": "data/evals/v2/external/raw/banking77/test.csv",
+    "clinc_data": "data/evals/v2/external/raw/clinc_oos/data_full.json",
+    "contract": "data/evals/v2/ml/v2c3_experiment_contract.json",
+    "development_dataset": "data/evals/v2/ml/v2c3_development_dataset.json",
+    "fresh_lockbox_manifest": "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+    "internal_dataset": "data/evals/v2/ml/intent_risk_dataset.json",
+    "seed": "data/evals/v2/ml/v2c3_challenge_seed.json"
+  },
+  "normalization": {
+    "hash_algorithm": "SHA-256",
+    "steps": [
+      "Unicode NFKC normalization",
+      "Unicode lowercase",
+      "trim leading and trailing whitespace",
+      "collapse every whitespace run to one ASCII space"
+    ],
+    "version": "unicode-nfkc-lower-whitespace.v1"
+  },
+  "output_hashes": {
+    "v2c3_challenge_set.json": "4493b9baa8363408c917fe29de069dec82f925c8c3a605878a08eba06b051e5c"
+  },
+  "reference_normalized_hash_counts": {
+    "banking77_test": 3079,
+    "clinc_test_and_oos_test": 5500,
+    "development": 8196,
+    "external_lockbox": 1922,
+    "internal_locked_test": 90
+  },
+  "schema_version": "v2c3-challenge-set-manifest.v1",
+  "seed_sha256": "a3e9c748e42b71bd341c8f8bea4d10842006084bcaa9eb0dcf7524b827b235f3",
+  "source_policy": {
+    "authorship": "New synthetic SentinelVoice challenge text authored for V2-C3 before model experimentation.",
+    "cfpb_used": false,
+    "consumer_authored_text_used": false,
+    "model_selection_eligible": false,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  },
+  "training_or_evaluation_performed": false,
+  "validation": {
+    "balanced_30_per_intent": true,
+    "banking77_test_normalized_hash_overlap": 0,
+    "cfpb_used": false,
+    "challenge_normalized_duplicate_count": 0,
+    "clinc_test_and_oos_test_normalized_hash_overlap": 0,
+    "development_normalized_hash_overlap": 0,
+    "external_lockbox_normalized_hash_overlap": 0,
+    "internal_locked_test_normalized_hash_overlap": 0,
+    "protected_write_semantic_review": "Seed positives are manually authored and tagged; deterministic lexical guards supplement but do not replace semantic review.",
+    "risk_derived_from_frozen_contract": true,
+    "taxonomy_matches_frozen_contract": true
+  }
+}

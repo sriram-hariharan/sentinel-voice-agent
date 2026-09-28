@@ -360,18 +360,23 @@ consumer-authored text is written only to the ignored local file
 evaluation set: V2-C2O assigns no final intent labels, runs no model inference,
 performs no training, and defers semantic review to the next phase.
 
-## CFPB Codex first pass and targeted human semantic review
+## CFPB Codex-assisted dual-pass annotation and adjudication
 
 V2-C2P originally defined purely manual independent review for the 600
-`NEAR_MATCH` and 1,200 `AMBIGUOUS` records. The methodology was deliberately
-changed after V2-C2Q: all 1,800 records now receive an independent Codex first
-pass, followed by targeted human review/adjudication and a deterministic 10%
-quality-control sample of otherwise unflagged records. These exact narrative
-hashes remain a protected external-evaluation holdout: neither the narratives
-nor their Codex labels may be used for training, hyperparameter tuning, feature
-selection, threshold tuning, or model selection. Any future CFPB training data
-must use disjoint hashes. The separate 2,000-record `UNSUPPORTED`/OOD lane is
-not annotated in this phase.
+`NEAR_MATCH` and 1,200 `AMBIGUOUS` records. The methodology now used is
+"Codex-assisted independent dual-pass annotation with Codex adjudication and
+targeted human review for genuinely unresolved cases." Pass A independently
+annotates all 1,800 records. Pass B independently re-annotates every record
+selected by the existing review-required logic, including the deterministic
+10% QC sample. Pass C adjudicates every completed A/B pair that cannot be
+safely resolved by exact agreement. These labels are not purely human ground
+truth.
+
+The exact narrative hashes remain a protected external-evaluation holdout.
+Neither narratives nor annotations may be used for training, feature
+selection, hyperparameter or threshold tuning, or model selection. Any future
+CFPB training data must use disjoint hashes. The separate 2,000-record
+`UNSUPPORTED`/OOD lane is not annotated in this phase.
 
 Reviewers assign one of `SINGLE_SUPPORTED_INTENT`,
 `MULTI_SUPPORTED_INTENT`, `UNSUPPORTED`, `UNCLEAR_OR_INSUFFICIENT`, or
@@ -381,65 +386,89 @@ present supported intent rather than forcing a single primary label.
 fraud, loss, theft, unauthorized activity, or prior disputes alone are not
 protected-write labels.
 
-Codex and human reviewers must not receive V2-C1 classifier
-predictions, SVM scores, logistic probabilities or margins, or abstention
-results before labels and scoring rules are frozen. This is LLM-assisted
-annotation, not classifier-assisted labeling. CFPB taxonomy and frozen
-candidate intents may be shown only as nonbinding context.
+Pass A, Pass B, Pass C, and any residual human reviewer must not receive V2-C1
+predictions, SVM scores, logistic predictions or probabilities, margins,
+abstention results, or classifier evaluation artifacts before labels and
+scoring rules are frozen. This is LLM-assisted annotation, not
+classifier-assisted labeling. CFPB taxonomy and frozen candidate intents may
+be shown only as nonbinding context.
 
-The ignored local `processed/cfpb/local/cfpb_llm_first_pass.jsonl` preserves
-structured first-pass decisions and annotator/prompt/batch provenance separately
-from the ignored canonical human/final workfile at
-`processed/cfpb/local/cfpb_semantic_review.jsonl`. Codex-result import never
-writes first-pass decisions into the canonical workfile. The later trackable
-`processed/cfpb/cfpb_semantic_labels.json` export contains hashes, mapping
-metadata, annotations, aggregate counts, and text-free annotation provenance,
-but no consumer narrative text, company/state metadata, or private reviewer
-identifiers. The final methodology must be disclosed with reported results;
-the labels must not be described as purely human ground truth. See
-`cfpb_semantic_review_guidelines.md` for the complete protocol.
+The ignored local stores are:
 
-The standard-library local reviewer CLI remains at
-`scripts/review_cfpb_semantic_annotations.py`. Launch it with:
+- `processed/cfpb/local/cfpb_llm_first_pass.jsonl` for Pass A;
+- `processed/cfpb/local/cfpb_codex_second_pass.jsonl` for Pass B; and
+- `processed/cfpb/local/cfpb_codex_adjudication.jsonl` for Pass C.
+
+Narrative-bearing batches also remain under the ignored `local/` tree. All
+imports validate source linkage and hashes, reject duplicates, preserve source
+order, requeue invalid or missing results, prevent implicit replacement of a
+successful result, and use flush/fsync plus atomic replacement. None of these
+commands writes the canonical review workfile or freezes final labels.
+
+Pass B membership is derived from Pass A's `human_review_required` field; no
+record count is hardcoded. Its prepared rows are rebuilt from a source-only
+allowlist and expose no Pass A category, intents, confidence, note, or
+secondary-review field. They also exclude classifier-derived fields. Pass B
+uses `CODEX_SECOND_PASS` provenance and remains resumable by successful
+`narrative_sha256`, including across sessions or accounts.
+
+A completed A/B pair has strong agreement only when category and normalized
+supported intents match exactly, neither confidence is `LOW`, and both results
+are valid. It is a safe provisional final only when neither pass is unclear,
+multi-intent, `freeze_card`, `create_dispute`, or explicitly marked for
+secondary review. Disagreement or any of those risks routes the record to Pass
+C. Invalid or missing Pass-B rows remain pending and are requeued rather than
+prematurely adjudicated.
+
+Pass C receives the original source context, concise Pass A and Pass B
+annotations and provenance, and deterministic adjudication reasons. It receives
+no chain-of-thought and no classifier information. `CODEX_ADJUDICATOR` may
+select A, select B, produce a corrected third label, or return `UNRESOLVED` with
+a concise reason. A valid `RESOLVED` result requires a complete category,
+intent, confidence, and note contract. Successful Pass-C results are hash-
+resumable and cannot be overwritten without an explicit replacement option.
+
+The standard-library residual reviewer CLI remains at
+`scripts/review_cfpb_semantic_annotations.py`. It is not Pass B and it is not
+Pass C. If genuine `UNRESOLVED` rows remain after Pass C, they remain in the
+1,800-record holdout and are reported as unresolved. Before V2-C1 runs, a
+separate frozen decision will either manually adjudicate a tiny residual set or
+exclude genuinely non-adjudicable records from primary intent scoring while
+still reporting benchmark coverage. No record is silently dropped.
+
+The Codex workflow is coordinated by
+`scripts/annotate_cfpb_semantic_with_codex.py`. Existing Pass-A commands remain
+backward compatible:
 
 ```bash
-python scripts/review_cfpb_semantic_annotations.py \
-  --reviewer-id <id> --flagged-only
+python scripts/annotate_cfpb_semantic_with_codex.py status
+python scripts/annotate_cfpb_semantic_with_codex.py prepare --limit 25
+python scripts/annotate_cfpb_semantic_with_codex.py import \
+  --batch <batch.jsonl> --annotations <results.jsonl>
 ```
 
-It uses the separate first pass as adjudication context,
-resumes at the first flagged `UNREVIEWED` row, displays one local narrative at
-a time, and atomically saves only explicit human decisions. Use `k` to skip
-without changing a row and `q` (or Ctrl+C) to quit safely. Candidate intents
-remain marked `HINTS only`, and V2-C1 outputs remain hidden.
-Canonical workfile progress counts intentionally describe human decisions
-only; accepted unflagged Codex rows are resolved later by the provenance-aware
-text-free export rather than copied into that workfile.
+Pass B, comparison, Pass C, and end-to-end status use:
 
-The offline first pass is coordinated by
-`scripts/annotate_cfpb_semantic_with_codex.py`. Its `prepare` command writes the
-next deterministic ignored batch of 25 records by default, with a hard maximum
-of 200. Codex reads that local batch and writes concise structured result rows;
-the script itself invokes no model or external API. The `import` command
-validates every result against the frozen C2P contract, records invalid or
-missing results without accepting them as labels, prevents duplicate or
-implicit successful-label replacement, and atomically updates the separate
-first-pass file. `status` reports resume progress without narratives. Human
-review is mandatory for LOW-confidence, unclear, multi-intent, `freeze_card`,
-`create_dispute`, Codex-requested review, invalid/missing results, and the fixed
-hash-based 10% QC sample among otherwise uncomplicated successes.
+```bash
+python scripts/annotate_cfpb_semantic_with_codex.py second-pass status
+python scripts/annotate_cfpb_semantic_with_codex.py second-pass prepare --limit 25
+python scripts/annotate_cfpb_semantic_with_codex.py second-pass import \
+  --batch <pass-b-batch.jsonl> --annotations <pass-b-results.jsonl>
+python scripts/annotate_cfpb_semantic_with_codex.py compare
+python scripts/annotate_cfpb_semantic_with_codex.py adjudication prepare --limit 25
+python scripts/annotate_cfpb_semantic_with_codex.py adjudication import \
+  --batch <pass-c-batch.jsonl> --annotations <pass-c-results.jsonl>
+python scripts/annotate_cfpb_semantic_with_codex.py workflow-status
+```
 
-The direct workflow is: run `status`, use `prepare --limit 25` to create the
-next source-ordered ignored batch, have Codex write a separate JSONL result file,
-then use `import --batch <batch.jsonl> --annotations <results.jsonl>`. Each
-result repeats the batch's complaint ID, narrative hash, `CODEX_FIRST_PASS`
-source, neutral or known Codex model identifier, prompt version, and batch ID,
-plus only the five frozen semantic fields. Resume is implicit: later batches
-skip successful hashes and requeue absent, invalid, or missing results. A
-successful label can be replaced only with the explicit `--replace-successful`
-import option, and an invalid replacement never destroys a successful label.
-The default `annotator_model` is the neutral value `codex`; use a more specific
-identifier only when the active Codex model is known reliably.
+All prepare commands default to 25 rows and permit `--limit` up to 200. The
+script invokes no model or external API. `compare` emits deterministic counts;
+`workflow-status` reports Pass A completion, Pass B required/complete/pending,
+strong and safe agreement, Pass C required/resolved/unresolved/pending,
+currently available provisional labels, and genuinely unresolved human-review
+remaining. An optional local preview is text-free and records whether each
+available provisional label came from Pass A, safe A/B agreement, or Pass C.
+It is not a final frozen export.
 
 Before beginning this changed methodology, inspect the canonical workfile with
 the reviewer CLI's `--status`. If prior manual annotations must be cleared, the
@@ -453,6 +482,9 @@ python scripts/review_cfpb_semantic_annotations.py \
   --confirm-reset-reviewed RESET_REVIEWED_ANNOTATIONS
 ```
 
-Batch preparation/import refuses to start while the canonical workfile still
-has reviewed rows, preventing pre-methodology labels from being silently mixed
-into the new provenance model. Status remains non-mutating.
+Legacy Pass-A preparation/import refuses to start while the canonical workfile
+still has reviewed rows, preventing pre-methodology labels from being silently
+mixed into the provenance model. Status and comparison commands are
+non-mutating. Final tracked export and V2-C1 evaluation remain forbidden until
+annotation construction, unresolved handling, and scoring rules are explicitly
+frozen.

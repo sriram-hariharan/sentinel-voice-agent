@@ -61,6 +61,43 @@ def result_for(
     }
 
 
+def second_pass_result_for(
+    batch_row: dict[str, Any],
+    **semantic_overrides: Any,
+) -> dict[str, Any]:
+    result = result_for(batch_row, **semantic_overrides)
+    result["annotation_source"] = codex_workflow.SECOND_PASS_ANNOTATION_SOURCE
+    return result
+
+
+def adjudication_result_for(
+    batch_row: dict[str, Any],
+    *,
+    resolution_status: str = "RESOLVED",
+    category: str | None = "SINGLE_SUPPORTED_INTENT",
+    intents: list[str] | None = None,
+    confidence: str | None = "HIGH",
+    note: str = "Concise synthetic adjudication rationale.",
+    unresolved_reason: str = "",
+) -> dict[str, Any]:
+    return {
+        "annotation_source": codex_workflow.ADJUDICATION_ANNOTATION_SOURCE,
+        "annotator_model": batch_row["annotator_model"],
+        "prompt_version": batch_row["prompt_version"],
+        "batch_id": batch_row["batch_id"],
+        "complaint_id": batch_row["complaint_id"],
+        "narrative_sha256": batch_row["narrative_sha256"],
+        "resolution_status": resolution_status,
+        "final_review_category": category,
+        "final_supported_intents": (
+            ["account_balance"] if intents is None else intents
+        ),
+        "final_annotation_confidence": confidence,
+        "final_annotation_note": note,
+        "unresolved_reason": unresolved_reason,
+    }
+
+
 def prepared_batch(
     rows: list[dict[str, Any]],
     *,
@@ -96,6 +133,37 @@ def non_qc_source(prefix: str = "Synthetic non-QC narrative") -> dict[str, Any]:
         if not codex_workflow.deterministic_qc_selected(
             row["narrative_sha256"]
         )
+    )
+
+
+def qc_source(prefix: str = "Synthetic QC narrative") -> dict[str, Any]:
+    candidates = (
+        source_row("1", f"{prefix} {index}.") for index in range(100)
+    )
+    return next(
+        row
+        for row in candidates
+        if codex_workflow.deterministic_qc_selected(
+            row["narrative_sha256"]
+        )
+    )
+
+
+def successful_second_pass_record(
+    row: dict[str, Any],
+    first_pass: dict[str, Any],
+    **semantic_overrides: Any,
+) -> dict[str, Any]:
+    _, batch = codex_workflow.prepare_second_pass_batch(
+        [row],
+        [first_pass],
+        [],
+        limit=1,
+        batch_id="synthetic-second-pass-batch",
+    )
+    return codex_workflow.successful_second_pass_record(
+        second_pass_result_for(batch[0], **semantic_overrides),
+        batch[0],
     )
 
 
@@ -543,3 +611,461 @@ def test_codex_hybrid_export_is_text_free(tmp_path: Path) -> None:
     assert "company" not in exported
     assert "state" not in exported
     assert row["narrative"] not in output_path.read_text(encoding="utf-8")
+
+
+def test_pass_b_selection_is_derived_from_pass_a_review_logic() -> None:
+    rows = [
+        non_qc_source("Synthetic unflagged selection narrative"),
+        non_qc_source("Synthetic low-confidence selection narrative"),
+        non_qc_source("Synthetic protected selection narrative"),
+    ]
+    for index, row in enumerate(rows, start=1):
+        row["complaint_id"] = str(index)
+    first_pass = [
+        successful_record(rows[0]),
+        successful_record(rows[1], confidence="LOW"),
+        successful_record(rows[2], intents=["freeze_card"]),
+    ]
+
+    required = codex_workflow.second_pass_required_hashes(rows, first_pass)
+
+    assert required == [
+        rows[1]["narrative_sha256"],
+        rows[2]["narrative_sha256"],
+    ]
+
+
+def test_pass_b_batch_is_blind_to_pass_a_and_classifier_fields() -> None:
+    row = {
+        **non_qc_source("Synthetic blind Pass-B narrative"),
+        "classifier_prediction": "SECRET_CLASSIFIER",
+        "svm_score": "SECRET_SVM",
+        "logistic_probability": "SECRET_LOGISTIC",
+    }
+    first_pass = successful_record(
+        row,
+        category="MULTI_SUPPORTED_INTENT",
+        intents=["account_balance", "card_status"],
+        confidence="LOW",
+        secondary=True,
+    )
+
+    _, batch = codex_workflow.prepare_second_pass_batch(
+        [row],
+        [first_pass],
+        [],
+        limit=1,
+    )
+    serialized = json.dumps(batch)
+
+    assert not set(codex_workflow.SEMANTIC_FIELDS).intersection(batch[0])
+    assert "SECRET_" not in serialized
+    assert batch[0]["annotation_source"] == "CODEX_SECOND_PASS"
+
+
+def test_pass_b_resume_skips_successful_hashes() -> None:
+    rows = [
+        non_qc_source("Synthetic completed Pass-B narrative"),
+        non_qc_source("Synthetic pending Pass-B narrative"),
+    ]
+    rows[0]["complaint_id"] = "1"
+    rows[1]["complaint_id"] = "2"
+    first_pass = [
+        successful_record(row, secondary=True) for row in rows
+    ]
+    completed = successful_second_pass_record(rows[0], first_pass[0])
+
+    _, batch = codex_workflow.prepare_second_pass_batch(
+        rows,
+        first_pass,
+        [completed],
+        limit=2,
+    )
+
+    assert [row["narrative_sha256"] for row in batch] == [
+        rows[1]["narrative_sha256"]
+    ]
+
+
+def test_pass_b_invalid_and_missing_results_are_requeued() -> None:
+    rows = [
+        non_qc_source("Synthetic invalid Pass-B narrative"),
+        non_qc_source("Synthetic missing Pass-B narrative"),
+    ]
+    rows[0]["complaint_id"] = "1"
+    rows[1]["complaint_id"] = "2"
+    first_pass = [
+        successful_record(row, secondary=True) for row in rows
+    ]
+    _, batch = codex_workflow.prepare_second_pass_batch(
+        rows,
+        first_pass,
+        [],
+        limit=2,
+        batch_id="synthetic-pass-b-invalid",
+    )
+    invalid = second_pass_result_for(
+        batch[0],
+        category="SINGLE_SUPPORTED_INTENT",
+        intents=[],
+    )
+
+    imported, summary = codex_workflow.import_second_pass_results(
+        rows,
+        first_pass,
+        [],
+        batch,
+        [invalid],
+    )
+    _, retry = codex_workflow.prepare_second_pass_batch(
+        rows,
+        first_pass,
+        imported,
+        limit=2,
+    )
+
+    assert summary == {"succeeded": 0, "invalid": 1, "missing": 1}
+    assert [row["status"] for row in imported] == ["INVALID", "MISSING"]
+    assert [row["narrative_sha256"] for row in retry] == [
+        row["narrative_sha256"] for row in rows
+    ]
+
+
+def test_exact_safe_ab_agreement_is_provisionally_resolved() -> None:
+    row = qc_source("Synthetic safe agreement narrative")
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(row, first_pass)
+
+    comparisons, summary = codex_workflow.compare_annotation_passes(
+        [row],
+        [first_pass],
+        [second_pass],
+    )
+    preview = codex_workflow.build_provisional_final_labels(
+        [row],
+        [first_pass],
+        [second_pass],
+        [],
+    )
+
+    assert comparisons[0]["safe_agreement"] is True
+    assert comparisons[0]["pass_c_required"] is False
+    assert summary["exact_strong_agreements"] == 1
+    assert preview[0]["provisional_label_source"] == "CODEX_DUAL_PASS_AGREEMENT"
+
+
+def test_ab_disagreement_routes_to_pass_c() -> None:
+    row = qc_source("Synthetic disagreement narrative")
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        category="UNSUPPORTED",
+        intents=[],
+    )
+
+    comparisons, summary = codex_workflow.compare_annotation_passes(
+        [row],
+        [first_pass],
+        [second_pass],
+    )
+
+    assert comparisons[0]["adjudication_reasons"] == [
+        "SEMANTIC_DISAGREEMENT"
+    ]
+    assert comparisons[0]["pass_c_required"] is True
+    assert summary["ab_disagreements"] == summary["pass_c_required"] == 1
+
+
+@pytest.mark.parametrize(
+    ("overrides", "expected_reason"),
+    [
+        ({"confidence": "LOW"}, "LOW_CONFIDENCE"),
+        (
+            {"category": "UNCLEAR_OR_INSUFFICIENT", "intents": []},
+            "UNCLEAR_OR_INSUFFICIENT",
+        ),
+        (
+            {
+                "category": "MULTI_SUPPORTED_INTENT",
+                "intents": ["account_balance", "recent_transactions"],
+            },
+            "MULTI_SUPPORTED_INTENT",
+        ),
+        ({"intents": ["freeze_card"]}, "PROTECTED_WRITE_FREEZE_CARD"),
+        ({"intents": ["create_dispute"]}, "PROTECTED_WRITE_CREATE_DISPUTE"),
+        ({"secondary": True}, "SECONDARY_REVIEW_REQUIRED"),
+    ],
+    ids=("low", "unclear", "multi", "freeze", "dispute", "secondary"),
+)
+def test_semantic_risks_route_to_pass_c_even_on_exact_agreement(
+    overrides: dict[str, Any],
+    expected_reason: str,
+) -> None:
+    row = non_qc_source(f"Synthetic Pass-C risk {expected_reason}")
+    first_pass = successful_record(row, **overrides)
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        **overrides,
+    )
+
+    comparisons, _ = codex_workflow.compare_annotation_passes(
+        [row],
+        [first_pass],
+        [second_pass],
+    )
+
+    assert comparisons[0]["exact_semantic_agreement"] is True
+    assert comparisons[0]["pass_c_required"] is True
+    assert expected_reason in comparisons[0]["adjudication_reasons"]
+
+
+def test_pass_c_can_resolve_with_a_corrected_third_label() -> None:
+    row = qc_source("Synthetic corrected third-label narrative")
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        category="UNSUPPORTED",
+        intents=[],
+    )
+    _, batch = codex_workflow.prepare_adjudication_batch(
+        [row],
+        [first_pass],
+        [second_pass],
+        [],
+        limit=1,
+    )
+    corrected = adjudication_result_for(
+        batch[0],
+        category="SINGLE_SUPPORTED_INTENT",
+        intents=["card_status"],
+    )
+
+    adjudications, _ = codex_workflow.import_adjudication_results(
+        [row],
+        [first_pass],
+        [second_pass],
+        [],
+        batch,
+        [corrected],
+    )
+    preview = codex_workflow.build_provisional_final_labels(
+        [row],
+        [first_pass],
+        [second_pass],
+        adjudications,
+    )
+
+    assert preview[0]["supported_intents"] == ["card_status"]
+    assert preview[0]["provisional_label_source"] == "CODEX_ADJUDICATOR"
+
+
+def test_pass_c_unresolved_has_no_final_label() -> None:
+    row = qc_source("Synthetic unresolved adjudication narrative")
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        category="UNSUPPORTED",
+        intents=[],
+    )
+    _, batch = codex_workflow.prepare_adjudication_batch(
+        [row],
+        [first_pass],
+        [second_pass],
+        [],
+        limit=1,
+    )
+    unresolved = adjudication_result_for(
+        batch[0],
+        resolution_status="UNRESOLVED",
+        category=None,
+        intents=[],
+        confidence=None,
+        note="",
+        unresolved_reason="Synthetic evidence remains materially ambiguous.",
+    )
+
+    adjudications, _ = codex_workflow.import_adjudication_results(
+        [row],
+        [first_pass],
+        [second_pass],
+        [],
+        batch,
+        [unresolved],
+    )
+    preview = codex_workflow.build_provisional_final_labels(
+        [row],
+        [first_pass],
+        [second_pass],
+        adjudications,
+    )
+    status = codex_workflow.workflow_status(
+        [row],
+        [first_pass],
+        [second_pass],
+        adjudications,
+    )
+
+    assert preview == []
+    assert status["pass_c_unresolved"] == 1
+    assert status["human_review_remaining"] == 1
+
+
+def test_pass_c_resume_is_hash_based_and_skips_successes() -> None:
+    rows = [
+        qc_source("Synthetic first Pass-C resume narrative"),
+        qc_source("Synthetic second Pass-C resume narrative"),
+    ]
+    rows[0]["complaint_id"] = "1"
+    rows[1]["complaint_id"] = "2"
+    first_pass = [successful_record(row) for row in rows]
+    second_pass = [
+        successful_second_pass_record(
+            row,
+            first,
+            category="UNSUPPORTED",
+            intents=[],
+        )
+        for row, first in zip(rows, first_pass, strict=True)
+    ]
+    _, first_batch = codex_workflow.prepare_adjudication_batch(
+        rows,
+        first_pass,
+        second_pass,
+        [],
+        limit=1,
+    )
+    adjudications, _ = codex_workflow.import_adjudication_results(
+        rows,
+        first_pass,
+        second_pass,
+        [],
+        first_batch,
+        [adjudication_result_for(first_batch[0])],
+    )
+
+    _, resumed = codex_workflow.prepare_adjudication_batch(
+        rows,
+        first_pass,
+        second_pass,
+        adjudications,
+        limit=2,
+    )
+
+    assert [row["narrative_sha256"] for row in resumed] == [
+        rows[1]["narrative_sha256"]
+    ]
+
+
+def test_successful_pass_c_result_cannot_be_silently_overwritten() -> None:
+    row = qc_source("Synthetic Pass-C overwrite narrative")
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        category="UNSUPPORTED",
+        intents=[],
+    )
+    _, batch = codex_workflow.prepare_adjudication_batch(
+        [row], [first_pass], [second_pass], [], limit=1
+    )
+    result = adjudication_result_for(batch[0])
+    existing, _ = codex_workflow.import_adjudication_results(
+        [row], [first_pass], [second_pass], [], batch, [result]
+    )
+
+    with pytest.raises(ValueError, match="refusing to overwrite"):
+        codex_workflow.import_adjudication_results(
+            [row],
+            [first_pass],
+            [second_pass],
+            existing,
+            batch,
+            [result],
+        )
+
+
+def test_pass_b_and_pass_c_atomic_persistence_round_trips(
+    tmp_path: Path,
+) -> None:
+    row = qc_source("Synthetic later-pass atomic narrative")
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        category="UNSUPPORTED",
+        intents=[],
+    )
+    second_path = tmp_path / "second-pass.jsonl"
+    reviewer.atomic_write_records(second_path, [second_pass])
+    _, batch = codex_workflow.prepare_adjudication_batch(
+        [row], [first_pass], [second_pass], [], limit=1
+    )
+    adjudication = codex_workflow.successful_adjudication_record(
+        adjudication_result_for(batch[0]),
+        batch[0],
+    )
+    adjudication_path = tmp_path / "adjudication.jsonl"
+    reviewer.atomic_write_records(adjudication_path, [adjudication])
+
+    assert codex_workflow.load_second_pass_records(second_path) == [second_pass]
+    assert codex_workflow.load_adjudication_records(adjudication_path) == [
+        adjudication
+    ]
+
+
+def test_pass_c_batch_excludes_classifier_output_fields() -> None:
+    row = {
+        **qc_source("Synthetic Pass-C leakage narrative"),
+        "classifier_prediction": "SECRET_CLASSIFIER",
+        "svm_margin": "SECRET_SVM",
+        "logistic_probability": "SECRET_LOGISTIC",
+    }
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(
+        row,
+        first_pass,
+        category="UNSUPPORTED",
+        intents=[],
+    )
+
+    _, batch = codex_workflow.prepare_adjudication_batch(
+        [row], [first_pass], [second_pass], [], limit=1
+    )
+
+    assert "SECRET_" not in json.dumps(batch)
+    assert batch[0]["pass_a"]["annotation_note"]
+    assert batch[0]["pass_b"]["annotation_note"]
+
+
+def test_existing_pass_a_cli_commands_remain_available() -> None:
+    parser = codex_workflow.build_parser()
+
+    assert parser.parse_args(["prepare"]).command == "prepare"
+    assert parser.parse_args(["status"]).command == "status"
+    assert parser.parse_args(
+        ["import", "--batch", "batch.jsonl", "--annotations", "result.jsonl"]
+    ).command == "import"
+
+
+def test_workflow_status_is_deterministic_and_internally_consistent() -> None:
+    row = qc_source("Synthetic workflow status narrative")
+    first_pass = successful_record(row)
+    second_pass = successful_second_pass_record(row, first_pass)
+
+    first = codex_workflow.workflow_status(
+        [row], [first_pass], [second_pass], []
+    )
+    second = codex_workflow.workflow_status(
+        [row], [first_pass], [second_pass], []
+    )
+
+    assert first == second
+    assert first["total_holdout"] == 1
+    assert first["pass_b_required"] == first["pass_b_complete"] == 1
+    assert first["pass_b_pending"] == first["pass_c_required"] == 0
+    assert first["final_labels_currently_available"] == 1
+    assert first["human_review_remaining"] == 0

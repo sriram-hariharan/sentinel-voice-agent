@@ -1,12 +1,14 @@
-# CFPB Codex-first-pass and human-adjudication guidelines
+# CFPB Codex-assisted dual-pass and adjudication guidelines
 
 ## Scope and holdout boundary
 
 The workflow covers only the 600 `NEAR_MATCH` and 1,200 `AMBIGUOUS` records in
 the frozen CFPB review pool. Do not annotate the 2,000 `UNSUPPORTED` records in
-this phase. The original pure-manual plan has been replaced explicitly by an
-independent Codex first pass across all 1,800 records, targeted human
-review/adjudication, and deterministic quality-control review.
+this phase. The methodology is Codex-assisted independent dual-pass annotation
+with Codex adjudication and targeted human review for genuinely unresolved
+cases. Pass A covers all 1,800 records. Pass B independently covers the subset
+selected by the frozen review-required logic. Pass C adjudicates every
+completed A/B pair not eligible for safe exact-agreement resolution.
 
 The 1,800 reviewed narratives are an external-evaluation holdout. Their exact
 narrative hashes must never be used for training, hyperparameter selection, or
@@ -14,21 +16,21 @@ model-selection decisions. They may be used for final external evaluation only
 after the annotations are complete and frozen. Any later CFPB training corpus
 must use narratives whose exact hashes are disjoint from this holdout.
 
-Neither Codex nor human reviewers may see a V2-C1 classifier
-prediction, SVM score, logistic-regression prediction/probability/margin, or
-classifier abstention result. The V2-C1 classifier must not run until final
-labels and scoring rules are frozen. CFPB taxonomy and frozen candidate-intent
-metadata may be visible as context, but they are hints rather than labels.
-This is LLM-assisted annotation, not classifier-assisted labeling.
+Pass A, Pass B, Pass C, and any residual human reviewer must not see a V2-C1
+classifier prediction, SVM score, logistic-regression prediction, probability,
+margin, abstention result, or classifier evaluation artifact. V2-C1 must not
+run until final labels and scoring rules are frozen. CFPB taxonomy and frozen
+candidate-intent metadata may be visible as context, but they are hints rather
+than labels. This is LLM-assisted annotation, not classifier-assisted labeling.
 
 Codex returns only the structured category, supported intents, confidence,
 concise note, secondary-review flag, and required batch provenance. It must not
 store chain-of-thought. Malformed, missing, or semantically invalid output never
-silently becomes a label: deterministic import records it as unresolved and
-requiring human resolution. First-pass rows remain in a separate ignored local
-artifact; import never copies them into the canonical human/final workfile.
+silently becomes a label: deterministic import records it as retryable and
+unresolved. Pass A, Pass B, and Pass C remain in separate ignored local
+artifacts and are never copied into the canonical review workfile by import.
 
-Human review is mandatory when any of these conditions applies:
+Pass B selection is mandatory when any of these Pass-A conditions applies:
 
 - confidence is `LOW`;
 - category is `UNCLEAR_OR_INSUFFICIENT`;
@@ -36,21 +38,34 @@ Human review is mandatory when any of these conditions applies:
 - supported intents contain `freeze_card`;
 - supported intents contain `create_dispute`;
 - Codex requests secondary review;
-- a Codex batch result is invalid or missing; or
+- a Pass-A result is invalid or missing; or
 - the otherwise-unflagged record is selected by the documented deterministic
   10% SHA-256 QC rule: hash
   `sentinelvoice-cfpb-codex-qc-v1:<narrative_sha256>`, interpret the first eight
   hex characters as an integer, and select when that value modulo 100 is below
   10.
 
-Human review records whether the first pass was confirmed, overridden, or
-resolved after an invalid/missing Codex result. A successful, unflagged first
-pass may be accepted without human change. The eventual text-free export
-retains this provenance and annotator/prompt/batch identifiers, while excluding
-narrative text, company/state metadata, and private reviewer identity. Reported
-evaluation results must disclose this mixed methodology and must not call the
-labels purely human ground truth. Codex annotations remain evaluation labels
-only and must not become training data.
+Pass B must be blind to Pass-A categories, intents, confidence, notes, and
+secondary-review values. It receives only the source narrative, source
+identifiers, and the same frozen nonbinding annotation context permitted for
+Pass A. A valid successful hash is skipped on resume; invalid and missing rows
+are requeued. Pass B is Codex review, not human review.
+
+Strong A/B agreement requires an exact category match, an exact match after
+deterministic supported-intent normalization, non-`LOW` confidence from both
+passes, and valid successful results from both passes. Strong agreement is
+safe for provisional resolution only if neither pass is unclear, multi-intent,
+`freeze_card`, `create_dispute`, or explicitly marked for secondary review.
+Every disagreement and every strong-but-risky agreement goes to Pass C.
+
+Pass C may see the original narrative, concise Pass A and Pass B annotations
+and provenance, and deterministic adjudication reasons. It may choose A,
+choose B, or produce a corrected third label. It returns `RESOLVED` with a
+complete frozen semantic label or `UNRESOLVED` with a concise reason. Pass C is
+Codex adjudication, not human adjudication. Reported evaluation results must
+disclose this methodology and must not call the labels purely human ground
+truth. All annotations remain evaluation labels only and must not become
+training or model-selection data.
 
 All examples below are synthetic and are not CFPB narratives.
 
@@ -189,18 +204,33 @@ Write a short explanation of why the category and intents apply. Paraphrase;
 do not copy long narrative passages, names, account details, contact details,
 or other potentially identifying content. Keep notes within 500 characters.
 
-## Adjudication
+## Pass C and unresolved handling
 
-- `UNREVIEWED`: untouched initialization state; all annotation fields remain
-  empty.
-- `REVIEWED`: one reviewer completed a valid annotation.
-- `NEEDS_ADJUDICATION`: a second reviewer or adjudicator must resolve material
-  ambiguity or disagreement; set `secondary_review_required` to `true`.
-- `ADJUDICATED`: the final decision was resolved through adjudication.
+Pass-C output uses `resolution_status = "RESOLVED"` or
+`resolution_status = "UNRESOLVED"`. A resolved result must contain a complete
+valid final category, normalized supported intents, confidence, and concise
+note. An unresolved result must contain no final label and must state a concise
+reason. Successful Pass-C results are never overwritten unless an explicit
+replacement flag is supplied.
 
-The normal frozen export requires every mandatory-review row to be resolved;
-otherwise-unflagged successful Codex rows may be recorded as
-`CODEX_FIRST_PASS_ACCEPTED`. Partial export is for workflow inspection only and
-must remain explicitly marked partial; it is not a frozen evaluation label
-set. Final export and evaluation must not run until the first pass, targeted
-human work, methodology disclosure, and scoring rules are complete and frozen.
+The canonical workfile's legacy human states remain available for a later
+residual decision only:
+
+- `UNREVIEWED`: untouched initialization state;
+- `REVIEWED`: one human reviewer completed a valid annotation;
+- `NEEDS_ADJUDICATION`: another human must resolve material ambiguity; and
+- `ADJUDICATED`: human adjudication completed.
+
+Those states are not names for Pass B or Pass C. After Pass C, genuinely
+unresolved rows remain part of the 1,800-record holdout and are reported as
+unresolved. Before V2-C1 evaluation, a separately frozen policy will either
+manually adjudicate a tiny residual set or exclude genuinely non-adjudicable
+rows from primary intent scoring while retaining them in benchmark coverage.
+No record may be silently dropped merely because it is difficult.
+
+Provisional final-label construction uses Pass A for non-Pass-B rows, the
+agreed label for safe A/B agreement, and the Pass-C label for resolved
+adjudications. `UNRESOLVED` has no final label. Preview output is text-free and
+not a frozen export. Final export and V2-C1 evaluation must not run until label
+construction, unresolved handling, methodology disclosure, and scoring rules
+are complete and explicitly frozen.

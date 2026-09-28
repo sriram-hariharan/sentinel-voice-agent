@@ -3566,6 +3566,12 @@ transcripts. V2-C2 evaluates frozen-model generalization on separately
 qualified public datasets; those external metrics remain distinct from V2-C1.
 See `data/evals/v2/ml/README.md` and `data/evals/v2/external/README.md`.
 
+The CFPB semantic holdout uses an explicitly disclosed Codex first pass followed
+by targeted human adjudication and deterministic QC review; it is not purely
+human ground truth and is not classifier-assisted labeling. Frozen V2-C1
+predictions and scores remain hidden until CFPB labels and scoring rules are
+frozen, and neither CFPB narratives nor resulting labels are training data.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

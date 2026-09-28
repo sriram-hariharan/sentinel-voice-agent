@@ -1,10 +1,12 @@
-# CFPB semantic-review guidelines
+# CFPB Codex-first-pass and human-adjudication guidelines
 
 ## Scope and holdout boundary
 
-V2-C2P covers only the 600 `NEAR_MATCH` and 1,200 `AMBIGUOUS` records in the
-frozen CFPB review pool. Do not annotate the 2,000 `UNSUPPORTED` records in
-this phase.
+The workflow covers only the 600 `NEAR_MATCH` and 1,200 `AMBIGUOUS` records in
+the frozen CFPB review pool. Do not annotate the 2,000 `UNSUPPORTED` records in
+this phase. The original pure-manual plan has been replaced explicitly by an
+independent Codex first pass across all 1,800 records, targeted human
+review/adjudication, and deterministic quality-control review.
 
 The 1,800 reviewed narratives are an external-evaluation holdout. Their exact
 narrative hashes must never be used for training, hyperparameter selection, or
@@ -12,11 +14,43 @@ model-selection decisions. They may be used for final external evaluation only
 after the annotations are complete and frozen. Any later CFPB training corpus
 must use narratives whose exact hashes are disjoint from this holdout.
 
-Reviewers must assign labels without seeing a V2-C1 classifier prediction, SVM
-score, logistic-regression probability, or classifier abstention result. CFPB
-taxonomy and frozen candidate-intent metadata may be visible as context, but
-they are hints rather than labels. Read the narrative itself and make an
-independent semantic judgment.
+Neither Codex nor human reviewers may see a V2-C1 classifier
+prediction, SVM score, logistic-regression prediction/probability/margin, or
+classifier abstention result. The V2-C1 classifier must not run until final
+labels and scoring rules are frozen. CFPB taxonomy and frozen candidate-intent
+metadata may be visible as context, but they are hints rather than labels.
+This is LLM-assisted annotation, not classifier-assisted labeling.
+
+Codex returns only the structured category, supported intents, confidence,
+concise note, secondary-review flag, and required batch provenance. It must not
+store chain-of-thought. Malformed, missing, or semantically invalid output never
+silently becomes a label: deterministic import records it as unresolved and
+requiring human resolution. First-pass rows remain in a separate ignored local
+artifact; import never copies them into the canonical human/final workfile.
+
+Human review is mandatory when any of these conditions applies:
+
+- confidence is `LOW`;
+- category is `UNCLEAR_OR_INSUFFICIENT`;
+- category is `MULTI_SUPPORTED_INTENT`;
+- supported intents contain `freeze_card`;
+- supported intents contain `create_dispute`;
+- Codex requests secondary review;
+- a Codex batch result is invalid or missing; or
+- the otherwise-unflagged record is selected by the documented deterministic
+  10% SHA-256 QC rule: hash
+  `sentinelvoice-cfpb-codex-qc-v1:<narrative_sha256>`, interpret the first eight
+  hex characters as an integer, and select when that value modulo 100 is below
+  10.
+
+Human review records whether the first pass was confirmed, overridden, or
+resolved after an invalid/missing Codex result. A successful, unflagged first
+pass may be accepted without human change. The eventual text-free export
+retains this provenance and annotator/prompt/batch identifiers, while excluding
+narrative text, company/state metadata, and private reviewer identity. Reported
+evaluation results must disclose this mixed methodology and must not call the
+labels purely human ground truth. Codex annotations remain evaluation labels
+only and must not become training data.
 
 All examples below are synthetic and are not CFPB narratives.
 
@@ -144,9 +178,10 @@ Synthetic contrast:
 - `MEDIUM`: the interpretation is reasonable but depends on some context.
 - `LOW`: material ambiguity remains.
 
-LOW-confidence records should normally set `secondary_review_required` to
-`true` and use `NEEDS_ADJUDICATION`. Do not use confidence to replace the
-review category.
+LOW-confidence records always enter the targeted human-review set. Human
+annotations should set `secondary_review_required` to `true` and use
+`NEEDS_ADJUDICATION` when another adjudicator must resolve the case. Do not use
+confidence to replace the review category.
 
 ## Annotation notes
 
@@ -163,6 +198,9 @@ or other potentially identifying content. Keep notes within 500 characters.
   ambiguity or disagreement; set `secondary_review_required` to `true`.
 - `ADJUDICATED`: the final decision was resolved through adjudication.
 
-The normal frozen export requires every record to be `REVIEWED` or
-`ADJUDICATED`. Partial export is for workflow inspection only and must remain
-explicitly marked partial; it is not a frozen evaluation label set.
+The normal frozen export requires every mandatory-review row to be resolved;
+otherwise-unflagged successful Codex rows may be recorded as
+`CODEX_FIRST_PASS_ACCEPTED`. Partial export is for workflow inspection only and
+must remain explicitly marked partial; it is not a frozen evaluation label
+set. Final export and evaluation must not run until the first pass, targeted
+human work, methodology disclosure, and scoring rules are complete and frozen.

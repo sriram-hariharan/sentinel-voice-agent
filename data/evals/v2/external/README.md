@@ -360,14 +360,18 @@ consumer-authored text is written only to the ignored local file
 evaluation set: V2-C2O assigns no final intent labels, runs no model inference,
 performs no training, and defers semantic review to the next phase.
 
-## CFPB human semantic review
+## CFPB Codex first pass and targeted human semantic review
 
-V2-C2P defines independent human review for only the 600 `NEAR_MATCH` and
-1,200 `AMBIGUOUS` records. These 1,800 exact narrative hashes are an external
-evaluation holdout: they cannot be used for training, hyperparameter tuning,
-or model selection. Any future CFPB training data must use disjoint narrative
-hashes. The separate 2,000-record `UNSUPPORTED`/OOD lane is not annotated in
-this phase.
+V2-C2P originally defined purely manual independent review for the 600
+`NEAR_MATCH` and 1,200 `AMBIGUOUS` records. The methodology was deliberately
+changed after V2-C2Q: all 1,800 records now receive an independent Codex first
+pass, followed by targeted human review/adjudication and a deterministic 10%
+quality-control sample of otherwise unflagged records. These exact narrative
+hashes remain a protected external-evaluation holdout: neither the narratives
+nor their Codex labels may be used for training, hyperparameter tuning, feature
+selection, threshold tuning, or model selection. Any future CFPB training data
+must use disjoint hashes. The separate 2,000-record `UNSUPPORTED`/OOD lane is
+not annotated in this phase.
 
 Reviewers assign one of `SINGLE_SUPPORTED_INTENT`,
 `MULTI_SUPPORTED_INTENT`, `UNSUPPORTED`, `UNCLEAR_OR_INSUFFICIENT`, or
@@ -377,23 +381,78 @@ present supported intent rather than forcing a single primary label.
 fraud, loss, theft, unauthorized activity, or prior disputes alone are not
 protected-write labels.
 
-Reviewers must not see classifier predictions, SVM scores, logistic
-probabilities, or abstention results before labeling. CFPB taxonomy and frozen
-candidate intents may be shown only as nonbinding context. The ignored local
-`processed/cfpb/local/cfpb_semantic_review.jsonl` workfile contains narrative
-text and editable review fields. The later trackable
-`processed/cfpb/cfpb_semantic_labels.json` export contains hashes, mapping
-metadata, annotations, and aggregate counts but no consumer narrative text or
-reviewer identifiers. See `cfpb_semantic_review_guidelines.md` for the complete
-human-review protocol. V2-C2P runs no classifier or LLM labeling and performs
-no model training.
+Codex and human reviewers must not receive V2-C1 classifier
+predictions, SVM scores, logistic probabilities or margins, or abstention
+results before labels and scoring rules are frozen. This is LLM-assisted
+annotation, not classifier-assisted labeling. CFPB taxonomy and frozen
+candidate intents may be shown only as nonbinding context.
 
-V2-C2Q adds the standard-library local reviewer CLI at
-`scripts/review_cfpb_semantic_annotations.py`. Launch it with
-`python scripts/review_cfpb_semantic_annotations.py --reviewer-id <id>`; it
-resumes at the first `UNREVIEWED` row, displays one local narrative at a time,
-and atomically saves only explicit human annotations. Use `k` to skip without
-changing a row and `q` (or Ctrl+C) to quit safely. Candidate intents are marked
-as `HINTS only`; classifier predictions, scores, probabilities, margins, and
-abstention outputs are intentionally neither used nor displayed. The narrative
-workfile remains local and Git-ignored.
+The ignored local `processed/cfpb/local/cfpb_llm_first_pass.jsonl` preserves
+structured first-pass decisions and annotator/prompt/batch provenance separately
+from the ignored canonical human/final workfile at
+`processed/cfpb/local/cfpb_semantic_review.jsonl`. Codex-result import never
+writes first-pass decisions into the canonical workfile. The later trackable
+`processed/cfpb/cfpb_semantic_labels.json` export contains hashes, mapping
+metadata, annotations, aggregate counts, and text-free annotation provenance,
+but no consumer narrative text, company/state metadata, or private reviewer
+identifiers. The final methodology must be disclosed with reported results;
+the labels must not be described as purely human ground truth. See
+`cfpb_semantic_review_guidelines.md` for the complete protocol.
+
+The standard-library local reviewer CLI remains at
+`scripts/review_cfpb_semantic_annotations.py`. Launch it with:
+
+```bash
+python scripts/review_cfpb_semantic_annotations.py \
+  --reviewer-id <id> --flagged-only
+```
+
+It uses the separate first pass as adjudication context,
+resumes at the first flagged `UNREVIEWED` row, displays one local narrative at
+a time, and atomically saves only explicit human decisions. Use `k` to skip
+without changing a row and `q` (or Ctrl+C) to quit safely. Candidate intents
+remain marked `HINTS only`, and V2-C1 outputs remain hidden.
+Canonical workfile progress counts intentionally describe human decisions
+only; accepted unflagged Codex rows are resolved later by the provenance-aware
+text-free export rather than copied into that workfile.
+
+The offline first pass is coordinated by
+`scripts/annotate_cfpb_semantic_with_codex.py`. Its `prepare` command writes the
+next deterministic ignored batch of 25 records by default, with a hard maximum
+of 50. Codex reads that local batch and writes concise structured result rows;
+the script itself invokes no model or external API. The `import` command
+validates every result against the frozen C2P contract, records invalid or
+missing results without accepting them as labels, prevents duplicate or
+implicit successful-label replacement, and atomically updates the separate
+first-pass file. `status` reports resume progress without narratives. Human
+review is mandatory for LOW-confidence, unclear, multi-intent, `freeze_card`,
+`create_dispute`, Codex-requested review, invalid/missing results, and the fixed
+hash-based 10% QC sample among otherwise uncomplicated successes.
+
+The direct workflow is: run `status`, use `prepare --limit 25` to create the
+next source-ordered ignored batch, have Codex write a separate JSONL result file,
+then use `import --batch <batch.jsonl> --annotations <results.jsonl>`. Each
+result repeats the batch's complaint ID, narrative hash, `CODEX_FIRST_PASS`
+source, neutral or known Codex model identifier, prompt version, and batch ID,
+plus only the five frozen semantic fields. Resume is implicit: later batches
+skip successful hashes and requeue absent, invalid, or missing results. A
+successful label can be replaced only with the explicit `--replace-successful`
+import option, and an invalid replacement never destroys a successful label.
+The default `annotator_model` is the neutral value `codex`; use a more specific
+identifier only when the active Codex model is known reliably.
+
+Before beginning this changed methodology, inspect the canonical workfile with
+the reviewer CLI's `--status`. If prior manual annotations must be cleared, the
+only supported reset is the explicit command below. It first writes a
+timestamped ignored backup, resets only non-`UNREVIEWED` annotation fields, and
+reports the count; it never runs as part of batch preparation or import:
+
+```bash
+python scripts/review_cfpb_semantic_annotations.py \
+  --reset-reviewed \
+  --confirm-reset-reviewed RESET_REVIEWED_ANNOTATIONS
+```
+
+Batch preparation/import refuses to start while the canonical workfile still
+has reviewed rows, preventing pre-methodology labels from being silently mixed
+into the new provenance model. Status remains non-mutating.

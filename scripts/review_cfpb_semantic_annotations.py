@@ -1,4 +1,4 @@
-"""Review the local CFPB semantic holdout without exposing model outputs."""
+"""Review the CFPB holdout without exposing V2-C1 classifier outputs."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ import stat
 import tempfile
 from collections import Counter
 from collections.abc import Callable, Mapping, Sequence
+from datetime import UTC, datetime
 from itertools import chain
 from pathlib import Path
 from typing import Any
@@ -20,7 +21,12 @@ except ModuleNotFoundError:  # Direct execution adds scripts/, not the repo root
 
 
 DEFAULT_INPUT_PATH = contract.LOCAL_WORKFILE_PATH
+DEFAULT_FIRST_PASS_PATH = (
+    contract.EXTERNAL_ROOT
+    / "processed/cfpb/local/cfpb_llm_first_pass.jsonl"
+)
 EXPECTED_MAPPING_COUNTS = {"AMBIGUOUS": 1_200, "NEAR_MATCH": 600}
+RESET_CONFIRMATION = "RESET_REVIEWED_ANNOTATIONS"
 SAVEABLE_ADJUDICATION_STATUSES = (
     "REVIEWED",
     "NEEDS_ADJUDICATION",
@@ -115,12 +121,8 @@ def serialize_records(records: Sequence[Mapping[str, Any]]) -> bytes:
     ).encode("utf-8")
 
 
-def atomic_write_records(
-    path: Path,
-    records: Sequence[Mapping[str, Any]],
-) -> None:
-    """Durably write a complete JSONL file and atomically replace the original."""
-    payload = serialize_records(records)
+def atomic_write_bytes(path: Path, payload: bytes) -> None:
+    """Durably write bytes and atomically replace a same-filesystem target."""
     path.parent.mkdir(parents=True, exist_ok=True)
     existing_mode = stat.S_IMODE(path.stat().st_mode) if path.exists() else None
     temporary_path: Path | None = None
@@ -143,6 +145,52 @@ def atomic_write_records(
     finally:
         if temporary_path is not None:
             temporary_path.unlink(missing_ok=True)
+
+
+def atomic_write_records(
+    path: Path,
+    records: Sequence[Mapping[str, Any]],
+) -> None:
+    """Durably write a complete JSONL file and atomically replace the original."""
+    atomic_write_bytes(path, serialize_records(records))
+
+
+def reset_reviewed_annotations(
+    path: Path,
+    records: Sequence[Mapping[str, Any]],
+    *,
+    confirmation: str,
+    backup_path: Path | None = None,
+) -> tuple[list[dict[str, Any]], int, Path | None]:
+    """Explicitly back up and reset only non-UNREVIEWED annotation fields."""
+    if confirmation != RESET_CONFIRMATION:
+        raise ValueError(f"reset requires confirmation {RESET_CONFIRMATION!r}")
+    reviewed_count = sum(
+        record.get("adjudication_status") != "UNREVIEWED" for record in records
+    )
+    if reviewed_count == 0:
+        return [dict(record) for record in records], 0, None
+
+    if backup_path is None:
+        timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%S%fZ")
+        backup_path = path.with_name(f"{path.stem}.backup-{timestamp}{path.suffix}")
+    if backup_path.exists():
+        raise FileExistsError(f"reset backup already exists: {backup_path}")
+
+    atomic_write_bytes(backup_path, path.read_bytes())
+    reset_records = [
+        {
+            **record,
+            **(
+                contract.initialized_annotation_fields()
+                if record.get("adjudication_status") != "UNREVIEWED"
+                else {}
+            ),
+        }
+        for record in records
+    ]
+    atomic_write_records(path, reset_records)
+    return reset_records, reviewed_count, backup_path
 
 
 def progress_summary(records: Sequence[Mapping[str, Any]]) -> dict[str, int]:
@@ -179,6 +227,70 @@ def next_unreviewed_index(
         ),
         None,
     )
+
+
+def next_unreviewed_in_indices(
+    records: Sequence[Mapping[str, Any]],
+    indices: Sequence[int],
+    *,
+    start_position: int = 0,
+) -> int | None:
+    """Find an initially unreviewed row within a deterministic review subset."""
+    if not indices:
+        return None
+    if start_position < 0 or start_position >= len(indices):
+        raise IndexError("review-subset start position is outside the subset")
+    positions = chain(
+        range(start_position, len(indices)),
+        range(start_position),
+    )
+    return next(
+        (
+            indices[position]
+            for position in positions
+            if records[indices[position]].get("adjudication_status")
+            == "UNREVIEWED"
+        ),
+        None,
+    )
+
+
+def load_first_pass_context(
+    path: Path,
+    records: Sequence[Mapping[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Load separate Codex context without merging human annotations."""
+    first_pass_records, _ = contract.load_jsonl(path)
+    source_hashes = {record["narrative_sha256"] for record in records}
+    by_hash: dict[str, dict[str, Any]] = {}
+    for first_pass in first_pass_records:
+        digest = first_pass.get("narrative_sha256")
+        if not isinstance(digest, str) or digest not in source_hashes:
+            raise ValueError("Codex first-pass context contains a non-holdout hash")
+        if digest in by_hash:
+            raise ValueError("Codex first-pass context contains duplicate hashes")
+        if first_pass.get("status") not in {"SUCCEEDED", "INVALID", "MISSING"}:
+            raise ValueError("Codex first-pass context has an invalid status")
+        if first_pass.get("annotation_source") != "CODEX_FIRST_PASS":
+            raise ValueError("Codex first-pass context has an invalid source")
+        if not isinstance(first_pass.get("human_review_required"), bool):
+            raise TypeError("Codex human_review_required must be boolean")
+        by_hash[digest] = first_pass
+    return by_hash
+
+
+def flagged_review_indices(
+    records: Sequence[Mapping[str, Any]],
+    first_pass_by_hash: Mapping[str, Mapping[str, Any]],
+) -> list[int]:
+    """Return source-order rows marked for targeted human review."""
+    return [
+        index
+        for index, record in enumerate(records)
+        if first_pass_by_hash.get(record["narrative_sha256"], {}).get(
+            "human_review_required"
+        )
+    ]
 
 
 def next_index(current_index: int, total: int) -> int:
@@ -313,6 +425,7 @@ def display_record(
     *,
     index: int,
     progress: Mapping[str, int],
+    codex_first_pass: Mapping[str, Any] | None = None,
     output: Callable[[str], None] = print,
 ) -> None:
     """Display one narrative plus an explicitly allowlisted header."""
@@ -338,6 +451,25 @@ def display_record(
         "Current annotation: "
         + json.dumps(metadata["current_annotation"], ensure_ascii=False)
     )
+    if codex_first_pass is not None:
+        codex_display = {
+            "status": codex_first_pass.get("status"),
+            "annotation_source": codex_first_pass.get("annotation_source"),
+            "annotator_model": codex_first_pass.get("annotator_model"),
+            "review_category": codex_first_pass.get("review_category"),
+            "supported_intents": codex_first_pass.get("supported_intents"),
+            "annotation_confidence": codex_first_pass.get(
+                "annotation_confidence"
+            ),
+            "annotation_note": codex_first_pass.get("annotation_note"),
+            "human_review_reasons": codex_first_pass.get(
+                "human_review_reasons"
+            ),
+        }
+        output(
+            "Codex first pass (adjudication context; NOT V2-C1): "
+            + json.dumps(codex_display, ensure_ascii=False)
+        )
     output("-" * 72)
     output(str(record["narrative"]))
     output("=" * 72)
@@ -466,16 +598,29 @@ def review_loop(
     *,
     reviewer_id: str,
     start_index: int,
+    review_indices: Sequence[int] | None = None,
+    first_pass_by_hash: Mapping[str, Mapping[str, Any]] | None = None,
     input_fn: Callable[[str], str] = input,
     output: Callable[[str], None] = print,
 ) -> None:
     """Run the thin terminal interaction around the tested data helpers."""
+    navigation_indices = list(
+        range(len(records)) if review_indices is None else review_indices
+    )
+    if start_index not in navigation_indices:
+        raise ValueError("start index is outside the active review subset")
     current_index = start_index
     while True:
+        current_record = records[current_index]
         display_record(
-            records[current_index],
+            current_record,
             index=current_index,
             progress=progress_summary(records),
+            codex_first_pass=(
+                first_pass_by_hash.get(current_record["narrative_sha256"])
+                if first_pass_by_hash is not None
+                else None
+            ),
             output=output,
         )
         command = input_fn(
@@ -488,15 +633,24 @@ def review_loop(
             print_progress(records, output=output)
             continue
         if command == "k":
-            current_index = next_index(current_index, len(records))
+            position = navigation_indices.index(current_index)
+            current_index = navigation_indices[
+                next_index(position, len(navigation_indices))
+            ]
             continue
         if command == "b":
-            current_index = previous_index(current_index, len(records))
+            position = navigation_indices.index(current_index)
+            current_index = navigation_indices[
+                previous_index(position, len(navigation_indices))
+            ]
             continue
         if command == "j":
             try:
                 requested = int(input_fn("Record number: ").strip())
-                current_index = jump_index(requested, len(records))
+                requested_index = jump_index(requested, len(records))
+                if requested_index not in navigation_indices:
+                    raise ValueError("record is outside the active review subset")
+                current_index = requested_index
             except (ValueError, IndexError) as error:
                 output(f"Invalid jump: {error}")
             continue
@@ -513,12 +667,14 @@ def review_loop(
                 annotation,
             )
             output(f"Saved record {current_index + 1} atomically.")
-            following = next_unreviewed_index(
+            position = navigation_indices.index(current_index)
+            following = next_unreviewed_in_indices(
                 records,
-                start_index=next_index(current_index, len(records)),
+                navigation_indices,
+                start_position=next_index(position, len(navigation_indices)),
             )
             if following is None:
-                output("All records have an initial review.")
+                output("All records in the active review subset are reviewed.")
                 print_progress(records, output=output)
                 return
             current_index = following
@@ -529,8 +685,8 @@ def review_loop(
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Manually annotate the local CFPB semantic holdout. Candidate "
-            "intents are hints only; model outputs are never displayed."
+            "Review/adjudicate the local CFPB semantic holdout. Candidate "
+            "intents are hints only; V2-C1 outputs are never displayed."
         )
     )
     parser.add_argument(
@@ -541,7 +697,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--reviewer-id",
-        help="reviewer identity stored on annotations (required unless --status)",
+        help="reviewer identity (required unless using --status or reset)",
     )
     parser.add_argument(
         "--start-index",
@@ -553,13 +709,40 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="print progress counts without displaying narratives",
     )
+    parser.add_argument(
+        "--first-pass",
+        type=Path,
+        default=DEFAULT_FIRST_PASS_PATH,
+        help="separate local Codex first-pass JSONL used as adjudication context",
+    )
+    parser.add_argument(
+        "--flagged-only",
+        action="store_true",
+        help="review only rows deterministically flagged by the Codex workflow",
+    )
+    parser.add_argument(
+        "--reset-reviewed",
+        action="store_true",
+        help="back up the workfile and reset only existing reviewed rows",
+    )
+    parser.add_argument(
+        "--confirm-reset-reviewed",
+        metavar="PHRASE",
+        help=f"required confirmation phrase: {RESET_CONFIRMATION}",
+    )
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    if not args.status and not (args.reviewer_id and args.reviewer_id.strip()):
+    if args.status and args.reset_reviewed:
+        parser.error("--status and --reset-reviewed cannot be combined")
+    if (
+        not args.status
+        and not args.reset_reviewed
+        and not (args.reviewer_id and args.reviewer_id.strip())
+    ):
         parser.error("--reviewer-id is required for interactive review")
 
     try:
@@ -576,19 +759,80 @@ def main(argv: Sequence[str] | None = None) -> int:
     ) as error:
         parser.exit(2, f"error: unable to load semantic-review workfile: {error}\n")
 
+    if args.reset_reviewed:
+        try:
+            _, reset_count, backup_path = reset_reviewed_annotations(
+                args.input,
+                records,
+                confirmation=args.confirm_reset_reviewed or "",
+            )
+        except (OSError, TypeError, ValueError) as error:
+            parser.exit(2, f"error: reset not performed: {error}\n")
+        if backup_path is None:
+            print("No reviewed annotations found; no backup or reset was needed.")
+        else:
+            print(
+                f"Backed up {args.input} to {backup_path} and reset "
+                f"{reset_count} reviewed rows."
+            )
+        return 0
+
+    first_pass_by_hash: dict[str, dict[str, Any]] = {}
+    if args.first_pass.exists():
+        try:
+            first_pass_by_hash = load_first_pass_context(
+                args.first_pass,
+                records,
+            )
+        except (
+            OSError,
+            UnicodeError,
+            json.JSONDecodeError,
+            TypeError,
+            ValueError,
+        ) as error:
+            parser.exit(2, f"error: unable to load Codex first pass: {error}\n")
+    elif args.flagged_only:
+        parser.error("--flagged-only requires an existing --first-pass file")
+    if args.flagged_only and len(first_pass_by_hash) != len(records):
+        parser.error(
+            "--flagged-only requires a complete first pass for every holdout row"
+        )
+
+    review_indices = (
+        flagged_review_indices(records, first_pass_by_hash)
+        if args.flagged_only
+        else list(range(len(records)))
+    )
+
     if args.status:
         print_progress(records)
+        if first_pass_by_hash:
+            print(
+                f"Codex first pass: {len(first_pass_by_hash)} rows | "
+                "Flagged for human review: "
+                f"{len(flagged_review_indices(records, first_pass_by_hash))}"
+            )
+        return 0
+
+    if not review_indices:
+        print("No records are flagged for human review.")
         return 0
 
     if args.start_index is not None:
         try:
             start_index = jump_index(args.start_index, len(records))
+            if start_index not in review_indices:
+                parser.error("--start-index is outside the active review subset")
         except IndexError as error:
             parser.error(str(error))
     else:
-        next_index_value = next_unreviewed_index(records)
+        next_index_value = next_unreviewed_in_indices(records, review_indices)
         if next_index_value is None:
-            print("All records have an initial review. Use --start-index to edit one.")
+            print(
+                "All records in the active review subset have an initial review. "
+                "Use --start-index to edit one."
+            )
             print_progress(records)
             return 0
         start_index = next_index_value
@@ -599,6 +843,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             records,
             reviewer_id=args.reviewer_id.strip(),
             start_index=start_index,
+            review_indices=review_indices,
+            first_pass_by_hash=first_pass_by_hash,
         )
     except (EOFError, KeyboardInterrupt):
         print("\nExited safely. Unsaved input was not written.")

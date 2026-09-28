@@ -1,4 +1,4 @@
-"""Initialize and export the human CFPB semantic-review workflow."""
+"""Initialize and export the CFPB semantic annotation workflow."""
 
 from __future__ import annotations
 
@@ -22,11 +22,14 @@ LOCAL_REVIEW_POOL_PATH = (
 LOCAL_WORKFILE_PATH = (
     EXTERNAL_ROOT / "processed/cfpb/local/cfpb_semantic_review.jsonl"
 )
+LOCAL_FIRST_PASS_PATH = (
+    EXTERNAL_ROOT / "processed/cfpb/local/cfpb_llm_first_pass.jsonl"
+)
 LABEL_ARTIFACT_PATH = EXTERNAL_ROOT / "processed/cfpb/cfpb_semantic_labels.json"
 
-WORKFLOW_VERSION = "cfpb-semantic-review-workflow.2026-09-27.v1"
+WORKFLOW_VERSION = "cfpb-semantic-review-workflow.2026-09-27.v2"
 WORKFILE_SCHEMA_VERSION = "cfpb-semantic-review-workfile.v1"
-LABEL_SCHEMA_VERSION = "cfpb-semantic-labels.v1"
+LABEL_SCHEMA_VERSION = "cfpb-semantic-labels.v2"
 REVIEW_POOL_SCHEMA_VERSION = "cfpb-review-pool-manifest.v1"
 
 SEMANTIC_REVIEW_STATUSES = ("NEAR_MATCH", "AMBIGUOUS")
@@ -94,6 +97,13 @@ TRACKED_LABEL_FIELDS = (
     "annotation_confidence",
     "annotation_note",
     "adjudication_status",
+    "annotation_provenance",
+    "human_review_required",
+    "human_review_reasons",
+    "codex_annotator_model",
+    "codex_prompt_version",
+    "codex_batch_id",
+    "qc_sample_selected",
 )
 
 
@@ -467,6 +477,164 @@ def count_values(
     )
 
 
+def semantic_decision(row: Mapping[str, Any]) -> tuple[Any, ...]:
+    """Return fields whose change constitutes a human semantic override."""
+    return (
+        row.get("review_category"),
+        tuple(row.get("supported_intents", [])),
+        row.get("annotation_confidence"),
+    )
+
+
+def validate_codex_first_pass_for_export(
+    first_pass_rows: Sequence[Mapping[str, Any]],
+    workfile_rows: Sequence[Mapping[str, Any]],
+) -> dict[str, Mapping[str, Any]]:
+    """Validate text-free Codex first-pass linkage."""
+    workfile_by_hash = {row["narrative_sha256"]: row for row in workfile_rows}
+    by_hash: dict[str, Mapping[str, Any]] = {}
+    for row in first_pass_rows:
+        digest = row.get("narrative_sha256")
+        if not isinstance(digest, str) or digest not in workfile_by_hash:
+            raise ValueError("Codex first-pass row has a non-holdout hash")
+        if digest in by_hash:
+            raise ValueError("Codex first-pass rows contain duplicate hashes")
+        if row.get("status") not in {"SUCCEEDED", "INVALID", "MISSING"}:
+            raise ValueError("Codex first-pass row has an invalid status")
+        if row.get("annotation_source") != "CODEX_FIRST_PASS":
+            raise ValueError("Codex first-pass row has an invalid source")
+        if row.get("schema_version") != "cfpb-codex-first-pass.v1":
+            raise ValueError("Codex first-pass row has an invalid schema")
+        if not isinstance(row.get("annotator_model"), str) or not row[
+            "annotator_model"
+        ].strip():
+            raise ValueError("Codex first-pass row requires an annotator model")
+        if not isinstance(row.get("prompt_version"), str) or not row[
+            "prompt_version"
+        ].strip():
+            raise ValueError("Codex first-pass row requires a prompt version")
+        if not isinstance(row.get("batch_id"), str) or not row["batch_id"].strip():
+            raise ValueError("Codex first-pass row requires a batch identifier")
+        source = workfile_by_hash[digest]
+        if row.get("complaint_id") != source.get("complaint_id"):
+            raise ValueError("Codex first-pass complaint ID differs from workfile")
+        if row.get("original_mapping_status") != source.get("mapping_status"):
+            raise ValueError("Codex first-pass mapping status differs from workfile")
+        if not isinstance(row.get("human_review_required"), bool):
+            raise TypeError("Codex human_review_required must be boolean")
+        reasons = row.get("human_review_reasons")
+        if not isinstance(reasons, list) or not all(
+            isinstance(reason, str) for reason in reasons
+        ):
+            raise TypeError("Codex human_review_reasons must be a list of strings")
+        if not isinstance(row.get("qc_sample_selected"), bool):
+            raise TypeError("Codex qc_sample_selected must be boolean")
+        if row["status"] == "SUCCEEDED":
+            validation_row = {
+                field: row.get(field) for field in ANNOTATION_FIELDS
+            }
+            validation_row.update(
+                {
+                    "adjudication_status": "REVIEWED",
+                    "reviewer_id": "CODEX_FIRST_PASS",
+                }
+            )
+            validate_annotation_fields(validation_row)
+        elif not row["human_review_required"]:
+            raise ValueError("unresolved Codex first pass must require human review")
+        by_hash[digest] = row
+    return by_hash
+
+
+def hybrid_label_record(
+    workfile_row: Mapping[str, Any],
+    first_pass_row: Mapping[str, Any] | None,
+) -> tuple[dict[str, Any], bool]:
+    """Resolve one eventual label and its internal provenance."""
+    human_complete = workfile_row.get("adjudication_status") in {
+        "REVIEWED",
+        "ADJUDICATED",
+    }
+    human_started = workfile_row.get("adjudication_status") != "UNREVIEWED"
+    if first_pass_row is None:
+        if human_complete:
+            selected = workfile_row
+            provenance = "HUMAN_ONLY_LEGACY"
+            unresolved = False
+        else:
+            selected = workfile_row
+            provenance = "MISSING_CODEX_FIRST_PASS"
+            unresolved = True
+        review_required = True
+        review_reasons = ["MISSING_CODEX_FIRST_PASS"]
+        annotator_model = None
+        prompt_version = None
+        batch_id = None
+        qc_selected = False
+    else:
+        review_required = bool(first_pass_row["human_review_required"])
+        review_reasons = list(first_pass_row["human_review_reasons"])
+        annotator_model = first_pass_row.get("annotator_model")
+        prompt_version = first_pass_row.get("prompt_version")
+        batch_id = first_pass_row.get("batch_id")
+        qc_selected = bool(first_pass_row.get("qc_sample_selected", False))
+        if first_pass_row["status"] in {"INVALID", "MISSING"}:
+            if human_complete:
+                selected = workfile_row
+                provenance = "HUMAN_RESOLVED_CODEX_FAILURE"
+                unresolved = False
+            else:
+                selected = workfile_row
+                provenance = "CODEX_FAILURE_UNRESOLVED"
+                unresolved = True
+        elif human_complete:
+            selected = workfile_row
+            if semantic_decision(workfile_row) == semantic_decision(first_pass_row):
+                provenance = "HUMAN_CONFIRMED_CODEX_FIRST_PASS"
+            else:
+                provenance = "HUMAN_OVERRULED_CODEX_FIRST_PASS"
+            unresolved = False
+        elif human_started:
+            selected = workfile_row
+            provenance = "HUMAN_ADJUDICATION_PENDING"
+            unresolved = True
+        elif review_required:
+            selected = workfile_row
+            provenance = "HUMAN_REVIEW_PENDING"
+            unresolved = True
+        else:
+            selected = first_pass_row
+            provenance = "CODEX_FIRST_PASS_ACCEPTED"
+            unresolved = False
+
+    adjudication_status = selected.get("adjudication_status")
+    if provenance == "CODEX_FIRST_PASS_ACCEPTED":
+        adjudication_status = "CODEX_ACCEPTED"
+    return (
+        {
+            "adjudication_status": adjudication_status,
+            "annotation_confidence": selected.get("annotation_confidence"),
+            "annotation_note": selected.get("annotation_note"),
+            "annotation_provenance": provenance,
+            "candidate_sentinelvoice_intents": workfile_row[
+                "candidate_sentinelvoice_intents"
+            ],
+            "complaint_id": workfile_row["complaint_id"],
+            "human_review_reasons": review_reasons,
+            "human_review_required": review_required,
+            "codex_annotator_model": annotator_model,
+            "codex_prompt_version": prompt_version,
+            "codex_batch_id": batch_id,
+            "narrative_sha256": workfile_row["narrative_sha256"],
+            "original_mapping_status": workfile_row["mapping_status"],
+            "qc_sample_selected": qc_selected,
+            "review_category": selected.get("review_category"),
+            "supported_intents": list(selected.get("supported_intents", [])),
+        },
+        unresolved,
+    )
+
+
 def export_semantic_labels(
     workfile_rows: Sequence[Mapping[str, Any]],
     manifest: Mapping[str, Any],
@@ -475,6 +643,8 @@ def export_semantic_labels(
     review_pool_manifest_sha256: str,
     output_path: Path,
     allow_partial: bool = False,
+    codex_first_pass_rows: Sequence[Mapping[str, Any]] | None = None,
+    codex_first_pass_sha256: str | None = None,
     expected_lane_counts: Mapping[str, int] = DEFAULT_POOL_LANE_COUNTS,
 ) -> dict[str, Any]:
     manifest_records = semantic_manifest_records(
@@ -489,39 +659,40 @@ def export_semantic_labels(
         workfile_by_hash[record["narrative_sha256"]]
         for record in manifest_records
     ]
-    incomplete = [
-        row
+    first_pass_by_hash = (
+        validate_codex_first_pass_for_export(
+            codex_first_pass_rows,
+            ordered_workfile_rows,
+        )
+        if codex_first_pass_rows is not None
+        else {}
+    )
+    resolved = [
+        hybrid_label_record(
+            row,
+            first_pass_by_hash.get(row["narrative_sha256"]),
+        )
         for row in ordered_workfile_rows
-        if row["adjudication_status"] in INCOMPLETE_ADJUDICATION_STATUSES
     ]
+    records = [record for record, _ in resolved]
+    incomplete = [record for record, unresolved in resolved if unresolved]
     if incomplete and not allow_partial:
         raise ValueError(
             f"cannot freeze labels with {len(incomplete)} unresolved reviews; "
             "use --allow-partial only for an explicitly partial artifact"
         )
 
-    records = [
-        {
-            "adjudication_status": row["adjudication_status"],
-            "annotation_confidence": row["annotation_confidence"],
-            "annotation_note": row["annotation_note"],
-            "candidate_sentinelvoice_intents": row[
-                "candidate_sentinelvoice_intents"
-            ],
-            "complaint_id": row["complaint_id"],
-            "narrative_sha256": row["narrative_sha256"],
-            "original_mapping_status": row["mapping_status"],
-            "review_category": row["review_category"],
-            "supported_intents": row["supported_intents"],
-        }
-        for row in ordered_workfile_rows
-    ]
     supported_intent_counts: Counter[str] = Counter()
     for record in records:
         supported_intent_counts.update(record["supported_intents"])
     artifact = {
         "annotation_protocol": {
             "allowed_confidences": list(ANNOTATION_CONFIDENCES),
+            "labeling_method": (
+                "codex_first_pass_targeted_human_review_and_deterministic_qc"
+                if codex_first_pass_rows is not None
+                else "legacy_human_only"
+            ),
             "protected_write_intents_requiring_explicit_current_action": sorted(
                 PROTECTED_WRITE_INTENTS
             ),
@@ -533,7 +704,9 @@ def export_semantic_labels(
             "classifier_outputs_visible_to_reviewers": False,
             "contains_consumer_narrative_text": False,
             "external_evaluation_holdout": True,
+            "codex_labels_used_for_training": False,
             "model_training_or_retraining_run": False,
+            "private_reviewer_identity_included": False,
         },
         "holdout_policy": {
             "final_external_evaluation_allowed_after_labels_are_frozen": True,
@@ -545,6 +718,7 @@ def export_semantic_labels(
         "input_integrity": {
             "review_pool_manifest_sha256": review_pool_manifest_sha256,
             "semantic_review_workfile_sha256": workfile_sha256,
+            "codex_first_pass_sha256": codex_first_pass_sha256,
         },
         "partial": bool(incomplete),
         "records": records,
@@ -557,6 +731,10 @@ def export_semantic_labels(
             "annotation_confidence_counts": count_values(
                 records,
                 "annotation_confidence",
+            ),
+            "annotation_provenance_counts": count_values(
+                records,
+                "annotation_provenance",
             ),
             "candidate_intents_are_context_not_labels": True,
             "completed_count": len(records) - len(incomplete),
@@ -589,6 +767,12 @@ def export_semantic_labels(
 
 
 def initialize_from_default_paths(*, reset_existing: bool) -> None:
+    if reset_existing and LOCAL_WORKFILE_PATH.exists():
+        raise ValueError(
+            "direct reset is disabled for the real workfile; use "
+            "review_cfpb_semantic_annotations.py --reset-reviewed with its "
+            "required confirmation so a backup is created first"
+        )
     manifest, _ = load_json_object(REVIEW_POOL_MANIFEST_PATH)
     source_rows, source_bytes = load_jsonl(LOCAL_REVIEW_POOL_PATH)
     expected_source_hash = manifest.get("local_review_material", {}).get("sha256")
@@ -610,6 +794,7 @@ def initialize_from_default_paths(*, reset_existing: bool) -> None:
 def export_from_default_paths(*, allow_partial: bool) -> None:
     manifest, manifest_bytes = load_json_object(REVIEW_POOL_MANIFEST_PATH)
     workfile_rows, workfile_bytes = load_jsonl(LOCAL_WORKFILE_PATH)
+    first_pass_rows, first_pass_bytes = load_jsonl(LOCAL_FIRST_PASS_PATH)
     artifact = export_semantic_labels(
         workfile_rows,
         manifest,
@@ -617,6 +802,8 @@ def export_from_default_paths(*, allow_partial: bool) -> None:
         review_pool_manifest_sha256=sha256_bytes(manifest_bytes),
         output_path=LABEL_ARTIFACT_PATH,
         allow_partial=allow_partial,
+        codex_first_pass_rows=first_pass_rows,
+        codex_first_pass_sha256=sha256_bytes(first_pass_bytes),
     )
     print(
         f"Exported CFPB semantic labels: records={len(artifact['records'])}, "
@@ -635,7 +822,7 @@ def parse_args() -> argparse.Namespace:
     initialize.add_argument(
         "--reset-existing",
         action="store_true",
-        help="explicitly discard existing local annotations and reinitialize",
+        help="only for first initialization; real-workfile reset is disabled",
     )
     export = subparsers.add_parser(
         "export",

@@ -3788,6 +3788,19 @@ sealed and will not be opened. After V2-C4 closeout, the next planned phase is
 V2-C5 intent discovery and taxonomy expansion; no successful V2-C4 final model
 is claimed.
 
+V2-C4 is **CLOSED without a selected candidate**. Targeted-data Candidate A
+materially improved on V2-C3 development evidence, but failed the mandatory
+protected-write false-positive-rate and unsupported-recall gates. That triggered
+the predeclared hierarchical Candidate B, which failed the same gates and
+regressed relative to Candidate A. Candidate C was prohibited. Step 13 localized
+Candidate B's dominant failures to Stage 1, especially the supported-versus-
+unsupported boundary, but those diagnostic findings do not establish a taxonomy
+change and require human adjudication. Step 14 was skipped: the final safety
+holdout was never accessed or evaluated because no development candidate passed
+selection. Consequently, no final V2-C4 safety-acceptance or production-readiness
+claim exists. The next phase is V2-C5 intent discovery and taxonomy expansion;
+its implementation has not started.
+
 ### ML roadmap after V2-C4
 
 The phase order is **V2-C4 → V2-C5 → V2-D**. V2-C4 remains the controlled

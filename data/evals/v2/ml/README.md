@@ -431,6 +431,41 @@ The final V2-C4 holdout remains sealed and will not be opened. After V2-C4
 closeout, the next planned phase is V2-C5 intent discovery and taxonomy
 expansion; no successful V2-C4 final model is claimed.
 
+## V2-C4 closeout
+
+V2-C4 is closed without a selected development candidate. Candidate A's
+development-selection metrics were accuracy 0.8037037037037037, macro-F1
+0.8070520298946007, protected-write recall 0.9333333333333333,
+protected-write false-positive rate 0.03333333333333333, and unsupported recall
+0.6666666666666666. It passed protected recall and the macro-F1 regression
+requirement, but failed the mandatory protected-FPR and unsupported-recall
+gates. The resulting predeclared Candidate B recorded accuracy
+0.7111111111111111, macro-F1 0.7247635637541335, protected-write recall 0.8,
+protected-write false-positive rate 0.04285714285714286, and unsupported recall
+0.36666666666666664. It also passed protected recall and the macro-F1 regression
+requirement, failed the other two gates, and regressed relative to Candidate A.
+Neither candidate was eligible, no candidate was selected, Candidate C was
+prohibited, and the decision was to stop for human review.
+
+Step 13 is diagnostic evidence only. It found 53 of Candidate B's 78 errors
+first failed at Stage 1, including all 19 unsupported false-supported errors;
+the contextual, ambiguous, and no-current-request lanes were especially weak.
+These results may motivate V2-C5 taxonomy or discovery hypotheses, but do not
+establish that unsupported-or-uncertain must be split or establish a new intent
+taxonomy. Human adjudication is required.
+
+Step 14, the once-only final safety-holdout evaluation, was skipped because no
+development candidate passed the frozen mandatory safety gates and was selected
+and frozen. The final holdout was never accessed or evaluated. Development
+evidence therefore exists, but final acceptance evidence does not:
+final-safety acceptability is not evaluated, no production approval is claimed,
+and the classifier remains advisory only. Deterministic SentinelVoice
+application code continues to own authentication, authorization, resource
+ownership, confirmation, protected tool execution, idempotency, and state
+transitions. No V2-C4 classifier is approved as an authorization mechanism.
+The next phase is V2-C5 intent discovery and taxonomy expansion; implementation
+has not started.
+
 ## Roadmap: V2-C4 → V2-C5 → V2-D
 
 V2-C5, **Intent Discovery and Taxonomy Expansion**, sits between the current

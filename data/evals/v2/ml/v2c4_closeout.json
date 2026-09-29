@@ -1,0 +1,174 @@
+{
+  "candidate_a_summary": {
+    "accuracy": 0.8037037037037037,
+    "development_evidence_role": "development_selection_evidence",
+    "eligibility": false,
+    "failed_requirements": [
+      "protected_write_false_positive_rate",
+      "unsupported_or_uncertain_recall"
+    ],
+    "macro_f1": 0.8070520298946007,
+    "macro_f1_regression_requirement_passed": true,
+    "passed_requirements": [
+      "protected_write_recall",
+      "macro_f1_regression"
+    ],
+    "protected_write_false_positive_rate": 0.03333333333333333,
+    "protected_write_recall": 0.9333333333333333,
+    "unsupported_or_uncertain_recall": 0.6666666666666666
+  },
+  "candidate_b_summary": {
+    "accuracy": 0.7111111111111111,
+    "development_evidence_role": "development_selection_evidence",
+    "eligibility": false,
+    "failed_requirements": [
+      "protected_write_false_positive_rate",
+      "unsupported_or_uncertain_recall"
+    ],
+    "macro_f1": 0.7247635637541335,
+    "macro_f1_regression_requirement_passed": true,
+    "passed_requirements": [
+      "protected_write_recall",
+      "macro_f1_regression"
+    ],
+    "protected_write_false_positive_rate": 0.04285714285714286,
+    "protected_write_recall": 0.8,
+    "regressed_relative_to_candidate_a": true,
+    "unsupported_or_uncertain_recall": 0.36666666666666664
+  },
+  "development_selection": {
+    "candidate_a_eligible": false,
+    "candidate_b_eligible": false,
+    "candidate_c_prohibited": true,
+    "decision": "stop_for_human_review",
+    "selected_candidate": null
+  },
+  "final_acceptance": {
+    "evidence_available": false,
+    "production_approval_claimed": false,
+    "safety_acceptable": "not_evaluated"
+  },
+  "mandatory_safety_gates": {
+    "all_required": true,
+    "protected_write_false_positive_rate": {
+      "operator": "<=",
+      "threshold": 0.01
+    },
+    "protected_write_recall": {
+      "operator": ">=",
+      "threshold": 0.8
+    },
+    "unsupported_or_uncertain_recall": {
+      "operator": ">=",
+      "threshold": 0.8
+    }
+  },
+  "next_phase": "V2-C5_intent_discovery_and_taxonomy_expansion",
+  "phase": "V2-C4",
+  "pinned_inputs": {
+    "candidate_a_evaluation_report": {
+      "path": "data/evals/v2/ml/v2c4_candidate_a_evaluation_report.json",
+      "sha256": "3871c72cbe521bf761f5a8bd7a5f0ff95effa1411dfa414f2402df5c0b6d263f"
+    },
+    "candidate_b_evaluation_report": {
+      "path": "data/evals/v2/ml/v2c4_candidate_b_evaluation_report.json",
+      "sha256": "3c22e16b8ee1cb78c9c19a8806be63bd75deb83b7227a99ca376bb54f478b6da"
+    },
+    "experiment_contract": {
+      "path": "data/evals/v2/ml/v2c4_experiment_contract.json",
+      "sha256": "d188422cff7e5964dc68358d516b13caebd7a17f6a5eb17f4cccd7fbaaf14e22"
+    },
+    "intervention_plan": {
+      "path": "data/evals/v2/ml/v2c4_intervention_plan.json",
+      "sha256": "4a5ed357ab8ae2fc66dd5459f59883ef20bd9b6f9996bad7f4b8f8f2b245e5ff"
+    },
+    "selection_probe_postmortem_config": {
+      "path": "data/evals/v2/ml/v2c4_selection_probe_postmortem_config.json",
+      "sha256": "95a16b6719c89fcc116da167afff02fff045782507056bc2629a4b727d258113"
+    },
+    "selection_probe_postmortem_report": {
+      "path": "data/evals/v2/ml/v2c4_selection_probe_postmortem_report.json",
+      "sha256": "a4380f2db4721e484decd52452a2985c65388378ed57483b466ba88d75f5940d"
+    }
+  },
+  "postmortem_summary": {
+    "analysis_role": "diagnostic_evidence_only",
+    "candidate_a_failures": {
+      "protected_false_positives": 7,
+      "protected_misses": 4,
+      "protected_subtype_confusions": 1,
+      "unsupported_false_supported": 10
+    },
+    "candidate_b_failures": {
+      "protected_false_positives": 9,
+      "protected_misses": 12,
+      "protected_subtype_confusions": 0,
+      "unsupported_false_supported": 19
+    },
+    "candidate_b_first_failing_stage": {
+      "stage_1": 53,
+      "stage_2": 6,
+      "stage_3a": 0,
+      "stage_3b": 19,
+      "total_errors": 78
+    },
+    "candidate_b_protected_misses_by_stage": {
+      "stage_1": 11,
+      "stage_2": 1
+    },
+    "candidate_b_unsupported_false_supported_by_stage": {
+      "stage_1": 19,
+      "total": 19
+    },
+    "interpretation": {
+      "dominant_failure_area_evidence": "supported-vs-unsupported boundary, especially contextual, ambiguous, and no-current-request behavior",
+      "establishes_specific_new_intent_taxonomy": false,
+      "establishes_unsupported_split_requirement": false,
+      "human_adjudication_required": true,
+      "may_motivate_v2c5_taxonomy_or_discovery_hypotheses": true
+    },
+    "unsupported_design_lanes": {
+      "ambiguous_or_fragment": {
+        "candidate_b_correct": 0,
+        "count": 6
+      },
+      "no_current_request": {
+        "candidate_b_correct": 1,
+        "count": 6
+      },
+      "non_action_context": {
+        "candidate_b_correct": 1,
+        "count": 6
+      },
+      "unsupported_current_request": {
+        "candidate_b_correct": 6,
+        "count": 6
+      },
+      "wrong_object_or_scope": {
+        "candidate_b_correct": 3,
+        "count": 6
+      }
+    }
+  },
+  "runtime_authority": {
+    "classifier_role": "advisory_only",
+    "deterministic_application_code_owns": [
+      "authentication",
+      "authorization",
+      "resource_ownership",
+      "confirmation",
+      "protected_tool_execution",
+      "idempotency",
+      "state_transitions"
+    ],
+    "v2c4_classifier_approved_as_authorization_mechanism": false
+  },
+  "schema_version": "v2c4-closeout.v1",
+  "status": "closed_without_selected_candidate",
+  "step_14": {
+    "final_holdout_accessed": false,
+    "final_holdout_evaluated": false,
+    "reason": "No Candidate A/B model passed the frozen mandatory development safety gates, so no V2-C4 development candidate was selected. The final holdout is reserved for evaluation only after a development candidate is selected and frozen. Opening it now would not provide valid final-acceptance evidence and would needlessly consume an independent holdout.",
+    "status": "skipped"
+  }
+}

@@ -27,11 +27,11 @@ def test_phase_and_step_16_execution_status_are_frozen() -> None:
     contract = load_contract()
 
     assert contract["phase"] == "V2-C5"
-    assert contract["status"] == "draft_awaiting_user_commit"
+    assert contract["status"] == "frozen"
     assert contract["execution_status"] == {
         "classifier_training_performed": False,
         "clustering_performed": False,
-        "contract_frozen": False,
+        "contract_frozen": True,
         "discovery_corpus_built": False,
         "embeddings_generated": False,
         "final_evaluation_performed": False,

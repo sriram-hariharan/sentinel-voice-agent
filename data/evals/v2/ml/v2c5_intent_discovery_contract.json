@@ -67,7 +67,7 @@
   "execution_status": {
     "classifier_training_performed": false,
     "clustering_performed": false,
-    "contract_frozen": false,
+    "contract_frozen": true,
     "discovery_corpus_built": false,
     "embeddings_generated": false,
     "final_evaluation_performed": false,
@@ -493,7 +493,7 @@
       "rationale": "The 360 examples were purpose-built around known V2-C4 decision-boundary failures under the existing taxonomy; including them could manufacture or amplify the structure V2-C5 must investigate independently."
     }
   },
-  "status": "draft_awaiting_user_commit",
+  "status": "frozen",
   "taxonomy_change_rules": {
     "cluster_automatically_defines_intent": false,
     "current_nine_intent_taxonomy_changed_in_step_16": false,

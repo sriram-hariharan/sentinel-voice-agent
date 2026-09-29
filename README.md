@@ -7,8 +7,8 @@ intent/risk ML experiment over controlled SentinelVoice synthetic data, and
 V2-C2 measures frozen-model generalization on separately governed public
 external benchmarks. V2-C3 now freezes the next model-development and
 data-governance contract, provides deterministic development-data and
-fresh-lockbox builders, and defines a fixed-preset Step 4 model tournament
-before any tournament score is observed.
+fresh-lockbox builders, records the fixed-preset Step 4 model tournament, and
+freezes a bounded Step 5 finalist search before any tuning score is observed.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -163,10 +163,16 @@ This is representation/model-family selection, not hyperparameter tuning.
 
 The 1,922-example fresh external lockbox and the 270-example synthetic
 challenge set remain untouched, as do historical test splits and CFPB. Step 4
-may nominate at most three technically distinct, safety-eligible finalists.
-Step 5 will conduct bounded tuning only for those finalists, still without
-using final evaluation data. No Step 4 performance result is documented before
-the tournament is run locally.
+selected three technically distinct, safety-eligible finalists: direct
+word-plus-character TF-IDF with balanced LinearSVC, frozen BGE-small with
+balanced LinearSVC, and TF-IDF plus LSA with balanced LinearSVC.
+
+Step 5 freezes exactly 15 configurations across only those three families. It
+reuses the same five development folds and existing frozen BGE cache, tunes
+only the predeclared LinearSVC `C` values and five LSA component/`C` pairs, and
+does not create new folds, representations, classifiers, or architectures. No
+final evaluation data is used, and no tuning result is documented before the
+bounded search is run locally.
 
 ### Local voice setup
 

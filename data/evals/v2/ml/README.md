@@ -217,10 +217,38 @@ writes `v2c3_tournament_report.json` without raw text or final-test metrics.
 
 The 1,922 external fresh-lockbox examples and 270 challenge examples remain
 untouched. V2-C1 locked test, BANKING77 test, CLINC test/OOS test, and CFPB are
-also prohibited. Step 4 can nominate at most three technically distinct,
-safety-eligible finalists. Step 5 may perform bounded tuning only for those
-finalists. No performance result is recorded here because the tournament has
-not been run.
+also prohibited. Step 4 selected three technically distinct, safety-eligible
+finalists: direct V2-C1 word-plus-character TF-IDF with balanced LinearSVC,
+direct frozen BGE-small with balanced LinearSVC, and direct TF-IDF plus LSA
+with balanced LinearSVC. The TF-IDF candidate was the Step 4 winner. These
+results did not use any final-evaluation source.
+
+## V2-C3 Step 5 bounded finalist tuning
+
+Step 5 is intentionally small. Step 4 already compared representation and
+classifier families and direct versus hierarchical architectures. The frozen
+`v2c3_tuning_config.json` therefore contains exactly 15 manual configurations:
+five LinearSVC `C` values for unchanged V2-C1 TF-IDF, five for frozen BGE-small,
+and five explicit LSA component/`C` pairs. It adds no classifier,
+representation, embedding model, architecture, calibration, or threshold
+search.
+
+The tuning runner reuses the exact Step 4 five-fold assignment and development
+embedding cache. TF-IDF and SVD remain inside each training fold; BGE remains a
+fixed pretrained feature extractor. The runner cannot generate folds or
+embeddings and delegates metrics, safety gates, ranking, latency, and model-size
+measurement to the Step 4 implementation:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c3_bounded_tuning.py preflight
+sentinelvoice_env/bin/python scripts/run_v2c3_bounded_tuning.py run
+```
+
+The 1,922-example external lockbox, 270-example challenge set, CFPB, historical
+test splits, and V2-C1 locked test remain untouched. Step 5 writes only a
+development-CV tuning report; it does not freeze a final model artifact or
+integrate routing into the runtime. No tuning result is recorded here because
+the bounded search has not been run.
 
 ## Reproduce V2-C1
 

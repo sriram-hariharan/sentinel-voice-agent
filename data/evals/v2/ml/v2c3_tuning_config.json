@@ -1,0 +1,336 @@
+{
+  "schema_version": "v2c3-bounded-tuning-config.v1",
+  "config_version": "2026-09-28.v1",
+  "experiment_phase": "V2-C3-Step-5",
+  "random_seed": 20260928,
+  "advisory_only": true,
+  "runtime_authority": false,
+  "hyperparameter_search_type": "bounded_predeclared_manual_search",
+  "tuning_performed": false,
+  "final_evaluation_performed": false,
+  "frozen_inputs": {
+    "development_dataset": {
+      "path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+      "example_count": 8198
+    },
+    "experiment_contract": {
+      "path": "data/evals/v2/ml/v2c3_experiment_contract.json",
+      "sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998"
+    },
+    "tournament_config": {
+      "path": "data/evals/v2/ml/v2c3_tournament_config.json",
+      "sha256": "d2c38a9e1fb5e97b395390af94b01c9e5190fef51a7a9b368d691b1db4391284"
+    },
+    "tournament_report": {
+      "path": "data/evals/v2/ml/v2c3_tournament_report.json",
+      "sha256": "a61f09a0e61a001085ad789cea6244d794068541914a8d0cadabf836af1e4b0f"
+    },
+    "cv_folds": {
+      "path": "data/evals/v2/ml/v2c3_cv_folds.json",
+      "sha256": "53c49dfe3da1027c9c957e901bca3fca8c2aaa8173e79139e06a1103407c58aa",
+      "assignment_sha256": "71bb40c78ffbff5d33d8527c77725f784c5d81b37d6348eb1fac30de96e532f8",
+      "schema_version": "v2c3-cv-folds.v1",
+      "method": "StratifiedGroupKFold",
+      "n_splits": 5,
+      "example_count": 8198,
+      "group_count": 7863,
+      "new_fold_generation_allowed": false
+    }
+  },
+  "frozen_finalist_ids": [
+    "direct_v2c1_tfidf_balanced_svc",
+    "direct_bge_balanced_svc",
+    "direct_lsa_balanced_svc"
+  ],
+  "step_4_winner": "direct_v2c1_tfidf_balanced_svc",
+  "search_scope": {
+    "variant_count": 15,
+    "architecture": "direct_9_way",
+    "classifier_family": "LinearSVC",
+    "class_weight": "balanced",
+    "new_classifier_families_allowed": false,
+    "new_representation_families_allowed": false,
+    "architecture_changes_allowed": false,
+    "cartesian_grid_generation_allowed": false,
+    "purpose": "Refine only LinearSVC C for the frozen TF-IDF and BGE finalists and the five predeclared LSA component/C pairs."
+  },
+  "step_4_balanced_linear_svc_preset": {
+    "class": "LinearSVC",
+    "parameters_except_c": {
+      "class_weight": "balanced",
+      "random_state": 20260928,
+      "penalty": "l2",
+      "loss": "squared_hinge",
+      "dual": "auto",
+      "tol": 0.0001,
+      "max_iter": 2000,
+      "fit_intercept": true,
+      "intercept_scaling": 1.0,
+      "multi_class": "ovr",
+      "verbose": 0
+    }
+  },
+  "representation_constraints": {
+    "tfidf": {
+      "step_4_representation_id": "v2c1_word_char_tfidf",
+      "unchanged_from_step_4": true
+    },
+    "bge": {
+      "step_4_representation_id": "bge_small_en_v1_5",
+      "model_identifier": "BAAI/bge-small-en-v1.5",
+      "dimensions": 384,
+      "existing_cache_required": true,
+      "automatic_regeneration_allowed": false,
+      "fine_tuning_allowed": false
+    },
+    "lsa": {
+      "step_4_representation_id": "tfidf_lsa",
+      "tfidf_base": "v2c1_word_char_tfidf",
+      "tfidf_unchanged_from_step_4": true,
+      "truncated_svd_algorithm": "randomized",
+      "truncated_svd_n_iter": 5,
+      "truncated_svd_random_state": 20260928,
+      "normalizer_norm": "l2",
+      "normalizer_copy": false
+    }
+  },
+  "variants": [
+    {
+      "id": "tfidf_svc_c_0_5",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "representation": "v2c1_word_char_tfidf",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 0.5}
+    },
+    {
+      "id": "tfidf_svc_c_0_75",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "representation": "v2c1_word_char_tfidf",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 0.75}
+    },
+    {
+      "id": "tfidf_svc_c_1_0",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "representation": "v2c1_word_char_tfidf",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 1.0}
+    },
+    {
+      "id": "tfidf_svc_c_1_5",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "representation": "v2c1_word_char_tfidf",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 1.5}
+    },
+    {
+      "id": "tfidf_svc_c_2_0",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "representation": "v2c1_word_char_tfidf",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 2.0}
+    },
+    {
+      "id": "bge_svc_c_0_25",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "representation": "bge_small_en_v1_5",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 0.25}
+    },
+    {
+      "id": "bge_svc_c_0_5",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "representation": "bge_small_en_v1_5",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 0.5}
+    },
+    {
+      "id": "bge_svc_c_1_0",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "representation": "bge_small_en_v1_5",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 1.0}
+    },
+    {
+      "id": "bge_svc_c_2_0",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "representation": "bge_small_en_v1_5",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 2.0}
+    },
+    {
+      "id": "bge_svc_c_4_0",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "representation": "bge_small_en_v1_5",
+      "architecture": "direct_9_way",
+      "parameters": {"C": 4.0}
+    },
+    {
+      "id": "lsa_svc_components_128_c_1_0",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "representation": "tfidf_lsa",
+      "architecture": "direct_9_way",
+      "parameters": {"n_components": 128, "C": 1.0}
+    },
+    {
+      "id": "lsa_svc_components_256_c_0_5",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "representation": "tfidf_lsa",
+      "architecture": "direct_9_way",
+      "parameters": {"n_components": 256, "C": 0.5}
+    },
+    {
+      "id": "lsa_svc_components_256_c_1_0",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "representation": "tfidf_lsa",
+      "architecture": "direct_9_way",
+      "parameters": {"n_components": 256, "C": 1.0}
+    },
+    {
+      "id": "lsa_svc_components_256_c_2_0",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "representation": "tfidf_lsa",
+      "architecture": "direct_9_way",
+      "parameters": {"n_components": 256, "C": 2.0}
+    },
+    {
+      "id": "lsa_svc_components_384_c_1_0",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "representation": "tfidf_lsa",
+      "architecture": "direct_9_way",
+      "parameters": {"n_components": 384, "C": 1.0}
+    }
+  ],
+  "metrics": {
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "per_fold": ["accuracy", "macro_f1", "weighted_f1"],
+    "primary_ranking": "macro_f1_mean",
+    "primary_spread": "macro_f1_standard_deviation",
+    "pooled_oof": [
+      "accuracy",
+      "macro_f1",
+      "weighted_f1",
+      "per_class_precision_recall_f1",
+      "confusion_matrix",
+      "unsupported_or_uncertain_recall",
+      "false_supported_rate",
+      "supported_intent_accuracy",
+      "protected_write_recall",
+      "protected_write_false_positive_count",
+      "protected_write_false_positive_rate",
+      "freeze_card_metrics",
+      "create_dispute_metrics",
+      "source_breakdowns"
+    ],
+    "definitions_unchanged_from_step_4": true
+  },
+  "safety_gates": {
+    "protected_write_false_positive_rate_maximum": 0.01,
+    "protected_write_recall_minimum": 0.8,
+    "unsupported_or_uncertain_recall_minimum": 0.8,
+    "all_gates_required": true,
+    "relaxation_after_results_allowed": false,
+    "unchanged_from_step_4": true
+  },
+  "ranking": {
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "eligible_variants_only": true,
+    "primary": "highest macro_f1_mean",
+    "practical_tie_absolute_difference_below": 0.005,
+    "tie_break_order": [
+      "lower false_supported_rate",
+      "higher unsupported_or_uncertain_recall",
+      "lower protected_write_false_positive_rate",
+      "lower macro_f1_standard_deviation",
+      "lower inference_p95",
+      "smaller artifact_model_size",
+      "simpler_reversible_architecture"
+    ],
+    "no_eligible_variant_policy": "Set no_eligible_tuned_winner=true and do not select a winner.",
+    "unchanged_from_step_4": true
+  },
+  "latency_measurement_policy": {
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "fit_scope": "complete development dataset only after cross-validation",
+    "warmup_calls": 25,
+    "sample_count": 200,
+    "sample_selection": "First 200 examples after ordering by SHA-256(random_seed + ':' + example_id).",
+    "request_shape": "single example",
+    "percentiles": [50, 90, 95],
+    "tfidf_and_lsa_scope": "representation transform plus classifier prediction",
+    "bge_downstream_scope": "classifier prediction on one cached embedding",
+    "bge_end_to_end_scope": "local FastEmbed passage embedding plus classifier prediction",
+    "primary_comparable_bge_latency": "end_to_end",
+    "precision_claim": "Local-machine descriptive timing only; not a portable benchmark.",
+    "unchanged_from_step_4": true
+  },
+  "model_size_measurement_policy": {
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "method": "joblib serialization to a temporary local file",
+    "no_final_artifact_frozen": true,
+    "bge_downstream_classifier_bytes_reported_separately": true,
+    "bge_model_cache_bytes_reported_when_reliably_measurable": true,
+    "bge_classifier_only_is_not_total_runtime_size": true,
+    "unchanged_from_step_4": true
+  },
+  "embedding_cache_policy": {
+    "development_only": true,
+    "model_identifier": "BAAI/bge-small-en-v1.5",
+    "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+    "cache_file_sha256": "eddaa00ddec7335dd63a49d1650e274d993603f8d52e6b48016089f79514ba89",
+    "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+    "cache_metadata_sha256": "a8477d65c231faebb1edc29c8ded60384d800df991c655a7411e6d6e619eaea3",
+    "ordered_example_ids_sha256": "62595e99df01335aeaec56b2816fdb5fb8b81c8c13b65e256086af9df1816434",
+    "existing_step_4_cache_required": true,
+    "automatic_regeneration_allowed": false,
+    "fine_tuning_allowed": false
+  },
+  "report": {
+    "path": "data/evals/v2/ml/v2c3_tuning_report.json",
+    "persist_raw_text": false,
+    "persist_oof_predictions": false,
+    "final_lockbox_used": false,
+    "challenge_set_used": false,
+    "cfpb_used": false,
+    "new_fold_generation_performed": false,
+    "embedding_fine_tuning_performed": false,
+    "broad_search_performed": false,
+    "bounded_hyperparameter_search_performed": true
+  },
+  "allowed_read_paths": [
+    "data/evals/v2/ml/v2c3_tuning_config.json",
+    "data/evals/v2/ml/v2c3_development_dataset.json",
+    "data/evals/v2/ml/v2c3_experiment_contract.json",
+    "data/evals/v2/ml/v2c3_tournament_config.json",
+    "data/evals/v2/ml/v2c3_tournament_report.json",
+    "data/evals/v2/ml/v2c3_cv_folds.json",
+    "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+    "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json"
+  ],
+  "prohibited_data_sources": [
+    "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+    "data/evals/v2/ml/v2c3_challenge_set.json",
+    "data/evals/v2/external/raw/cfpb_narratives",
+    "data/evals/v2/external/processed/cfpb",
+    "data/evals/v2/external/raw/banking77/test.csv",
+    "data/evals/v2/external/raw/clinc_oos/data_full.json#test",
+    "data/evals/v2/external/raw/clinc_oos/data_full.json#oos_test",
+    "data/evals/v2/ml/intent_risk_dataset.json#locked_test"
+  ]
+}

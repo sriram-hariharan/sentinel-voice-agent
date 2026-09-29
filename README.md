@@ -3848,6 +3848,17 @@ nine-intent V2-C4 holdout cannot become V2-C5 final evidence; a new independent
 holdout is required after taxonomy freeze and before supervised model selection.
 Step 16 builds no corpus, embeddings, clusters, intents, models, or holdout.
 
+The Step 16 contract is now frozen. The deterministic Step 17 builder assembles
+the primary discovery population from current unsupported_or_uncertain examples
+in the frozen V2-C3 development dataset. Exact normalized-text deduplication
+ensures that repeated utterances contribute only one future density vector while
+retaining every occurrence's provenance and native labels as metadata only. The
+eight supported intents remain a separate hash-pinned reference-anchor
+population and never drive primary HDBSCAN density. Building this corpus changes
+no taxonomy or runtime behavior: clustering has not occurred, and Step 18 will
+separately generate frozen BGE embeddings and run the predeclared HDBSCAN
+protocol.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

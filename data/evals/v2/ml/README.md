@@ -541,6 +541,22 @@ independently authored V2-C5 holdout before supervised model selection. Step 16
 creates no corpus, embeddings, clusters, taxonomy change, model, runtime
 integration, or holdout.
 
+The Step 16 contract is now frozen. Step 17 adds a deterministic builder for
+the discovery population using only the hash-pinned V2-C3 development artifact.
+Its primary population is the current unsupported_or_uncertain examples from
+the five approved development source roles. Exact normalized-text deduplication
+prevents duplicate utterances from inflating future HDBSCAN density while
+preserving every source occurrence, native label, mapping status, and available
+provenance as non-feature metadata. The eight supported intents are represented
+separately by a reproducible hash-pinned reference-anchor filter rather than
+copied into the primary corpus.
+
+The corpus builder accepts only raw text as the future embedding field. It does
+not generate BGE embeddings, run HDBSCAN or UMAP, inspect clusters, change the
+taxonomy, train a classifier, or alter runtime behavior. Step 18 will separately
+perform the frozen BGE embedding and HDBSCAN protocol after the user generates
+and freezes the Step 17 corpus and manifest.
+
 ## Reproduce V2-C1
 
 ```bash

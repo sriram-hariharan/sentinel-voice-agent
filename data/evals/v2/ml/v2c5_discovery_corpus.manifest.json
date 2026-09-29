@@ -1,0 +1,267 @@
+{
+  "builder": {
+    "path": "scripts/build_v2c5_discovery_corpus.py",
+    "sha256": "e0bcf4fa3a11b61918af3eb58f6f061b721da3e61cd4b44c579adbfeeb319cef",
+    "version": "v2c5-discovery-corpus-builder.v1"
+  },
+  "canonical_representative_rule": {
+    "input_iteration_order_used": false,
+    "source_precedence": [
+      "sentinelvoice_v2c1_internal",
+      "banking77",
+      "clinc150_oos"
+    ],
+    "tie_breaking": [
+      "source_precedence",
+      "train before validation or val",
+      "source_row_index ascending with nulls last",
+      "example_id lexicographic"
+    ]
+  },
+  "contract": {
+    "path": "data/evals/v2/ml/v2c5_intent_discovery_contract.json",
+    "sha256": "acc48bace76a5ae93ff9a1818856e3b2dc0ad3585c80e8ba7a3f582208a71427",
+    "status": "frozen"
+  },
+  "corpus": {
+    "path": "data/evals/v2/ml/v2c5_discovery_corpus.json",
+    "sha256": "0a873fe5797fdd93689e7d5054b029cd7b9068017b0ecff54af000641e282e01"
+  },
+  "counts": {
+    "cross_source_duplicate_group_count": 0,
+    "duplicate_group_count": 1,
+    "duplicate_occurrence_count_removed_from_density": 1,
+    "primary_unique_normalized_text_count": 6372,
+    "primary_unsupported_occurrence_count_before_dedup": 6373,
+    "raw_eligible_occurrence_count": 8198,
+    "reference_anchor_count": 1825
+  },
+  "counts_by_source_dataset": {
+    "banking77": {
+      "eligible_occurrences": 5381,
+      "primary_canonical_records": 4299,
+      "primary_unsupported_occurrences": 4300
+    },
+    "clinc150_oos": {
+      "eligible_occurrences": 2304,
+      "primary_canonical_records": 2016,
+      "primary_unsupported_occurrences": 2016
+    },
+    "sentinelvoice_v2c1_internal": {
+      "eligible_occurrences": 513,
+      "primary_canonical_records": 57,
+      "primary_unsupported_occurrences": 57
+    }
+  },
+  "counts_by_source_role_and_split": {
+    "v2c3_conditional_development_and_fresh_lockbox_source:train": {
+      "eligible_occurrences": 7305,
+      "primary_canonical_records": 5981,
+      "primary_unsupported_occurrences": 5982
+    },
+    "v2c3_conditional_development_and_fresh_lockbox_source:val": {
+      "eligible_occurrences": 380,
+      "primary_canonical_records": 334,
+      "primary_unsupported_occurrences": 334
+    },
+    "v2c3_development:train": {
+      "eligible_occurrences": 405,
+      "primary_canonical_records": 45,
+      "primary_unsupported_occurrences": 45
+    },
+    "v2c3_development:validation": {
+      "eligible_occurrences": 108,
+      "primary_canonical_records": 12,
+      "primary_unsupported_occurrences": 12
+    }
+  },
+  "exclusion_and_integrity_checks": {
+    "banking77_test_records": 0,
+    "cfpb_records": 0,
+    "clinc_test_records": 0,
+    "consumed_v2c3_challenge_records": 0,
+    "consumed_v2c3_external_lockbox_records": 0,
+    "current_intent_labels_are_clustering_features": false,
+    "discovery_id_collisions": 0,
+    "duplicate_normalized_text_vector_records": 0,
+    "final_or_test_role_records": 0,
+    "native_external_labels_are_clustering_features": false,
+    "sealed_v2c4_holdout_accessed": false,
+    "supported_intents_in_primary_population": 0,
+    "v2c3_internal_locked_test_records": 0,
+    "v2c4_postmortem_review_records": 0,
+    "v2c4_selection_probe_records": 0,
+    "v2c4_targeted_augmentation_records": 0,
+    "verification_basis": "Pinned V2-C3 development artifact and fail-closed source-role validation; excluded raw datasets were not read."
+  },
+  "execution_status": {
+    "classifier_training_performed": false,
+    "clustering_performed": false,
+    "discovery_corpus_built": true,
+    "embeddings_generated": false,
+    "human_adjudication_performed": false,
+    "taxonomy_changed": false,
+    "umap_performed": false,
+    "v2c5_holdout_created": false
+  },
+  "native_label_availability": {
+    "primary_occurrences_with_native_external_label": 6316,
+    "primary_occurrences_without_native_external_label": 57,
+    "retained_as_metadata_only": true
+  },
+  "normalization": {
+    "hash_algorithm": "SHA-256",
+    "steps": [
+      "Unicode NFKC normalization",
+      "Unicode lowercase",
+      "trim leading and trailing whitespace",
+      "collapse every whitespace run to one ASCII space"
+    ],
+    "version": "unicode-nfkc-lower-whitespace.v1"
+  },
+  "occurrence_count_distribution": {
+    "1": 6371,
+    "2": 1
+  },
+  "ordered_hashes": {
+    "algorithm": "SHA-256 over ordered UTF-8 values, one per line, with trailing newline",
+    "canonical_discovery_id_ordered_sha256": "8d1087625ea9429df5c43e4820d88f6a17c7419e5b3a6fa606706b651640ca99",
+    "normalized_text_ordered_sha256": "6b3fd2f4e2ac3806860b6c8de76e514c756579a9d5a22a4552c2dad8c5017953"
+  },
+  "reference_anchor_population": {
+    "counts_by_intent": {
+      "account_balance": 153,
+      "card_status": 57,
+      "create_dispute": 57,
+      "escalation": 57,
+      "freeze_card": 57,
+      "informational_policy": 856,
+      "recent_transactions": 153,
+      "transaction_details": 435
+    },
+    "counts_by_source_dataset": {
+      "banking77": 1081,
+      "clinc150_oos": 288,
+      "sentinelvoice_v2c1_internal": 456
+    },
+    "data_role": "v2c5_reference_anchor_population",
+    "density_driving_cluster_members": false,
+    "example_count": 1825,
+    "materialization": "hash_pinned_source_reference_only",
+    "ordered_example_id_sha256": "dd03a3b029622bf38aba3d2df0a49b5f6e480de43e9b6bcbcc7ecc2ea7a048b1",
+    "ordered_normalized_text_sha256": "b3c3b7c59c4e75682a91b5b083bc36be78707e38b62165256646e3ff0ba27909",
+    "records_copied_into_corpus": false,
+    "selection": {
+      "current_sentinelvoice_intents": [
+        "account_balance",
+        "card_status",
+        "create_dispute",
+        "escalation",
+        "freeze_card",
+        "informational_policy",
+        "recent_transactions",
+        "transaction_details"
+      ],
+      "data_role": "development",
+      "eligible_source_roles": [
+        {
+          "development_assignment_required": true,
+          "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+          "record_id": "internal_train",
+          "registry_role": "v2c3_development",
+          "source_id": "sentinelvoice_v2c1_internal",
+          "source_split": "train"
+        },
+        {
+          "development_assignment_required": true,
+          "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+          "record_id": "internal_validation",
+          "registry_role": "v2c3_development",
+          "source_id": "sentinelvoice_v2c1_internal",
+          "source_split": "validation"
+        },
+        {
+          "development_assignment_required": true,
+          "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+          "record_id": "banking77_train",
+          "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+          "source_id": "banking77",
+          "source_split": "train"
+        },
+        {
+          "development_assignment_required": true,
+          "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+          "record_id": "clinc_finance_train",
+          "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+          "source_id": "clinc150_oos",
+          "source_split": "train"
+        },
+        {
+          "development_assignment_required": true,
+          "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+          "record_id": "clinc_finance_val",
+          "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+          "source_id": "clinc150_oos",
+          "source_split": "val"
+        }
+      ]
+    },
+    "source_dataset_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+    "source_dataset_sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca"
+  },
+  "schema_version": "v2c5-discovery-corpus-manifest.v1",
+  "source_input_hashes": {
+    "v2c3_data_registry": "978dd7b04fcad23e3a01add65598ffda73aee9323118ffcc382dcd2bdce01316",
+    "v2c3_dataset_manifest": "abe82919c24855d8d35a7c383843aaab4a5a2048ac868ad6a7b6be0791d34030",
+    "v2c3_development_dataset": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+    "v2c5_intent_discovery_contract": "acc48bace76a5ae93ff9a1818856e3b2dc0ad3585c80e8ba7a3f582208a71427"
+  },
+  "source_input_paths": {
+    "v2c3_data_registry": "data/evals/v2/ml/v2c3_data_registry.json",
+    "v2c3_dataset_manifest": "data/evals/v2/ml/v2c3_dataset.manifest.json",
+    "v2c3_development_dataset": "data/evals/v2/ml/v2c3_development_dataset.json",
+    "v2c5_intent_discovery_contract": "data/evals/v2/ml/v2c5_intent_discovery_contract.json"
+  },
+  "source_roles": [
+    {
+      "development_assignment_required": true,
+      "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "record_id": "internal_train",
+      "registry_role": "v2c3_development",
+      "source_id": "sentinelvoice_v2c1_internal",
+      "source_split": "train"
+    },
+    {
+      "development_assignment_required": true,
+      "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "record_id": "internal_validation",
+      "registry_role": "v2c3_development",
+      "source_id": "sentinelvoice_v2c1_internal",
+      "source_split": "validation"
+    },
+    {
+      "development_assignment_required": true,
+      "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "record_id": "banking77_train",
+      "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+      "source_id": "banking77",
+      "source_split": "train"
+    },
+    {
+      "development_assignment_required": true,
+      "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "record_id": "clinc_finance_train",
+      "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+      "source_id": "clinc150_oos",
+      "source_split": "train"
+    },
+    {
+      "development_assignment_required": true,
+      "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "record_id": "clinc_finance_val",
+      "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+      "source_id": "clinc150_oos",
+      "source_split": "val"
+    }
+  ]
+}

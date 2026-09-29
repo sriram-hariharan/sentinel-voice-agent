@@ -1,0 +1,199 @@
+{
+  "schema_version": "v2c4-candidate-b-config.v1",
+  "config_version": "2026-09-29.v1",
+  "experiment_phase": "V2-C4-Step-12",
+  "analysis_role": "v2c4_development_model_selection",
+  "final_acceptance_evidence": false,
+  "advisory_routing_only": true,
+  "runtime_authority": false,
+  "random_seed": 20260928,
+  "execution_status": {
+    "training_performed": false,
+    "selection_probe_evaluated": false,
+    "final_holdout_accessed": false,
+    "threshold_tuning_performed": false
+  },
+  "candidate_id": "v2c4_candidate_b_hierarchical",
+  "architecture": "hierarchical",
+  "intent_order": [
+    "account_balance",
+    "card_status",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "recent_transactions",
+    "transaction_details",
+    "unsupported_or_uncertain"
+  ],
+  "risk_by_intent": {
+    "account_balance": "PRIVATE_READ",
+    "card_status": "PRIVATE_READ",
+    "create_dispute": "PROTECTED_WRITE",
+    "escalation": "ESCALATION_OR_UNCERTAIN",
+    "freeze_card": "PROTECTED_WRITE",
+    "informational_policy": "PUBLIC",
+    "recent_transactions": "PRIVATE_READ",
+    "transaction_details": "PRIVATE_READ",
+    "unsupported_or_uncertain": "ESCALATION_OR_UNCERTAIN"
+  },
+  "representation": {
+    "family": "frozen_local_sentence_embedding",
+    "model_identifier": "BAAI/bge-small-en-v1.5",
+    "fastembed_method": "passage_embed",
+    "dimensions": 384,
+    "fine_tuning": false,
+    "external_api": false
+  },
+  "classifier": {
+    "class": "LinearSVC",
+    "parameters": {
+      "C": 4.0,
+      "class_weight": "balanced",
+      "dual": "auto",
+      "fit_intercept": true,
+      "intercept_scaling": 1.0,
+      "loss": "squared_hinge",
+      "max_iter": 2000,
+      "multi_class": "ovr",
+      "penalty": "l2",
+      "random_state": 20260928,
+      "tol": 0.0001,
+      "verbose": 0
+    }
+  },
+  "hierarchy": {
+    "stage_1": {
+      "input": "all_examples",
+      "classes": ["supported_current_request", "unsupported_or_uncertain"],
+      "unsupported_intents": ["unsupported_or_uncertain"],
+      "supported_intents": [
+        "account_balance",
+        "card_status",
+        "create_dispute",
+        "escalation",
+        "freeze_card",
+        "informational_policy",
+        "recent_transactions",
+        "transaction_details"
+      ]
+    },
+    "stage_2": {
+      "input": "gold_supported_rows_for_training; stage_1_supported_rows_for_inference",
+      "classes": ["protected_write", "nonprotected"],
+      "protected_intents": ["create_dispute", "freeze_card"],
+      "nonprotected_intents": [
+        "account_balance",
+        "card_status",
+        "escalation",
+        "informational_policy",
+        "recent_transactions",
+        "transaction_details"
+      ]
+    },
+    "stage_3a": {
+      "input": "gold_protected_rows_for_training; stage_2_protected_rows_for_inference",
+      "classes": ["create_dispute", "freeze_card"]
+    },
+    "stage_3b": {
+      "input": "gold_supported_nonprotected_rows_for_training; stage_2_nonprotected_rows_for_inference",
+      "classes": [
+        "account_balance",
+        "card_status",
+        "escalation",
+        "informational_policy",
+        "recent_transactions",
+        "transaction_details"
+      ]
+    }
+  },
+  "training_corpus": {
+    "v2c3_development_expected_count": 8198,
+    "augmentation_expected_count": 360,
+    "combined_expected_count": 8558,
+    "expected_stage_counts": {
+      "stage_1": 8558,
+      "stage_2": 2047,
+      "stage_3a": 234,
+      "stage_3b": 1813
+    },
+    "same_as_candidate_a": true,
+    "additional_data_allowed": false
+  },
+  "embedding_strategy": {
+    "strategy": "reuse_verified_candidate_a_component_caches",
+    "v2c3_development_cache_reused": true,
+    "candidate_a_augmentation_cache_reused": true,
+    "new_training_embeddings_required": false,
+    "shared_probe_embedding_for_all_models": true,
+    "query_embed_allowed": false
+  },
+  "supporting_cv": {
+    "role": "supporting_development_evidence",
+    "primary_selection_evidence": false,
+    "method": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "shuffle": true,
+    "random_state": 20260928,
+    "group_field": "group_id",
+    "real_hierarchical_inference_required": true,
+    "hyperparameter_tuning_allowed": false
+  },
+  "selection_probe": {
+    "data_role": "v2c4_model_selection_probe",
+    "expected_count": 270,
+    "examples_per_intent": 30,
+    "primary_model_selection_evidence": true,
+    "training_eligible": false,
+    "model_selection_eligible": true,
+    "threshold_selection_eligible": false,
+    "final_acceptance_evidence": false
+  },
+  "safety_gates": {
+    "protected_write_false_positive_rate_maximum": 0.01,
+    "protected_write_recall_minimum": 0.8,
+    "unsupported_or_uncertain_recall_minimum": 0.8,
+    "all_gates_required": true
+  },
+  "macro_f1_regression": {
+    "baseline": "frozen_v2c3",
+    "material_regression_if_delta_less_than": -0.01
+  },
+  "selection_rule": {
+    "candidate_a_eligible": false,
+    "candidate_b_selected_only_if_all_safety_gates_pass": true,
+    "candidate_b_selected_only_if_no_material_macro_f1_regression": true,
+    "eligible_wording": "selected_v2c4_development_candidate",
+    "failure_action": "stop_for_human_review",
+    "candidate_c_allowed": false
+  },
+  "prohibited_options": {
+    "hyperparameter_search": false,
+    "threshold_tuning": false,
+    "probability_calibration": false,
+    "abstention_change": false,
+    "embedding_change": false,
+    "transformer_fine_tuning": false,
+    "llm_classifier": false
+  },
+  "frozen_inputs": {
+    "parent_intervention_plan": {"path": "data/evals/v2/ml/v2c4_intervention_plan.json", "sha256": "4a5ed357ab8ae2fc66dd5459f59883ef20bd9b6f9996bad7f4b8f8f2b245e5ff"},
+    "candidate_a_config": {"path": "data/evals/v2/ml/v2c4_candidate_a_config.json", "sha256": "00e584f1a702a16b29537001f8fe159136193ed71224ead81f1a0d5dcd39931d"},
+    "candidate_a_training_report": {"path": "data/evals/v2/ml/v2c4_candidate_a_training_report.json", "sha256": "77eab72edb3bb86fd57d19af26df9d5a33e6577669e9f17d6e8e77a930b2eb6d"},
+    "candidate_a_evaluation_report": {"path": "data/evals/v2/ml/v2c4_candidate_a_evaluation_report.json", "sha256": "3871c72cbe521bf761f5a8bd7a5f0ff95effa1411dfa414f2402df5c0b6d263f"},
+    "candidate_a_artifact": {"path": "artifacts/v2/classifier/v2c4_candidate_a_classifier.joblib", "sha256": "7384c6662f11ddebdc6225f5dfdf2397d51a51a5e318cd116b585d59ed8c7c2b"},
+    "v2c3_development": {"path": "data/evals/v2/ml/v2c3_development_dataset.json", "sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca"},
+    "v2c4_training_augmentation": {"path": "data/evals/v2/ml/v2c4_training_augmentation.json", "sha256": "90da31583b0a57d52a55721e223499a080660235837545d517ce9e65c390bffc"},
+    "v2c4_selection_probe": {"path": "data/evals/v2/ml/v2c4_selection_probe.json", "sha256": "25c62797825b58371f1260f631e9a35bdf34c4cf1bedc895120218a5bb63e16e"},
+    "v2c3_development_embedding_cache": {"path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz", "sha256": "eddaa00ddec7335dd63a49d1650e274d993603f8d52e6b48016089f79514ba89"},
+    "v2c3_development_embedding_cache_metadata": {"path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json", "sha256": "a8477d65c231faebb1edc29c8ded60384d800df991c655a7411e6d6e619eaea3"},
+    "candidate_a_augmentation_embedding_cache": {"path": "data/evals/v2/ml/local/v2c4_candidate_a_augmentation_bge.npz", "sha256": "53ac1fc7b6349995fd4fd04e35d43f378d8c2dcecc60201832386908b695bbbb"},
+    "candidate_a_augmentation_embedding_cache_metadata": {"path": "data/evals/v2/ml/local/v2c4_candidate_a_augmentation_bge.metadata.json", "sha256": "362e09aa618d1d3e260c9bc757ccfc233bbda816d893618168f699c49b114aed"},
+    "v2c3_baseline_artifact": {"path": "artifacts/v2/classifier/v2c3_final_classifier.joblib", "sha256": "0e03a4d8367933622a92920f14a7a4c5a2ffa74af0f53b7b0913f04849e4780c"}
+  },
+  "outputs": {
+    "candidate_artifact": "artifacts/v2/classifier/v2c4_candidate_b_classifier.joblib",
+    "training_report": "data/evals/v2/ml/v2c4_candidate_b_training_report.json",
+    "evaluation_report": "data/evals/v2/ml/v2c4_candidate_b_evaluation_report.json"
+  }
+}

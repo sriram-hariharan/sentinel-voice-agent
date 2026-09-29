@@ -419,6 +419,17 @@ development-selection evidence is the frozen 270-example probe, while five-fold
 360-example V2-C4 safety holdout remains sealed; training and probe evaluation
 in Step 11 cannot establish or claim final V2-C4 improvement.
 
+Candidate A materially improved development metrics, but failed the mandatory
+protected-write false-positive-rate and unsupported-recall gates on the frozen
+probe. This activated the predeclared Candidate B trigger. Step 12 tests the
+frozen hierarchical architecture while retaining the identical BGE method,
+8,558-record training corpus, and balanced LinearSVC (`C=4.0`) parameters for
+all four fitted stages. Hierarchical predictions are advisory routing only and
+cannot authorize protected actions; deterministic application controls remain
+responsible for authentication, authorization, ownership, explicit
+confirmation, and tool execution. Candidate B has not yet been executed, the
+final holdout remains sealed, and there is no final V2-C4 claim.
+
 ## Roadmap: V2-C4 → V2-C5 → V2-D
 
 V2-C5, **Intent Discovery and Taxonomy Expansion**, sits between the current

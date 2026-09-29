@@ -1,0 +1,106 @@
+{
+  "schema_version": "v2c4-selection-probe-postmortem-config.v1",
+  "config_version": "2026-09-29.v1",
+  "experiment_phase": "V2-C4-Step-13",
+  "analysis_role": "consumed_v2c4_model_selection_diagnostic",
+  "source_data_role": "v2c4_model_selection_probe",
+  "probe_consumed": true,
+  "eligibility": {
+    "model_selection_eligible": false,
+    "training_eligible": false,
+    "threshold_selection_eligible": false,
+    "final_acceptance_evidence": false
+  },
+  "candidate_c_allowed": false,
+  "final_holdout_accessed": false,
+  "decision_scores_are_calibrated_probabilities": false,
+  "execution_status": {
+    "analysis_performed": false,
+    "model_fitting_performed": false,
+    "model_training_performed": false,
+    "model_tuning_performed": false,
+    "threshold_tuning_performed": false,
+    "model_selection_performed": false,
+    "final_holdout_accessed": false
+  },
+  "findings_use_policy": {
+    "may_inform_v2c5_taxonomy_or_discovery_hypotheses": true,
+    "may_tune_or_create_another_v2c4_candidate": false,
+    "candidate_c_prohibited": true,
+    "start_v2c5_implementation": false
+  },
+  "expected_example_count": 270,
+  "expected_frozen_failures": {
+    "candidate_a": {
+      "protected_total": 60,
+      "protected_recognized": 56,
+      "protected_misses": 4,
+      "nonprotected_total": 210,
+      "protected_false_positives": 7,
+      "unsupported_total": 30,
+      "unsupported_correct": 20,
+      "unsupported_false_supported": 10
+    },
+    "candidate_b": {
+      "protected_total": 60,
+      "protected_recognized": 48,
+      "protected_misses": 12,
+      "nonprotected_total": 210,
+      "protected_false_positives": 9,
+      "unsupported_total": 30,
+      "unsupported_correct": 11,
+      "unsupported_false_supported": 19
+    }
+  },
+  "frozen_inputs": {
+    "selection_probe": {
+      "path": "data/evals/v2/ml/v2c4_selection_probe.json",
+      "sha256": "25c62797825b58371f1260f631e9a35bdf34c4cf1bedc895120218a5bb63e16e"
+    },
+    "selection_probe_manifest": {
+      "path": "data/evals/v2/ml/v2c4_selection_probe.manifest.json",
+      "sha256": "e1658f4049bf151a8b4302876034eaa948ef8dda9b61ddf7f253987aa676b945"
+    },
+    "candidate_a_config": {
+      "path": "data/evals/v2/ml/v2c4_candidate_a_config.json",
+      "sha256": "00e584f1a702a16b29537001f8fe159136193ed71224ead81f1a0d5dcd39931d"
+    },
+    "candidate_a_artifact": {
+      "path": "artifacts/v2/classifier/v2c4_candidate_a_classifier.joblib",
+      "sha256": "7384c6662f11ddebdc6225f5dfdf2397d51a51a5e318cd116b585d59ed8c7c2b"
+    },
+    "candidate_a_evaluation_report": {
+      "path": "data/evals/v2/ml/v2c4_candidate_a_evaluation_report.json",
+      "sha256": "3871c72cbe521bf761f5a8bd7a5f0ff95effa1411dfa414f2402df5c0b6d263f"
+    },
+    "candidate_b_config": {
+      "path": "data/evals/v2/ml/v2c4_candidate_b_config.json",
+      "sha256": "47baaadbe5efcdeb3285e1edd9939809d9a4a4b2dd219b5e75409276a320aff1"
+    },
+    "candidate_b_artifact": {
+      "path": "artifacts/v2/classifier/v2c4_candidate_b_classifier.joblib",
+      "sha256": "396c21852fdd10a09d501f6567fe5f1db383e8c7ce1fe340c05afe63d568c842"
+    },
+    "candidate_b_evaluation_report": {
+      "path": "data/evals/v2/ml/v2c4_candidate_b_evaluation_report.json",
+      "sha256": "3c22e16b8ee1cb78c9c19a8806be63bd75deb83b7227a99ca376bb54f478b6da"
+    },
+    "candidate_b_training_report": {
+      "path": "data/evals/v2/ml/v2c4_candidate_b_training_report.json",
+      "sha256": "ffe5c1f8e8a12e1bf6230bc0167b1b85274100f2f94a34da1a605ae58fabc0dd"
+    },
+    "v2c3_baseline_artifact": {
+      "path": "artifacts/v2/classifier/v2c3_final_classifier.joblib",
+      "sha256": "0e03a4d8367933622a92920f14a7a4c5a2ffa74af0f53b7b0913f04849e4780c"
+    },
+    "step_9_intervention_plan": {
+      "path": "data/evals/v2/ml/v2c4_intervention_plan.json",
+      "sha256": "4a5ed357ab8ae2fc66dd5459f59883ef20bd9b6f9996bad7f4b8f8f2b245e5ff"
+    }
+  },
+  "output": {
+    "path": "data/evals/v2/ml/v2c4_selection_probe_postmortem_report.json",
+    "raw_text_persisted": false,
+    "deterministic": true
+  }
+}

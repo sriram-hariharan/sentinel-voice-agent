@@ -3777,15 +3777,16 @@ five-fold group-aware development CV is supporting evidence only. The final
 360-example safety holdout remains sealed, so Step 11 cannot support a final
 V2-C4 improvement claim.
 
-Candidate A materially improved development accuracy and macro-F1, but it
-failed the mandatory protected-write false-positive-rate and unsupported-recall
-gates. The frozen Candidate B trigger therefore fired. Step 12 defines the
-predeclared hierarchical Candidate B using the same frozen BGE representation,
-8,558 training records, and balanced LinearSVC (`C=4.0`) parameters at every
-stage. The classifier remains advisory routing only; deterministic runtime code
-continues to own authentication, authorization, ownership, confirmation, and
-protected tool execution. Candidate B results are not yet recorded, the final
-holdout remains sealed, and no final V2-C4 claim is permitted.
+Candidate A materially improved development accuracy and macro-F1 over the
+V2-C3 baseline, but failed the mandatory protected-write false-positive-rate
+and unsupported-recall gates. The triggered hierarchical Candidate B failed
+the same two gates and regressed versus Candidate A, so V2-C4 selected no
+development candidate and Candidate C is prohibited. The 270-example selection
+probe is now consumed and Step 13 may use it only for a diagnostic postmortem,
+not training, tuning, or model selection. The final V2-C4 holdout remains
+sealed and will not be opened. After V2-C4 closeout, the next planned phase is
+V2-C5 intent discovery and taxonomy expansion; no successful V2-C4 final model
+is claimed.
 
 ### ML roadmap after V2-C4
 

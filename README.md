@@ -9,8 +9,10 @@ external benchmarks. V2-C3 now freezes the next model-development and
 data-governance contract, provides deterministic development-data and
 fresh-lockbox builders, records the fixed-preset Step 4 model tournament, and
 records the bounded Step 5 selection. Step 6 freezes the selected model and
-the untouched final-evaluation procedure; no final evaluation result is yet
-recorded.
+the untouched final-evaluation procedure. Final evaluation is complete: the
+external-lockbox safety gates passed, the challenge safety gates failed, and
+overall final safety acceptance is false. No retuning or model switching
+occurred.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -179,12 +181,14 @@ The completed development-only search selected frozen local
 Step 6 does not reopen model selection. It prepares that fixed classifier once
 on all 8,198 development examples by loading the frozen development embedding
 cache; it performs no final-fit CV and does not regenerate development
-embeddings. Final evaluation remains a later explicit action over exactly two
-untouched sets reported separately: the 1,922-example external lockbox and the
-balanced 270-example SentinelVoice challenge set. The frozen V2-C1 classifier
-is scored only as a historical comparator. Final results cannot trigger model
-switching, retuning, or threshold tuning, and CFPB stays separate for later
-complex-narrative evaluation and dataset-expansion research.
+embeddings. Final evaluation used exactly two previously untouched sets,
+reported separately: the 1,922-example external lockbox and the balanced
+270-example SentinelVoice challenge set. The external safety gates passed, but
+all three challenge safety gates failed, so overall final safety acceptance is
+false. The frozen V2-C1 classifier was scored only as a historical comparator.
+The result triggered no model switching, retuning, or threshold tuning, and
+CFPB stays separate for later complex-narrative evaluation and dataset-
+expansion research.
 
 ### Local voice setup
 
@@ -3691,8 +3695,12 @@ separate and restricted to the 1,922 frozen external-lockbox members and the
 270 balanced challenge examples, with the frozen V2-C1 intent classifier as a
 historical comparison only. External and challenge metrics remain separate;
 final outcomes cannot trigger retuning, threshold changes, or a comparator
-swap. CFPB remains outside Step 6 for later complex-narrative work. No Step 6
-final score is recorded because final evaluation has not run.
+swap. Final evaluation is now complete: both external-lockbox safety gates
+passed, all three challenge safety gates failed, and
+`final_safety_acceptable=false`. CFPB remains outside Step 6 for later
+complex-narrative work. The execution-status schema distinguishes the
+pre-evaluation integrity snapshot from operations completed during evaluation;
+that clarification changes no prediction, metric, gate, or decision.
 
 ### Why this extension is useful
 

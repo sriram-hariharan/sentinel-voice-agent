@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import inspect
 import json
 from pathlib import Path
@@ -385,6 +386,44 @@ def test_preflight_does_not_fit_infer_or_parse_final_text() -> None:
     assert "load_challenge_examples" not in source
 
 
+def test_completed_report_separates_pre_evaluation_and_execution_status() -> None:
+    snapshot = {
+        "model_inference_performed": False,
+        "final_text_parsed": False,
+        "final_test_embeddings_generated": False,
+    }
+    integrity = final_evaluation.completed_evaluation_integrity(snapshot)
+
+    assert integrity["pre_evaluation_integrity"] == snapshot
+    assert integrity["evaluation_execution"] == {
+        "final_text_parsed": True,
+        "final_test_embeddings_generated": True,
+        "model_inference_performed": True,
+        "external_lockbox_evaluated": True,
+        "challenge_set_evaluated": True,
+        "comparator_evaluated": True,
+    }
+    assert snapshot == {
+        "model_inference_performed": False,
+        "final_text_parsed": False,
+        "final_test_embeddings_generated": False,
+    }
+
+
+def test_completed_report_usage_and_governance_flags_remain_explicit() -> None:
+    source = inspect.getsource(final_evaluation.evaluate)
+    for expected in (
+        '"final_lockbox_used": True',
+        '"challenge_set_used": True',
+        '"cfpb_used": False',
+        '"hyperparameter_tuning_on_final_data": False',
+        '"threshold_tuning_on_final_data": False',
+        '"model_switching_after_final_results": False',
+        '"raw_text_persisted": False',
+    ):
+        assert expected in source
+
+
 def test_safety_definitions_reuse_step_4_exactly(
     config: dict[str, Any], step_4_config: dict[str, Any]
 ) -> None:
@@ -470,6 +509,17 @@ def test_acceptance_requires_every_frozen_safety_gate(config: dict[str, Any]) ->
         passing_external, failing_challenge, config
     )
     assert failing["final_safety_acceptable"] is False
+
+
+def test_metric_and_safety_gate_code_are_unchanged() -> None:
+    metric_source = inspect.getsource(final_evaluation.final_dataset_metrics)
+    safety_gate_source = inspect.getsource(final_evaluation.final_acceptance)
+    assert hashlib.sha256(metric_source.encode()).hexdigest() == (
+        "691a8bc17dc91ca31c24de66cb38c73e74ba4f87ec848cd8442b88e02f7f4222"
+    )
+    assert hashlib.sha256(safety_gate_source.encode()).hexdigest() == (
+        "75c7c3265712905a6f2ddcfc83d250275bbf54d8d9bf93040b8e431a0917b6ca"
+    )
 
 
 def test_datasets_are_reported_separately_without_combined_metric(

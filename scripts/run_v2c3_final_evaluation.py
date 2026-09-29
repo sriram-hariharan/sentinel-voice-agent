@@ -1020,6 +1020,23 @@ def resolved_frozen_hashes(config: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def completed_evaluation_integrity(
+    pre_evaluation_integrity: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Separate the pre-evaluation snapshot from completed evaluation work."""
+    return {
+        "pre_evaluation_integrity": dict(pre_evaluation_integrity),
+        "evaluation_execution": {
+            "final_text_parsed": True,
+            "final_test_embeddings_generated": True,
+            "model_inference_performed": True,
+            "external_lockbox_evaluated": True,
+            "challenge_set_evaluated": True,
+            "comparator_evaluated": True,
+        },
+    }
+
+
 def validate_report_payload(report: dict[str, Any], config: dict[str, Any]) -> None:
     required_fields = config["report"]["required_top_level_fields"]
     if set(report) != set(required_fields):
@@ -1039,6 +1056,30 @@ def validate_report_payload(report: dict[str, Any], config: dict[str, Any]) -> N
         or report["cfpb_used"] is not False
     ):
         raise ValueError("final report boundary flags changed")
+    integrity = report["integrity_verification"]
+    if set(integrity) != {
+        "pre_evaluation_integrity",
+        "evaluation_execution",
+    }:
+        raise ValueError("final report integrity stages are ambiguous")
+    pre_evaluation = integrity["pre_evaluation_integrity"]
+    for field in (
+        "model_inference_performed",
+        "final_text_parsed",
+        "final_test_embeddings_generated",
+    ):
+        if pre_evaluation[field] is not False:
+            raise ValueError(f"pre-evaluation status changed: {field}")
+    expected_execution = {
+        "final_text_parsed": True,
+        "final_test_embeddings_generated": True,
+        "model_inference_performed": True,
+        "external_lockbox_evaluated": True,
+        "challenge_set_evaluated": True,
+        "comparator_evaluated": True,
+    }
+    if integrity["evaluation_execution"] != expected_execution:
+        raise ValueError("completed evaluation execution status is invalid")
 
 
 def evaluate(config: dict[str, Any]) -> tuple[dict[str, Any], Path]:
@@ -1126,7 +1167,9 @@ def evaluate(config: dict[str, Any]) -> tuple[dict[str, Any], Path]:
                 "all_example_hashes_verified": True,
             },
         },
-        "integrity_verification": integrity_verification,
+        "integrity_verification": completed_evaluation_integrity(
+            integrity_verification
+        ),
         "external_lockbox_results": external_results,
         "challenge_set_results": challenge_results,
         "comparison_role": "final selected model vs frozen historical baseline",

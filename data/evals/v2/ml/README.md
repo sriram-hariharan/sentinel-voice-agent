@@ -279,15 +279,23 @@ BGE development cache, fits only the selected balanced LinearSVC `C=4.0` on all
 classifier plus text-free lineage metadata. It cannot regenerate embeddings or
 read the lockbox or challenge set.
 
-Only the later explicit `evaluate` mode reconstructs the exact 1,922
+Only the explicit `evaluate` mode reconstructs the exact 1,922
 external-lockbox members from frozen BANKING77 train and CLINC train/validation
 identities and hashes, loads the balanced 270-example challenge set, and
 generates their BGE embeddings. It reports the two datasets separately for
 exactly `final_v2c3` and the frozen V2-C1 historical baseline. The comparison
 is not post-test model selection: results cannot trigger retuning, threshold
 tuning, or a switch back to V2-C1. CFPB remains separate for later
-complex-narrative evaluation or expansion research. Final evaluation has not
-been run, so no Step 6 scores are documented.
+complex-narrative evaluation or expansion research.
+
+Final evaluation is complete. Both external-lockbox safety gates passed; all
+three challenge safety gates failed, so `final_safety_acceptable=false`. No
+retuning, threshold tuning, or model switching occurred. The report keeps the
+frozen `integrity_verification` top-level key for compatibility, but clearly
+nests the no-inference pre-evaluation snapshot under
+`pre_evaluation_integrity` and completed work under `evaluation_execution`.
+This is reporting clarification only and changes no model, prediction, metric,
+safety gate, or acceptance result.
 
 ## Reproduce V2-C1
 

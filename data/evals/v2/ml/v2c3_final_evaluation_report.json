@@ -1,0 +1,1708 @@
+{
+  "cfpb_used": false,
+  "challenge_set_results": {
+    "final_v2c3": {
+      "accuracy": 0.7518518518518519,
+      "confusion_matrix": {
+        "label_order": [
+          "account_balance",
+          "card_status",
+          "create_dispute",
+          "escalation",
+          "freeze_card",
+          "informational_policy",
+          "recent_transactions",
+          "transaction_details",
+          "unsupported_or_uncertain"
+        ],
+        "values": [
+          [
+            26,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            3
+          ],
+          [
+            0,
+            25,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            4
+          ],
+          [
+            0,
+            0,
+            23,
+            0,
+            0,
+            1,
+            1,
+            2,
+            3
+          ],
+          [
+            0,
+            0,
+            0,
+            27,
+            0,
+            0,
+            0,
+            0,
+            3
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            22,
+            2,
+            0,
+            0,
+            4
+          ],
+          [
+            2,
+            0,
+            1,
+            0,
+            0,
+            19,
+            0,
+            4,
+            4
+          ],
+          [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            27,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            5,
+            4,
+            13,
+            7
+          ],
+          [
+            1,
+            0,
+            1,
+            1,
+            1,
+            2,
+            1,
+            2,
+            21
+          ]
+        ]
+      },
+      "count": 270,
+      "create_dispute_metrics": {
+        "f1": 0.8214285714285714,
+        "precision": 0.8846153846153846,
+        "recall": 0.7666666666666667,
+        "support": 30
+      },
+      "escalation_metrics": {
+        "f1": 0.9310344827586207,
+        "precision": 0.9642857142857143,
+        "recall": 0.9,
+        "support": 30
+      },
+      "false_supported_count": 9,
+      "false_supported_rate": 0.3,
+      "freeze_card_metrics": {
+        "f1": 0.8301886792452831,
+        "precision": 0.9565217391304348,
+        "recall": 0.7333333333333333,
+        "support": 30
+      },
+      "macro_f1": 0.7583468365435809,
+      "macro_f1_scope": "gold_classes_present",
+      "per_class": {
+        "account_balance": {
+          "f1": 0.8524590163934426,
+          "precision": 0.8387096774193549,
+          "recall": 0.8666666666666667,
+          "support": 30
+        },
+        "card_status": {
+          "f1": 0.8771929824561403,
+          "precision": 0.9259259259259259,
+          "recall": 0.8333333333333334,
+          "support": 30
+        },
+        "create_dispute": {
+          "f1": 0.8214285714285714,
+          "precision": 0.8846153846153846,
+          "recall": 0.7666666666666667,
+          "support": 30
+        },
+        "escalation": {
+          "f1": 0.9310344827586207,
+          "precision": 0.9642857142857143,
+          "recall": 0.9,
+          "support": 30
+        },
+        "freeze_card": {
+          "f1": 0.8301886792452831,
+          "precision": 0.9565217391304348,
+          "recall": 0.7333333333333333,
+          "support": 30
+        },
+        "informational_policy": {
+          "f1": 0.6440677966101694,
+          "precision": 0.6551724137931034,
+          "recall": 0.6333333333333333,
+          "support": 30
+        },
+        "recent_transactions": {
+          "f1": 0.84375,
+          "precision": 0.7941176470588235,
+          "recall": 0.9,
+          "support": 30
+        },
+        "transaction_details": {
+          "f1": 0.5,
+          "precision": 0.5909090909090909,
+          "recall": 0.43333333333333335,
+          "support": 30
+        },
+        "unsupported_or_uncertain": {
+          "f1": 0.525,
+          "precision": 0.42,
+          "recall": 0.7,
+          "support": 30
+        }
+      },
+      "protected_write_false_positive_count": 4,
+      "protected_write_false_positive_rate": 0.01904761904761905,
+      "protected_write_recall": 0.75,
+      "supported_intent_accuracy": 0.7583333333333333,
+      "unsupported_or_uncertain_recall": 0.7,
+      "weighted_f1": 0.7583468365435808
+    },
+    "frozen_v2c1_baseline": {
+      "accuracy": 0.7555555555555555,
+      "confusion_matrix": {
+        "label_order": [
+          "account_balance",
+          "card_status",
+          "create_dispute",
+          "escalation",
+          "freeze_card",
+          "informational_policy",
+          "recent_transactions",
+          "transaction_details",
+          "unsupported_or_uncertain"
+        ],
+        "values": [
+          [
+            29,
+            0,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            0,
+            24,
+            0,
+            0,
+            3,
+            0,
+            2,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            25,
+            0,
+            1,
+            0,
+            1,
+            1,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            29,
+            0,
+            0,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            4,
+            0,
+            0,
+            26,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            3,
+            3,
+            3,
+            0,
+            0,
+            19,
+            0,
+            2,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            28,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            2,
+            1,
+            0,
+            1,
+            7,
+            16,
+            1
+          ],
+          [
+            2,
+            2,
+            5,
+            1,
+            3,
+            1,
+            6,
+            2,
+            8
+          ]
+        ]
+      },
+      "count": 270,
+      "create_dispute_metrics": {
+        "f1": 0.7692307692307693,
+        "precision": 0.7142857142857143,
+        "recall": 0.8333333333333334,
+        "support": 30
+      },
+      "escalation_metrics": {
+        "f1": 0.9508196721311475,
+        "precision": 0.9354838709677419,
+        "recall": 0.9666666666666667,
+        "support": 30
+      },
+      "false_supported_count": 22,
+      "false_supported_rate": 0.7333333333333333,
+      "freeze_card_metrics": {
+        "f1": 0.8253968253968254,
+        "precision": 0.7878787878787878,
+        "recall": 0.8666666666666667,
+        "support": 30
+      },
+      "macro_f1": 0.7393339326153869,
+      "macro_f1_scope": "gold_classes_present",
+      "per_class": {
+        "account_balance": {
+          "f1": 0.8787878787878788,
+          "precision": 0.8055555555555556,
+          "recall": 0.9666666666666667,
+          "support": 30
+        },
+        "card_status": {
+          "f1": 0.7384615384615385,
+          "precision": 0.6857142857142857,
+          "recall": 0.8,
+          "support": 30
+        },
+        "create_dispute": {
+          "f1": 0.7692307692307693,
+          "precision": 0.7142857142857143,
+          "recall": 0.8333333333333334,
+          "support": 30
+        },
+        "escalation": {
+          "f1": 0.9508196721311475,
+          "precision": 0.9354838709677419,
+          "recall": 0.9666666666666667,
+          "support": 30
+        },
+        "freeze_card": {
+          "f1": 0.8253968253968254,
+          "precision": 0.7878787878787878,
+          "recall": 0.8666666666666667,
+          "support": 30
+        },
+        "informational_policy": {
+          "f1": 0.7450980392156863,
+          "precision": 0.9047619047619048,
+          "recall": 0.6333333333333333,
+          "support": 30
+        },
+        "recent_transactions": {
+          "f1": 0.7466666666666667,
+          "precision": 0.6222222222222222,
+          "recall": 0.9333333333333333,
+          "support": 30
+        },
+        "transaction_details": {
+          "f1": 0.6274509803921569,
+          "precision": 0.7619047619047619,
+          "recall": 0.5333333333333333,
+          "support": 30
+        },
+        "unsupported_or_uncertain": {
+          "f1": 0.37209302325581395,
+          "precision": 0.6153846153846154,
+          "recall": 0.26666666666666666,
+          "support": 30
+        }
+      },
+      "protected_write_false_positive_count": 16,
+      "protected_write_false_positive_rate": 0.0761904761904762,
+      "protected_write_recall": 0.85,
+      "supported_intent_accuracy": 0.8166666666666667,
+      "unsupported_or_uncertain_recall": 0.26666666666666666,
+      "weighted_f1": 0.7393339326153869
+    }
+  },
+  "challenge_set_used": true,
+  "combined_final_metric_reported": false,
+  "comparator_artifact_sha256": "e815eb629de3ae56140a09f92baf563e9aaeec1204b45c23774210452d03285c",
+  "comparison_deltas": {
+    "challenge_set": {
+      "accuracy_delta": -0.0037037037037036535,
+      "false_supported_rate_delta": -0.4333333333333333,
+      "macro_f1_delta": 0.01901290392819399,
+      "protected_write_fpr_delta": -0.05714285714285715,
+      "protected_write_recall_delta": -0.09999999999999998,
+      "unsupported_recall_delta": 0.4333333333333333
+    },
+    "external_lockbox": {
+      "accuracy_delta": 0.6066597294484912,
+      "false_supported_rate_delta": -0.5839138695376821,
+      "macro_f1_delta": 0.6868134686498908,
+      "protected_write_fpr_delta": -0.06087408949011446,
+      "protected_write_recall_delta": "NOT_APPLICABLE",
+      "unsupported_recall_delta": 0.583913869537682
+    }
+  },
+  "comparison_role": "final selected model vs frozen historical baseline",
+  "dataset_integrity": {
+    "challenge_set": {
+      "all_example_hashes_verified": true,
+      "count": 270,
+      "intent_counts": {
+        "account_balance": 30,
+        "card_status": 30,
+        "create_dispute": 30,
+        "escalation": 30,
+        "freeze_card": 30,
+        "informational_policy": 30,
+        "recent_transactions": 30,
+        "transaction_details": 30,
+        "unsupported_or_uncertain": 30
+      }
+    },
+    "external_lockbox": {
+      "all_member_hashes_verified": true,
+      "count": 1922,
+      "membership_changed": false,
+      "source_counts": {
+        "banking77": 1346,
+        "clinc150_oos": 576
+      }
+    }
+  },
+  "environment": {
+    "fastembed": "0.8.1",
+    "joblib": "1.6.0",
+    "numpy": "2.5.3",
+    "python": "3.14.3",
+    "scikit_learn": "1.9.1"
+  },
+  "experiment_phase": "V2-C3-Step-6",
+  "external_lockbox_results": {
+    "final_v2c3": {
+      "accuracy": 0.967741935483871,
+      "confusion_matrix": {
+        "label_order": [
+          "account_balance",
+          "card_status",
+          "create_dispute",
+          "escalation",
+          "freeze_card",
+          "informational_policy",
+          "recent_transactions",
+          "transaction_details",
+          "unsupported_or_uncertain"
+        ],
+        "values": [
+          [
+            21,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            2
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            191,
+            0,
+            0,
+            9
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            23,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            93,
+            2
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            35,
+            0,
+            11,
+            1532
+          ]
+        ]
+      },
+      "count": 1922,
+      "false_supported_count": 47,
+      "false_supported_rate": 0.029765674477517417,
+      "macro_f1": 0.9403067664977065,
+      "macro_f1_scope": "gold_classes_present",
+      "per_class": {
+        "account_balance": {
+          "f1": 0.9130434782608695,
+          "precision": 0.9545454545454546,
+          "recall": 0.875,
+          "support": 24
+        },
+        "card_status": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "create_dispute": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "escalation": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "freeze_card": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "informational_policy": {
+          "f1": 0.8946135831381733,
+          "precision": 0.8414096916299559,
+          "recall": 0.955,
+          "support": 200
+        },
+        "recent_transactions": {
+          "f1": 0.9787234042553191,
+          "precision": 1.0,
+          "recall": 0.9583333333333334,
+          "support": 24
+        },
+        "transaction_details": {
+          "f1": 0.9346733668341709,
+          "precision": 0.8942307692307693,
+          "recall": 0.9789473684210527,
+          "support": 95
+        },
+        "unsupported_or_uncertain": {
+          "f1": 0.98048,
+          "precision": 0.9909443725743855,
+          "recall": 0.9702343255224826,
+          "support": 1579
+        }
+      },
+      "protected_write_false_positive_count": 0,
+      "protected_write_false_positive_rate": 0.0,
+      "protected_write_recall": "NOT_APPLICABLE",
+      "source_breakdown": {
+        "banking77": {
+          "accuracy": 0.9606240713224369,
+          "confusion_matrix": {
+            "label_order": [
+              "account_balance",
+              "card_status",
+              "create_dispute",
+              "escalation",
+              "freeze_card",
+              "informational_policy",
+              "recent_transactions",
+              "transaction_details",
+              "unsupported_or_uncertain"
+            ],
+            "values": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                167,
+                0,
+                0,
+                9
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                93,
+                2
+              ],
+              [
+                1,
+                0,
+                0,
+                0,
+                0,
+                32,
+                0,
+                9,
+                1033
+              ]
+            ]
+          },
+          "count": 1346,
+          "false_supported_count": 42,
+          "false_supported_rate": 0.03906976744186046,
+          "macro_f1": 0.9366057683989858,
+          "macro_f1_scope": "gold_classes_present",
+          "per_class": {
+            "account_balance": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "card_status": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "create_dispute": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "escalation": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "freeze_card": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "informational_policy": {
+              "f1": 0.8906666666666667,
+              "precision": 0.8391959798994975,
+              "recall": 0.9488636363636364,
+              "support": 176
+            },
+            "recent_transactions": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "transaction_details": {
+              "f1": 0.9441624365482234,
+              "precision": 0.9117647058823529,
+              "recall": 0.9789473684210527,
+              "support": 95
+            },
+            "unsupported_or_uncertain": {
+              "f1": 0.974988201982067,
+              "precision": 0.9894636015325671,
+              "recall": 0.9609302325581396,
+              "support": 1075
+            }
+          },
+          "protected_write_false_positive_count": 0,
+          "protected_write_false_positive_rate": 0.0,
+          "protected_write_recall": "NOT_APPLICABLE",
+          "supported_intent_accuracy": 0.959409594095941,
+          "unsupported_or_uncertain_recall": 0.9609302325581396,
+          "weighted_f1": 0.9617868365053021
+        },
+        "clinc150_oos": {
+          "accuracy": 0.984375,
+          "confusion_matrix": {
+            "label_order": [
+              "account_balance",
+              "card_status",
+              "create_dispute",
+              "escalation",
+              "freeze_card",
+              "informational_policy",
+              "recent_transactions",
+              "transaction_details",
+              "unsupported_or_uncertain"
+            ],
+            "values": [
+              [
+                21,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                2
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                24,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                23,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                3,
+                0,
+                2,
+                499
+              ]
+            ]
+          },
+          "count": 576,
+          "false_supported_count": 5,
+          "false_supported_rate": 0.00992063492063492,
+          "macro_f1": 0.9567953435958173,
+          "macro_f1_scope": "gold_classes_present",
+          "per_class": {
+            "account_balance": {
+              "f1": 0.9333333333333333,
+              "precision": 1.0,
+              "recall": 0.875,
+              "support": 24
+            },
+            "card_status": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "create_dispute": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "escalation": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "freeze_card": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "informational_policy": {
+              "f1": 0.9230769230769231,
+              "precision": 0.8571428571428571,
+              "recall": 1.0,
+              "support": 24
+            },
+            "recent_transactions": {
+              "f1": 0.9787234042553191,
+              "precision": 1.0,
+              "recall": 0.9583333333333334,
+              "support": 24
+            },
+            "transaction_details": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "unsupported_or_uncertain": {
+              "f1": 0.9920477137176938,
+              "precision": 0.9940239043824701,
+              "recall": 0.9900793650793651,
+              "support": 504
+            }
+          },
+          "protected_write_false_positive_count": 0,
+          "protected_write_false_positive_rate": 0.0,
+          "protected_write_recall": "NOT_APPLICABLE",
+          "supported_intent_accuracy": 0.9444444444444444,
+          "unsupported_or_uncertain_recall": 0.9900793650793651,
+          "weighted_f1": 0.986172318697381
+        }
+      },
+      "supported_intent_accuracy": 0.956268221574344,
+      "unsupported_or_uncertain_recall": 0.9702343255224826,
+      "weighted_f1": 0.9684167594470706
+    },
+    "frozen_v2c1_baseline": {
+      "accuracy": 0.3610822060353798,
+      "confusion_matrix": {
+        "label_order": [
+          "account_balance",
+          "card_status",
+          "create_dispute",
+          "escalation",
+          "freeze_card",
+          "informational_policy",
+          "recent_transactions",
+          "transaction_details",
+          "unsupported_or_uncertain"
+        ],
+        "values": [
+          [
+            22,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            26,
+            58,
+            1,
+            14,
+            3,
+            31,
+            10,
+            10,
+            47
+          ],
+          [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1,
+            20,
+            1,
+            1
+          ],
+          [
+            8,
+            28,
+            6,
+            2,
+            12,
+            16,
+            0,
+            11,
+            12
+          ],
+          [
+            251,
+            178,
+            21,
+            124,
+            73,
+            172,
+            65,
+            85,
+            610
+          ]
+        ]
+      },
+      "count": 1922,
+      "false_supported_count": 969,
+      "false_supported_rate": 0.6136795440151995,
+      "macro_f1": 0.25349329784781577,
+      "macro_f1_scope": "gold_classes_present",
+      "per_class": {
+        "account_balance": {
+          "f1": 0.13293051359516617,
+          "precision": 0.07166123778501629,
+          "recall": 0.9166666666666666,
+          "support": 24
+        },
+        "card_status": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "create_dispute": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "escalation": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "freeze_card": {
+          "f1": 0.0,
+          "precision": 0.0,
+          "recall": 0.0,
+          "support": 0
+        },
+        "informational_policy": {
+          "f1": 0.14726840855106887,
+          "precision": 0.14027149321266968,
+          "recall": 0.155,
+          "support": 200
+        },
+        "recent_transactions": {
+          "f1": 0.33613445378151263,
+          "precision": 0.21052631578947367,
+          "recall": 0.8333333333333334,
+          "support": 24
+        },
+        "transaction_details": {
+          "f1": 0.10891089108910891,
+          "precision": 0.102803738317757,
+          "recall": 0.11578947368421053,
+          "support": 95
+        },
+        "unsupported_or_uncertain": {
+          "f1": 0.5422222222222223,
+          "precision": 0.9090909090909091,
+          "recall": 0.3863204559848005,
+          "support": 1579
+        }
+      },
+      "protected_write_false_positive_count": 117,
+      "protected_write_false_positive_rate": 0.06087408949011446,
+      "protected_write_recall": "NOT_APPLICABLE",
+      "source_breakdown": {
+        "banking77": {
+          "accuracy": 0.32838038632986627,
+          "confusion_matrix": {
+            "label_order": [
+              "account_balance",
+              "card_status",
+              "create_dispute",
+              "escalation",
+              "freeze_card",
+              "informational_policy",
+              "recent_transactions",
+              "transaction_details",
+              "unsupported_or_uncertain"
+            ],
+            "values": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                25,
+                47,
+                0,
+                14,
+                2,
+                22,
+                9,
+                10,
+                47
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                8,
+                28,
+                6,
+                2,
+                12,
+                16,
+                0,
+                11,
+                12
+              ],
+              [
+                132,
+                120,
+                16,
+                106,
+                34,
+                147,
+                40,
+                71,
+                409
+              ]
+            ]
+          },
+          "count": 1346,
+          "false_supported_count": 666,
+          "false_supported_rate": 0.6195348837209302,
+          "macro_f1": 0.2565556046142073,
+          "macro_f1_scope": "gold_classes_present",
+          "per_class": {
+            "account_balance": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "card_status": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "create_dispute": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "escalation": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "freeze_card": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "informational_policy": {
+              "f1": 0.12188365650969529,
+              "precision": 0.11891891891891893,
+              "recall": 0.125,
+              "support": 176
+            },
+            "recent_transactions": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "transaction_details": {
+              "f1": 0.11764705882352941,
+              "precision": 0.11956521739130435,
+              "recall": 0.11578947368421053,
+              "support": 95
+            },
+            "unsupported_or_uncertain": {
+              "f1": 0.5301360985093972,
+              "precision": 0.8739316239316239,
+              "recall": 0.38046511627906976,
+              "support": 1075
+            }
+          },
+          "protected_write_false_positive_count": 70,
+          "protected_write_false_positive_rate": 0.05200594353640416,
+          "protected_write_recall": "NOT_APPLICABLE",
+          "supported_intent_accuracy": 0.12177121771217712,
+          "unsupported_or_uncertain_recall": 0.38046511627906976,
+          "weighted_f1": 0.44764063895359857
+        },
+        "clinc150_oos": {
+          "accuracy": 0.4375,
+          "confusion_matrix": {
+            "label_order": [
+              "account_balance",
+              "card_status",
+              "create_dispute",
+              "escalation",
+              "freeze_card",
+              "informational_policy",
+              "recent_transactions",
+              "transaction_details",
+              "unsupported_or_uncertain"
+            ],
+            "values": [
+              [
+                22,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                11,
+                1,
+                0,
+                1,
+                9,
+                1,
+                0,
+                0
+              ],
+              [
+                0,
+                0,
+                1,
+                0,
+                0,
+                1,
+                20,
+                1,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                119,
+                58,
+                5,
+                18,
+                39,
+                25,
+                25,
+                14,
+                201
+              ]
+            ]
+          },
+          "count": 576,
+          "false_supported_count": 303,
+          "false_supported_rate": 0.6011904761904762,
+          "macro_f1": 0.4262721323767489,
+          "macro_f1_scope": "gold_classes_present",
+          "per_class": {
+            "account_balance": {
+              "f1": 0.26506024096385544,
+              "precision": 0.15492957746478872,
+              "recall": 0.9166666666666666,
+              "support": 24
+            },
+            "card_status": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "create_dispute": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "escalation": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "freeze_card": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "informational_policy": {
+              "f1": 0.3,
+              "precision": 0.25,
+              "recall": 0.375,
+              "support": 24
+            },
+            "recent_transactions": {
+              "f1": 0.5714285714285714,
+              "precision": 0.43478260869565216,
+              "recall": 0.8333333333333334,
+              "support": 24
+            },
+            "transaction_details": {
+              "f1": 0.0,
+              "precision": 0.0,
+              "recall": 0.0,
+              "support": 0
+            },
+            "unsupported_or_uncertain": {
+              "f1": 0.5685997171145686,
+              "precision": 0.9901477832512315,
+              "recall": 0.39880952380952384,
+              "support": 504
+            }
+          },
+          "protected_write_false_positive_count": 47,
+          "protected_write_false_positive_rate": 0.08159722222222222,
+          "protected_write_recall": "NOT_APPLICABLE",
+          "supported_intent_accuracy": 0.7083333333333334,
+          "unsupported_or_uncertain_recall": 0.39880952380952384,
+          "weighted_f1": 0.5448784529915986
+        }
+      },
+      "supported_intent_accuracy": 0.24489795918367346,
+      "unsupported_or_uncertain_recall": 0.3863204559848005,
+      "weighted_f1": 0.4720221979550512
+    }
+  },
+  "final_acceptance_policy": {
+    "all_required_gates_must_pass": true,
+    "applies_to_model": "final_v2c3",
+    "challenge_set": {
+      "protected_write_false_positive_rate_maximum": 0.01,
+      "protected_write_recall_minimum": 0.8,
+      "unsupported_or_uncertain_recall_minimum": 0.8
+    },
+    "external_lockbox": {
+      "protected_write_false_positive_rate_maximum": 0.01,
+      "protected_write_recall": "NOT_APPLICABLE when the gold denominator is zero",
+      "unsupported_or_uncertain_recall_minimum": 0.8
+    },
+    "macro_f1_or_accuracy_gate": false,
+    "model_switching_after_final_results_allowed": false,
+    "retuning_after_final_results_allowed": false
+  },
+  "final_evaluation_config_sha256": "57ea0fed67412f29b0c1703f8be1da47fdfba93577428398d57c036008bfe686",
+  "final_lockbox_used": true,
+  "final_model_training_used_development_only": true,
+  "final_safety_acceptable": false,
+  "final_v2c3_artifact_metadata_sha256": "442650ccb90dbda4eb4300b28082d7074a8202b84730a390e250c14993c8b286",
+  "final_v2c3_artifact_sha256": "0e03a4d8367933622a92920f14a7a4c5a2ffa74af0f53b7b0913f04849e4780c",
+  "frozen_input_hashes": {
+    "challenge_set": {
+      "data": "4493b9baa8363408c917fe29de069dec82f925c8c3a605878a08eba06b051e5c",
+      "manifest": "51389b7e693156433edd6e7f0c2fe5b2c3a1ab0f34a261b47de7a7cda6e48b38"
+    },
+    "comparator": {
+      "artifact": "e815eb629de3ae56140a09f92baf563e9aaeec1204b45c23774210452d03285c",
+      "classifier_config": "9274b47487fd1e92818bd61878b9464c1283cdc10c1020c5ef5c26c2bbddf6bf",
+      "classifier_report": "dcf940890b2602e040ed3f0a30b0f45f0c34e352707896ea64079b20c929f843",
+      "model_selection": "700af92377110b585967a7300ff1b1682f45f84ac8d0aa09e18c8b85d540dab3"
+    },
+    "external_lockbox": {
+      "manifest": "651bbe2ebe61bb5b1e9139c24cacac340973172f5637278c12d50cf596334364",
+      "source_inputs": {
+        "banking77_mapping": "cb0ff5db910d15ab59dc1fea563b09d6593cc9f7f25fa4ca99ac21e2b0dab68a",
+        "banking77_raw_manifest": "44c0d68cec41ba18d3d95a9f93cc87ea633b0379bc099c0b6d441fd09525a3cf",
+        "banking77_train": "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b",
+        "clinc_mapping": "b156e23f7cdfc55851afb81dc11d867941e7bd54b158a24874d1d2334b503fc7",
+        "clinc_raw_manifest": "25b0c99ca673285cae49013b79710f4a08b36b48841236ae323712873c226aa5",
+        "clinc_source": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0"
+      }
+    },
+    "selection_lineage": {
+      "challenge_builder": "3b27f0e3d1d9342284a907befeba0cbb8bf7b9ba45b79d28673b8f3539ecaead",
+      "cv_folds": "53c49dfe3da1027c9c957e901bca3fca8c2aaa8173e79139e06a1103407c58aa",
+      "data_registry": "978dd7b04fcad23e3a01add65598ffda73aee9323118ffcc382dcd2bdce01316",
+      "dataset_manifest": "abe82919c24855d8d35a7c383843aaab4a5a2048ac868ad6a7b6be0791d34030",
+      "development_builder": "00dcac10555ce04040a23361ead310a236de7ba1d6c5dc96d63d30565e0b9d53",
+      "development_dataset": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+      "development_embedding_cache": "eddaa00ddec7335dd63a49d1650e274d993603f8d52e6b48016089f79514ba89",
+      "development_embedding_cache_metadata": "a8477d65c231faebb1edc29c8ded60384d800df991c655a7411e6d6e619eaea3",
+      "experiment_contract": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+      "tournament_config": "d2c38a9e1fb5e97b395390af94b01c9e5190fef51a7a9b368d691b1db4391284",
+      "tournament_report": "a61f09a0e61a001085ad789cea6244d794068541914a8d0cadabf836af1e4b0f",
+      "tuning_config": "bbf583e6d7c4a36e6ba750dad965b6205b401bbacf805a6d3d956e85de9226c5",
+      "tuning_report": "6b91040b8db6b8fa802a99a8b80cc7558fe6c12f7590f6a9657b1546dc03414e"
+    }
+  },
+  "hyperparameter_tuning_on_final_data": false,
+  "integrity_verification": {
+    "evaluation_execution": {
+      "challenge_set_evaluated": true,
+      "comparator_evaluated": true,
+      "external_lockbox_evaluated": true,
+      "final_test_embeddings_generated": true,
+      "final_text_parsed": true,
+      "model_inference_performed": true
+    },
+    "pre_evaluation_integrity": {
+      "cfpb_used": false,
+      "challenge_count": 270,
+      "comparator_artifact_sha256": "e815eb629de3ae56140a09f92baf563e9aaeec1204b45c23774210452d03285c",
+      "comparator_present": true,
+      "development_cache_metadata_sha256": "a8477d65c231faebb1edc29c8ded60384d800df991c655a7411e6d6e619eaea3",
+      "development_cache_sha256": "eddaa00ddec7335dd63a49d1650e274d993603f8d52e6b48016089f79514ba89",
+      "development_embedding_shape": [
+        8198,
+        384
+      ],
+      "development_example_count": 8198,
+      "external_lockbox_count": 1922,
+      "final_model_artifact_present": true,
+      "final_test_embeddings_generated": false,
+      "final_text_parsed": false,
+      "forbidden_historical_test_source_used": false,
+      "model_fitting_performed": false,
+      "model_inference_performed": false,
+      "selected_tuning_variant": "bge_svc_c_4_0",
+      "selection_lineage_valid": true,
+      "status": "ready"
+    }
+  },
+  "model_selection_completed_before_final_evaluation": true,
+  "model_switching_after_final_results": false,
+  "raw_text_persisted": false,
+  "runtime_integration_performed": false,
+  "safety_gate_results": {
+    "challenge_protected_write_false_positive_rate": {
+      "operator": "<=",
+      "passed": false,
+      "threshold": 0.01,
+      "value": 0.01904761904761905
+    },
+    "challenge_protected_write_recall": {
+      "operator": ">=",
+      "passed": false,
+      "threshold": 0.8,
+      "value": 0.75
+    },
+    "challenge_unsupported_recall": {
+      "operator": ">=",
+      "passed": false,
+      "threshold": 0.8,
+      "value": 0.7
+    },
+    "external_protected_write_false_positive_rate": {
+      "operator": "<=",
+      "passed": true,
+      "threshold": 0.01,
+      "value": 0.0
+    },
+    "external_unsupported_recall": {
+      "operator": ">=",
+      "passed": true,
+      "threshold": 0.8,
+      "value": 0.9702343255224826
+    }
+  },
+  "schema_version": "v2c3-final-evaluation-report.v1",
+  "threshold_tuning_on_final_data": false
+}

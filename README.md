@@ -3748,6 +3748,37 @@ For human semantic review, `--print-review-queue` temporarily joins queued IDs
 back to the consumed challenge and displays their text on stdout without
 inference or report modification.
 
+Step 9 freezes the next development decision in
+`data/evals/v2/ml/v2c4_intervention_plan.json`; it does not execute it.
+Candidate A retains the frozen V2-C3 direct nine-way BGE/LinearSVC recipe and
+changes only its development training data through a predeclared 360-example
+targeted augmentation. Model selection will use a separate, independently
+authored 270-example development probe. Candidate B is only a predeclared
+hierarchical fallback and may be built only if Candidate A fails a safety gate
+or materially regresses macro-F1. The consumed V2-C3 challenge and external
+lockbox remain diagnostic-only, and the fresh V2-C4 final holdout remains
+sealed for one evaluation after the candidate and evaluation code are frozen.
+Step 9 creates no augmentation examples, probe examples, builders, model code,
+model artifacts, inference results, or runtime integration.
+
+### ML roadmap after V2-C4
+
+The phase order is **V2-C4 → V2-C5 → V2-D**. V2-C4 remains the controlled
+safety-recovery experiment for the frozen nine-intent taxonomy. V2-C5, **Intent
+Discovery and Taxonomy Expansion**, asks whether that taxonomy should expand
+before the separately governed V2-D phase begins.
+
+V2-C5 will use only development- or training-eligible sources. Frozen sentence
+embeddings and HDBSCAN may propose candidate clusters, but clustering is
+advisory: human-in-the-loop adjudication decides whether a group represents a
+coherent, useful intent. There is no fixed target intent count. CFPB narratives,
+annotations, labels, and metadata-derived targets remain outside taxonomy
+discovery and training. Any expanded taxonomy requires a new fresh final
+holdout; the nine-intent V2-C4 holdout cannot serve as final evidence for it.
+Recognizing more intents also does not automatically authorize or create more
+runtime tools. V2-C5 is roadmap-only here: no clustering code or dataset is
+created by Step 9.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

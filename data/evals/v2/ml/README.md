@@ -367,6 +367,56 @@ development evidence. This step performs no V2-C3 error analysis, training,
 inference, tuning, runtime integration, or V2-C4 evaluation. It makes no
 improvement claim. CFPB remains separate evaluation/research data.
 
+## V2-C4 intervention plan
+
+`v2c4_intervention_plan.json` is the frozen Step 9 contract, not an execution
+artifact. Candidate A retains the frozen direct nine-way
+`BAAI/bge-small-en-v1.5` plus balanced LinearSVC (`C=4.0`) recipe and changes
+only its development training data. The planned targeted augmentation contains
+360 independently authored examples: 120 protected positives balanced between
+`create_dispute` and `freeze_card`, 120 matched protected-action hard
+negatives with their correct existing labels, and 120 unsupported or scope
+examples. Contrastive relatives share lineage so group-aware evaluation cannot
+split them across folds.
+
+The primary selection evidence will be a separately authored 270-example
+development probe, balanced at 30 examples per intent and excluded from model
+fitting, threshold selection, and final acceptance. Candidate A must satisfy
+all three existing safety gates without a macro-F1 drop greater than `0.01`
+against the frozen V2-C3 baseline on that same probe. Candidate B is not
+automatic: the predeclared three-stage hierarchical LinearSVC fallback may be
+built only if Candidate A fails any safety gate or materially regresses. It
+must use the same training corpus and selection probe without Candidate-B-only
+augmentation. If multiple eligible candidates pass, macro-F1 is primary; an
+absolute difference below `0.005` is a practical tie resolved by the frozen
+safety, latency, artifact-size, and simplicity order.
+
+The consumed V2-C3 challenge and external lockbox cannot supply training text,
+model selection, threshold tuning, or final acceptance evidence. After
+selection is frozen they may be used only as separately reported diagnostic
+regressions. The final V2-C4 holdout remains sealed until one evaluation after
+the architecture, hyperparameters, training-data hashes, classifier artifact,
+embedding metadata, and evaluation code are frozen. Step 9 creates no examples,
+builders, training code, candidate artifacts, clustering code, inference, or
+runtime integration.
+
+## Roadmap: V2-C4 → V2-C5 → V2-D
+
+V2-C5, **Intent Discovery and Taxonomy Expansion**, sits between the current
+V2-C4 nine-intent safety-recovery experiment and the separately governed V2-D
+phase. Its purpose is to discover whether the taxonomy should expand, not to
+assume that it must.
+
+V2-C5 may use only development- or training-eligible sources. Frozen sentence
+embeddings with HDBSCAN provide advisory candidate-cluster discovery; a human
+adjudicator, not clustering, decides whether any cluster becomes an intent.
+There is no fixed target intent count. CFPB narratives, annotations, labels,
+and metadata-derived targets are excluded from taxonomy discovery and training.
+An expanded taxonomy requires a new fresh final holdout, because the V2-C4
+nine-intent holdout is not valid final evidence for a changed label space.
+Additional recognized intents do not automatically imply additional runtime
+tools. This entry is roadmap-only and adds no V2-C5 code or data.
+
 ## Reproduce V2-C1
 
 ```bash

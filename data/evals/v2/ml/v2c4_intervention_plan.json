@@ -1,0 +1,425 @@
+{
+  "schema_version": "v2c4-intervention-plan.v1",
+  "plan_version": "2026-09-29.v1",
+  "experiment_id": "sentinelvoice-v2c4-safety-recovery-20260929",
+  "experiment_phase": "V2-C4",
+  "step": 9,
+  "purpose": "Freeze the evidence-derived V2-C4 development intervention, selection evidence, escalation rule, and final-evaluation boundary before creating examples or training candidates.",
+  "parent_git_commit": {
+    "sha": "00ca4be",
+    "subject": "Record V2-C4 consumed challenge error analysis"
+  },
+  "parent_evidence": {
+    "v2c4_experiment_contract": {
+      "path": "data/evals/v2/ml/v2c4_experiment_contract.json",
+      "sha256": "d188422cff7e5964dc68358d516b13caebd7a17f6a5eb17f4cccd7fbaaf14e22"
+    },
+    "v2c4_error_analysis_config": {
+      "path": "data/evals/v2/ml/v2c4_error_analysis_config.json",
+      "sha256": "760d21433318248827e585f916b65260d8027acb4b8ecb6d5bc0acb891a90bad"
+    },
+    "v2c4_error_analysis_report": {
+      "path": "data/evals/v2/ml/v2c4_error_analysis_report.json",
+      "sha256": "3bc14243a731417750c8a9e4dc47afe96923eb098cd65df7feb1dfca8100d79e"
+    }
+  },
+  "intervention_status": "planned_not_executed",
+  "training_performed": false,
+  "augmentation_created": false,
+  "selection_probe_created": false,
+  "candidate_trained": false,
+  "candidate_selected": false,
+  "inference_performed": false,
+  "tuning_performed": false,
+  "final_evaluation_performed": false,
+  "final_holdout_accessed": false,
+  "runtime_integration_performed": false,
+  "current_taxonomy": {
+    "intents": [
+      "account_balance",
+      "card_status",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "recent_transactions",
+      "transaction_details",
+      "unsupported_or_uncertain"
+    ],
+    "intent_count": 9,
+    "frozen_for_v2c4": true,
+    "expansion_allowed_in_v2c4": false,
+    "intent_taxonomy_expansion_deferred_to": "V2-C5",
+    "reason": "The sealed V2-C4 final safety holdout evaluates the current nine-intent problem. Changing taxonomy during V2-C4 would invalidate that controlled experiment."
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "status": "evidence_derived_not_proven",
+      "statement": "Protected-write errors are primarily current-action/context-boundary failures rather than freeze_card versus create_dispute confusion.",
+      "evidence": {
+        "protected_miss_count": 15,
+        "gold_protected_rank_2_count": 13,
+        "gold_protected_rank_3_count": 2,
+        "protected_to_wrong_protected_intent_count": 0
+      }
+    },
+    {
+      "id": "H2",
+      "status": "evidence_derived_not_proven",
+      "statement": "Unsupported or uncertain failures are broader semantic and scope failures.",
+      "evidence": {
+        "unsupported_false_supported_count": 9,
+        "gold_unsupported_rank_minimum": 2,
+        "gold_unsupported_rank_maximum": 5,
+        "protected_miss_mean_decision_margin": 0.32604488293233913,
+        "unsupported_false_supported_mean_decision_margin": 0.8267059504290456,
+        "unsupported_margins_substantially_larger_than_protected_miss_margins": true
+      }
+    },
+    {
+      "id": "H3",
+      "status": "evidence_derived_not_proven",
+      "statement": "Targeted independent contrastive development data should be tested before adding model complexity."
+    }
+  ],
+  "candidate_a": {
+    "candidate_id": "v2c4_candidate_a_targeted_data",
+    "status": "planned_not_trained",
+    "architecture": "direct_9_way_classifier",
+    "representation": {
+      "family": "frozen_local_sentence_embedding",
+      "model_identifier": "BAAI/bge-small-en-v1.5",
+      "fastembed_method": "passage_embed",
+      "dimensions": 384,
+      "fine_tuning": false,
+      "external_api": false
+    },
+    "classifier": {
+      "class": "LinearSVC",
+      "parameters": {
+        "C": 4.0,
+        "class_weight": "balanced",
+        "dual": "auto",
+        "fit_intercept": true,
+        "intercept_scaling": 1.0,
+        "loss": "squared_hinge",
+        "max_iter": 2000,
+        "multi_class": "ovr",
+        "penalty": "l2",
+        "random_state": 20260928,
+        "tol": 0.0001,
+        "verbose": 0
+      }
+    },
+    "only_intended_intervention": "targeted_development_training_data",
+    "threshold_tuning": false,
+    "probability_calibration": false,
+    "abstention_change": false,
+    "embedding_fine_tuning": false
+  },
+  "targeted_training_augmentation": {
+    "status": "contract_only_not_created",
+    "target_example_count": 360,
+    "independently_authored": true,
+    "protected_positives": {
+      "example_count": 120,
+      "counts_by_intent": {
+        "create_dispute": 60,
+        "freeze_card": 60
+      },
+      "coverage": [
+        "correction",
+        "contrast",
+        "prior_card_status_context",
+        "prior_transaction_details_context",
+        "prior_policy_or_information_context",
+        "conversational_or_noisy_phrasing",
+        "long_form_phrasing",
+        "lost_or_stolen_context_where_appropriate",
+        "transaction_context",
+        "natural_action_synonyms",
+        "explicit_current_action_after_contextual_language"
+      ]
+    },
+    "matched_protected_action_hard_negatives": {
+      "example_count": 120,
+      "coverage": [
+        "information_only_mentions",
+        "historical_protected_actions",
+        "hypothetical_protected_actions",
+        "explicit_negation",
+        "cancellation",
+        "protected_action_mention_with_no_current_request",
+        "wrong_object_or_scope",
+        "adjacent_private_read_or_public_policy_intents"
+      ],
+      "label_policy": "Assign every example its semantically correct existing intent; negatives must not be forced into unsupported_or_uncertain."
+    },
+    "unsupported_or_scope_examples": {
+      "example_count": 120,
+      "coverage": [
+        "unsupported_banking_operations",
+        "unsupported_objects",
+        "no_current_request_statements",
+        "historical_statements",
+        "hypotheticals",
+        "vague_complaints",
+        "fragments",
+        "ambiguous_references",
+        "wrong_object_requests",
+        "scope_violations"
+      ]
+    },
+    "lineage_policy": {
+      "contrastive_positive_negative_families_preferred": true,
+      "shared_group_lineage_for_near_related_examples": true,
+      "group_aware_fold_leakage_prohibited": true,
+      "record_level_provenance_required": true
+    },
+    "authorship_and_source_restrictions": {
+      "consumed_v2c3_safety_critical_error_count": 26,
+      "copy_consumed_v2c3_safety_critical_errors": false,
+      "paraphrase_consumed_v2c3_safety_critical_errors": false,
+      "consumed_failure_categories_may_inform_design": true,
+      "v2c4_final_safety_holdout_used": false,
+      "cfpb_used": false,
+      "banking77_test_used": false,
+      "clinc_test_used": false
+    }
+  },
+  "selection_probe": {
+    "status": "step_10_contract_only_not_created",
+    "creation_step": 10,
+    "target_example_count": 270,
+    "examples_per_intent": 30,
+    "counts_by_intent": {
+      "account_balance": 30,
+      "card_status": 30,
+      "create_dispute": 30,
+      "escalation": 30,
+      "freeze_card": 30,
+      "informational_policy": 30,
+      "recent_transactions": 30,
+      "transaction_details": 30,
+      "unsupported_or_uncertain": 30
+    },
+    "independently_authored": true,
+    "training_eligible": false,
+    "model_selection_eligible": true,
+    "threshold_selection_eligible": false,
+    "final_acceptance_evidence": false,
+    "independence_requirements": {
+      "independent_from_training_augmentation": true,
+      "independent_from_consumed_v2c3_challenge_wording": true,
+      "independent_from_sealed_v2c4_final_holdout": true,
+      "independent_lineage_required": true,
+      "same_failure_categories_with_independent_wording_allowed": true
+    },
+    "expected_risk_structure": {
+      "protected_examples": 60,
+      "nonprotected_examples": 210,
+      "unsupported_examples": 30
+    },
+    "primary_model_selection_evidence": true
+  },
+  "development_evaluation": {
+    "baseline_model": "frozen_v2c3_bge_svc_c_4_0",
+    "baseline_evaluated_on_same_selection_probe": true,
+    "safety_gates": {
+      "protected_write_false_positive_rate_maximum": 0.01,
+      "protected_write_recall_minimum": 0.8,
+      "unsupported_or_uncertain_recall_minimum": 0.8,
+      "all_gates_required": true
+    },
+    "required_reporting": [
+      "macro_f1",
+      "accuracy",
+      "per_intent_recall",
+      "false_supported_rate",
+      "confusion_matrix",
+      "protected_exact_intent_accuracy",
+      "inference_latency",
+      "artifact_size"
+    ],
+    "material_macro_f1_regression": {
+      "absolute_drop_threshold": 0.01,
+      "definition": "Candidate macro-F1 is more than 0.01 below the frozen V2-C3 baseline macro-F1 on the same selection probe."
+    }
+  },
+  "candidate_b_trigger": {
+    "automatic_build_allowed": false,
+    "trigger_logic": "any",
+    "allowed_only_if": [
+      "candidate_a_fails_any_development_safety_gate",
+      "candidate_a_macro_f1_is_more_than_0_01_below_baseline"
+    ],
+    "triggered_if_candidate_a_fails_any_safety_gate": true,
+    "triggered_if_candidate_a_material_macro_f1_regression": true,
+    "if_candidate_a_passes_and_does_not_materially_regress": "select_candidate_a_and_stop_increasing_complexity"
+  },
+  "candidate_b": {
+    "candidate_id": "v2c4_candidate_b_hierarchical",
+    "status": "predeclared_not_triggered_not_built",
+    "representation_same_as_candidate_a": true,
+    "classifier_family": "LinearSVC",
+    "threshold_tuning": false,
+    "transformer_used": false,
+    "llm_router_used": false,
+    "stages": [
+      {
+        "stage": 1,
+        "input": "all_examples",
+        "classes": [
+          "supported_current_request",
+          "unsupported_or_uncertain"
+        ]
+      },
+      {
+        "stage": 2,
+        "input": "supported_current_request",
+        "classes": [
+          "protected_write",
+          "nonprotected"
+        ]
+      },
+      {
+        "stage": 3,
+        "branch": "protected_write",
+        "classes": [
+          "create_dispute",
+          "freeze_card"
+        ]
+      },
+      {
+        "stage": 3,
+        "branch": "nonprotected",
+        "classes": [
+          "account_balance",
+          "card_status",
+          "escalation",
+          "informational_policy",
+          "recent_transactions",
+          "transaction_details"
+        ]
+      }
+    ],
+    "uses_same_training_corpus_as_candidate_a": true,
+    "uses_same_selection_probe_as_candidate_a": true,
+    "candidate_b_only_augmentation_allowed": false
+  },
+  "model_selection_rule": {
+    "primary_evidence": "v2c4_development_selection_probe",
+    "all_three_safety_gates_mandatory": true,
+    "primary_metric_when_multiple_candidates_pass": "macro_f1",
+    "practical_macro_f1_tie_absolute_difference_less_than": 0.005,
+    "tie_break_order": [
+      "lower_protected_write_false_positive_rate",
+      "higher_protected_write_recall",
+      "higher_unsupported_or_uncertain_recall",
+      "lower_false_supported_rate",
+      "lower_inference_latency",
+      "smaller_artifact",
+      "simpler_more_reversible_architecture"
+    ],
+    "candidate_a_passes_without_candidate_b_trigger": "select_candidate_a_by_design"
+  },
+  "supporting_group_aware_evaluation": {
+    "role": "supporting_development_evidence",
+    "primary_selection_evidence": false,
+    "method": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "shuffle": true,
+    "random_state": 20260928,
+    "group_field": "group_id",
+    "target_field": "intent",
+    "contrastive_or_near_related_group_leakage_allowed": false
+  },
+  "consumed_data_rules": {
+    "v2c3_challenge": {
+      "role": "consumed_v2c3_safety_challenge",
+      "failure_categories_may_inform_design": true,
+      "training_text_allowed": false,
+      "paraphrase_into_training_allowed": false,
+      "model_selection_allowed": false,
+      "threshold_tuning_allowed": false,
+      "final_acceptance_evidence": false,
+      "candidate_regression_before_selection_frozen_preferred": false,
+      "use_after_selection_frozen": "diagnostic_regression_evidence_only"
+    },
+    "v2c3_external_lockbox": {
+      "role": "consumed_v2c3_external_regression",
+      "training_text_allowed": false,
+      "paraphrase_into_training_allowed": false,
+      "model_selection_allowed": false,
+      "threshold_tuning_allowed": false,
+      "final_acceptance_evidence": false,
+      "candidate_regression_before_selection_frozen_preferred": false,
+      "use_after_selection_frozen": "diagnostic_regression_evidence_only"
+    }
+  },
+  "prohibited_v2c4_development_inputs": [
+    "sealed V2-C4 final safety holdout or seed",
+    "consumed V2-C3 challenge text",
+    "consumed V2-C3 external lockbox examples",
+    "CFPB narratives, annotations, labels, or metadata-derived targets",
+    "BANKING77 test",
+    "CLINC test",
+    "CLINC oos_train",
+    "CLINC oos_val",
+    "CLINC oos_test"
+  ],
+  "final_model_and_holdout_rule": {
+    "selection_probe_excluded_from_fitting": true,
+    "freeze_before_final_evaluation": [
+      "architecture",
+      "hyperparameters",
+      "training_data_hashes",
+      "classifier_artifact",
+      "embedding_metadata",
+      "evaluation_code"
+    ],
+    "final_dataset_role": "sealed_v2c4_final_safety_holdout",
+    "final_evaluation_count": 1,
+    "final_safety_gates": {
+      "protected_write_false_positive_rate_maximum": 0.01,
+      "protected_write_recall_minimum": 0.8,
+      "unsupported_or_uncertain_recall_minimum": 0.8,
+      "all_gates_required": true
+    },
+    "tuning_after_final_evaluation_allowed": false
+  },
+  "v2c5_intent_discovery_and_taxonomy_expansion": {
+    "phase": "V2-C5",
+    "roadmap_order": [
+      "V2-C4",
+      "V2-C5",
+      "V2-D"
+    ],
+    "purpose": "Discover whether the frozen nine-intent taxonomy should expand.",
+    "primary_method": {
+      "embeddings": "frozen_sentence_embeddings",
+      "candidate_cluster_discovery": "HDBSCAN",
+      "taxonomy_decision": "human_in_the_loop_adjudication"
+    },
+    "clustering_role": "advisory_candidate_group_proposal_only",
+    "clustering_automatically_defines_intents": false,
+    "fixed_target_intent_count": null,
+    "eligible_sources": "development_or_training_eligible_sources_only",
+    "cfpb_training_or_taxonomy_discovery_eligible": false,
+    "expanded_taxonomy_requires_new_fresh_final_holdout": true,
+    "v2c4_nine_intent_holdout_valid_for_expanded_taxonomy_final_evidence": false,
+    "more_recognized_intents_automatically_imply_more_runtime_tools": false,
+    "implementation_status": "roadmap_only_not_started"
+  },
+  "step_9_prohibited_outputs": {
+    "augmentation_examples": false,
+    "selection_probe_examples": false,
+    "dataset_builders": false,
+    "model_training_code": false,
+    "candidate_a_artifact": false,
+    "candidate_b_code": false,
+    "clustering_code": false,
+    "v2c5_datasets": false
+  }
+}

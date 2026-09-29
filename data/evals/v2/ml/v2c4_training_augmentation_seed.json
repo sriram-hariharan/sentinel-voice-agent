@@ -1,0 +1,996 @@
+{
+  "schema_version": "v2c4-development-data-seed.v1",
+  "dataset_version": "2026-09-29.v2c4-training-augmentation.v1",
+  "data_role": "v2c4_targeted_training_augmentation",
+  "expected_example_count": 360,
+  "parent_intervention_plan_sha256": "4a5ed357ab8ae2fc66dd5459f59883ef20bd9b6f9996bad7f4b8f8f2b245e5ff",
+  "eligibility_policy": {
+    "training_eligible": true,
+    "model_selection_eligible": false,
+    "threshold_selection_eligible": false,
+    "final_acceptance_evidence": false
+  },
+  "authorship_provenance": {
+    "independently_authored": true,
+    "generated_after_v2c4_holdout_freeze": true,
+    "consumed_v2c3_failure_categories_informed_design": true,
+    "consumed_v2c3_raw_examples_used_for_authoring": false,
+    "copied_consumed_examples": false,
+    "paraphrased_consumed_examples": false,
+    "cfpb_used": false,
+    "banking77_test_used": false,
+    "clinc_test_used": false,
+    "v2c4_final_holdout_used_for_authoring": false
+  },
+  "hard_negative_counts_by_intent": {
+    "account_balance": 12,
+    "card_status": 18,
+    "escalation": 12,
+    "informational_policy": 24,
+    "recent_transactions": 18,
+    "transaction_details": 18,
+    "unsupported_or_uncertain": 18
+  },
+  "families": [
+    {
+      "family_id": "aug-freeze-correction-status",
+      "group_id": "aug-contrast-freeze-status-01",
+      "lineage_id": "aug-contrast-freeze-status-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["correction", "prior_card_status_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "Actually, forget checking the card status and freeze that card now.",
+        "I asked whether the card was active, but I need you to lock it instead.",
+        "Correction: I don't just want its status; please freeze the card.",
+        "Never mind the status screen, go ahead and block this card now.",
+        "Let me change that request—lock the card rather than checking it.",
+        "I misspoke earlier; please freeze my card, not merely tell me its status."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-status-transition",
+      "group_id": "aug-contrast-freeze-status-02",
+      "lineage_id": "aug-contrast-freeze-status-02",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["prior_card_status_context", "contrast", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "Now that I know the card is active, please freeze it.",
+        "The card status says active, so lock that card for me now.",
+        "Thanks for confirming it still works; I want it blocked immediately.",
+        "Since the card remains open, go ahead and freeze it today.",
+        "It looks active on my screen—please shut that card down now.",
+        "I can see the card is usable, and I need you to lock it right away."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-policy-transition",
+      "group_id": "aug-contrast-freeze-policy-01",
+      "lineage_id": "aug-contrast-freeze-policy-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["prior_policy_or_information_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "That explains what a freeze does; please apply one to my card now.",
+        "I understand the policy, and I want you to lock my card.",
+        "Thanks for the explanation—go ahead and freeze the card for me.",
+        "The temporary-freeze details make sense, so block my card now.",
+        "I've heard enough about the process; please place the freeze.",
+        "Okay, I know what happens next. Lock this card immediately."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-lost-stolen",
+      "group_id": "aug-contrast-freeze-lost-01",
+      "lineage_id": "aug-contrast-freeze-lost-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["lost_or_stolen_context_where_appropriate", "explicit_current_action"],
+      "utterances": [
+        "My wallet is missing, so please freeze the card that was in it.",
+        "I can't find my debit card; lock it before anyone uses it.",
+        "Someone took my purse—block my card right now.",
+        "The card may be lost on the train, and I want it frozen.",
+        "I left my card somewhere downtown; please disable it now.",
+        "My physical card is gone. Put a freeze on it immediately."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-conversational",
+      "group_id": "aug-freeze-conversational-01",
+      "lineage_id": "aug-freeze-conversational-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["conversational_or_noisy_phrasing", "natural_action_synonyms"],
+      "utterances": [
+        "Uh, yeah, can you lock that card for me now?",
+        "So I need the card shut off, like, right away please.",
+        "Could you just block my card now? I'm worried about it.",
+        "Okay, please put the brakes on that card immediately.",
+        "I need you to make this card unusable for the moment.",
+        "Hey, can we lock down my card before anything else happens?"
+      ]
+    },
+    {
+      "family_id": "aug-freeze-long-context",
+      "group_id": "aug-freeze-long-context-01",
+      "lineage_id": "aug-freeze-long-context-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["long_form_phrasing", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "I used the card at lunch and had it then, but after retracing my steps I still cannot locate it, so please freeze it now.",
+        "I've checked every pocket and called the last shop I visited, and since the card is still missing I want you to lock it immediately.",
+        "The card was beside me this morning, but nobody at home can find it now; please block it until I know where it is.",
+        "I may have left the card at a crowded event, and rather than wait for the venue to call back, I need it frozen now.",
+        "Nothing suspicious appears yet, but the card has been out of my possession for hours, so go ahead and disable it.",
+        "I was hoping the card would turn up, but it has not, and I am asking you to place a freeze on it now."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-after-transactions",
+      "group_id": "aug-contrast-freeze-transactions-01",
+      "lineage_id": "aug-contrast-freeze-transactions-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["prior_transaction_details_context", "transaction_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "Those transaction details aren't mine; freeze my card now.",
+        "After seeing where that purchase happened, I want the card locked.",
+        "The charge details confirm my concern, so block this card immediately.",
+        "Now that we've reviewed the payment, please freeze the card used for it.",
+        "I recognize none of those transaction locations; lock my card right away.",
+        "That merchant information settles it—please disable my card now."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-action-synonyms",
+      "group_id": "aug-freeze-synonyms-01",
+      "lineage_id": "aug-freeze-synonyms-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["natural_action_synonyms", "explicit_current_action"],
+      "utterances": [
+        "Please lock my debit card until I say otherwise.",
+        "Block this card from being used starting now.",
+        "Disable my card immediately, please.",
+        "Put a temporary stop on my card right away.",
+        "Shut off the card ending in forty-two for now.",
+        "Make my card unusable until I can sort this out."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-contrast-choice",
+      "group_id": "aug-freeze-contrast-choice-01",
+      "lineage_id": "aug-freeze-contrast-choice-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["contrast", "explicit_current_action"],
+      "utterances": [
+        "Don't just show me the card; freeze it now.",
+        "I need the card locked, not another list of purchases.",
+        "Rather than explain my options again, please block the card.",
+        "Skip the balance check and disable my card immediately.",
+        "I'm not asking for transaction details; I want the card frozen.",
+        "Please take action and lock it instead of only noting my concern."
+      ]
+    },
+    {
+      "family_id": "aug-freeze-direct-reference",
+      "group_id": "aug-freeze-direct-reference-01",
+      "lineage_id": "aug-freeze-direct-reference-01",
+      "design_lane": "protected_positive",
+      "intent": "freeze_card",
+      "tags": ["direct_request", "explicit_current_action", "pronoun_reference"],
+      "utterances": [
+        "Freeze my card now, please.",
+        "Lock my debit card immediately.",
+        "Please block the card we were discussing.",
+        "I want this card disabled right now.",
+        "Go ahead and freeze my card for me.",
+        "Put a lock on my card today."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-correction-details",
+      "group_id": "aug-contrast-dispute-details-01",
+      "lineage_id": "aug-contrast-dispute-details-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["correction", "prior_transaction_details_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "Actually, don't just show the charge details; open a dispute for it.",
+        "Correction: I want to contest that purchase, not merely inspect it.",
+        "I changed my mind—please dispute the transaction we just reviewed.",
+        "Never mind another receipt view; file a dispute on that charge.",
+        "Let me correct that request: challenge the payment for me now.",
+        "I wasn't only asking what it was; I need that transaction disputed."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-details-transition",
+      "group_id": "aug-contrast-dispute-details-02",
+      "lineage_id": "aug-contrast-dispute-details-02",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["prior_transaction_details_context", "transaction_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "Those details confirm I didn't make the purchase; please dispute it.",
+        "Now that I see the merchant and amount, open a dispute on that charge.",
+        "The transaction information doesn't match anything I bought, so contest it.",
+        "After reviewing the payment details, I want to challenge the transaction.",
+        "That location proves it wasn't me; file a dispute for the purchase.",
+        "The date and store are both wrong, so please dispute this charge now."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-policy-transition",
+      "group_id": "aug-contrast-dispute-policy-01",
+      "lineage_id": "aug-contrast-dispute-policy-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["prior_policy_or_information_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "I understand the dispute process now; please start one for this charge.",
+        "Thanks for explaining the deadline—go ahead and contest the payment.",
+        "That answers my policy question, and I want to file the dispute now.",
+        "The rules make sense; please open a dispute case for this transaction.",
+        "I've heard how disputes work, so challenge that purchase for me.",
+        "Okay, I know what documentation may be needed; begin the dispute."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-card-context",
+      "group_id": "aug-dispute-card-context-01",
+      "lineage_id": "aug-dispute-card-context-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["prior_card_status_context", "transaction_context", "explicit_current_action"],
+      "utterances": [
+        "The card can stay active, but dispute the unfamiliar charge.",
+        "I have the card with me; please contest that purchase anyway.",
+        "My card status is fine, and I want the payment disputed now.",
+        "Don't freeze the card—open a dispute for this one transaction.",
+        "The card itself isn't missing; challenge the charge I pointed out.",
+        "Keep the card usable and file a dispute on that merchant payment."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-conversational",
+      "group_id": "aug-dispute-conversational-01",
+      "lineage_id": "aug-dispute-conversational-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["conversational_or_noisy_phrasing", "natural_action_synonyms"],
+      "utterances": [
+        "Yeah, um, can you dispute that charge for me now?",
+        "So that payment isn't mine—please challenge it.",
+        "Could we go ahead and contest this purchase right away?",
+        "Okay, I definitely need a dispute opened for that one.",
+        "I mean, please flag that transaction as something I didn't make.",
+        "Can you start the charge dispute now, please?"
+      ]
+    },
+    {
+      "family_id": "aug-dispute-long-context",
+      "group_id": "aug-dispute-long-context-01",
+      "lineage_id": "aug-dispute-long-context-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["long_form_phrasing", "transaction_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "I checked with everyone in my household and nobody recognizes this purchase, so I need you to open a dispute for it now.",
+        "The merchant says they cannot find an order under my name, and since the payment still posted I want to contest the charge.",
+        "I reviewed my receipts twice and there is nothing matching this amount, so please file a dispute on the transaction.",
+        "The purchase happened in a city I have never visited, and after checking the details I want it disputed immediately.",
+        "I waited to see whether the charge would disappear, but it has settled, so go ahead and challenge it for me.",
+        "The merchant declined to correct the duplicate payment, and I am now asking you to start a dispute on the extra charge."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-contrast-choice",
+      "group_id": "aug-dispute-contrast-choice-01",
+      "lineage_id": "aug-dispute-contrast-choice-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["contrast", "explicit_current_action"],
+      "utterances": [
+        "Don't only list the payment; dispute it for me.",
+        "I want to contest the charge, not hear another explanation.",
+        "Rather than freeze my card, please challenge this transaction.",
+        "Skip the general policy and open a dispute on the purchase.",
+        "I'm asking you to file the claim, not just note the problem.",
+        "Please dispute that charge instead of showing it again."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-action-synonyms",
+      "group_id": "aug-dispute-synonyms-01",
+      "lineage_id": "aug-dispute-synonyms-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["natural_action_synonyms", "explicit_current_action"],
+      "utterances": [
+        "Please contest the charge from North Street Market.",
+        "Open a dispute for the payment of eighty-six dollars.",
+        "Challenge that transaction on my account now.",
+        "File a claim against the duplicate restaurant charge.",
+        "Start the dispute process for this purchase, please.",
+        "Mark that payment as unauthorized and dispute it."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-after-history",
+      "group_id": "aug-dispute-after-history-01",
+      "lineage_id": "aug-dispute-after-history-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["correction", "transaction_context", "explicit_current_action_after_contextual_language"],
+      "utterances": [
+        "The old dispute is closed, but I need a new one opened for today's charge.",
+        "We resolved last month's case; now please contest this different payment.",
+        "That previous claim isn't my concern—file a dispute on the new purchase.",
+        "I was describing an earlier dispute, and now I want this charge challenged.",
+        "The historical case can stay closed; open a new dispute for today's transaction.",
+        "I'm done discussing the prior claim, so please dispute this latest payment."
+      ]
+    },
+    {
+      "family_id": "aug-dispute-direct-reference",
+      "group_id": "aug-dispute-direct-reference-01",
+      "lineage_id": "aug-dispute-direct-reference-01",
+      "design_lane": "protected_positive",
+      "intent": "create_dispute",
+      "tags": ["direct_request", "explicit_current_action", "pronoun_reference"],
+      "utterances": [
+        "Dispute that charge for me now.",
+        "Please contest the payment we were discussing.",
+        "Open a dispute for this transaction.",
+        "I want that purchase challenged today.",
+        "Go ahead and file a dispute on the selected charge.",
+        "Start a claim for the charge I selected."
+      ]
+    },
+    {
+      "family_id": "aug-negative-policy-freeze-basics",
+      "group_id": "aug-contrast-freeze-policy-01",
+      "lineage_id": "aug-contrast-freeze-policy-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "informational_policy",
+      "tags": ["information_only_mentions", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "What happens when someone freezes a card?",
+        "How long can a temporary card lock stay in place?",
+        "Does freezing a card stop recurring subscriptions too?",
+        "Can you explain the difference between locking and replacing a card?",
+        "Would a card freeze affect payments that are already pending?",
+        "What should a customer expect after a card is blocked?"
+      ]
+    },
+    {
+      "family_id": "aug-negative-policy-dispute-basics",
+      "group_id": "aug-contrast-dispute-policy-01",
+      "lineage_id": "aug-contrast-dispute-policy-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "informational_policy",
+      "tags": ["information_only_mentions", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "How does the transaction dispute process work?",
+        "What evidence is usually needed to contest a card charge?",
+        "Is there a deadline for filing a dispute?",
+        "Can you explain when a purchase qualifies for a charge dispute?",
+        "How long does a typical disputed-payment review take?",
+        "What are the steps after someone challenges a transaction?"
+      ]
+    },
+    {
+      "family_id": "aug-negative-policy-hypothetical",
+      "group_id": "aug-negative-policy-hypothetical-01",
+      "lineage_id": "aug-negative-policy-hypothetical-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "informational_policy",
+      "tags": ["hypothetical_protected_actions", "information_only_mentions"],
+      "utterances": [
+        "If I froze my card later, could I unlock it myself?",
+        "Suppose I disputed a purchase; would the merchant be notified?",
+        "If a card went missing, would freezing it be enough?",
+        "Would I receive a provisional credit if I ever contested a charge?",
+        "If I blocked my card, could digital wallet payments still work?",
+        "Hypothetically, can a dispute be canceled after it starts?"
+      ]
+    },
+    {
+      "family_id": "aug-negative-policy-fees-timing",
+      "group_id": "aug-negative-policy-fees-timing-01",
+      "lineage_id": "aug-negative-policy-fees-timing-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "informational_policy",
+      "tags": ["information_only_mentions", "protected_action_mention_with_no_current_request"],
+      "utterances": [
+        "Is there a fee for replacing a frozen card?",
+        "How soon can a card be used after a lock is removed?",
+        "Do transaction disputes have any filing charges?",
+        "How many days does the bank allow for contesting a payment?",
+        "Does a temporary card block expire automatically?",
+        "When does disputed money usually return to an account?"
+      ]
+    },
+    {
+      "family_id": "aug-negative-card-status-prior-freeze",
+      "group_id": "aug-contrast-freeze-status-02",
+      "lineage_id": "aug-contrast-freeze-status-02",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "card_status",
+      "tags": ["historical_protected_actions", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "I froze this card yesterday; is it still locked?",
+        "Can you tell me whether the block I placed is active?",
+        "What is the current status of the card I locked last night?",
+        "I previously disabled my card and want to know if it remains disabled.",
+        "Does my card show as frozen right now?",
+        "Check whether yesterday's card lock is still in effect."
+      ]
+    },
+    {
+      "family_id": "aug-negative-card-status-negation",
+      "group_id": "aug-contrast-freeze-status-01",
+      "lineage_id": "aug-contrast-freeze-status-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "card_status",
+      "tags": ["explicit_negation", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "Do not freeze anything; just tell me whether my card is active.",
+        "I don't want the card blocked—I only need its current status.",
+        "Please leave it usable and check if the card is active.",
+        "No lock is needed; can you confirm the card still works?",
+        "Don't disable my card, just show me its status.",
+        "Keep the card as it is and tell me whether it is open."
+      ]
+    },
+    {
+      "family_id": "aug-negative-card-status-cancel",
+      "group_id": "aug-negative-card-status-cancel-01",
+      "lineage_id": "aug-negative-card-status-cancel-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "card_status",
+      "tags": ["cancellation", "protected_action_mention_with_no_current_request"],
+      "utterances": [
+        "Cancel that freeze request and tell me the card's status instead.",
+        "Never mind locking the card; is it active right now?",
+        "Stop—I no longer want it blocked. Just check the card status.",
+        "Forget the card freeze and let me know whether it still works.",
+        "I withdraw the lock request; please confirm the card is usable.",
+        "Don't proceed with disabling it. What status does the card show?"
+      ]
+    },
+    {
+      "family_id": "aug-negative-details-no-dispute",
+      "group_id": "aug-contrast-dispute-details-01",
+      "lineage_id": "aug-contrast-dispute-details-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "transaction_details",
+      "tags": ["explicit_negation", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "Don't dispute it yet; show me the merchant details first.",
+        "I am not contesting the charge—I need its date and location.",
+        "No claim for now; tell me exactly what this payment was.",
+        "Leave the transaction alone and display the full charge details.",
+        "I don't want to challenge it; I only need more information about it.",
+        "Please do not file anything. Show me the amount and merchant."
+      ]
+    },
+    {
+      "family_id": "aug-negative-details-historical-dispute",
+      "group_id": "aug-contrast-dispute-details-02",
+      "lineage_id": "aug-contrast-dispute-details-02",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "transaction_details",
+      "tags": ["historical_protected_actions", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "I disputed this charge last week; show me its transaction details.",
+        "For the payment I already contested, what was the original amount?",
+        "I filed a claim earlier and now need the merchant name on that purchase.",
+        "The dispute is already open; tell me when the transaction posted.",
+        "I challenged it yesterday. Can I see the complete payment information?",
+        "That charge was previously disputed; show me where it occurred."
+      ]
+    },
+    {
+      "family_id": "aug-negative-details-hypothetical",
+      "group_id": "aug-negative-details-hypothetical-01",
+      "lineage_id": "aug-negative-details-hypothetical-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "transaction_details",
+      "tags": ["hypothetical_protected_actions", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "Before I decide whether to dispute it, show me who charged me.",
+        "I might contest this later; what time did the payment occur?",
+        "If the location looks wrong I may file a claim, so show it to me.",
+        "I could challenge the purchase, but first I need the full details.",
+        "Maybe I'll dispute it after I see the merchant and amount.",
+        "I haven't decided about a claim; display the transaction information."
+      ]
+    },
+    {
+      "family_id": "aug-negative-recent-dispute-history",
+      "group_id": "aug-negative-recent-dispute-history-01",
+      "lineage_id": "aug-negative-recent-dispute-history-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "recent_transactions",
+      "tags": ["historical_protected_actions", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "After disputing one charge last month, I want to see my latest purchases.",
+        "I had a prior claim, but today I only need the recent transaction list.",
+        "Show me new account activity since the dispute was resolved.",
+        "The old contested payment is settled; list this week's transactions.",
+        "I previously challenged a charge. What purchases have posted since then?",
+        "Ignore the closed dispute and show my newest card activity."
+      ]
+    },
+    {
+      "family_id": "aug-negative-recent-no-action",
+      "group_id": "aug-contrast-freeze-transactions-01",
+      "lineage_id": "aug-contrast-freeze-transactions-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "recent_transactions",
+      "tags": ["protected_action_mention_with_no_current_request", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "I may need to freeze the card later; for now show recent activity.",
+        "Before doing anything to the card, list my newest transactions.",
+        "A card lock might be necessary, but I only want this week's purchases now.",
+        "Show recent charges so I can decide whether a freeze is needed.",
+        "Don't block anything yet; bring up my latest account activity.",
+        "For the moment, just list the newest card payments."
+      ]
+    },
+    {
+      "family_id": "aug-negative-recent-cancel",
+      "group_id": "aug-negative-recent-cancel-01",
+      "lineage_id": "aug-negative-recent-cancel-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "recent_transactions",
+      "tags": ["cancellation", "explicit_negation"],
+      "utterances": [
+        "Cancel the dispute idea and show my recent transactions.",
+        "Never mind contesting anything; list the latest charges instead.",
+        "Stop the claim request—I only want to review recent activity.",
+        "Forget filing a dispute and bring up this month's purchases.",
+        "I no longer want to challenge a payment; show the newest ones.",
+        "Don't open a claim. Give me my recent transaction list."
+      ]
+    },
+    {
+      "family_id": "aug-negative-balance-freeze-mention",
+      "group_id": "aug-negative-balance-freeze-01",
+      "lineage_id": "aug-negative-balance-freeze-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "account_balance",
+      "tags": ["protected_action_mention_with_no_current_request", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "Before I think about freezing the card, what's my checking balance?",
+        "I locked a different card earlier; show me this account's balance.",
+        "No freeze request today—I just need the available balance.",
+        "Tell me how much money is available, not whether to block my card.",
+        "I mentioned a card lock, but my request is for the account balance.",
+        "Leave the card alone and show the current balance, please."
+      ]
+    },
+    {
+      "family_id": "aug-negative-balance-dispute-mention",
+      "group_id": "aug-negative-balance-dispute-01",
+      "lineage_id": "aug-negative-balance-dispute-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "account_balance",
+      "tags": ["historical_protected_actions", "adjacent_private_read_or_public_policy_intents"],
+      "utterances": [
+        "After that old dispute, what is my available balance now?",
+        "I contested a charge yesterday; show me the checking balance today.",
+        "The claim is already handled, and I need my current account total.",
+        "Since the disputed amount changed, tell me what balance remains.",
+        "I am not opening another dispute; how much is in the account?",
+        "Show my balance following the resolved charge claim."
+      ]
+    },
+    {
+      "family_id": "aug-negative-escalation-dispute",
+      "group_id": "aug-negative-escalation-dispute-01",
+      "lineage_id": "aug-negative-escalation-dispute-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "escalation",
+      "tags": ["adjacent_private_read_or_public_policy_intents", "human_help_request"],
+      "utterances": [
+        "I need a person to help with a dispute that is already open.",
+        "Connect me with a specialist about my existing charge claim.",
+        "Please transfer me to someone who can explain my dispute status.",
+        "I want a human representative for the claim I filed earlier.",
+        "Can an agent take over this conversation about my current dispute?",
+        "Get me to support; I need help with an ongoing contested charge."
+      ]
+    },
+    {
+      "family_id": "aug-negative-escalation-freeze",
+      "group_id": "aug-negative-escalation-freeze-01",
+      "lineage_id": "aug-negative-escalation-freeze-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "escalation",
+      "tags": ["adjacent_private_read_or_public_policy_intents", "human_help_request"],
+      "utterances": [
+        "Let me speak to a person about the card I froze earlier.",
+        "Transfer me to support for help with an existing card lock.",
+        "I need a human agent to discuss why my card remains blocked.",
+        "Please connect me with someone about my already-frozen card.",
+        "Can I talk to a representative regarding this card lock?",
+        "Get me a specialist; the freeze was placed before this call."
+      ]
+    },
+    {
+      "family_id": "aug-negative-unsupported-credit-freeze",
+      "group_id": "aug-negative-unsupported-credit-freeze-01",
+      "lineage_id": "aug-negative-unsupported-credit-freeze-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["wrong_object_or_scope", "unsupported_current_operation"],
+      "utterances": [
+        "Freeze my credit report at all three bureaus.",
+        "Put a security freeze on my credit file.",
+        "Lock my consumer credit profile so lenders cannot access it.",
+        "Please block new credit inquiries under my identity.",
+        "I need a bureau freeze placed on my credit history.",
+        "Stop anyone from opening credit by freezing my report."
+      ]
+    },
+    {
+      "family_id": "aug-negative-unsupported-merchant-dispute",
+      "group_id": "aug-negative-unsupported-merchant-dispute-01",
+      "lineage_id": "aug-negative-unsupported-merchant-dispute-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["wrong_object_or_scope", "unsupported_current_operation"],
+      "utterances": [
+        "Open a marketplace dispute against a seller who shipped the wrong shoes.",
+        "File a delivery-platform complaint about my missing dinner.",
+        "Dispute the quality of a hotel room directly with the hotel.",
+        "Start a warranty claim against the maker of my headphones.",
+        "Challenge a parking citation with the city for me.",
+        "Submit a billing dispute to my phone carrier."
+      ]
+    },
+    {
+      "family_id": "aug-negative-unsupported-other-bank",
+      "group_id": "aug-negative-unsupported-other-bank-01",
+      "lineage_id": "aug-negative-unsupported-other-bank-01",
+      "design_lane": "protected_action_hard_negative",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["wrong_object_or_scope", "unsupported_current_operation"],
+      "utterances": [
+        "Freeze the debit card from my account at another bank.",
+        "Dispute a charge that appears only on my spouse's credit card.",
+        "Lock the prepaid travel card issued by a different company.",
+        "Contest a payment from an account I do not own.",
+        "Block my employer's corporate card for me.",
+        "Open a dispute on my roommate's bank statement."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-bank-transfer",
+      "group_id": "aug-unsupported-bank-transfer-01",
+      "lineage_id": "aug-unsupported-bank-transfer-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_banking_operations", "unsupported_current_operation"],
+      "utterances": [
+        "Move five hundred dollars from checking into savings.",
+        "Transfer the remaining balance to my joint account now.",
+        "Send money from this account to my landlord today.",
+        "Shift two hundred dollars between my accounts.",
+        "Make an immediate bank transfer to my sister.",
+        "Move funds out of checking and into the vacation account."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-wire-payment",
+      "group_id": "aug-unsupported-wire-payment-01",
+      "lineage_id": "aug-unsupported-wire-payment-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_banking_operations", "unsupported_current_operation"],
+      "utterances": [
+        "Wire ten thousand dollars to the closing company.",
+        "Set up an international wire to my supplier.",
+        "Send a same-day wire using these routing instructions.",
+        "Initiate a wire transfer to an account overseas.",
+        "Please release the house-deposit wire now.",
+        "Create a recurring wire payment every Friday."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-cash-check",
+      "group_id": "aug-unsupported-cash-check-01",
+      "lineage_id": "aug-unsupported-cash-check-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_banking_operations", "unsupported_current_operation"],
+      "utterances": [
+        "Deposit this paper check into my account.",
+        "Order a cashier's check payable to my contractor.",
+        "Stop payment on check number eight hundred twelve.",
+        "Mail me a new book of personal checks.",
+        "Cash this payroll check for me today.",
+        "Verify whether a check I wrote has cleared."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-loan-mortgage",
+      "group_id": "aug-unsupported-loan-mortgage-01",
+      "lineage_id": "aug-unsupported-loan-mortgage-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_banking_operations", "unsupported_current_operation"],
+      "utterances": [
+        "Apply an extra payment to my mortgage principal.",
+        "Refinance my auto loan at a lower rate.",
+        "Skip next month's personal-loan payment.",
+        "Approve me for a home-equity line today.",
+        "Change the due date on my mortgage.",
+        "Pay off the rest of my car loan now."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-atm-cash",
+      "group_id": "aug-unsupported-atm-cash-01",
+      "lineage_id": "aug-unsupported-atm-cash-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_banking_operations", "unsupported_current_operation"],
+      "utterances": [
+        "Increase my ATM withdrawal limit for tonight.",
+        "Reserve three hundred dollars in cash at the nearest branch.",
+        "Reverse the ATM fee from this morning.",
+        "Make the cash machine dispense smaller bills.",
+        "Schedule a cash pickup for tomorrow afternoon.",
+        "Reset the withdrawal count on my debit card."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-rewards-points",
+      "group_id": "aug-unsupported-rewards-points-01",
+      "lineage_id": "aug-unsupported-rewards-points-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_banking_operations", "unsupported_current_operation"],
+      "utterances": [
+        "Redeem all my card points for a flight.",
+        "Transfer my rewards balance to the hotel program.",
+        "Apply cash-back rewards to this month's bill.",
+        "Book a rental car using my points.",
+        "Convert the welcome bonus into statement credit.",
+        "Restore the reward points that expired last week."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-credit-score",
+      "group_id": "aug-unsupported-credit-score-01",
+      "lineage_id": "aug-unsupported-credit-score-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_objects", "unsupported_current_operation"],
+      "utterances": [
+        "Raise my credit score by removing the late payment.",
+        "Delete a collection account from my credit report.",
+        "Add my rent history to the credit bureaus.",
+        "Correct the employer listed on my credit file.",
+        "Send a score update to my mortgage lender.",
+        "Remove a hard inquiry from my credit profile."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-insurance",
+      "group_id": "aug-unsupported-insurance-01",
+      "lineage_id": "aug-unsupported-insurance-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_objects", "wrong_object_requests"],
+      "utterances": [
+        "File an insurance claim for the dent in my car.",
+        "Change the beneficiary on my life insurance policy.",
+        "Cancel the travel insurance for my upcoming trip.",
+        "Add my daughter to the health insurance plan.",
+        "Increase the coverage on my homeowner's policy.",
+        "Send proof of insurance to the repair shop."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-crypto-investment",
+      "group_id": "aug-unsupported-crypto-investment-01",
+      "lineage_id": "aug-unsupported-crypto-investment-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_objects", "unsupported_current_operation"],
+      "utterances": [
+        "Buy two hundred dollars of bitcoin for me.",
+        "Sell my technology shares before the market closes.",
+        "Move my crypto into a hardware wallet.",
+        "Purchase a treasury bond from my brokerage account.",
+        "Rebalance my retirement portfolio today.",
+        "Place a limit order for fifty shares."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-profile-security",
+      "group_id": "aug-unsupported-profile-security-01",
+      "lineage_id": "aug-unsupported-profile-security-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["scope_violations", "unsupported_current_operation"],
+      "utterances": [
+        "Change the email address on my profile.",
+        "Reset my online banking password now.",
+        "Add a second phone number for login codes.",
+        "Remove the trusted device from my account.",
+        "Turn off every security notification.",
+        "Replace my login name with a new one."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-no-request-life",
+      "group_id": "aug-unsupported-no-request-life-01",
+      "lineage_id": "aug-unsupported-no-request-life-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["no_current_request_statements"],
+      "utterances": [
+        "I had a long day and finally made it home.",
+        "The weather changed while I was walking downtown.",
+        "My cousin is visiting from out of town this weekend.",
+        "I keep forgetting where I put my reading glasses.",
+        "Yesterday felt much busier than usual.",
+        "The train was crowded on my way to work."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-historical-statements",
+      "group_id": "aug-unsupported-historical-statements-01",
+      "lineage_id": "aug-unsupported-historical-statements-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["historical_statements", "no_current_request_statements"],
+      "utterances": [
+        "I used to pay my rent with paper checks.",
+        "Last year I closed an account at another bank.",
+        "A long time ago my wallet was stolen on vacation.",
+        "I once had a mortgage with a very high rate.",
+        "My old card expired before I ever used it.",
+        "Years ago I called support about a duplicate charge."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-hypotheticals",
+      "group_id": "aug-unsupported-hypotheticals-01",
+      "lineage_id": "aug-unsupported-hypotheticals-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["hypotheticals", "no_current_request_statements"],
+      "utterances": [
+        "What if someone wanted to open a bank on the moon?",
+        "Suppose I inherited a castle with its own currency.",
+        "If I won the lottery, I might buy a sailboat.",
+        "Imagine needing to pay a bill from another planet.",
+        "If cash disappeared someday, everything would feel different.",
+        "Suppose my dog somehow received a credit card offer."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-vague-complaints",
+      "group_id": "aug-unsupported-vague-complaints-01",
+      "lineage_id": "aug-unsupported-vague-complaints-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["vague_complaints", "ambiguous_references"],
+      "utterances": [
+        "This whole thing is ridiculous.",
+        "Nothing about that looks right to me.",
+        "Why is everything always so difficult?",
+        "I'm unhappy with how this turned out.",
+        "That is not what I expected at all.",
+        "Something seems off and I'm frustrated."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-fragments",
+      "group_id": "aug-unsupported-fragments-01",
+      "lineage_id": "aug-unsupported-fragments-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["fragments", "ambiguous_references"],
+      "utterances": [
+        "That one from before.",
+        "Maybe the other thing.",
+        "Still not quite right.",
+        "The one near the top.",
+        "Something about yesterday.",
+        "And then the second one."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-ambiguous-references",
+      "group_id": "aug-unsupported-ambiguous-references-01",
+      "lineage_id": "aug-unsupported-ambiguous-references-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["ambiguous_references", "no_current_request_statements"],
+      "utterances": [
+        "Can you handle it for me?",
+        "I need something done about that.",
+        "Please take care of the earlier one.",
+        "Could you fix what we discussed?",
+        "Do whatever is needed with it.",
+        "I want that changed somehow."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-wrong-object-home",
+      "group_id": "aug-unsupported-wrong-object-home-01",
+      "lineage_id": "aug-unsupported-wrong-object-home-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["wrong_object_requests", "unsupported_current_operation"],
+      "utterances": [
+        "Lock the front door at my apartment.",
+        "Turn off the lights in my kitchen.",
+        "Freeze the thermostat setting at seventy degrees.",
+        "Open my garage door for the delivery driver.",
+        "Disable the alarm clock beside my bed.",
+        "Start the washing machine before I get home."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-wrong-object-device",
+      "group_id": "aug-unsupported-wrong-object-device-01",
+      "lineage_id": "aug-unsupported-wrong-object-device-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["wrong_object_requests", "unsupported_current_operation"],
+      "utterances": [
+        "Block calls from this phone number.",
+        "Unlock my tablet with the forgotten passcode.",
+        "Freeze the video playing on my television.",
+        "Remove a virus from my laptop.",
+        "Cancel the software update on my phone.",
+        "Restore the photos I deleted from my camera."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-merchant-subscription",
+      "group_id": "aug-unsupported-merchant-subscription-01",
+      "lineage_id": "aug-unsupported-merchant-subscription-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["scope_violations", "unsupported_current_operation"],
+      "utterances": [
+        "Cancel my music subscription with the streaming company.",
+        "Change the delivery address on my bookstore order.",
+        "Ask the restaurant to refund my cold meal.",
+        "Return the shoes I bought from the online shop.",
+        "Reschedule my flight with the airline.",
+        "Stop the gym from renewing my membership."
+      ]
+    },
+    {
+      "family_id": "aug-unsupported-clear-but-unknown-object",
+      "group_id": "aug-unsupported-clear-but-unknown-object-01",
+      "lineage_id": "aug-unsupported-clear-but-unknown-object-01",
+      "design_lane": "unsupported_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["ambiguous_references", "wrong_object_requests"],
+      "utterances": [
+        "Cancel the blue one immediately.",
+        "Close the account we never discussed.",
+        "Move all of it to the other place.",
+        "Approve the request from that person.",
+        "Reverse the item marked with a star.",
+        "Delete whichever record caused the problem."
+      ]
+    }
+  ]
+}

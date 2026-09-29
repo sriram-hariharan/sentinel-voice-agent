@@ -3761,6 +3761,14 @@ sealed for one evaluation after the candidate and evaluation code are frozen.
 Step 9 creates no augmentation examples, probe examples, builders, model code,
 model artifacts, inference results, or runtime integration.
 
+Step 10 constructs the development-data sources declared by that frozen plan.
+The human-authored seeds and deterministic builder define a 360-example
+training augmentation and a separate 270-example model-selection-only probe.
+Neither dataset is final acceptance evidence. The final 360-example V2-C4
+holdout remains sealed, and no V2-C4 model has been trained, embedded, run, or
+evaluated. Generated datasets and manifests are intentionally produced later
+with `scripts/build_v2c4_development_data.py --write`.
+
 ### ML roadmap after V2-C4
 
 The phase order is **V2-C4 → V2-C5 → V2-D**. V2-C4 remains the controlled

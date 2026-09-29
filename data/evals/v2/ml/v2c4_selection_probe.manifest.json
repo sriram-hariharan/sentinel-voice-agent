@@ -1,0 +1,171 @@
+{
+  "build_metadata": {
+    "builder_version": "v2c4-development-data-builder.v1",
+    "deterministic": true,
+    "wall_clock_timestamp_recorded": false
+  },
+  "builder_sha256": "3cb7e6ee6860d07dc2689aa5bb3c6f9f137d0833d4fff6313b3b1b2b29fac51d",
+  "counts": {
+    "example_count": 270,
+    "family_count": 45,
+    "group_count": 45,
+    "lineage_count": 45
+  },
+  "counts_by_design_lane": {
+    "ambiguous_or_fragment": 6,
+    "boundary_case": 48,
+    "comparison_request": 6,
+    "contextual_request": 60,
+    "conversational_request": 48,
+    "core_request": 48,
+    "filtered_list_request": 6,
+    "no_current_request": 6,
+    "non_action_context": 6,
+    "reference_resolution": 18,
+    "specialist_request": 6,
+    "unsupported_current_request": 6,
+    "wrong_object_or_scope": 6
+  },
+  "counts_by_intent": {
+    "account_balance": 30,
+    "card_status": 30,
+    "create_dispute": 30,
+    "escalation": 30,
+    "freeze_card": 30,
+    "informational_policy": 30,
+    "recent_transactions": 30,
+    "transaction_details": 30,
+    "unsupported_or_uncertain": 30
+  },
+  "counts_by_risk": {
+    "ESCALATION_OR_UNCERTAIN": 60,
+    "PRIVATE_READ": 120,
+    "PROTECTED_WRITE": 60,
+    "PUBLIC": 30
+  },
+  "counts_by_tag": {
+    "account_reference": 6,
+    "ambiguous_reference": 6,
+    "card_reference": 6,
+    "comparison": 6,
+    "contextual": 36,
+    "contrast": 12,
+    "conversational": 48,
+    "correction": 12,
+    "current_request": 12,
+    "direct": 48,
+    "explicit_current_action": 60,
+    "fragment": 6,
+    "hard_boundary": 48,
+    "historical": 6,
+    "human_request": 30,
+    "hypothetical": 6,
+    "lost_stolen_context": 6,
+    "no_current_request": 12,
+    "plural_activity": 6,
+    "private_read": 120,
+    "protected_mention": 36,
+    "public_information": 30,
+    "scope_violation": 6,
+    "specialist": 6,
+    "statement": 6,
+    "synonym": 12,
+    "time_window": 6,
+    "transaction_context": 6,
+    "transaction_reference": 6,
+    "unsupported_operation": 6,
+    "vague_complaint": 6,
+    "wrong_object": 6
+  },
+  "cross_dataset_overlap": {
+    "example_id_overlap": 0,
+    "group_id_overlap": 0,
+    "lineage_id_overlap": 0,
+    "normalized_text_overlap": 0,
+    "other_data_role": "v2c4_targeted_training_augmentation"
+  },
+  "dataset_version": "2026-09-29.v2c4-selection-probe.v1",
+  "eligibility_policy": {
+    "final_acceptance_evidence": false,
+    "model_selection_eligible": true,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  },
+  "execution_status": {
+    "embedding_performed": false,
+    "evaluation_performed": false,
+    "inference_performed": false,
+    "model_loading_performed": false,
+    "training_performed": false
+  },
+  "input_paths": {
+    "consumed_v2c3_challenge": "data/evals/v2/ml/v2c3_challenge_set.json",
+    "consumed_v2c3_external_lockbox": "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+    "experiment_contract": "data/evals/v2/ml/v2c4_experiment_contract.json",
+    "parent_intervention_plan": "data/evals/v2/ml/v2c4_intervention_plan.json",
+    "sealed_v2c4_holdout_manifest_only": "data/evals/v2/ml/v2c4_safety_holdout.manifest.json",
+    "seed": "data/evals/v2/ml/v2c4_selection_probe_seed.json",
+    "v2c3_development": "data/evals/v2/ml/v2c3_development_dataset.json"
+  },
+  "input_sha256": {
+    "consumed_v2c3_challenge": "4493b9baa8363408c917fe29de069dec82f925c8c3a605878a08eba06b051e5c",
+    "consumed_v2c3_external_lockbox": "651bbe2ebe61bb5b1e9139c24cacac340973172f5637278c12d50cf596334364",
+    "experiment_contract": "d188422cff7e5964dc68358d516b13caebd7a17f6a5eb17f4cccd7fbaaf14e22",
+    "parent_intervention_plan": "4a5ed357ab8ae2fc66dd5459f59883ef20bd9b6f9996bad7f4b8f8f2b245e5ff",
+    "sealed_v2c4_holdout_manifest_only": "f0bbe4461fbadaeb96ff3061d77c9daaf9b08f0cbeeb0a2483b42281598c3504",
+    "seed": "1025023745b069d5eaf6180d79d5daeac261d4ec8c08c7bcb077dee970f14c37",
+    "v2c3_development": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca"
+  },
+  "normalization": {
+    "hash_algorithm": "SHA-256",
+    "steps": [
+      "Unicode NFKC normalization",
+      "Unicode lowercase",
+      "trim leading and trailing whitespace",
+      "collapse every whitespace run to one ASCII space"
+    ],
+    "version": "unicode-nfkc-lower-whitespace.v1"
+  },
+  "normalized_text_uniqueness": {
+    "duplicate_count": 0,
+    "unique_count": 270
+  },
+  "output_path": "data/evals/v2/ml/v2c4_selection_probe.json",
+  "output_sha256": "25c62797825b58371f1260f631e9a35bdf34c4cf1bedc895120218a5bb63e16e",
+  "parent_intervention_plan_sha256": "4a5ed357ab8ae2fc66dd5459f59883ef20bd9b6f9996bad7f4b8f8f2b245e5ff",
+  "reference_dataset_overlap_results": {
+    "consumed_v2c3_challenge": {
+      "normalized_hash_count": 270,
+      "normalized_text_overlap": 0
+    },
+    "consumed_v2c3_external_lockbox": {
+      "normalized_hash_count": 1922,
+      "normalized_text_overlap": 0
+    },
+    "v2c3_development": {
+      "normalized_hash_count": 8196,
+      "normalized_text_overlap": 0
+    }
+  },
+  "schema_version": "v2c4-development-data-manifest.v1",
+  "sealed_v2c4_holdout_overlap_check": {
+    "exact_check_performed": false,
+    "manifest_path": "data/evals/v2/ml/v2c4_safety_holdout.manifest.json",
+    "reason": "The frozen V2-C4 holdout manifest exposes aggregate hash counts but no record-level normalized hashes. The sealed holdout and seed are not opened; independence relies on post-freeze authorship.",
+    "sealed_holdout_or_seed_opened": false
+  },
+  "seed_sha256": "1025023745b069d5eaf6180d79d5daeac261d4ec8c08c7bcb077dee970f14c37",
+  "source_policy": {
+    "banking77_test_used": false,
+    "cfpb_used": false,
+    "clinc_test_used": false,
+    "consumed_v2c3_failure_categories_informed_design": true,
+    "consumed_v2c3_raw_examples_used_for_authoring": false,
+    "copied_consumed_examples": false,
+    "generated_after_v2c4_holdout_freeze": true,
+    "independently_authored": true,
+    "paraphrased_consumed_examples": false,
+    "v2c4_final_holdout_used_for_authoring": false
+  },
+  "training_or_evaluation_performed": false
+}

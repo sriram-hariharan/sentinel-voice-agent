@@ -1,0 +1,747 @@
+{
+  "schema_version": "v2c4-development-data-seed.v1",
+  "dataset_version": "2026-09-29.v2c4-selection-probe.v1",
+  "data_role": "v2c4_model_selection_probe",
+  "expected_example_count": 270,
+  "parent_intervention_plan_sha256": "4a5ed357ab8ae2fc66dd5459f59883ef20bd9b6f9996bad7f4b8f8f2b245e5ff",
+  "eligibility_policy": {
+    "training_eligible": false,
+    "model_selection_eligible": true,
+    "threshold_selection_eligible": false,
+    "final_acceptance_evidence": false
+  },
+  "authorship_provenance": {
+    "independently_authored": true,
+    "generated_after_v2c4_holdout_freeze": true,
+    "consumed_v2c3_failure_categories_informed_design": true,
+    "consumed_v2c3_raw_examples_used_for_authoring": false,
+    "copied_consumed_examples": false,
+    "paraphrased_consumed_examples": false,
+    "cfpb_used": false,
+    "banking77_test_used": false,
+    "clinc_test_used": false,
+    "v2c4_final_holdout_used_for_authoring": false
+  },
+  "families": [
+    {
+      "family_id": "probe-balance-core",
+      "group_id": "probe-balance-core",
+      "lineage_id": "probe-balance-core",
+      "design_lane": "core_request",
+      "intent": "account_balance",
+      "tags": ["direct", "private_read"],
+      "utterances": [
+        "Can you tell me how much money is in my checking account right now?",
+        "Show me how much is available in savings.",
+        "How much money do I have in my main account?",
+        "Please give me my current available balance.",
+        "What's the total in the account ending in twenty-one?",
+        "Tell me the balance on my household checking account."
+      ]
+    },
+    {
+      "family_id": "probe-balance-context",
+      "group_id": "probe-balance-context",
+      "lineage_id": "probe-balance-context",
+      "design_lane": "contextual_request",
+      "intent": "account_balance",
+      "tags": ["contextual", "private_read"],
+      "utterances": [
+        "Before I head to the store, how much is available in checking?",
+        "Rent cleared this morning; what balance is left now?",
+        "I just got paid and want to know my new account total.",
+        "After those weekend purchases, how much money remains?",
+        "I'm planning a bill payment, so show my available funds first.",
+        "Since the deposit posted, tell me the balance I can use."
+      ]
+    },
+    {
+      "family_id": "probe-balance-boundary",
+      "group_id": "probe-balance-boundary",
+      "lineage_id": "probe-balance-boundary",
+      "design_lane": "boundary_case",
+      "intent": "account_balance",
+      "tags": ["hard_boundary", "protected_mention", "private_read"],
+      "utterances": [
+        "I might contest a charge later, but first tell me my balance.",
+        "Don't lock the card; I only need the available account total.",
+        "The old dispute is irrelevant—how much is in savings today?",
+        "No action on the card, please; just show what funds remain.",
+        "After freezing another card yesterday, I need this account's balance.",
+        "Leave every payment alone and tell me my current balance."
+      ]
+    },
+    {
+      "family_id": "probe-balance-conversational",
+      "group_id": "probe-balance-conversational",
+      "lineage_id": "probe-balance-conversational",
+      "design_lane": "conversational_request",
+      "intent": "account_balance",
+      "tags": ["conversational", "private_read"],
+      "utterances": [
+        "Hey, how much have I got in checking right now?",
+        "Can you, uh, pull up my available balance?",
+        "Quick question—what's left in the account?",
+        "I just need to know how much money is there.",
+        "Could you check the balance for me real quick?",
+        "So, what's my account sitting at today?"
+      ]
+    },
+    {
+      "family_id": "probe-balance-reference",
+      "group_id": "probe-balance-reference",
+      "lineage_id": "probe-balance-reference",
+      "design_lane": "reference_resolution",
+      "intent": "account_balance",
+      "tags": ["account_reference", "private_read"],
+      "utterances": [
+        "For the second account on that list, show me the balance.",
+        "How much is in the one labeled household expenses?",
+        "Tell me what is available in that savings account.",
+        "What's the balance for the account we just selected?",
+        "Check the total in my other checking account.",
+        "For that savings account, I need the current balance rather than its activity."
+      ]
+    },
+    {
+      "family_id": "probe-card-status-core",
+      "group_id": "probe-card-status-core",
+      "lineage_id": "probe-card-status-core",
+      "design_lane": "core_request",
+      "intent": "card_status",
+      "tags": ["direct", "private_read"],
+      "utterances": [
+        "Is my debit card currently active?",
+        "Check the status of my card ending in sixty-four.",
+        "Does my travel card show as locked?",
+        "Tell me whether this card is usable right now.",
+        "What status is listed for my physical card?",
+        "Can you confirm whether my card is open or blocked?"
+      ]
+    },
+    {
+      "family_id": "probe-card-status-context",
+      "group_id": "probe-card-status-context",
+      "lineage_id": "probe-card-status-context",
+      "design_lane": "contextual_request",
+      "intent": "card_status",
+      "tags": ["contextual", "private_read"],
+      "utterances": [
+        "The payment terminal declined it, so can you check my card's status?",
+        "I found the card in a drawer; is it still active?",
+        "Before I try another purchase, tell me whether the card works.",
+        "The app icon looks different today—what status does my card have?",
+        "I haven't used this card in months; is it currently usable?",
+        "Since the replacement arrived, check whether the old card remains active."
+      ]
+    },
+    {
+      "family_id": "probe-card-status-boundary",
+      "group_id": "probe-card-status-boundary",
+      "lineage_id": "probe-card-status-boundary",
+      "design_lane": "boundary_case",
+      "intent": "card_status",
+      "tags": ["hard_boundary", "protected_mention", "private_read"],
+      "utterances": [
+        "I am not asking to freeze it; tell me if it is already locked.",
+        "Don't change the card—just confirm its present status.",
+        "I blocked it earlier and only want to know whether that worked.",
+        "No need to disable anything; is the card active or not?",
+        "The freeze request was yesterday. Check its status now.",
+        "Please make no changes and show whether the card is currently open."
+      ]
+    },
+    {
+      "family_id": "probe-card-status-conversational",
+      "group_id": "probe-card-status-conversational",
+      "lineage_id": "probe-card-status-conversational",
+      "design_lane": "conversational_request",
+      "intent": "card_status",
+      "tags": ["conversational", "private_read"],
+      "utterances": [
+        "Hey, is my card good to use or what?",
+        "Can you check if this card is still active?",
+        "Um, what's going on with my card status?",
+        "Real quick, does the card work right now?",
+        "I just wanna know if my card is locked.",
+        "Could you tell me whether this card is okay to use?"
+      ]
+    },
+    {
+      "family_id": "probe-card-status-reference",
+      "group_id": "probe-card-status-reference",
+      "lineage_id": "probe-card-status-reference",
+      "design_lane": "reference_resolution",
+      "intent": "card_status",
+      "tags": ["card_reference", "private_read"],
+      "utterances": [
+        "For the blue card on that screen, what is its status?",
+        "Is the second card in my wallet list still active?",
+        "Check whether that card we discussed is currently blocked.",
+        "What does the app say about my other debit card?",
+        "Tell me if the one ending in zero nine is usable.",
+        "For that selected card, show its current status."
+      ]
+    },
+    {
+      "family_id": "probe-dispute-core",
+      "group_id": "probe-dispute-core",
+      "lineage_id": "probe-dispute-core",
+      "design_lane": "core_request",
+      "intent": "create_dispute",
+      "tags": ["direct", "explicit_current_action"],
+      "utterances": [
+        "Please dispute the charge from Harbor Cafe.",
+        "Open a dispute for the transaction of forty-three dollars.",
+        "Contest the duplicate payment on my account.",
+        "File a claim for that card purchase now.",
+        "Challenge the transaction I selected.",
+        "Start a dispute on yesterday's unfamiliar charge."
+      ]
+    },
+    {
+      "family_id": "probe-dispute-correction",
+      "group_id": "probe-dispute-correction",
+      "lineage_id": "probe-dispute-correction",
+      "design_lane": "contextual_request",
+      "intent": "create_dispute",
+      "tags": ["correction", "explicit_current_action"],
+      "utterances": [
+        "Wait, I need more than the details—please dispute that payment.",
+        "Let me revise my request and contest the charge instead.",
+        "Actually, open a dispute rather than showing the receipt again.",
+        "I said review it, but I now want the transaction challenged.",
+        "Change of plan: file a claim for this purchase.",
+        "Sorry, to be clear, I want you to dispute the selected charge."
+      ]
+    },
+    {
+      "family_id": "probe-dispute-context",
+      "group_id": "probe-dispute-context",
+      "lineage_id": "probe-dispute-context",
+      "design_lane": "contextual_request",
+      "intent": "create_dispute",
+      "tags": ["transaction_context", "explicit_current_action"],
+      "utterances": [
+        "Nobody in my family made this purchase, so dispute it.",
+        "The merchant cannot find my order; please challenge the charge.",
+        "I was out of state on that date, and I want the payment contested.",
+        "This appears to be a second copy of the same bill; file a dispute.",
+        "The amount is far above my receipt, so open a claim for it.",
+        "I checked my records and the transaction is not mine; dispute it now."
+      ]
+    },
+    {
+      "family_id": "probe-dispute-conversational",
+      "group_id": "probe-dispute-conversational",
+      "lineage_id": "probe-dispute-conversational",
+      "design_lane": "conversational_request",
+      "intent": "create_dispute",
+      "tags": ["conversational", "synonym", "explicit_current_action"],
+      "utterances": [
+        "Can we flag that charge as not mine?",
+        "Yeah, I'd like to challenge that payment now.",
+        "Could you get a dispute going for this card charge?",
+        "I need to contest that weird purchase, please.",
+        "Let's open a claim on the charge I just picked.",
+        "Please help me dispute that transaction right away."
+      ]
+    },
+    {
+      "family_id": "probe-dispute-boundary",
+      "group_id": "probe-dispute-boundary",
+      "lineage_id": "probe-dispute-boundary",
+      "design_lane": "boundary_case",
+      "intent": "create_dispute",
+      "tags": ["hard_boundary", "contrast", "explicit_current_action"],
+      "utterances": [
+        "Keep my card active, but dispute the charge from Monday.",
+        "I don't need a card lock; I do need this purchase contested.",
+        "The merchant details are clear enough—open the dispute now.",
+        "This isn't a policy question; please file a claim on the payment.",
+        "Leave the other charges alone and challenge only this transaction.",
+        "The prior case is closed; create a new dispute for today's charge."
+      ]
+    },
+    {
+      "family_id": "probe-escalation-core",
+      "group_id": "probe-escalation-core",
+      "lineage_id": "probe-escalation-core",
+      "design_lane": "core_request",
+      "intent": "escalation",
+      "tags": ["direct", "human_request"],
+      "utterances": [
+        "Please connect me with a human representative.",
+        "I need to speak with a support specialist.",
+        "Transfer me to an agent, please.",
+        "Can a real person take over this conversation?",
+        "Get me someone from customer support.",
+        "I'd like help from a human now."
+      ]
+    },
+    {
+      "family_id": "probe-escalation-context",
+      "group_id": "probe-escalation-context",
+      "lineage_id": "probe-escalation-context",
+      "design_lane": "contextual_request",
+      "intent": "escalation",
+      "tags": ["contextual", "human_request"],
+      "utterances": [
+        "We've gone in circles, so transfer me to someone who can help.",
+        "The automated steps did not solve this; I need a representative.",
+        "I still don't understand the answer and want to speak with support.",
+        "This issue is getting complicated—please bring in a human agent.",
+        "I've tried twice already; connect me with a specialist.",
+        "Since this cannot be resolved here, let me talk to a person."
+      ]
+    },
+    {
+      "family_id": "probe-escalation-boundary",
+      "group_id": "probe-escalation-boundary",
+      "lineage_id": "probe-escalation-boundary",
+      "design_lane": "boundary_case",
+      "intent": "escalation",
+      "tags": ["hard_boundary", "protected_mention", "human_request"],
+      "utterances": [
+        "A dispute is already open; connect me with the team handling it.",
+        "My card was locked yesterday, and I need a person to explain why.",
+        "Do not change anything yet—transfer me to a fraud specialist.",
+        "I want an agent to review my options before I contest the charge.",
+        "The card can remain as it is; get me a support representative.",
+        "I need human help with an earlier payment claim."
+      ]
+    },
+    {
+      "family_id": "probe-escalation-conversational",
+      "group_id": "probe-escalation-conversational",
+      "lineage_id": "probe-escalation-conversational",
+      "design_lane": "conversational_request",
+      "intent": "escalation",
+      "tags": ["conversational", "human_request"],
+      "utterances": [
+        "Can I just talk to somebody, please?",
+        "Yeah, I really need a person for this one.",
+        "Could you put me through to support?",
+        "Um, let me speak with an agent now.",
+        "I'd rather sort this out with a human.",
+        "Please get someone on the line who can help."
+      ]
+    },
+    {
+      "family_id": "probe-escalation-specialist",
+      "group_id": "probe-escalation-specialist",
+      "lineage_id": "probe-escalation-specialist",
+      "design_lane": "specialist_request",
+      "intent": "escalation",
+      "tags": ["specialist", "human_request"],
+      "utterances": [
+        "Connect me with the fraud department.",
+        "I need a supervisor to review this conversation.",
+        "Please transfer me to the account-security team.",
+        "Can I speak with someone who handles accessibility support?",
+        "Get me a specialist familiar with card problems.",
+        "I would like a senior representative to assist me."
+      ]
+    },
+    {
+      "family_id": "probe-freeze-core",
+      "group_id": "probe-freeze-core",
+      "lineage_id": "probe-freeze-core",
+      "design_lane": "core_request",
+      "intent": "freeze_card",
+      "tags": ["direct", "explicit_current_action"],
+      "utterances": [
+        "Please freeze my debit card immediately.",
+        "Lock the card ending in seventy-three now.",
+        "Block my physical card until further notice.",
+        "Disable this card right away.",
+        "Put a temporary lock on my travel card.",
+        "Make my card unusable for the moment."
+      ]
+    },
+    {
+      "family_id": "probe-freeze-correction",
+      "group_id": "probe-freeze-correction",
+      "lineage_id": "probe-freeze-correction",
+      "design_lane": "contextual_request",
+      "intent": "freeze_card",
+      "tags": ["correction", "explicit_current_action"],
+      "utterances": [
+        "Actually, don't check its status—lock the card now.",
+        "Let me correct myself: I want the card frozen.",
+        "Forget showing recent purchases and block this card instead.",
+        "I said active status, but please disable it now.",
+        "Sorry, my real request is to place a lock on the card.",
+        "Change that request from information to freezing the card."
+      ]
+    },
+    {
+      "family_id": "probe-freeze-context",
+      "group_id": "probe-freeze-context",
+      "lineage_id": "probe-freeze-context",
+      "design_lane": "contextual_request",
+      "intent": "freeze_card",
+      "tags": ["lost_stolen_context", "explicit_current_action"],
+      "utterances": [
+        "My bag disappeared at the station; lock the card inside it.",
+        "I left my card at an unknown shop, so block it now.",
+        "The card is no longer in my wallet; please disable it.",
+        "Someone may have taken my card, and I want it frozen.",
+        "I cannot locate the card after searching all morning; lock it.",
+        "The card went missing during my trip, so place a freeze on it."
+      ]
+    },
+    {
+      "family_id": "probe-freeze-conversational",
+      "group_id": "probe-freeze-conversational",
+      "lineage_id": "probe-freeze-conversational",
+      "design_lane": "conversational_request",
+      "intent": "freeze_card",
+      "tags": ["conversational", "synonym", "explicit_current_action"],
+      "utterances": [
+        "Hey, can you shut off my card for now?",
+        "Uh, I need that card locked down right away.",
+        "Could we block this card before it gets used?",
+        "Yeah, please make the card stop working now.",
+        "Can you put my card on hold for a bit?",
+        "I really need you to lock that card, please."
+      ]
+    },
+    {
+      "family_id": "probe-freeze-boundary",
+      "group_id": "probe-freeze-boundary",
+      "lineage_id": "probe-freeze-boundary",
+      "design_lane": "boundary_case",
+      "intent": "freeze_card",
+      "tags": ["hard_boundary", "contrast", "explicit_current_action"],
+      "utterances": [
+        "I recognize the payment, but I still want the card locked.",
+        "Don't open a dispute; freeze the card itself.",
+        "Now that I know it is active, please block it.",
+        "The policy explanation was enough—go ahead and disable my card.",
+        "Leave the transaction alone and place a lock on the card.",
+        "I only need one thing done: make this card unusable now."
+      ]
+    },
+    {
+      "family_id": "probe-policy-core",
+      "group_id": "probe-policy-core",
+      "lineage_id": "probe-policy-core",
+      "design_lane": "core_request",
+      "intent": "informational_policy",
+      "tags": ["direct", "public_information"],
+      "utterances": [
+        "How does a temporary card lock work?",
+        "What is the general process for disputing a purchase?",
+        "Can you explain the bank's card replacement policy?",
+        "What are the usual limits on cash withdrawals?",
+        "How long do pending card payments normally take?",
+        "What information is needed for a transaction claim?"
+      ]
+    },
+    {
+      "family_id": "probe-policy-context",
+      "group_id": "probe-policy-context",
+      "lineage_id": "probe-policy-context",
+      "design_lane": "contextual_request",
+      "intent": "informational_policy",
+      "tags": ["contextual", "public_information"],
+      "utterances": [
+        "I'm traveling next month; how do card locks work while abroad?",
+        "Before anything happens, what is the deadline for a dispute?",
+        "I am comparing options and want to understand replacement timing.",
+        "For future reference, how are duplicate charges usually handled?",
+        "I'm planning ahead—what should someone do after losing a card?",
+        "Could you walk me through the standard fraud-review process?"
+      ]
+    },
+    {
+      "family_id": "probe-policy-boundary",
+      "group_id": "probe-policy-boundary",
+      "lineage_id": "probe-policy-boundary",
+      "design_lane": "boundary_case",
+      "intent": "informational_policy",
+      "tags": ["hard_boundary", "protected_mention", "public_information"],
+      "utterances": [
+        "Do not freeze my card; I only want to know what freezing does.",
+        "I am not filing a claim today—what would the process involve?",
+        "No changes to my account; explain how disputed payments are reviewed.",
+        "This is hypothetical: could a temporary card lock be reversed?",
+        "I'm only asking for information about contesting a charge.",
+        "Please take no action and tell me the rules for card freezes."
+      ]
+    },
+    {
+      "family_id": "probe-policy-conversational",
+      "group_id": "probe-policy-conversational",
+      "lineage_id": "probe-policy-conversational",
+      "design_lane": "conversational_request",
+      "intent": "informational_policy",
+      "tags": ["conversational", "public_information"],
+      "utterances": [
+        "So, what exactly happens if a card gets locked?",
+        "Can you give me the quick version of how disputes work?",
+        "Hey, is there a time limit on reporting a charge?",
+        "I'm curious—what does replacing a card involve?",
+        "Could you explain that pending-payment thing to me?",
+        "What's the usual deal with a merchant refund?"
+      ]
+    },
+    {
+      "family_id": "probe-policy-comparison",
+      "group_id": "probe-policy-comparison",
+      "lineage_id": "probe-policy-comparison",
+      "design_lane": "comparison_request",
+      "intent": "informational_policy",
+      "tags": ["comparison", "public_information"],
+      "utterances": [
+        "What is the difference between freezing and replacing a card?",
+        "How does a merchant refund differ from a payment dispute?",
+        "Is an available balance different from a current balance?",
+        "What's the distinction between a pending and posted transaction?",
+        "How is a card lock different from closing an account?",
+        "Compare a duplicate-charge claim with an unauthorized-charge claim."
+      ]
+    },
+    {
+      "family_id": "probe-recent-core",
+      "group_id": "probe-recent-core",
+      "lineage_id": "probe-recent-core",
+      "design_lane": "core_request",
+      "intent": "recent_transactions",
+      "tags": ["direct", "private_read"],
+      "utterances": [
+        "Show me my most recent transactions.",
+        "List the latest purchases on my account.",
+        "What payments posted this week?",
+        "Bring up my newest card activity.",
+        "Display the last several transactions in checking.",
+        "Let me see the recent charges on my account."
+      ]
+    },
+    {
+      "family_id": "probe-recent-context",
+      "group_id": "probe-recent-context",
+      "lineage_id": "probe-recent-context",
+      "design_lane": "contextual_request",
+      "intent": "recent_transactions",
+      "tags": ["contextual", "private_read"],
+      "utterances": [
+        "I'm balancing my budget, so list purchases from the last few days.",
+        "After a busy weekend, I want to review the newest activity.",
+        "I used the card several times today; show all of those payments.",
+        "Before paying bills, bring up this month's recent transactions.",
+        "I just returned from a trip and need the latest charge list.",
+        "To update my records, show what has posted since Monday."
+      ]
+    },
+    {
+      "family_id": "probe-recent-boundary",
+      "group_id": "probe-recent-boundary",
+      "lineage_id": "probe-recent-boundary",
+      "design_lane": "boundary_case",
+      "intent": "recent_transactions",
+      "tags": ["hard_boundary", "protected_mention", "private_read"],
+      "utterances": [
+        "Don't dispute anything; just list my newest payments.",
+        "Keep the card active and show me recent activity.",
+        "I may lock it later, but first display the latest transactions.",
+        "The old claim is closed; I only need this week's purchase list.",
+        "No action on any charge—show all recent account activity.",
+        "Before deciding what to do, let me review the newest payments."
+      ]
+    },
+    {
+      "family_id": "probe-recent-conversational",
+      "group_id": "probe-recent-conversational",
+      "lineage_id": "probe-recent-conversational",
+      "design_lane": "conversational_request",
+      "intent": "recent_transactions",
+      "tags": ["conversational", "private_read"],
+      "utterances": [
+        "What have I spent money on lately?",
+        "Can you pull up the newest stuff on my account?",
+        "Hey, show me what charges just came through.",
+        "I wanna see my latest purchases, please.",
+        "Could I get a quick list of recent payments?",
+        "So what transactions have shown up most recently?"
+      ]
+    },
+    {
+      "family_id": "probe-recent-filtered",
+      "group_id": "probe-recent-filtered",
+      "lineage_id": "probe-recent-filtered",
+      "design_lane": "filtered_list_request",
+      "intent": "recent_transactions",
+      "tags": ["time_window", "plural_activity", "private_read"],
+      "utterances": [
+        "List all transactions from the past three days.",
+        "Show purchases that posted since the first of the month.",
+        "What card payments appeared between Monday and Thursday?",
+        "Display my latest five checking-account transactions.",
+        "Bring up every charge from yesterday evening.",
+        "Show the recent payments made while I was traveling."
+      ]
+    },
+    {
+      "family_id": "probe-details-core",
+      "group_id": "probe-details-core",
+      "lineage_id": "probe-details-core",
+      "design_lane": "core_request",
+      "intent": "transaction_details",
+      "tags": ["direct", "private_read"],
+      "utterances": [
+        "Show me the details for this transaction.",
+        "What merchant made the charge for sixty-two dollars?",
+        "Tell me the date and location of that purchase.",
+        "Open the full information for the selected payment.",
+        "What time did this card transaction occur?",
+        "Give me the amount and merchant for that charge."
+      ]
+    },
+    {
+      "family_id": "probe-details-context",
+      "group_id": "probe-details-context",
+      "lineage_id": "probe-details-context",
+      "design_lane": "contextual_request",
+      "intent": "transaction_details",
+      "tags": ["contextual", "private_read"],
+      "utterances": [
+        "The merchant name looks abbreviated; show me more about that payment.",
+        "I recognize the amount but need the transaction location.",
+        "Before updating my records, tell me when this charge posted.",
+        "That purchase may be mine; display its complete information.",
+        "I need the reference number attached to this transaction.",
+        "The date surprised me, so open the rest of the payment details."
+      ]
+    },
+    {
+      "family_id": "probe-details-boundary",
+      "group_id": "probe-details-boundary",
+      "lineage_id": "probe-details-boundary",
+      "design_lane": "boundary_case",
+      "intent": "transaction_details",
+      "tags": ["hard_boundary", "protected_mention", "private_read"],
+      "utterances": [
+        "Do not contest the charge yet; show me its merchant first.",
+        "I'm not filing a claim—I need the payment details.",
+        "Leave my card active and tell me where this purchase occurred.",
+        "The dispute can wait; display the transaction timestamp now.",
+        "No action on that payment, just open its full information.",
+        "Before I decide whether to challenge it, show me the charge details."
+      ]
+    },
+    {
+      "family_id": "probe-details-conversational",
+      "group_id": "probe-details-conversational",
+      "lineage_id": "probe-details-conversational",
+      "design_lane": "conversational_request",
+      "intent": "transaction_details",
+      "tags": ["conversational", "private_read"],
+      "utterances": [
+        "What's the story with that forty-dollar charge?",
+        "Can you tell me more about this payment here?",
+        "Hey, where did that purchase happen?",
+        "I need the full scoop on that transaction.",
+        "Could you pull up who charged me for this one?",
+        "What exactly is that payment on my screen?"
+      ]
+    },
+    {
+      "family_id": "probe-details-reference",
+      "group_id": "probe-details-reference",
+      "lineage_id": "probe-details-reference",
+      "design_lane": "reference_resolution",
+      "intent": "transaction_details",
+      "tags": ["transaction_reference", "private_read"],
+      "utterances": [
+        "For the second payment in that list, show the details.",
+        "Open the information for the charge highlighted in blue.",
+        "Tell me more about the one from Tuesday.",
+        "What merchant is behind that selected transaction?",
+        "Give me the details for the larger of those two payments.",
+        "For that entry we just discussed, show its full record."
+      ]
+    },
+    {
+      "family_id": "probe-unsupported-current-operations",
+      "group_id": "probe-unsupported-current-operations",
+      "lineage_id": "probe-unsupported-current-operations",
+      "design_lane": "unsupported_current_request",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["unsupported_operation", "current_request"],
+      "utterances": [
+        "Send three hundred dollars to my brother.",
+        "Order a replacement checkbook for me.",
+        "Raise my daily cash-withdrawal limit.",
+        "Pay the electric bill from checking today.",
+        "Convert my reward points into airline miles.",
+        "Refinance my personal loan this afternoon."
+      ]
+    },
+    {
+      "family_id": "probe-unsupported-no-request",
+      "group_id": "probe-unsupported-no-request",
+      "lineage_id": "probe-unsupported-no-request",
+      "design_lane": "no_current_request",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["no_current_request", "statement"],
+      "utterances": [
+        "My old debit card expired a few months ago.",
+        "My wallet is sitting on the kitchen table.",
+        "I used a different checking account for rent last year.",
+        "The café near my office changed its hours.",
+        "My previous card had different last four digits.",
+        "I changed banks once when I moved to another city."
+      ]
+    },
+    {
+      "family_id": "probe-unsupported-history-hypothetical",
+      "group_id": "probe-unsupported-history-hypothetical",
+      "lineage_id": "probe-unsupported-history-hypothetical",
+      "design_lane": "non_action_context",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["historical", "hypothetical", "no_current_request"],
+      "utterances": [
+        "I once forgot my card during a trip abroad.",
+        "Years ago I mailed checks for every bill.",
+        "If I owned a store, I might accept only cash.",
+        "Suppose a bank branch stayed open all night.",
+        "Last summer I used a different account for travel.",
+        "If I ever moved overseas, banking would probably change."
+      ]
+    },
+    {
+      "family_id": "probe-unsupported-ambiguous",
+      "group_id": "probe-unsupported-ambiguous",
+      "lineage_id": "probe-unsupported-ambiguous",
+      "design_lane": "ambiguous_or_fragment",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["fragment", "ambiguous_reference", "vague_complaint"],
+      "utterances": [
+        "The other one, maybe.",
+        "Can you deal with that somehow?",
+        "Still looks strange to me.",
+        "About the thing from earlier.",
+        "This is all very frustrating.",
+        "I need help with it."
+      ]
+    },
+    {
+      "family_id": "probe-unsupported-wrong-scope",
+      "group_id": "probe-unsupported-wrong-scope",
+      "lineage_id": "probe-unsupported-wrong-scope",
+      "design_lane": "wrong_object_or_scope",
+      "intent": "unsupported_or_uncertain",
+      "tags": ["wrong_object", "scope_violation", "current_request"],
+      "utterances": [
+        "Lock my office computer before the meeting.",
+        "Dispute a delivery fee with the grocery service.",
+        "Place a security restriction on my consumer credit history.",
+        "Cancel the reservation at my hotel.",
+        "Buy shares of an index fund for me.",
+        "Change the mailing address on my driver's license."
+      ]
+    }
+  ]
+}

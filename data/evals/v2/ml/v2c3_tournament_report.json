@@ -1,0 +1,6398 @@
+{
+  "candidate_definitions": [
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "v2c1_linear_svc_anchor",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 0.5,
+          "class_weight": null,
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 1000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260926,
+          "tol": 0.0001,
+          "verbose": 0
+        },
+        "v2c1_fidelity": "V2-C1 selected C and constructor arguments, with unchanged sklearn defaults made explicit."
+      },
+      "id": "direct_v2c1_tfidf_v2c1_svc_anchor",
+      "representation": "v2c1_word_char_tfidf",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            3,
+            5
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "family": "sparse_lexical",
+        "transform": "feature_union",
+        "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "linear_svc_balanced",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 2000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260928,
+          "tol": 0.0001,
+          "verbose": 0
+        }
+      },
+      "id": "direct_v2c1_tfidf_balanced_svc",
+      "representation": "v2c1_word_char_tfidf",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            3,
+            5
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "family": "sparse_lexical",
+        "transform": "feature_union",
+        "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "logistic_regression_balanced",
+      "classifier_definition": {
+        "class": "LogisticRegression",
+        "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": false,
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "l1_ratio": 0.0,
+          "max_iter": 2000,
+          "n_jobs": null,
+          "random_state": 20260928,
+          "solver": "lbfgs",
+          "tol": 0.0001,
+          "verbose": 0,
+          "warm_start": false
+        }
+      },
+      "id": "direct_v2c1_tfidf_balanced_logreg",
+      "representation": "v2c1_word_char_tfidf",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            3,
+            5
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "family": "sparse_lexical",
+        "transform": "feature_union",
+        "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "sgd_classifier_balanced",
+      "classifier_definition": {
+        "class": "SGDClassifier",
+        "parameters": {
+          "alpha": 0.0001,
+          "average": false,
+          "class_weight": "balanced",
+          "early_stopping": false,
+          "epsilon": 0.1,
+          "eta0": 0.01,
+          "fit_intercept": true,
+          "l1_ratio": 0.15,
+          "learning_rate": "optimal",
+          "loss": "hinge",
+          "max_iter": 1000,
+          "n_iter_no_change": 5,
+          "n_jobs": null,
+          "penalty": "l2",
+          "power_t": 0.5,
+          "random_state": 20260928,
+          "shuffle": true,
+          "tol": 0.001,
+          "validation_fraction": 0.1,
+          "verbose": 0,
+          "warm_start": false
+        }
+      },
+      "id": "direct_v2c1_tfidf_balanced_sgd",
+      "representation": "v2c1_word_char_tfidf",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            3,
+            5
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "family": "sparse_lexical",
+        "transform": "feature_union",
+        "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "ridge_classifier_balanced",
+      "classifier_definition": {
+        "class": "RidgeClassifier",
+        "parameters": {
+          "alpha": 1.0,
+          "class_weight": "balanced",
+          "copy_X": true,
+          "fit_intercept": true,
+          "max_iter": null,
+          "positive": false,
+          "random_state": null,
+          "solver": "auto",
+          "tol": 0.0001
+        }
+      },
+      "id": "direct_v2c1_tfidf_balanced_ridge",
+      "representation": "v2c1_word_char_tfidf",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            3,
+            5
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "family": "sparse_lexical",
+        "transform": "feature_union",
+        "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "linear_svc_balanced",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 2000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260928,
+          "tol": 0.0001,
+          "verbose": 0
+        }
+      },
+      "id": "direct_word_tfidf_balanced_svc",
+      "representation": "word_tfidf",
+      "representation_definition": {
+        "family": "sparse_lexical",
+        "transform": "single_vectorizer",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "linear_svc_balanced",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 2000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260928,
+          "tol": 0.0001,
+          "verbose": 0
+        }
+      },
+      "id": "direct_char_tfidf_balanced_svc",
+      "representation": "char_tfidf",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            3,
+            5
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "family": "sparse_lexical",
+        "transform": "single_vectorizer"
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "linear_svc_balanced",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 2000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260928,
+          "tol": 0.0001,
+          "verbose": 0
+        }
+      },
+      "id": "direct_alt_tfidf_balanced_svc",
+      "representation": "word_char_tfidf_alt",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 0.995,
+          "max_features": null,
+          "min_df": 2,
+          "ngram_range": [
+            3,
+            6
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "difference_from_v2c1": "Drops fold-local singletons, caps terms present in more than 99.5% of a training fold, and extends char_wb through 6-grams.",
+        "family": "sparse_lexical",
+        "transform": "feature_union",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 0.995,
+          "max_features": null,
+          "min_df": 2,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "linear_svc_balanced",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 2000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260928,
+          "tol": 0.0001,
+          "verbose": 0
+        }
+      },
+      "id": "direct_lsa_balanced_svc",
+      "representation": "tfidf_lsa",
+      "representation_definition": {
+        "family": "dense_lsa",
+        "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+        "normalizer": {
+          "copy": false,
+          "norm": "l2"
+        },
+        "tfidf_base": "v2c1_word_char_tfidf",
+        "transform": "tfidf_then_truncated_svd_then_normalize",
+        "truncated_svd": {
+          "algorithm": "randomized",
+          "n_components": 256,
+          "n_iter": 5,
+          "random_state": 20260928
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "logistic_regression_balanced",
+      "classifier_definition": {
+        "class": "LogisticRegression",
+        "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": false,
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "l1_ratio": 0.0,
+          "max_iter": 2000,
+          "n_jobs": null,
+          "random_state": 20260928,
+          "solver": "lbfgs",
+          "tol": 0.0001,
+          "verbose": 0,
+          "warm_start": false
+        }
+      },
+      "id": "direct_lsa_balanced_logreg",
+      "representation": "tfidf_lsa",
+      "representation_definition": {
+        "family": "dense_lsa",
+        "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+        "normalizer": {
+          "copy": false,
+          "norm": "l2"
+        },
+        "tfidf_base": "v2c1_word_char_tfidf",
+        "transform": "tfidf_then_truncated_svd_then_normalize",
+        "truncated_svd": {
+          "algorithm": "randomized",
+          "n_components": 256,
+          "n_iter": 5,
+          "random_state": 20260928
+        }
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "linear_svc_balanced",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 2000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260928,
+          "tol": 0.0001,
+          "verbose": 0
+        }
+      },
+      "id": "direct_bge_balanced_svc",
+      "representation": "bge_small_en_v1_5",
+      "representation_definition": {
+        "automatic_regeneration_during_run": false,
+        "batch_size": 256,
+        "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+        "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+        "dimensions": 384,
+        "external_api": false,
+        "family": "frozen_local_sentence_embedding",
+        "fine_tuning": false,
+        "model_identifier": "BAAI/bge-small-en-v1.5",
+        "ordering": "development dataset order",
+        "transform": "fastembed_passage_embedding"
+      }
+    },
+    {
+      "architecture": "direct_9_way",
+      "architecture_definition": {
+        "description": "One estimator predicts exactly one frozen intent."
+      },
+      "classifier": "logistic_regression_balanced",
+      "classifier_definition": {
+        "class": "LogisticRegression",
+        "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": false,
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "l1_ratio": 0.0,
+          "max_iter": 2000,
+          "n_jobs": null,
+          "random_state": 20260928,
+          "solver": "lbfgs",
+          "tol": 0.0001,
+          "verbose": 0,
+          "warm_start": false
+        }
+      },
+      "id": "direct_bge_balanced_logreg",
+      "representation": "bge_small_en_v1_5",
+      "representation_definition": {
+        "automatic_regeneration_during_run": false,
+        "batch_size": 256,
+        "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+        "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+        "dimensions": 384,
+        "external_api": false,
+        "family": "frozen_local_sentence_embedding",
+        "fine_tuning": false,
+        "model_identifier": "BAAI/bge-small-en-v1.5",
+        "ordering": "development dataset order",
+        "transform": "fastembed_passage_embedding"
+      }
+    },
+    {
+      "architecture": "hierarchical_supported_then_intent",
+      "architecture_definition": {
+        "prediction_rule": "Return unsupported_or_uncertain when Stage 1 does; otherwise return the Stage 2 exact intent.",
+        "shared_preset": "Both stages use separately fitted instances of the candidate representation and classifier preset.",
+        "stage_1_labels": [
+          "supported",
+          "unsupported_or_uncertain"
+        ],
+        "stage_2_labels": "the eight supported intents",
+        "stage_2_training_subset": "training-fold examples whose gold intent is one of the eight supported intents"
+      },
+      "classifier": "linear_svc_balanced",
+      "classifier_definition": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": "auto",
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "loss": "squared_hinge",
+          "max_iter": 2000,
+          "multi_class": "ovr",
+          "penalty": "l2",
+          "random_state": 20260928,
+          "tol": 0.0001,
+          "verbose": 0
+        }
+      },
+      "id": "hierarchical_v2c1_tfidf_balanced_svc",
+      "representation": "v2c1_word_char_tfidf",
+      "representation_definition": {
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            3,
+            5
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        },
+        "family": "sparse_lexical",
+        "transform": "feature_union",
+        "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+        "word_tfidf": {
+          "analyzer": "word",
+          "binary": false,
+          "decode_error": "strict",
+          "dtype": "float64",
+          "encoding": "utf-8",
+          "input": "content",
+          "lowercase": true,
+          "max_df": 1.0,
+          "max_features": null,
+          "min_df": 1,
+          "ngram_range": [
+            1,
+            2
+          ],
+          "norm": "l2",
+          "preprocessor": null,
+          "smooth_idf": true,
+          "stop_words": null,
+          "strip_accents": null,
+          "sublinear_tf": true,
+          "token_pattern": "(?u)\\b\\w\\w+\\b",
+          "tokenizer": null,
+          "use_idf": true,
+          "vocabulary": null
+        }
+      }
+    },
+    {
+      "architecture": "hierarchical_supported_then_intent",
+      "architecture_definition": {
+        "prediction_rule": "Return unsupported_or_uncertain when Stage 1 does; otherwise return the Stage 2 exact intent.",
+        "shared_preset": "Both stages use separately fitted instances of the candidate representation and classifier preset.",
+        "stage_1_labels": [
+          "supported",
+          "unsupported_or_uncertain"
+        ],
+        "stage_2_labels": "the eight supported intents",
+        "stage_2_training_subset": "training-fold examples whose gold intent is one of the eight supported intents"
+      },
+      "classifier": "logistic_regression_balanced",
+      "classifier_definition": {
+        "class": "LogisticRegression",
+        "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+        "parameters": {
+          "C": 1.0,
+          "class_weight": "balanced",
+          "dual": false,
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "l1_ratio": 0.0,
+          "max_iter": 2000,
+          "n_jobs": null,
+          "random_state": 20260928,
+          "solver": "lbfgs",
+          "tol": 0.0001,
+          "verbose": 0,
+          "warm_start": false
+        }
+      },
+      "id": "hierarchical_bge_balanced_logreg",
+      "representation": "bge_small_en_v1_5",
+      "representation_definition": {
+        "automatic_regeneration_during_run": false,
+        "batch_size": 256,
+        "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+        "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+        "dimensions": 384,
+        "external_api": false,
+        "family": "frozen_local_sentence_embedding",
+        "fine_tuning": false,
+        "model_identifier": "BAAI/bge-small-en-v1.5",
+        "ordering": "development dataset order",
+        "transform": "fastembed_passage_embedding"
+      }
+    }
+  ],
+  "candidate_results": [
+    {
+      "candidate_id": "direct_v2c1_tfidf_v2c1_svc_anchor",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "v2c1_linear_svc_anchor",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 0.5,
+            "class_weight": null,
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 1000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260926,
+            "tol": 0.0001,
+            "verbose": 0
+          },
+          "v2c1_fidelity": "V2-C1 selected C and constructor arguments, with unchanged sklearn defaults made explicit."
+        },
+        "id": "direct_v2c1_tfidf_v2c1_svc_anchor",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 6,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9725609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.9361518487389883,
+          "validation_fold": 0,
+          "weighted_f1": 0.9721143560881631
+        },
+        {
+          "accuracy": 0.9628048780487805,
+          "example_count": 1640,
+          "macro_f1": 0.8862573777374863,
+          "validation_fold": 1,
+          "weighted_f1": 0.9617463820479315
+        },
+        {
+          "accuracy": 0.9567073170731707,
+          "example_count": 1640,
+          "macro_f1": 0.876194794224634,
+          "validation_fold": 2,
+          "weighted_f1": 0.9556636269646982
+        },
+        {
+          "accuracy": 0.9603416717510678,
+          "example_count": 1639,
+          "macro_f1": 0.9149805079967054,
+          "validation_fold": 3,
+          "weighted_f1": 0.9594180473521361
+        },
+        {
+          "accuracy": 0.9554606467358145,
+          "example_count": 1639,
+          "macro_f1": 0.8765396092139921,
+          "validation_fold": 4,
+          "weighted_f1": 0.9534933049403073
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.0647500166669488,
+          "p90_ms": 1.1651793378405273,
+          "p95_ms": 1.2906479474622756
+        }
+      },
+      "macro_f1_mean": 0.8980248275823612,
+      "macro_f1_standard_deviation": 0.02373942998969815,
+      "macro_f1_variance": 0.0005635605362357798,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3603936
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9615759941449133,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              128,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              22
+            ],
+            [
+              0,
+              43,
+              0,
+              0,
+              5,
+              1,
+              0,
+              1,
+              7
+            ],
+            [
+              0,
+              0,
+              48,
+              0,
+              0,
+              1,
+              1,
+              6,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              49,
+              0,
+              1,
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              48,
+              0,
+              0,
+              0,
+              9
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              738,
+              0,
+              4,
+              112
+            ],
+            [
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              129,
+              1,
+              22
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              1,
+              0,
+              386,
+              46
+            ],
+            [
+              3,
+              0,
+              0,
+              0,
+              0,
+              37,
+              1,
+              18,
+              6314
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8807339449541285,
+          "precision": 0.9230769230769231,
+          "recall": 0.8421052631578947,
+          "support": 57
+        },
+        "false_supported_count": 59,
+        "false_supported_rate": 0.009257806370626079,
+        "freeze_card_metrics": {
+          "f1": 0.8727272727272727,
+          "precision": 0.9056603773584906,
+          "recall": 0.8421052631578947,
+          "support": 57
+        },
+        "macro_f1": 0.9025599319148593,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8982456140350877,
+            "precision": 0.9696969696969697,
+            "recall": 0.8366013071895425,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.86,
+            "precision": 1.0,
+            "recall": 0.7543859649122807,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8807339449541285,
+            "precision": 0.9230769230769231,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9245283018867925,
+            "precision": 1.0,
+            "recall": 0.8596491228070176,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8727272727272727,
+            "precision": 0.9056603773584906,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9027522935779817,
+            "precision": 0.9473684210526315,
+            "recall": 0.8621495327102804,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8989547038327527,
+            "precision": 0.9626865671641791,
+            "recall": 0.8431372549019608,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9071680376028202,
+            "precision": 0.9278846153846154,
+            "recall": 0.8873563218390804,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9779292186168977,
+            "precision": 0.9654434250764526,
+            "recall": 0.9907421936293739,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 9,
+        "protected_write_false_positive_rate": 0.0011133102424542305,
+        "protected_write_recall": 0.8421052631578947,
+        "supported_intent_accuracy": 0.8597260273972602,
+        "unsupported_or_uncertain_recall": 0.9907421936293739,
+        "weighted_f1": 0.9607653111923194
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0011133102424542305
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8421052631578947
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9907421936293739
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9620888310722914,
+          "count": 5381,
+          "false_supported_rate": 0.012325581395348837,
+          "macro_f1_over_classes_present": 0.9289275081008267,
+          "unsupported_or_uncertain_recall": 0.9876744186046512
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9869791666666666,
+          "count": 2304,
+          "false_supported_rate": 0.00248015873015873,
+          "macro_f1_over_classes_present": 0.9582409485031553,
+          "unsupported_or_uncertain_recall": 0.9975198412698413
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8421052631578947,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8528126826920843,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_v2c1_tfidf_balanced_svc",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "linear_svc_balanced",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "direct_v2c1_tfidf_balanced_svc",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 1,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9725609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.9455689923127457,
+          "validation_fold": 0,
+          "weighted_f1": 0.972558215058434
+        },
+        {
+          "accuracy": 0.9670731707317073,
+          "example_count": 1640,
+          "macro_f1": 0.9213564700766779,
+          "validation_fold": 1,
+          "weighted_f1": 0.966992296316749
+        },
+        {
+          "accuracy": 0.9585365853658536,
+          "example_count": 1640,
+          "macro_f1": 0.8895404722290898,
+          "validation_fold": 2,
+          "weighted_f1": 0.9585135590363479
+        },
+        {
+          "accuracy": 0.9621720561317877,
+          "example_count": 1639,
+          "macro_f1": 0.9302371775169281,
+          "validation_fold": 3,
+          "weighted_f1": 0.9621824078691414
+        },
+        {
+          "accuracy": 0.9646125686394142,
+          "example_count": 1639,
+          "macro_f1": 0.9036158965190848,
+          "validation_fold": 4,
+          "weighted_f1": 0.9638197989491281
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.0714170057326555,
+          "p90_ms": 1.1455918662250042,
+          "p95_ms": 1.208324945764616
+        }
+      },
+      "macro_f1_mean": 0.9180638017309054,
+      "macro_f1_standard_deviation": 0.019687003543887673,
+      "macro_f1_variance": 0.0003875781085370458,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3603953
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9649914613320322,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              134,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              50,
+              0,
+              0,
+              2,
+              0,
+              1,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              48,
+              0,
+              0,
+              1,
+              1,
+              6,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              780,
+              0,
+              5,
+              69
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              1,
+              136,
+              1,
+              11
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0,
+              2,
+              0,
+              405,
+              24
+            ],
+            [
+              8,
+              0,
+              0,
+              0,
+              1,
+              75,
+              3,
+              32,
+              6254
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8807339449541285,
+          "precision": 0.9230769230769231,
+          "recall": 0.8421052631578947,
+          "support": 57
+        },
+        "false_supported_count": 119,
+        "false_supported_rate": 0.01867252471363565,
+        "freeze_card_metrics": {
+          "f1": 0.918918918918919,
+          "precision": 0.9444444444444444,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.9210220978800225,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8963210702341137,
+            "precision": 0.9178082191780822,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9090909090909091,
+            "precision": 0.9433962264150944,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8807339449541285,
+            "precision": 0.9230769230769231,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9636363636363636,
+            "precision": 1.0,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.918918918918919,
+            "precision": 0.9444444444444444,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9090909090909091,
+            "precision": 0.9069767441860465,
+            "recall": 0.9112149532710281,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9158249158249159,
+            "precision": 0.9444444444444444,
+            "recall": 0.8888888888888888,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9152542372881356,
+            "precision": 0.9,
+            "recall": 0.9310344827586207,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.980327611881809,
+            "precision": 0.9793297839022862,
+            "recall": 0.9813274752863643,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 7,
+        "protected_write_false_positive_rate": 0.0008659079663532904,
+        "protected_write_recall": 0.868421052631579,
+        "supported_intent_accuracy": 0.907945205479452,
+        "unsupported_or_uncertain_recall": 0.9813274752863643,
+        "weighted_f1": 0.9649340431298091
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0008659079663532904
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.868421052631579
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9813274752863643
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9624605091990336,
+          "count": 5381,
+          "false_supported_rate": 0.024651162790697675,
+          "macro_f1_over_classes_present": 0.9339945440896291,
+          "unsupported_or_uncertain_recall": 0.9753488372093023
+        },
+        "clinc150_oos": {
+          "accuracy": 0.98828125,
+          "count": 2304,
+          "false_supported_rate": 0.005952380952380952,
+          "macro_f1_over_classes_present": 0.9666176464109678,
+          "unsupported_or_uncertain_recall": 0.9940476190476191
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8869395711500975,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8900417153772757,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_v2c1_tfidf_balanced_logreg",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "logistic_regression_balanced",
+        "classifier_definition": {
+          "class": "LogisticRegression",
+          "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": false,
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "l1_ratio": 0.0,
+            "max_iter": 2000,
+            "n_jobs": null,
+            "random_state": 20260928,
+            "solver": "lbfgs",
+            "tol": 0.0001,
+            "verbose": 0,
+            "warm_start": false
+          }
+        },
+        "id": "direct_v2c1_tfidf_balanced_logreg",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 10,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9451219512195121,
+          "example_count": 1640,
+          "macro_f1": 0.9118881029364901,
+          "validation_fold": 0,
+          "weighted_f1": 0.947160477029527
+        },
+        {
+          "accuracy": 0.9359756097560976,
+          "example_count": 1640,
+          "macro_f1": 0.8888442967785664,
+          "validation_fold": 1,
+          "weighted_f1": 0.9380734639041987
+        },
+        {
+          "accuracy": 0.9225609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.8459874621020373,
+          "validation_fold": 2,
+          "weighted_f1": 0.9255679456629597
+        },
+        {
+          "accuracy": 0.9334960341671751,
+          "example_count": 1639,
+          "macro_f1": 0.9055120372749177,
+          "validation_fold": 3,
+          "weighted_f1": 0.9359420911173547
+        },
+        {
+          "accuracy": 0.9444783404514948,
+          "example_count": 1639,
+          "macro_f1": 0.8832581665715752,
+          "validation_fold": 4,
+          "weighted_f1": 0.9455625022262735
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.2616670574061573,
+          "p90_ms": 1.680716697592288,
+          "p95_ms": 2.031216624891384
+        }
+      },
+      "macro_f1_mean": 0.8870980131327174,
+      "macro_f1_standard_deviation": 0.02307161100495445,
+      "macro_f1_variance": 0.0005322992343639352,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3604068
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9363259331544279,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              140,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              9
+            ],
+            [
+              0,
+              49,
+              0,
+              0,
+              4,
+              0,
+              1,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              50,
+              0,
+              0,
+              1,
+              1,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              55,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              52,
+              0,
+              0,
+              0,
+              5
+            ],
+            [
+              0,
+              1,
+              2,
+              0,
+              0,
+              798,
+              4,
+              4,
+              47
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              2,
+              138,
+              2,
+              7
+            ],
+            [
+              1,
+              0,
+              6,
+              0,
+              0,
+              3,
+              2,
+              411,
+              12
+            ],
+            [
+              38,
+              1,
+              0,
+              0,
+              5,
+              234,
+              15,
+              97,
+              5983
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8695652173913043,
+          "precision": 0.8620689655172413,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "false_supported_count": 390,
+        "false_supported_rate": 0.06119566922956222,
+        "freeze_card_metrics": {
+          "f1": 0.8813559322033898,
+          "precision": 0.8524590163934426,
+          "recall": 0.9122807017543859,
+          "support": 57
+        },
+        "macro_f1": 0.8877679746785502,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.835820895522388,
+            "precision": 0.7692307692307693,
+            "recall": 0.9150326797385621,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8828828828828829,
+            "precision": 0.9074074074074074,
+            "recall": 0.8596491228070176,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8695652173913043,
+            "precision": 0.8620689655172413,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9821428571428571,
+            "precision": 1.0,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8813559322033898,
+            "precision": 0.8524590163934426,
+            "recall": 0.9122807017543859,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8422163588390501,
+            "precision": 0.7680461982675649,
+            "recall": 0.9322429906542056,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8706624605678234,
+            "precision": 0.8414634146341463,
+            "recall": 0.9019607843137255,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.8634453781512605,
+            "precision": 0.7949709864603481,
+            "recall": 0.9448275862068966,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9618197894059963,
+            "precision": 0.9859920896506262,
+            "recall": 0.9388043307704378,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 17,
+        "protected_write_false_positive_rate": 0.002102919346857991,
+        "protected_write_recall": 0.8947368421052632,
+        "supported_intent_accuracy": 0.9276712328767124,
+        "unsupported_or_uncertain_recall": 0.9388043307704378,
+        "weighted_f1": 0.9384501569573808
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.002102919346857991
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8947368421052632
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9388043307704378
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9304961902992009,
+          "count": 5381,
+          "false_supported_rate": 0.07302325581395348,
+          "macro_f1_over_classes_present": 0.892458450347879,
+          "unsupported_or_uncertain_recall": 0.9269767441860465
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9631076388888888,
+          "count": 2304,
+          "false_supported_rate": 0.036210317460317464,
+          "macro_f1_over_classes_present": 0.9207937100929169,
+          "unsupported_or_uncertain_recall": 0.9637896825396826
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8771929824561403,
+          "count": 513,
+          "false_supported_rate": 0.05263157894736842,
+          "macro_f1_over_classes_present": 0.8780738077231486,
+          "unsupported_or_uncertain_recall": 0.9473684210526315
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_v2c1_tfidf_balanced_sgd",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "sgd_classifier_balanced",
+        "classifier_definition": {
+          "class": "SGDClassifier",
+          "parameters": {
+            "alpha": 0.0001,
+            "average": false,
+            "class_weight": "balanced",
+            "early_stopping": false,
+            "epsilon": 0.1,
+            "eta0": 0.01,
+            "fit_intercept": true,
+            "l1_ratio": 0.15,
+            "learning_rate": "optimal",
+            "loss": "hinge",
+            "max_iter": 1000,
+            "n_iter_no_change": 5,
+            "n_jobs": null,
+            "penalty": "l2",
+            "power_t": 0.5,
+            "random_state": 20260928,
+            "shuffle": true,
+            "tol": 0.001,
+            "validation_fraction": 0.1,
+            "verbose": 0,
+            "warm_start": false
+          }
+        },
+        "id": "direct_v2c1_tfidf_balanced_sgd",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 8,
+      "fold_metrics": [
+        {
+          "accuracy": 0.973780487804878,
+          "example_count": 1640,
+          "macro_f1": 0.9271174318797326,
+          "validation_fold": 0,
+          "weighted_f1": 0.9733145406720299
+        },
+        {
+          "accuracy": 0.9621951219512195,
+          "example_count": 1640,
+          "macro_f1": 0.8654137044943211,
+          "validation_fold": 1,
+          "weighted_f1": 0.9621496429457703
+        },
+        {
+          "accuracy": 0.9512195121951219,
+          "example_count": 1640,
+          "macro_f1": 0.8610435978708205,
+          "validation_fold": 2,
+          "weighted_f1": 0.951264371938541
+        },
+        {
+          "accuracy": 0.9627821842586943,
+          "example_count": 1639,
+          "macro_f1": 0.9242696857825309,
+          "validation_fold": 3,
+          "weighted_f1": 0.9627947846686377
+        },
+        {
+          "accuracy": 0.9652226967663209,
+          "example_count": 1639,
+          "macro_f1": 0.8977117972671339,
+          "validation_fold": 4,
+          "weighted_f1": 0.9644680132892557
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.4248749939724803,
+          "p90_ms": 1.5532003482803702,
+          "p95_ms": 1.609705941518768
+        }
+      },
+      "macro_f1_mean": 0.8951112434589078,
+      "macro_f1_standard_deviation": 0.028014003757219505,
+      "macro_f1_variance": 0.0007847844065095085,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3604362
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9630397657965357,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              134,
+              1,
+              0,
+              0,
+              0,
+              1,
+              3,
+              0,
+              14
+            ],
+            [
+              0,
+              41,
+              0,
+              0,
+              8,
+              1,
+              2,
+              1,
+              4
+            ],
+            [
+              0,
+              0,
+              45,
+              0,
+              0,
+              1,
+              2,
+              7,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              54,
+              0,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              0,
+              1,
+              0,
+              0,
+              787,
+              0,
+              3,
+              65
+            ],
+            [
+              3,
+              0,
+              0,
+              0,
+              0,
+              1,
+              138,
+              1,
+              10
+            ],
+            [
+              1,
+              0,
+              6,
+              0,
+              0,
+              2,
+              0,
+              402,
+              24
+            ],
+            [
+              12,
+              1,
+              0,
+              0,
+              1,
+              83,
+              4,
+              29,
+              6243
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8256880733944955,
+          "precision": 0.8653846153846154,
+          "recall": 0.7894736842105263,
+          "support": 57
+        },
+        "false_supported_count": 130,
+        "false_supported_rate": 0.020398556409854073,
+        "freeze_card_metrics": {
+          "f1": 0.8717948717948718,
+          "precision": 0.85,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.8991836492383709,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8844884488448845,
+            "precision": 0.8933333333333333,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.82,
+            "precision": 0.9534883720930233,
+            "recall": 0.7192982456140351,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8256880733944955,
+            "precision": 0.8653846153846154,
+            "recall": 0.7894736842105263,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.972972972972973,
+            "precision": 1.0,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8717948717948718,
+            "precision": 0.85,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9082515868436237,
+            "precision": 0.8973774230330672,
+            "recall": 0.919392523364486,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9139072847682119,
+            "precision": 0.9261744966442953,
+            "recall": 0.9019607843137255,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9157175398633257,
+            "precision": 0.90744920993228,
+            "recall": 0.9241379310344827,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9798320646629523,
+            "precision": 0.9800627943485086,
+            "recall": 0.9796014435901459,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 16,
+        "protected_write_false_positive_rate": 0.0019792182088075212,
+        "protected_write_recall": 0.8421052631578947,
+        "supported_intent_accuracy": 0.9052054794520548,
+        "unsupported_or_uncertain_recall": 0.9796014435901459,
+        "weighted_f1": 0.962964231624023
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0019792182088075212
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8421052631578947
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9796014435901459
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.963018026389147,
+          "count": 5381,
+          "false_supported_rate": 0.02558139534883721,
+          "macro_f1_over_classes_present": 0.9370236359591458,
+          "unsupported_or_uncertain_recall": 0.9744186046511628
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9852430555555556,
+          "count": 2304,
+          "false_supported_rate": 0.009424603174603174,
+          "macro_f1_over_classes_present": 0.9601525824429965,
+          "unsupported_or_uncertain_recall": 0.9905753968253969
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8635477582846004,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.865668428861216,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_v2c1_tfidf_balanced_ridge",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "ridge_classifier_balanced",
+        "classifier_definition": {
+          "class": "RidgeClassifier",
+          "parameters": {
+            "alpha": 1.0,
+            "class_weight": "balanced",
+            "copy_X": true,
+            "fit_intercept": true,
+            "max_iter": null,
+            "positive": false,
+            "random_state": null,
+            "solver": "auto",
+            "tol": 0.0001
+          }
+        },
+        "id": "direct_v2c1_tfidf_balanced_ridge",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 7,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9567073170731707,
+          "example_count": 1640,
+          "macro_f1": 0.9264021949619925,
+          "validation_fold": 0,
+          "weighted_f1": 0.9578519634335391
+        },
+        {
+          "accuracy": 0.95,
+          "example_count": 1640,
+          "macro_f1": 0.9147128184760659,
+          "validation_fold": 1,
+          "weighted_f1": 0.9511904921069819
+        },
+        {
+          "accuracy": 0.9420731707317073,
+          "example_count": 1640,
+          "macro_f1": 0.8511991928199135,
+          "validation_fold": 2,
+          "weighted_f1": 0.9430563611597301
+        },
+        {
+          "accuracy": 0.9548505186089079,
+          "example_count": 1639,
+          "macro_f1": 0.922922803096961,
+          "validation_fold": 3,
+          "weighted_f1": 0.9559664988954273
+        },
+        {
+          "accuracy": 0.9542403904820013,
+          "example_count": 1639,
+          "macro_f1": 0.886996250986979,
+          "validation_fold": 4,
+          "weighted_f1": 0.9548523936051795
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.4524375437758863,
+          "p90_ms": 1.5870621311478317,
+          "p95_ms": 1.6647396143525839
+        }
+      },
+      "macro_f1_mean": 0.9004466520683824,
+      "macro_f1_standard_deviation": 0.028243996203134728,
+      "macro_f1_variance": 0.0007977233215226889,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3604996
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.951573554525494,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              139,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              10
+            ],
+            [
+              1,
+              48,
+              0,
+              0,
+              3,
+              3,
+              1,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              51,
+              0,
+              0,
+              1,
+              1,
+              4,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              54,
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              2,
+              0,
+              0,
+              805,
+              1,
+              4,
+              43
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              0,
+              142,
+              0,
+              9
+            ],
+            [
+              1,
+              0,
+              4,
+              0,
+              0,
+              3,
+              0,
+              415,
+              12
+            ],
+            [
+              25,
+              2,
+              0,
+              1,
+              11,
+              164,
+              8,
+              68,
+              6094
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8947368421052632,
+          "precision": 0.8947368421052632,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "false_supported_count": 279,
+        "false_supported_rate": 0.04377844029499451,
+        "freeze_card_metrics": {
+          "f1": 0.864,
+          "precision": 0.7941176470588235,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "macro_f1": 0.902838131797924,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8660436137071651,
+            "precision": 0.8273809523809523,
+            "recall": 0.9084967320261438,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8807339449541285,
+            "precision": 0.9230769230769231,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8947368421052632,
+            "precision": 0.8947368421052632,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.954954954954955,
+            "precision": 0.9814814814814815,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.864,
+            "precision": 0.7941176470588235,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.878341516639389,
+            "precision": 0.8239508700102354,
+            "recall": 0.9404205607476636,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.919093851132686,
+            "precision": 0.9102564102564102,
+            "recall": 0.9281045751633987,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.896328293736501,
+            "precision": 0.845213849287169,
+            "recall": 0.9540229885057471,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9713101689512272,
+            "precision": 0.9868825910931174,
+            "recall": 0.9562215597050054,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 20,
+        "protected_write_false_positive_rate": 0.002474022761009401,
+        "protected_write_recall": 0.9210526315789473,
+        "supported_intent_accuracy": 0.9353424657534246,
+        "unsupported_or_uncertain_recall": 0.9562215597050054,
+        "weighted_f1": 0.9526629851378606
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.002474022761009401
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9210526315789473
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9562215597050054
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9466641888124884,
+          "count": 5381,
+          "false_supported_rate": 0.05325581395348837,
+          "macro_f1_over_classes_present": 0.9147481554532836,
+          "unsupported_or_uncertain_recall": 0.9467441860465117
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9752604166666666,
+          "count": 2304,
+          "false_supported_rate": 0.023809523809523808,
+          "macro_f1_over_classes_present": 0.951897544976084,
+          "unsupported_or_uncertain_recall": 0.9761904761904762
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8966861598440545,
+          "count": 513,
+          "false_supported_rate": 0.03508771929824561,
+          "macro_f1_over_classes_present": 0.8983139314721842,
+          "unsupported_or_uncertain_recall": 0.9649122807017544
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_word_tfidf_balanced_svc",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "linear_svc_balanced",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "direct_word_tfidf_balanced_svc",
+        "representation": "word_tfidf",
+        "representation_definition": {
+          "family": "sparse_lexical",
+          "transform": "single_vectorizer",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 2,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9689024390243902,
+          "example_count": 1640,
+          "macro_f1": 0.94430332643479,
+          "validation_fold": 0,
+          "weighted_f1": 0.9688663513515079
+        },
+        {
+          "accuracy": 0.9664634146341463,
+          "example_count": 1640,
+          "macro_f1": 0.9189040560477848,
+          "validation_fold": 1,
+          "weighted_f1": 0.9661399925725483
+        },
+        {
+          "accuracy": 0.9554878048780487,
+          "example_count": 1640,
+          "macro_f1": 0.9063743492191197,
+          "validation_fold": 2,
+          "weighted_f1": 0.9553453497499954
+        },
+        {
+          "accuracy": 0.959731543624161,
+          "example_count": 1639,
+          "macro_f1": 0.9260719586495875,
+          "validation_fold": 3,
+          "weighted_f1": 0.9597517996149386
+        },
+        {
+          "accuracy": 0.9585112873703477,
+          "example_count": 1639,
+          "macro_f1": 0.8829435336240302,
+          "validation_fold": 4,
+          "weighted_f1": 0.9574509806276235
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 0.4370624665170908,
+          "p90_ms": 0.4760625073686242,
+          "p95_ms": 0.4961753729730844
+        }
+      },
+      "macro_f1_mean": 0.9157194447950625,
+      "macro_f1_standard_deviation": 0.020474109240442916,
+      "macro_f1_variance": 0.00041918914918959003,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 1828737
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9618199560868504,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              132,
+              1,
+              0,
+              0,
+              0,
+              1,
+              3,
+              0,
+              16
+            ],
+            [
+              0,
+              51,
+              0,
+              0,
+              0,
+              0,
+              1,
+              1,
+              4
+            ],
+            [
+              0,
+              0,
+              49,
+              0,
+              0,
+              1,
+              1,
+              5,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              52,
+              0,
+              0,
+              0,
+              0,
+              5
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              50,
+              0,
+              0,
+              0,
+              7
+            ],
+            [
+              0,
+              1,
+              0,
+              0,
+              0,
+              768,
+              1,
+              3,
+              83
+            ],
+            [
+              2,
+              0,
+              0,
+              0,
+              0,
+              1,
+              134,
+              1,
+              15
+            ],
+            [
+              0,
+              0,
+              5,
+              0,
+              0,
+              1,
+              0,
+              397,
+              32
+            ],
+            [
+              10,
+              1,
+              0,
+              0,
+              0,
+              75,
+              4,
+              31,
+              6252
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8828828828828829,
+          "precision": 0.9074074074074074,
+          "recall": 0.8596491228070176,
+          "support": 57
+        },
+        "false_supported_count": 121,
+        "false_supported_rate": 0.018986348658402635,
+        "freeze_card_metrics": {
+          "f1": 0.9345794392523364,
+          "precision": 1.0,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "macro_f1": 0.91899915053957,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8888888888888888,
+            "precision": 0.9166666666666666,
+            "recall": 0.8627450980392157,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.918918918918919,
+            "precision": 0.9444444444444444,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8828828828828829,
+            "precision": 0.9074074074074074,
+            "recall": 0.8596491228070176,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9541284403669725,
+            "precision": 1.0,
+            "recall": 0.9122807017543859,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9345794392523364,
+            "precision": 1.0,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.901937756899589,
+            "precision": 0.9067296340023613,
+            "recall": 0.897196261682243,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9023569023569024,
+            "precision": 0.9305555555555556,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9095074455899198,
+            "precision": 0.906392694063927,
+            "recall": 0.9126436781609195,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9777916796997185,
+            "precision": 0.9745908028059236,
+            "recall": 0.9810136513415973,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 5,
+        "protected_write_false_positive_rate": 0.0006185056902523503,
+        "protected_write_recall": 0.868421052631579,
+        "supported_intent_accuracy": 0.8947945205479452,
+        "unsupported_or_uncertain_recall": 0.9810136513415973,
+        "weighted_f1": 0.9616468030453255
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0006185056902523503
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.868421052631579
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9810136513415973
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9604162795019513,
+          "count": 5381,
+          "false_supported_rate": 0.02441860465116279,
+          "macro_f1_over_classes_present": 0.9309131365827437,
+          "unsupported_or_uncertain_recall": 0.9755813953488373
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9848090277777778,
+          "count": 2304,
+          "false_supported_rate": 0.00744047619047619,
+          "macro_f1_over_classes_present": 0.9565282929176508,
+          "unsupported_or_uncertain_recall": 0.9925595238095238
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8732943469785575,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8798059770551445,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_char_tfidf_balanced_svc",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "linear_svc_balanced",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "direct_char_tfidf_balanced_svc",
+        "representation": "char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "single_vectorizer"
+        }
+      },
+      "eligible_rank": 9,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9597560975609756,
+          "example_count": 1640,
+          "macro_f1": 0.8876325721992521,
+          "validation_fold": 0,
+          "weighted_f1": 0.9593165757876729
+        },
+        {
+          "accuracy": 0.9573170731707317,
+          "example_count": 1640,
+          "macro_f1": 0.9294975659466306,
+          "validation_fold": 1,
+          "weighted_f1": 0.9576638007367383
+        },
+        {
+          "accuracy": 0.9432926829268292,
+          "example_count": 1640,
+          "macro_f1": 0.8663845892263714,
+          "validation_fold": 2,
+          "weighted_f1": 0.9441531222217391
+        },
+        {
+          "accuracy": 0.9536302623550945,
+          "example_count": 1639,
+          "macro_f1": 0.9105538926280141,
+          "validation_fold": 3,
+          "weighted_f1": 0.9541294566747069
+        },
+        {
+          "accuracy": 0.9548505186089079,
+          "example_count": 1639,
+          "macro_f1": 0.8789823636614974,
+          "validation_fold": 4,
+          "weighted_f1": 0.9543803820193959
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 0.4812499973922968,
+          "p90_ms": 0.5493792472407222,
+          "p95_ms": 0.5790437338873744
+        }
+      },
+      "macro_f1_mean": 0.894610196732353,
+      "macro_f1_standard_deviation": 0.022631532423606795,
+      "macro_f1_variance": 0.0005121862598407656,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 1777185
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9537692120029275,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              139,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              11
+            ],
+            [
+              0,
+              45,
+              0,
+              0,
+              5,
+              3,
+              1,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              47,
+              0,
+              0,
+              1,
+              2,
+              6,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              48,
+              0,
+              1,
+              0,
+              0,
+              8
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              52,
+              0,
+              0,
+              1,
+              4
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              774,
+              1,
+              2,
+              77
+            ],
+            [
+              2,
+              1,
+              0,
+              0,
+              0,
+              1,
+              141,
+              1,
+              7
+            ],
+            [
+              0,
+              0,
+              2,
+              0,
+              0,
+              3,
+              2,
+              407,
+              21
+            ],
+            [
+              10,
+              2,
+              0,
+              0,
+              3,
+              142,
+              4,
+              46,
+              6166
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8785046728971962,
+          "precision": 0.94,
+          "recall": 0.8245614035087719,
+          "support": 57
+        },
+        "false_supported_count": 207,
+        "false_supported_rate": 0.03248077828338302,
+        "freeze_card_metrics": {
+          "f1": 0.8888888888888888,
+          "precision": 0.8666666666666667,
+          "recall": 0.9122807017543859,
+          "support": 57
+        },
+        "macro_f1": 0.9005330509963844,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.9144736842105263,
+            "precision": 0.9205298013245033,
+            "recall": 0.9084967320261438,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8411214953271028,
+            "precision": 0.9,
+            "recall": 0.7894736842105263,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8785046728971962,
+            "precision": 0.94,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9142857142857143,
+            "precision": 1.0,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8888888888888888,
+            "precision": 0.8666666666666667,
+            "recall": 0.9122807017543859,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8691746209994385,
+            "precision": 0.8367567567567568,
+            "recall": 0.9042056074766355,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9185667752442996,
+            "precision": 0.9155844155844156,
+            "recall": 0.9215686274509803,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9064587973273942,
+            "precision": 0.8790496760259179,
+            "recall": 0.9356321839080459,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9733228097868982,
+            "precision": 0.9791964427505161,
+            "recall": 0.967519221716617,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 11,
+        "protected_write_false_positive_rate": 0.0013607125185551706,
+        "protected_write_recall": 0.868421052631579,
+        "supported_intent_accuracy": 0.9057534246575343,
+        "unsupported_or_uncertain_recall": 0.967519221716617,
+        "weighted_f1": 0.9542039709015814
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0013607125185551706
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.868421052631579
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.967519221716617
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9483367403828284,
+          "count": 5381,
+          "false_supported_rate": 0.04232558139534884,
+          "macro_f1_over_classes_present": 0.9160386467375488,
+          "unsupported_or_uncertain_recall": 0.9576744186046512
+        },
+        "clinc150_oos": {
+          "accuracy": 0.984375,
+          "count": 2304,
+          "false_supported_rate": 0.011408730158730158,
+          "macro_f1_over_classes_present": 0.9592155010858128,
+          "unsupported_or_uncertain_recall": 0.9885912698412699
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8732943469785575,
+          "count": 513,
+          "false_supported_rate": 0.03508771929824561,
+          "macro_f1_over_classes_present": 0.8758606272086289,
+          "unsupported_or_uncertain_recall": 0.9649122807017544
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_alt_tfidf_balanced_svc",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "linear_svc_balanced",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "direct_alt_tfidf_balanced_svc",
+        "representation": "word_char_tfidf_alt",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 0.995,
+            "max_features": null,
+            "min_df": 2,
+            "ngram_range": [
+              3,
+              6
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "difference_from_v2c1": "Drops fold-local singletons, caps terms present in more than 99.5% of a training fold, and extends char_wb through 6-grams.",
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 0.995,
+            "max_features": null,
+            "min_df": 2,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 3,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9713414634146341,
+          "example_count": 1640,
+          "macro_f1": 0.9237547795984776,
+          "validation_fold": 0,
+          "weighted_f1": 0.9709934345901157
+        },
+        {
+          "accuracy": 0.9682926829268292,
+          "example_count": 1640,
+          "macro_f1": 0.9153307284340833,
+          "validation_fold": 1,
+          "weighted_f1": 0.9681660347418313
+        },
+        {
+          "accuracy": 0.9573170731707317,
+          "example_count": 1640,
+          "macro_f1": 0.9021993530853065,
+          "validation_fold": 2,
+          "weighted_f1": 0.9575604322980756
+        },
+        {
+          "accuracy": 0.9627821842586943,
+          "example_count": 1639,
+          "macro_f1": 0.9307629184747422,
+          "validation_fold": 3,
+          "weighted_f1": 0.9629134821373045
+        },
+        {
+          "accuracy": 0.9621720561317877,
+          "example_count": 1639,
+          "macro_f1": 0.8959978929787541,
+          "validation_fold": 4,
+          "weighted_f1": 0.9611864552018095
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.066916505806148,
+          "p90_ms": 1.2005788856185973,
+          "p95_ms": 1.290927390800789
+        }
+      },
+      "macro_f1_mean": 0.9136091345142727,
+      "macro_f1_standard_deviation": 0.012965255451714012,
+      "macro_f1_variance": 0.0001680978489281999,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 2423553
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9643815564771896,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              136,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              13
+            ],
+            [
+              1,
+              50,
+              0,
+              1,
+              2,
+              0,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              46,
+              0,
+              0,
+              1,
+              1,
+              7,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              778,
+              0,
+              5,
+              71
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              1,
+              138,
+              1,
+              9
+            ],
+            [
+              1,
+              0,
+              2,
+              0,
+              0,
+              2,
+              1,
+              403,
+              26
+            ],
+            [
+              9,
+              0,
+              0,
+              0,
+              1,
+              76,
+              5,
+              31,
+              6251
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8679245283018868,
+          "precision": 0.9387755102040817,
+          "recall": 0.8070175438596491,
+          "support": 57
+        },
+        "false_supported_count": 122,
+        "false_supported_rate": 0.01914326063078613,
+        "freeze_card_metrics": {
+          "f1": 0.918918918918919,
+          "precision": 0.9444444444444444,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.9176156916390101,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8976897689768977,
+            "precision": 0.9066666666666666,
+            "recall": 0.8888888888888888,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9009009009009009,
+            "precision": 0.9259259259259259,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8679245283018868,
+            "precision": 0.9387755102040817,
+            "recall": 0.8070175438596491,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.954954954954955,
+            "precision": 0.9814814814814815,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.918918918918919,
+            "precision": 0.9444444444444444,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9072886297376094,
+            "precision": 0.9057043073341094,
+            "recall": 0.9088785046728972,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9169435215946844,
+            "precision": 0.9324324324324325,
+            "recall": 0.9019607843137255,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9138321995464853,
+            "precision": 0.901565995525727,
+            "recall": 0.9264367816091954,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.980087801818752,
+            "precision": 0.9793200689331035,
+            "recall": 0.9808567393692139,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 6,
+        "protected_write_false_positive_rate": 0.0007422068283028204,
+        "protected_write_recall": 0.8508771929824561,
+        "supported_intent_accuracy": 0.9068493150684932,
+        "unsupported_or_uncertain_recall": 0.9808567393692139,
+        "weighted_f1": 0.964324028858483
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0007422068283028204
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8508771929824561
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9808567393692139
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9619029920089203,
+          "count": 5381,
+          "false_supported_rate": 0.02488372093023256,
+          "macro_f1_over_classes_present": 0.9337502059450952,
+          "unsupported_or_uncertain_recall": 0.9751162790697674
+        },
+        "clinc150_oos": {
+          "accuracy": 0.98828125,
+          "count": 2304,
+          "false_supported_rate": 0.006944444444444444,
+          "macro_f1_over_classes_present": 0.9681911151087754,
+          "unsupported_or_uncertain_recall": 0.9930555555555556
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8830409356725146,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8860184256034699,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_lsa_balanced_svc",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "linear_svc_balanced",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "direct_lsa_balanced_svc",
+        "representation": "tfidf_lsa",
+        "representation_definition": {
+          "family": "dense_lsa",
+          "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+          "normalizer": {
+            "copy": false,
+            "norm": "l2"
+          },
+          "tfidf_base": "v2c1_word_char_tfidf",
+          "transform": "tfidf_then_truncated_svd_then_normalize",
+          "truncated_svd": {
+            "algorithm": "randomized",
+            "n_components": 256,
+            "n_iter": 5,
+            "random_state": 20260928
+          }
+        }
+      },
+      "eligible_rank": 11,
+      "fold_metrics": [
+        {
+          "accuracy": 0.947560975609756,
+          "example_count": 1640,
+          "macro_f1": 0.9097675691463832,
+          "validation_fold": 0,
+          "weighted_f1": 0.9488059877836419
+        },
+        {
+          "accuracy": 0.926829268292683,
+          "example_count": 1640,
+          "macro_f1": 0.8328848442206799,
+          "validation_fold": 1,
+          "weighted_f1": 0.9287750959446723
+        },
+        {
+          "accuracy": 0.9292682926829269,
+          "example_count": 1640,
+          "macro_f1": 0.8499836125938657,
+          "validation_fold": 2,
+          "weighted_f1": 0.9315115072983894
+        },
+        {
+          "accuracy": 0.9298352654057352,
+          "example_count": 1639,
+          "macro_f1": 0.884443234193983,
+          "validation_fold": 3,
+          "weighted_f1": 0.9316172183476781
+        },
+        {
+          "accuracy": 0.9395973154362416,
+          "example_count": 1639,
+          "macro_f1": 0.8649845950034682,
+          "validation_fold": 4,
+          "weighted_f1": 0.9405252889401595
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 5.170791991986334,
+          "p90_ms": 6.24462878331542,
+          "p95_ms": 6.854837830178438
+        }
+      },
+      "macro_f1_mean": 0.868412771031676,
+      "macro_f1_standard_deviation": 0.026761221688854434,
+      "macro_f1_variance": 0.0007161629862800129,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 80035183
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9346181995608686,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              135,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              46,
+              0,
+              1,
+              6,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              50,
+              0,
+              0,
+              1,
+              1,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              55,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              55,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              6,
+              3,
+              0,
+              754,
+              1,
+              8,
+              83
+            ],
+            [
+              8,
+              1,
+              0,
+              0,
+              0,
+              1,
+              137,
+              1,
+              5
+            ],
+            [
+              0,
+              1,
+              17,
+              0,
+              1,
+              5,
+              2,
+              388,
+              21
+            ],
+            [
+              22,
+              3,
+              2,
+              3,
+              1,
+              209,
+              10,
+              81,
+              6042
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.7575757575757576,
+          "precision": 0.6666666666666666,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "false_supported_count": 331,
+        "false_supported_rate": 0.05193786285893614,
+        "freeze_card_metrics": {
+          "f1": 0.9166666666666666,
+          "precision": 0.873015873015873,
+          "recall": 0.9649122807017544,
+          "support": 57
+        },
+        "macro_f1": 0.8684955688886552,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8463949843260188,
+            "precision": 0.8132530120481928,
+            "recall": 0.8823529411764706,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8440366972477065,
+            "precision": 0.8846153846153846,
+            "recall": 0.8070175438596491,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.7575757575757576,
+            "precision": 0.6666666666666666,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9243697478991597,
+            "precision": 0.8870967741935484,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9166666666666666,
+            "precision": 0.873015873015873,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8244942591580099,
+            "precision": 0.774922918807811,
+            "recall": 0.8808411214953271,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8925081433224755,
+            "precision": 0.8896103896103896,
+            "recall": 0.8954248366013072,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.8471615720524017,
+            "precision": 0.8066528066528067,
+            "recall": 0.8919540229885058,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9632522917497011,
+            "precision": 0.9789371354504213,
+            "recall": 0.9480621371410639,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 33,
+        "protected_write_false_positive_rate": 0.004082137555665512,
+        "protected_write_recall": 0.9210526315789473,
+        "supported_intent_accuracy": 0.8876712328767123,
+        "unsupported_or_uncertain_recall": 0.9480621371410639,
+        "weighted_f1": 0.9362493765660289
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.004082137555665512
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9210526315789473
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9480621371410639
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9299386731090875,
+          "count": 5381,
+          "false_supported_rate": 0.06302325581395349,
+          "macro_f1_over_classes_present": 0.888894885031792,
+          "unsupported_or_uncertain_recall": 0.9369767441860465
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9709201388888888,
+          "count": 2304,
+          "false_supported_rate": 0.025793650793650792,
+          "macro_f1_over_classes_present": 0.9325229271009885,
+          "unsupported_or_uncertain_recall": 0.9742063492063492
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8206627680311891,
+          "count": 513,
+          "false_supported_rate": 0.14035087719298245,
+          "macro_f1_over_classes_present": 0.8192590998108903,
+          "unsupported_or_uncertain_recall": 0.8596491228070176
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_lsa_balanced_logreg",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "logistic_regression_balanced",
+        "classifier_definition": {
+          "class": "LogisticRegression",
+          "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": false,
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "l1_ratio": 0.0,
+            "max_iter": 2000,
+            "n_jobs": null,
+            "random_state": 20260928,
+            "solver": "lbfgs",
+            "tol": 0.0001,
+            "verbose": 0,
+            "warm_start": false
+          }
+        },
+        "id": "direct_lsa_balanced_logreg",
+        "representation": "tfidf_lsa",
+        "representation_definition": {
+          "family": "dense_lsa",
+          "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+          "normalizer": {
+            "copy": false,
+            "norm": "l2"
+          },
+          "tfidf_base": "v2c1_word_char_tfidf",
+          "transform": "tfidf_then_truncated_svd_then_normalize",
+          "truncated_svd": {
+            "algorithm": "randomized",
+            "n_components": 256,
+            "n_iter": 5,
+            "random_state": 20260928
+          }
+        }
+      },
+      "eligible_rank": 12,
+      "fold_metrics": [
+        {
+          "accuracy": 0.8902439024390244,
+          "example_count": 1640,
+          "macro_f1": 0.8119098465785908,
+          "validation_fold": 0,
+          "weighted_f1": 0.8975871345546945
+        },
+        {
+          "accuracy": 0.8847560975609756,
+          "example_count": 1640,
+          "macro_f1": 0.7736382785090149,
+          "validation_fold": 1,
+          "weighted_f1": 0.8925840953118507
+        },
+        {
+          "accuracy": 0.8810975609756098,
+          "example_count": 1640,
+          "macro_f1": 0.7761615458135579,
+          "validation_fold": 2,
+          "weighted_f1": 0.8893228243046752
+        },
+        {
+          "accuracy": 0.8926174496644296,
+          "example_count": 1639,
+          "macro_f1": 0.8207932020931046,
+          "validation_fold": 3,
+          "weighted_f1": 0.8992162693090484
+        },
+        {
+          "accuracy": 0.8974984746796827,
+          "example_count": 1639,
+          "macro_f1": 0.8172808240641392,
+          "validation_fold": 4,
+          "weighted_f1": 0.9026596678297465
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 4.821228969376534,
+          "p90_ms": 5.602262786123902,
+          "p95_ms": 5.861091014230624
+        }
+      },
+      "macro_f1_mean": 0.7999567394116814,
+      "macro_f1_standard_deviation": 0.02066896939724304,
+      "macro_f1_variance": 0.0004272062959441693,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 80035299
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.8892412783605758,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              139,
+              0,
+              0,
+              0,
+              0,
+              0,
+              6,
+              0,
+              8
+            ],
+            [
+              0,
+              47,
+              0,
+              1,
+              5,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              51,
+              0,
+              0,
+              1,
+              1,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              56,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              54,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              1,
+              9,
+              4,
+              2,
+              781,
+              9,
+              2,
+              48
+            ],
+            [
+              8,
+              2,
+              0,
+              0,
+              0,
+              0,
+              137,
+              2,
+              4
+            ],
+            [
+              1,
+              2,
+              22,
+              0,
+              1,
+              4,
+              2,
+              395,
+              8
+            ],
+            [
+              85,
+              14,
+              3,
+              3,
+              18,
+              409,
+              35,
+              176,
+              5630
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.7183098591549296,
+          "precision": 0.6,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "false_supported_count": 743,
+        "false_supported_rate": 0.1165855954809352,
+        "freeze_card_metrics": {
+          "f1": 0.7883211678832117,
+          "precision": 0.675,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "macro_f1": 0.7986888337639737,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.7202072538860104,
+            "precision": 0.5965665236051502,
+            "recall": 0.9084967320261438,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.7642276422764228,
+            "precision": 0.7121212121212122,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.7183098591549296,
+            "precision": 0.6,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9256198347107438,
+            "precision": 0.875,
+            "recall": 0.9824561403508771,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.7883211678832117,
+            "precision": 0.675,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.7604673807205453,
+            "precision": 0.6519198664440734,
+            "recall": 0.9123831775700935,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.7988338192419825,
+            "precision": 0.7210526315789474,
+            "recall": 0.8954248366013072,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.7798617966436328,
+            "precision": 0.6833910034602076,
+            "recall": 0.9080459770114943,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9323507493582843,
+            "precision": 0.9870266479663394,
+            "recall": 0.8834144045190648,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 60,
+        "protected_write_false_positive_rate": 0.007422068283028204,
+        "protected_write_recall": 0.9210526315789473,
+        "supported_intent_accuracy": 0.9095890410958904,
+        "unsupported_or_uncertain_recall": 0.8834144045190648,
+        "weighted_f1": 0.896155628691771
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.007422068283028204
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9210526315789473
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8834144045190648
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.8827355510128229,
+          "count": 5381,
+          "false_supported_rate": 0.1325581395348837,
+          "macro_f1_over_classes_present": 0.834640454694085,
+          "unsupported_or_uncertain_recall": 0.8674418604651163
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9270833333333334,
+          "count": 2304,
+          "false_supported_rate": 0.07886904761904762,
+          "macro_f1_over_classes_present": 0.8672349240494965,
+          "unsupported_or_uncertain_recall": 0.9211309523809523
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.7875243664717348,
+          "count": 513,
+          "false_supported_rate": 0.24561403508771928,
+          "macro_f1_over_classes_present": 0.7831597483663416,
+          "unsupported_or_uncertain_recall": 0.7543859649122807
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_bge_balanced_svc",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "linear_svc_balanced",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "direct_bge_balanced_svc",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": 4,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9579268292682926,
+          "example_count": 1640,
+          "macro_f1": 0.9204508770662988,
+          "validation_fold": 0,
+          "weighted_f1": 0.958629057078666
+        },
+        {
+          "accuracy": 0.9530487804878048,
+          "example_count": 1640,
+          "macro_f1": 0.9224780328007678,
+          "validation_fold": 1,
+          "weighted_f1": 0.954009455547358
+        },
+        {
+          "accuracy": 0.9408536585365853,
+          "example_count": 1640,
+          "macro_f1": 0.883764861257671,
+          "validation_fold": 2,
+          "weighted_f1": 0.9428556562209338
+        },
+        {
+          "accuracy": 0.9469188529591214,
+          "example_count": 1639,
+          "macro_f1": 0.9011615765142102,
+          "validation_fold": 3,
+          "weighted_f1": 0.9482054753492137
+        },
+        {
+          "accuracy": 0.9572910311165345,
+          "example_count": 1639,
+          "macro_f1": 0.9240714311943334,
+          "validation_fold": 4,
+          "weighted_f1": 0.9578655032445444
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.098041957244277,
+          "p90_ms": 0.11045021237805486,
+          "p95_ms": 0.11297151213511825
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 10.034104518126696,
+          "p90_ms": 18.865262845065445,
+          "p95_ms": 27.57732711615967
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.9103853557666562,
+      "macro_f1_standard_deviation": 0.015675363147932015,
+      "macro_f1_variance": 0.0002457170098195451,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 29307,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9512076116125885,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              146,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              4
+            ],
+            [
+              0,
+              54,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              54,
+              0,
+              0,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              55,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              3,
+              0,
+              2,
+              3,
+              3,
+              780,
+              1,
+              0,
+              64
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              144,
+              1,
+              4
+            ],
+            [
+              0,
+              1,
+              5,
+              0,
+              0,
+              1,
+              1,
+              415,
+              12
+            ],
+            [
+              20,
+              3,
+              3,
+              7,
+              5,
+              177,
+              10,
+              51,
+              6097
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8925619834710744,
+          "precision": 0.84375,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "false_supported_count": 276,
+        "false_supported_rate": 0.04330770437784403,
+        "freeze_card_metrics": {
+          "f1": 0.9090909090909091,
+          "precision": 0.859375,
+          "recall": 0.9649122807017544,
+          "support": 57
+        },
+        "macro_f1": 0.9100509592777603,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8957055214723927,
+            "precision": 0.8439306358381503,
+            "recall": 0.954248366013072,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9391304347826087,
+            "precision": 0.9310344827586207,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8925619834710744,
+            "precision": 0.84375,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.8833333333333333,
+            "precision": 0.8412698412698413,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9090909090909091,
+            "precision": 0.859375,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8585580627407815,
+            "precision": 0.8116545265348595,
+            "recall": 0.9112149532710281,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9230769230769231,
+            "precision": 0.9056603773584906,
+            "recall": 0.9411764705882353,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.918141592920354,
+            "precision": 0.8848614072494669,
+            "recall": 0.9540229885057471,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.970859872611465,
+            "precision": 0.9854533699692904,
+            "recall": 0.956692295622156,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 19,
+        "protected_write_false_positive_rate": 0.0023503216229589312,
+        "protected_write_recall": 0.956140350877193,
+        "supported_intent_accuracy": 0.932054794520548,
+        "unsupported_or_uncertain_recall": 0.956692295622156,
+        "weighted_f1": 0.9522390371375965
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0023503216229589312
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.956140350877193
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.956692295622156
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9459208325590039,
+          "count": 5381,
+          "false_supported_rate": 0.05186046511627907,
+          "macro_f1_over_classes_present": 0.9176257507642789,
+          "unsupported_or_uncertain_recall": 0.9481395348837209
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9761284722222222,
+          "count": 2304,
+          "false_supported_rate": 0.021825396825396824,
+          "macro_f1_over_classes_present": 0.9431573641679267,
+          "unsupported_or_uncertain_recall": 0.9781746031746031
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8947368421052632,
+          "count": 513,
+          "false_supported_rate": 0.15789473684210525,
+          "macro_f1_over_classes_present": 0.8942725199367891,
+          "unsupported_or_uncertain_recall": 0.8421052631578947
+        }
+      }
+    },
+    {
+      "candidate_id": "direct_bge_balanced_logreg",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "logistic_regression_balanced",
+        "classifier_definition": {
+          "class": "LogisticRegression",
+          "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": false,
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "l1_ratio": 0.0,
+            "max_iter": 2000,
+            "n_jobs": null,
+            "random_state": 20260928,
+            "solver": "lbfgs",
+            "tol": 0.0001,
+            "verbose": 0,
+            "warm_start": false
+          }
+        },
+        "id": "direct_bge_balanced_logreg",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": null,
+      "fold_metrics": [
+        {
+          "accuracy": 0.8609756097560975,
+          "example_count": 1640,
+          "macro_f1": 0.7733484669991051,
+          "validation_fold": 0,
+          "weighted_f1": 0.8729188350840665
+        },
+        {
+          "accuracy": 0.8658536585365854,
+          "example_count": 1640,
+          "macro_f1": 0.7588895490024652,
+          "validation_fold": 1,
+          "weighted_f1": 0.8767373298824659
+        },
+        {
+          "accuracy": 0.8524390243902439,
+          "example_count": 1640,
+          "macro_f1": 0.7152724445716518,
+          "validation_fold": 2,
+          "weighted_f1": 0.8659060452770235
+        },
+        {
+          "accuracy": 0.8651616839536302,
+          "example_count": 1639,
+          "macro_f1": 0.7377772084632226,
+          "validation_fold": 3,
+          "weighted_f1": 0.8768366813118444
+        },
+        {
+          "accuracy": 0.8852959121415497,
+          "example_count": 1639,
+          "macro_f1": 0.7940378376659795,
+          "validation_fold": 4,
+          "weighted_f1": 0.893848132987345
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.10729196947067976,
+          "p90_ms": 0.19801279995590448,
+          "p95_ms": 0.20259436569176614
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 8.655042038299143,
+          "p90_ms": 11.989912565331906,
+          "p95_ms": 16.555356641765666
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.7558651013404849,
+      "macro_f1_standard_deviation": 0.02737483811561418,
+      "macro_f1_variance": 0.0007493817618560829,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 15595,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.8659429129055868,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              149,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              1
+            ],
+            [
+              0,
+              55,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              55,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              1,
+              55,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              57,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              4,
+              2,
+              7,
+              7,
+              9,
+              793,
+              2,
+              3,
+              29
+            ],
+            [
+              4,
+              0,
+              1,
+              0,
+              0,
+              0,
+              147,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              11,
+              0,
+              0,
+              1,
+              4,
+              412,
+              6
+            ],
+            [
+              162,
+              44,
+              5,
+              26,
+              74,
+              448,
+              34,
+              204,
+              5376
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8029197080291971,
+          "precision": 0.6875,
+          "recall": 0.9649122807017544,
+          "support": 57
+        },
+        "false_supported_count": 997,
+        "false_supported_rate": 0.1564412364663424,
+        "freeze_card_metrics": {
+          "f1": 0.5757575757575758,
+          "precision": 0.40425531914893614,
+          "recall": 1.0,
+          "support": 57
+        },
+        "macro_f1": 0.7512193525320734,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.6313559322033898,
+            "precision": 0.4670846394984326,
+            "recall": 0.9738562091503268,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.6918238993710691,
+            "precision": 0.5392156862745098,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8029197080291971,
+            "precision": 0.6875,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.7534246575342466,
+            "precision": 0.6179775280898876,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.5757575757575758,
+            "precision": 0.40425531914893614,
+            "recall": 1.0,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.7552380952380953,
+            "precision": 0.637459807073955,
+            "recall": 0.9264018691588785,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8571428571428571,
+            "precision": 0.7736842105263158,
+            "recall": 0.9607843137254902,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.781042654028436,
+            "precision": 0.6645161290322581,
+            "recall": 0.9471264367816092,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9122687934837943,
+            "precision": 0.9931646037317569,
+            "recall": 0.8435587635336577,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 109,
+        "protected_write_false_positive_rate": 0.013483424047501236,
+        "protected_write_recall": 0.9824561403508771,
+        "supported_intent_accuracy": 0.9441095890410959,
+        "unsupported_or_uncertain_recall": 0.8435587635336577,
+        "weighted_f1": 0.8769005211744115
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": false,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": false,
+            "threshold": 0.01,
+            "value": 0.013483424047501236
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9824561403508771
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8435587635336577
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.8702843337669578,
+          "count": 5381,
+          "false_supported_rate": 0.15395348837209302,
+          "macro_f1_over_classes_present": 0.8238620982933719,
+          "unsupported_or_uncertain_recall": 0.846046511627907
+        },
+        "clinc150_oos": {
+          "accuracy": 0.8654513888888888,
+          "count": 2304,
+          "false_supported_rate": 0.15079365079365079,
+          "macro_f1_over_classes_present": 0.7871040440653408,
+          "unsupported_or_uncertain_recall": 0.8492063492063492
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8226120857699805,
+          "count": 513,
+          "false_supported_rate": 0.543859649122807,
+          "macro_f1_over_classes_present": 0.8091543959691199,
+          "unsupported_or_uncertain_recall": 0.45614035087719296
+        }
+      }
+    },
+    {
+      "candidate_id": "hierarchical_v2c1_tfidf_balanced_svc",
+      "definition": {
+        "architecture": "hierarchical_supported_then_intent",
+        "architecture_definition": {
+          "prediction_rule": "Return unsupported_or_uncertain when Stage 1 does; otherwise return the Stage 2 exact intent.",
+          "shared_preset": "Both stages use separately fitted instances of the candidate representation and classifier preset.",
+          "stage_1_labels": [
+            "supported",
+            "unsupported_or_uncertain"
+          ],
+          "stage_2_labels": "the eight supported intents",
+          "stage_2_training_subset": "training-fold examples whose gold intent is one of the eight supported intents"
+        },
+        "classifier": "linear_svc_balanced",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "hierarchical_v2c1_tfidf_balanced_svc",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 5,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9640243902439024,
+          "example_count": 1640,
+          "macro_f1": 0.9367934557493268,
+          "validation_fold": 0,
+          "weighted_f1": 0.9641932138245485
+        },
+        {
+          "accuracy": 0.9621951219512195,
+          "example_count": 1640,
+          "macro_f1": 0.9235468388864082,
+          "validation_fold": 1,
+          "weighted_f1": 0.961951242157515
+        },
+        {
+          "accuracy": 0.9560975609756097,
+          "example_count": 1640,
+          "macro_f1": 0.8613722732542287,
+          "validation_fold": 2,
+          "weighted_f1": 0.9555821415489332
+        },
+        {
+          "accuracy": 0.9572910311165345,
+          "example_count": 1639,
+          "macro_f1": 0.9147913978530637,
+          "validation_fold": 3,
+          "weighted_f1": 0.9570216070190048
+        },
+        {
+          "accuracy": 0.9609517998779744,
+          "example_count": 1639,
+          "macro_f1": 0.8855319662777072,
+          "validation_fold": 4,
+          "weighted_f1": 0.9604687838787881
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.1358329793438315,
+          "p90_ms": 2.2711005876772106,
+          "p95_ms": 2.345160784898326
+        }
+      },
+      "macro_f1_mean": 0.9044071864041469,
+      "macro_f1_standard_deviation": 0.02731778274786825,
+      "macro_f1_variance": 0.0007462612542597282,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 2485764
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9601122224932911,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              134,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              16
+            ],
+            [
+              0,
+              46,
+              0,
+              0,
+              1,
+              7,
+              0,
+              1,
+              2
+            ],
+            [
+              0,
+              0,
+              50,
+              0,
+              0,
+              1,
+              1,
+              4,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              50,
+              0,
+              1,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              50,
+              1,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              780,
+              1,
+              1,
+              72
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              134,
+              2,
+              12
+            ],
+            [
+              0,
+              0,
+              4,
+              0,
+              0,
+              4,
+              0,
+              395,
+              32
+            ],
+            [
+              14,
+              1,
+              0,
+              0,
+              1,
+              84,
+              4,
+              37,
+              6232
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8928571428571429,
+          "precision": 0.9090909090909091,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "false_supported_count": 141,
+        "false_supported_rate": 0.02212458810607249,
+        "freeze_card_metrics": {
+          "f1": 0.9174311926605505,
+          "precision": 0.9615384615384616,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "macro_f1": 0.9091341199254024,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8758169934640523,
+            "precision": 0.8758169934640523,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8761904761904762,
+            "precision": 0.9583333333333334,
+            "recall": 0.8070175438596491,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8928571428571429,
+            "precision": 0.9090909090909091,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9345794392523364,
+            "precision": 1.0,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9174311926605505,
+            "precision": 0.9615384615384616,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8996539792387543,
+            "precision": 0.8883826879271071,
+            "recall": 0.9112149532710281,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9054054054054054,
+            "precision": 0.9370629370629371,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9028571428571428,
+            "precision": 0.8977272727272727,
+            "recall": 0.9080459770114943,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9774153074027604,
+            "precision": 0.9769556356795736,
+            "recall": 0.9778754118939275,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 7,
+        "protected_write_false_positive_rate": 0.0008659079663532904,
+        "protected_write_recall": 0.8771929824561403,
+        "supported_intent_accuracy": 0.8980821917808219,
+        "unsupported_or_uncertain_recall": 0.9778754118939275,
+        "weighted_f1": 0.9600929208076115
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0008659079663532904
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8771929824561403
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9778754118939275
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9593012451217245,
+          "count": 5381,
+          "false_supported_rate": 0.02744186046511628,
+          "macro_f1_over_classes_present": 0.9294564796360169,
+          "unsupported_or_uncertain_recall": 0.9725581395348837
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9813368055555556,
+          "count": 2304,
+          "false_supported_rate": 0.009424603174603174,
+          "macro_f1_over_classes_present": 0.9467585295056667,
+          "unsupported_or_uncertain_recall": 0.9905753968253969
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8732943469785575,
+          "count": 513,
+          "false_supported_rate": 0.07017543859649122,
+          "macro_f1_over_classes_present": 0.8764548885902609,
+          "unsupported_or_uncertain_recall": 0.9298245614035088
+        }
+      }
+    },
+    {
+      "candidate_id": "hierarchical_bge_balanced_logreg",
+      "definition": {
+        "architecture": "hierarchical_supported_then_intent",
+        "architecture_definition": {
+          "prediction_rule": "Return unsupported_or_uncertain when Stage 1 does; otherwise return the Stage 2 exact intent.",
+          "shared_preset": "Both stages use separately fitted instances of the candidate representation and classifier preset.",
+          "stage_1_labels": [
+            "supported",
+            "unsupported_or_uncertain"
+          ],
+          "stage_2_labels": "the eight supported intents",
+          "stage_2_training_subset": "training-fold examples whose gold intent is one of the eight supported intents"
+        },
+        "classifier": "logistic_regression_balanced",
+        "classifier_definition": {
+          "class": "LogisticRegression",
+          "effective_penalty": "l2 via l1_ratio=0.0 (the non-deprecated sklearn 1.8+ interface)",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": false,
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "l1_ratio": 0.0,
+            "max_iter": 2000,
+            "n_jobs": null,
+            "random_state": 20260928,
+            "solver": "lbfgs",
+            "tol": 0.0001,
+            "verbose": 0,
+            "warm_start": false
+          }
+        },
+        "id": "hierarchical_bge_balanced_logreg",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": null,
+      "fold_metrics": [
+        {
+          "accuracy": 0.8975609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.7810318839072132,
+          "validation_fold": 0,
+          "weighted_f1": 0.9031332662832936
+        },
+        {
+          "accuracy": 0.8829268292682927,
+          "example_count": 1640,
+          "macro_f1": 0.7164695626263047,
+          "validation_fold": 1,
+          "weighted_f1": 0.8892977140665754
+        },
+        {
+          "accuracy": 0.8725609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.7111869765965767,
+          "validation_fold": 2,
+          "weighted_f1": 0.8809456611904639
+        },
+        {
+          "accuracy": 0.884685784014643,
+          "example_count": 1639,
+          "macro_f1": 0.7542229631246968,
+          "validation_fold": 3,
+          "weighted_f1": 0.8902879261534513
+        },
+        {
+          "accuracy": 0.8901769371568029,
+          "example_count": 1639,
+          "macro_f1": 0.6940159969891866,
+          "validation_fold": 4,
+          "weighted_f1": 0.8945430543748515
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.10977103374898434,
+          "p90_ms": 0.20416666520759463,
+          "p95_ms": 0.2100377692840993
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 9.541708510369062,
+          "p90_ms": 14.974787505343555,
+          "p95_ms": 18.338456325000152
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.7313854766487956,
+      "macro_f1_standard_deviation": 0.03166467573723563,
+      "macro_f1_variance": 0.001002651689544279,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 16082,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.8855818492315198,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              122,
+              0,
+              0,
+              0,
+              0,
+              1,
+              3,
+              0,
+              27
+            ],
+            [
+              0,
+              54,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              51,
+              1,
+              0,
+              0,
+              0,
+              1,
+              4
+            ],
+            [
+              1,
+              0,
+              1,
+              41,
+              0,
+              0,
+              0,
+              0,
+              14
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              40,
+              0,
+              0,
+              0,
+              17
+            ],
+            [
+              3,
+              4,
+              12,
+              9,
+              8,
+              748,
+              3,
+              6,
+              63
+            ],
+            [
+              5,
+              0,
+              1,
+              0,
+              0,
+              1,
+              133,
+              0,
+              13
+            ],
+            [
+              0,
+              4,
+              17,
+              0,
+              0,
+              2,
+              13,
+              382,
+              17
+            ],
+            [
+              87,
+              29,
+              5,
+              20,
+              35,
+              339,
+              24,
+              145,
+              5689
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.7083333333333334,
+          "precision": 0.5862068965517241,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "false_supported_count": 684,
+        "false_supported_rate": 0.10732778911030912,
+        "freeze_card_metrics": {
+          "f1": 0.5673758865248227,
+          "precision": 0.47619047619047616,
+          "recall": 0.7017543859649122,
+          "support": 57
+        },
+        "macro_f1": 0.7333238159736534,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.6576819407008087,
+            "precision": 0.5596330275229358,
+            "recall": 0.7973856209150327,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.7297297297297297,
+            "precision": 0.5934065934065934,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.7083333333333334,
+            "precision": 0.5862068965517241,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.640625,
+            "precision": 0.5774647887323944,
+            "recall": 0.7192982456140351,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.5673758865248227,
+            "precision": 0.47619047619047616,
+            "recall": 0.7017543859649122,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.7679671457905544,
+            "precision": 0.684981684981685,
+            "recall": 0.8738317757009346,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8085106382978723,
+            "precision": 0.7556818181818182,
+            "recall": 0.869281045751634,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.7884416924664602,
+            "precision": 0.7153558052434457,
+            "recall": 0.8781609195402299,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9312489769192994,
+            "precision": 0.9733105218135158,
+            "recall": 0.8926722108896908,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 80,
+        "protected_write_false_positive_rate": 0.009896091044037604,
+        "protected_write_recall": 0.7982456140350878,
+        "supported_intent_accuracy": 0.8608219178082192,
+        "unsupported_or_uncertain_recall": 0.8926722108896908,
+        "weighted_f1": 0.8917241830494788
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": false,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.009896091044037604
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": false,
+            "threshold": 0.8,
+            "value": 0.7982456140350878
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8926722108896908
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.8987177104627393,
+          "count": 5381,
+          "false_supported_rate": 0.10813953488372093,
+          "macro_f1_over_classes_present": 0.8549956719668866,
+          "unsupported_or_uncertain_recall": 0.891860465116279
+        },
+        "clinc150_oos": {
+          "accuracy": 0.8953993055555556,
+          "count": 2304,
+          "false_supported_rate": 0.09672619047619048,
+          "macro_f1_over_classes_present": 0.7902970186376759,
+          "unsupported_or_uncertain_recall": 0.9032738095238095
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.7037037037037037,
+          "count": 513,
+          "false_supported_rate": 0.42105263157894735,
+          "macro_f1_over_classes_present": 0.6897767704069622,
+          "unsupported_or_uncertain_recall": 0.5789473684210527
+        }
+      }
+    }
+  ],
+  "cfpb_used": false,
+  "challenge_set_used": false,
+  "deterministic_eligible_ranking": [
+    "direct_v2c1_tfidf_balanced_svc",
+    "direct_word_tfidf_balanced_svc",
+    "direct_alt_tfidf_balanced_svc",
+    "direct_bge_balanced_svc",
+    "hierarchical_v2c1_tfidf_balanced_svc",
+    "direct_v2c1_tfidf_v2c1_svc_anchor",
+    "direct_v2c1_tfidf_balanced_ridge",
+    "direct_v2c1_tfidf_balanced_sgd",
+    "direct_char_tfidf_balanced_svc",
+    "direct_v2c1_tfidf_balanced_logreg",
+    "direct_lsa_balanced_svc",
+    "direct_lsa_balanced_logreg"
+  ],
+  "development_dataset_sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+  "development_training_and_evaluation_performed": true,
+  "eligible_winner": "direct_v2c1_tfidf_balanced_svc",
+  "environment": {
+    "fastembed": "0.8.1",
+    "joblib": "1.6.0",
+    "machine": "arm64",
+    "numpy": "2.5.3",
+    "operating_system": "Darwin",
+    "operating_system_release": "25.6.0",
+    "processor": "arm",
+    "python": "3.14.3",
+    "scikit_learn": "1.9.1"
+  },
+  "experiment_contract_sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+  "experiment_phase": "V2-C3-Step-4",
+  "final_lockbox_used": false,
+  "final_test_metric_reported": false,
+  "finalist_policy": {
+    "diversity_families": [
+      "sparse_lexical",
+      "dense_lsa",
+      "frozen_local_sentence_embedding"
+    ],
+    "hyperparameter_tuning_in_step_4": false,
+    "maximum_count": 3,
+    "safety_eligible_only": true,
+    "technical_diversity_preferred": true
+  },
+  "finalist_shortlist": [
+    "direct_v2c1_tfidf_balanced_svc",
+    "direct_bge_balanced_svc",
+    "direct_lsa_balanced_svc"
+  ],
+  "fold_artifact_sha256": "53c49dfe3da1027c9c957e901bca3fca8c2aaa8173e79139e06a1103407c58aa",
+  "fold_assignment_sha256": "71bb40c78ffbff5d33d8527c77725f784c5d81b37d6348eb1fac30de96e532f8",
+  "fold_summaries": [
+    {
+      "counts_by_intent": {
+        "account_balance": 31,
+        "card_status": 12,
+        "create_dispute": 11,
+        "escalation": 11,
+        "freeze_card": 12,
+        "informational_policy": 171,
+        "recent_transactions": 30,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1275
+      },
+      "counts_by_source": {
+        "banking77": 1093,
+        "clinc150_oos": 450,
+        "sentinelvoice_v2c1_internal": 97
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 145,
+          "transaction_details": 80,
+          "unsupported_or_uncertain": 868
+        },
+        "clinc150_oos": {
+          "account_balance": 18,
+          "informational_policy": 17,
+          "recent_transactions": 15,
+          "unsupported_or_uncertain": 400
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 13,
+          "card_status": 12,
+          "create_dispute": 11,
+          "escalation": 11,
+          "freeze_card": 12,
+          "informational_policy": 9,
+          "recent_transactions": 15,
+          "transaction_details": 7,
+          "unsupported_or_uncertain": 7
+        }
+      },
+      "example_count": 1640,
+      "group_count": 1572,
+      "validation_fold": 0
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 31,
+        "card_status": 12,
+        "create_dispute": 12,
+        "escalation": 11,
+        "freeze_card": 11,
+        "informational_policy": 171,
+        "recent_transactions": 31,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1274
+      },
+      "counts_by_source": {
+        "banking77": 1065,
+        "clinc150_oos": 469,
+        "sentinelvoice_v2c1_internal": 106
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 133,
+          "transaction_details": 76,
+          "unsupported_or_uncertain": 856
+        },
+        "clinc150_oos": {
+          "account_balance": 20,
+          "informational_policy": 24,
+          "recent_transactions": 23,
+          "unsupported_or_uncertain": 402
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 11,
+          "card_status": 12,
+          "create_dispute": 12,
+          "escalation": 11,
+          "freeze_card": 11,
+          "informational_policy": 14,
+          "recent_transactions": 8,
+          "transaction_details": 11,
+          "unsupported_or_uncertain": 16
+        }
+      },
+      "example_count": 1640,
+      "group_count": 1573,
+      "validation_fold": 1
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 31,
+        "card_status": 11,
+        "create_dispute": 11,
+        "escalation": 11,
+        "freeze_card": 12,
+        "informational_policy": 171,
+        "recent_transactions": 31,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1275
+      },
+      "counts_by_source": {
+        "banking77": 1057,
+        "clinc150_oos": 477,
+        "sentinelvoice_v2c1_internal": 106
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 145,
+          "transaction_details": 72,
+          "unsupported_or_uncertain": 840
+        },
+        "clinc150_oos": {
+          "account_balance": 22,
+          "informational_policy": 19,
+          "recent_transactions": 15,
+          "unsupported_or_uncertain": 421
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 9,
+          "card_status": 11,
+          "create_dispute": 11,
+          "escalation": 11,
+          "freeze_card": 12,
+          "informational_policy": 7,
+          "recent_transactions": 16,
+          "transaction_details": 15,
+          "unsupported_or_uncertain": 14
+        }
+      },
+      "example_count": 1640,
+      "group_count": 1573,
+      "validation_fold": 2
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 30,
+        "card_status": 11,
+        "create_dispute": 11,
+        "escalation": 12,
+        "freeze_card": 11,
+        "informational_policy": 172,
+        "recent_transactions": 31,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1274
+      },
+      "counts_by_source": {
+        "banking77": 1075,
+        "clinc150_oos": 462,
+        "sentinelvoice_v2c1_internal": 102
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 142,
+          "transaction_details": 74,
+          "unsupported_or_uncertain": 859
+        },
+        "clinc150_oos": {
+          "account_balance": 20,
+          "informational_policy": 16,
+          "recent_transactions": 25,
+          "unsupported_or_uncertain": 401
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 10,
+          "card_status": 11,
+          "create_dispute": 11,
+          "escalation": 12,
+          "freeze_card": 11,
+          "informational_policy": 14,
+          "recent_transactions": 6,
+          "transaction_details": 13,
+          "unsupported_or_uncertain": 14
+        }
+      },
+      "example_count": 1639,
+      "group_count": 1573,
+      "validation_fold": 3
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 30,
+        "card_status": 11,
+        "create_dispute": 12,
+        "escalation": 12,
+        "freeze_card": 11,
+        "informational_policy": 171,
+        "recent_transactions": 30,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1275
+      },
+      "counts_by_source": {
+        "banking77": 1091,
+        "clinc150_oos": 446,
+        "sentinelvoice_v2c1_internal": 102
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 138,
+          "transaction_details": 76,
+          "unsupported_or_uncertain": 877
+        },
+        "clinc150_oos": {
+          "account_balance": 16,
+          "informational_policy": 20,
+          "recent_transactions": 18,
+          "unsupported_or_uncertain": 392
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 14,
+          "card_status": 11,
+          "create_dispute": 12,
+          "escalation": 12,
+          "freeze_card": 11,
+          "informational_policy": 13,
+          "recent_transactions": 12,
+          "transaction_details": 11,
+          "unsupported_or_uncertain": 6
+        }
+      },
+      "example_count": 1639,
+      "group_count": 1572,
+      "validation_fold": 4
+    }
+  ],
+  "hyperparameter_search_performed": false,
+  "latency_measurement_policy": {
+    "bge_downstream_scope": "classifier prediction on one cached embedding",
+    "bge_end_to_end_scope": "local FastEmbed passage embedding plus classifier prediction",
+    "fit_scope": "complete development dataset only after cross-validation",
+    "percentiles": [
+      50,
+      90,
+      95
+    ],
+    "precision_claim": "Local-machine descriptive timing only; not a portable benchmark.",
+    "primary_comparable_bge_latency": "end_to_end",
+    "request_shape": "single example",
+    "sample_count": 200,
+    "sample_selection": "First 200 examples after ordering by SHA-256(random_seed + ':' + example_id).",
+    "tfidf_and_lsa_scope": "representation transform plus classifier prediction",
+    "warmup_calls": 25
+  },
+  "latency_sample_example_ids_sha256": "5e1745eb46c1ed8236bc7d2549e02fbdf2afa0e5b9d1cef1e147586c7792bcbe",
+  "model_size_measurement_policy": {
+    "bge_classifier_only_is_not_total_runtime_size": true,
+    "bge_downstream_classifier_bytes_reported_separately": true,
+    "bge_model_cache_bytes_reported_when_reliably_measurable": true,
+    "method": "joblib serialization to a temporary local file",
+    "no_final_artifact_frozen": true
+  },
+  "no_eligible_winner": false,
+  "ranking_rules": {
+    "eligible_candidates_only": true,
+    "no_eligible_candidate_policy": "Set no_eligible_winner=true and do not select a winner.",
+    "practical_tie_absolute_difference_below": 0.005,
+    "primary": "highest macro_f1_mean",
+    "tie_break_order": [
+      "lower false_supported_rate",
+      "higher unsupported_or_uncertain_recall",
+      "lower protected_write_false_positive_rate",
+      "lower macro_f1_standard_deviation",
+      "lower inference_p95",
+      "smaller artifact_model_size",
+      "simpler_reversible_architecture"
+    ]
+  },
+  "raw_text_persisted": false,
+  "runtime_integration_performed": false,
+  "safety_gate_failed_candidates": [
+    "direct_bge_balanced_logreg",
+    "hierarchical_bge_balanced_logreg"
+  ],
+  "safety_gates": {
+    "all_gates_required": true,
+    "protected_write_false_positive_rate_maximum": 0.01,
+    "protected_write_recall_minimum": 0.8,
+    "relaxation_after_results_allowed": false,
+    "unsupported_or_uncertain_recall_minimum": 0.8
+  },
+  "schema_version": "v2c3-model-tournament-report.v1",
+  "tournament_config_sha256": "d2c38a9e1fb5e97b395390af94b01c9e5190fef51a7a9b368d691b1db4391284"
+}

@@ -3766,8 +3766,16 @@ The human-authored seeds and deterministic builder define a 360-example
 training augmentation and a separate 270-example model-selection-only probe.
 Neither dataset is final acceptance evidence. The final 360-example V2-C4
 holdout remains sealed, and no V2-C4 model has been trained, embedded, run, or
-evaluated. Generated datasets and manifests are intentionally produced later
-with `scripts/build_v2c4_development_data.py --write`.
+evaluated. The generated datasets and manifests are frozen outputs of
+`scripts/build_v2c4_development_data.py --write`.
+
+Those Step 10 development datasets are now frozen. Step 11 defines Candidate A
+as the unchanged frozen V2-C3 BGE/LinearSVC recipe trained with only the targeted
+360-example augmentation added to V2-C3 development data. The independently
+authored 270-example probe is the primary development-selection evidence;
+five-fold group-aware development CV is supporting evidence only. The final
+360-example safety holdout remains sealed, so Step 11 cannot support a final
+V2-C4 improvement claim.
 
 ### ML roadmap after V2-C4
 

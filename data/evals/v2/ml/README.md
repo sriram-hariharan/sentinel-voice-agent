@@ -401,14 +401,23 @@ builders, training code, candidate artifacts, clustering code, inference, or
 runtime integration.
 
 Step 10 adds independently authored family-based seed sources and the
-deterministic `scripts/build_v2c4_development_data.py` builder. The builder will
-produce the frozen 360-example training augmentation and the independent,
+deterministic `scripts/build_v2c4_development_data.py` builder. The builder
+produced the frozen 360-example training augmentation and the independent,
 balanced 270-example model-selection probe plus their manifests. The former is
 training-only; the latter is model-selection-only. Neither is threshold-
 selection or final-acceptance evidence. The builder performs mechanical
 normalization, count, lineage, and exact-hash leakage checks only—it performs
 no embedding, fitting, inference, or evaluation. The sealed 360-example V2-C4
 final holdout remains untouched, and no V2-C4 candidate has been trained.
+
+The Step 10 development datasets are frozen. Step 11 defines Candidate A in
+`v2c4_candidate_a_config.json`: it retains the exact frozen V2-C3
+`BAAI/bge-small-en-v1.5` `passage_embed` plus balanced LinearSVC (`C=4.0`)
+recipe and changes only targeted development training data. Its primary
+development-selection evidence is the frozen 270-example probe, while five-fold
+`StratifiedGroupKFold` evaluation is supporting evidence only. The final
+360-example V2-C4 safety holdout remains sealed; training and probe evaluation
+in Step 11 cannot establish or claim final V2-C4 improvement.
 
 ## Roadmap: V2-C4 → V2-C5 → V2-D
 

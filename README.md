@@ -199,7 +199,10 @@ acceptance. Before any V2-C3 failure analysis or model improvement, V2-C4
 freezes its methodology, error categories, and a new independently authored,
 balanced 360-example safety holdout. That holdout is ineligible for training,
 model or threshold selection, and error analysis until its one final
-evaluation. No V2-C4 improvement is claimed, and CFPB remains separate.
+evaluation. The frozen V2-C3 challenge may now be used only for consumed-data
+diagnostics, which must precede any V2-C4 model or development-data change; the
+fresh V2-C4 holdout remains sealed. No V2-C4 improvement is claimed, and CFPB
+remains separate.
 
 ### Local voice setup
 
@@ -3730,6 +3733,20 @@ error analysis until final evaluation. This step creates methodology and data
 infrastructure only: it performs no error analysis, training, inference, model
 selection, runtime integration, or final evaluation. CFPB remains separate
 evaluation/research data.
+
+The V2-C4 diagnostic workflow is implemented in
+`scripts/analyze_v2c3_challenge_errors.py`. It reproduces record-level
+predictions only for the consumed V2-C3 challenge using the hash-verified
+frozen V2-C3 classifier, then writes mechanical error buckets and a
+human-review queue. It rejects the sealed V2-C4 holdout paths and role. The
+workflow must run before any V2-C4 model or data change and its results are
+diagnostic regression evidence, not final acceptance evidence.
+The machine-readable report persists text hashes but no raw challenge text.
+It also records frozen LinearSVC decision-boundary scores, protected-versus-
+nonprotected gaps, and error aggregates for every existing challenge tag.
+For human semantic review, `--print-review-queue` temporarily joins queued IDs
+back to the consumed challenge and displays their text on stdout without
+inference or report modification.
 
 ### Why this extension is useful
 

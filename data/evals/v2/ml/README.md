@@ -316,8 +316,11 @@ V2-C3 challenge mistakes are reviewed. Its scope is limited to the three
 failed safety behaviors, and it preserves the same gates: protected-write
 false-positive rate at most `0.01`, protected-write recall at least `0.80`, and
 unsupported recall at least `0.80`. `v2c4_error_analysis_config.json` freezes
-the future failure categories before results are categorized. No error analysis
-or model-change selection has occurred yet.
+the future failure categories before results are categorized.
+`scripts/analyze_v2c3_challenge_errors.py` provides a hash-verified diagnostic
+workflow for the consumed V2-C3 challenge; it does not read the sealed V2-C4
+holdout, train, tune, or select a model. Error analysis must precede any V2-C4
+model or development-data change, and no V2-C4 improvement is claimed.
 
 V2-C4 receives a new synthetic final safety holdout rather than recycling the
 V2-C3 challenge. The seed and deterministic builder create 360 examples—40 for
@@ -331,6 +334,29 @@ every non-protected lane.
 ```bash
 sentinelvoice_env/bin/python scripts/build_v2c4_safety_holdout.py --write
 sentinelvoice_env/bin/python scripts/build_v2c4_safety_holdout.py --check
+```
+
+Run the consumed-challenge diagnostic separately when ready:
+
+```bash
+sentinelvoice_env/bin/python scripts/analyze_v2c3_challenge_errors.py
+```
+
+That command writes
+`data/evals/v2/ml/v2c4_error_analysis_report.json`, the result path frozen in
+the error-analysis config. Its metrics are labeled diagnostic regression
+metrics and cannot establish V2-C4 final acceptance. The fresh V2-C4 final
+holdout remains sealed. The report contains text hashes but no raw challenge
+text, preserving `raw_text_persisted=false`. It also includes diagnostic
+LinearSVC class scores and ranks, protected-versus-nonprotected score gaps, and
+error aggregates across every existing consumed-challenge tag. These are
+diagnostic descriptions, not model-selection evidence or conclusions. After
+the report exists, display the consumed safety-review records temporarily on
+stdout with no inference or file modification:
+
+```bash
+sentinelvoice_env/bin/python scripts/analyze_v2c3_challenge_errors.py \
+  --print-review-queue
 ```
 
 Every holdout record has `training_eligible=false`,

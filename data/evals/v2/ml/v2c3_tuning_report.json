@@ -1,0 +1,6007 @@
+{
+  "best_variant_by_family": {
+    "bge_svc": "bge_svc_c_4_0",
+    "lsa_svc": "lsa_svc_components_384_c_1_0",
+    "tfidf_svc": "tfidf_svc_c_2_0"
+  },
+  "bge_cache_file_sha256": "eddaa00ddec7335dd63a49d1650e274d993603f8d52e6b48016089f79514ba89",
+  "bge_cache_metadata_sha256": "a8477d65c231faebb1edc29c8ded60384d800df991c655a7411e6d6e619eaea3",
+  "bounded_hyperparameter_search_performed": true,
+  "broad_search_performed": false,
+  "cfpb_used": false,
+  "challenge_set_used": false,
+  "deterministic_eligible_ranking": [
+    "bge_svc_c_4_0",
+    "tfidf_svc_c_2_0",
+    "tfidf_svc_c_1_5",
+    "tfidf_svc_c_1_0",
+    "tfidf_svc_c_0_75",
+    "tfidf_svc_c_0_5",
+    "bge_svc_c_2_0",
+    "bge_svc_c_1_0",
+    "bge_svc_c_0_5",
+    "lsa_svc_components_384_c_1_0",
+    "lsa_svc_components_256_c_2_0",
+    "bge_svc_c_0_25",
+    "lsa_svc_components_256_c_1_0",
+    "lsa_svc_components_256_c_0_5",
+    "lsa_svc_components_128_c_1_0"
+  ],
+  "development_dataset_sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+  "embedding_fine_tuning_performed": false,
+  "embedding_regeneration_performed": false,
+  "environment": {
+    "fastembed": "0.8.1",
+    "joblib": "1.6.0",
+    "machine": "arm64",
+    "numpy": "2.5.3",
+    "operating_system": "Darwin",
+    "operating_system_release": "25.6.0",
+    "processor": "arm",
+    "python": "3.14.3",
+    "scikit_learn": "1.9.1"
+  },
+  "exact_tuning_variants": [
+    {
+      "architecture": "direct_9_way",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "id": "tfidf_svc_c_0_5",
+      "parameters": {
+        "C": 0.5
+      },
+      "representation": "v2c1_word_char_tfidf"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "id": "tfidf_svc_c_0_75",
+      "parameters": {
+        "C": 0.75
+      },
+      "representation": "v2c1_word_char_tfidf"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "id": "tfidf_svc_c_1_0",
+      "parameters": {
+        "C": 1.0
+      },
+      "representation": "v2c1_word_char_tfidf"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "id": "tfidf_svc_c_1_5",
+      "parameters": {
+        "C": 1.5
+      },
+      "representation": "v2c1_word_char_tfidf"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "tfidf_svc",
+      "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+      "id": "tfidf_svc_c_2_0",
+      "parameters": {
+        "C": 2.0
+      },
+      "representation": "v2c1_word_char_tfidf"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "id": "bge_svc_c_0_25",
+      "parameters": {
+        "C": 0.25
+      },
+      "representation": "bge_small_en_v1_5"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "id": "bge_svc_c_0_5",
+      "parameters": {
+        "C": 0.5
+      },
+      "representation": "bge_small_en_v1_5"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "id": "bge_svc_c_1_0",
+      "parameters": {
+        "C": 1.0
+      },
+      "representation": "bge_small_en_v1_5"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "id": "bge_svc_c_2_0",
+      "parameters": {
+        "C": 2.0
+      },
+      "representation": "bge_small_en_v1_5"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "bge_svc",
+      "finalist_id": "direct_bge_balanced_svc",
+      "id": "bge_svc_c_4_0",
+      "parameters": {
+        "C": 4.0
+      },
+      "representation": "bge_small_en_v1_5"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "id": "lsa_svc_components_128_c_1_0",
+      "parameters": {
+        "C": 1.0,
+        "n_components": 128
+      },
+      "representation": "tfidf_lsa"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "id": "lsa_svc_components_256_c_0_5",
+      "parameters": {
+        "C": 0.5,
+        "n_components": 256
+      },
+      "representation": "tfidf_lsa"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "id": "lsa_svc_components_256_c_1_0",
+      "parameters": {
+        "C": 1.0,
+        "n_components": 256
+      },
+      "representation": "tfidf_lsa"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "id": "lsa_svc_components_256_c_2_0",
+      "parameters": {
+        "C": 2.0,
+        "n_components": 256
+      },
+      "representation": "tfidf_lsa"
+    },
+    {
+      "architecture": "direct_9_way",
+      "family": "lsa_svc",
+      "finalist_id": "direct_lsa_balanced_svc",
+      "id": "lsa_svc_components_384_c_1_0",
+      "parameters": {
+        "C": 1.0,
+        "n_components": 384
+      },
+      "representation": "tfidf_lsa"
+    }
+  ],
+  "experiment_contract_sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998",
+  "experiment_phase": "V2-C3-Step-5",
+  "failed_safety_variants": [],
+  "final_evaluation_performed": false,
+  "final_lockbox_used": false,
+  "final_model_artifact_frozen": false,
+  "fold_artifact_sha256": "53c49dfe3da1027c9c957e901bca3fca8c2aaa8173e79139e06a1103407c58aa",
+  "fold_assignment_sha256": "71bb40c78ffbff5d33d8527c77725f784c5d81b37d6348eb1fac30de96e532f8",
+  "fold_summaries": [
+    {
+      "counts_by_intent": {
+        "account_balance": 31,
+        "card_status": 12,
+        "create_dispute": 11,
+        "escalation": 11,
+        "freeze_card": 12,
+        "informational_policy": 171,
+        "recent_transactions": 30,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1275
+      },
+      "counts_by_source": {
+        "banking77": 1093,
+        "clinc150_oos": 450,
+        "sentinelvoice_v2c1_internal": 97
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 145,
+          "transaction_details": 80,
+          "unsupported_or_uncertain": 868
+        },
+        "clinc150_oos": {
+          "account_balance": 18,
+          "informational_policy": 17,
+          "recent_transactions": 15,
+          "unsupported_or_uncertain": 400
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 13,
+          "card_status": 12,
+          "create_dispute": 11,
+          "escalation": 11,
+          "freeze_card": 12,
+          "informational_policy": 9,
+          "recent_transactions": 15,
+          "transaction_details": 7,
+          "unsupported_or_uncertain": 7
+        }
+      },
+      "example_count": 1640,
+      "group_count": 1572,
+      "validation_fold": 0
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 31,
+        "card_status": 12,
+        "create_dispute": 12,
+        "escalation": 11,
+        "freeze_card": 11,
+        "informational_policy": 171,
+        "recent_transactions": 31,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1274
+      },
+      "counts_by_source": {
+        "banking77": 1065,
+        "clinc150_oos": 469,
+        "sentinelvoice_v2c1_internal": 106
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 133,
+          "transaction_details": 76,
+          "unsupported_or_uncertain": 856
+        },
+        "clinc150_oos": {
+          "account_balance": 20,
+          "informational_policy": 24,
+          "recent_transactions": 23,
+          "unsupported_or_uncertain": 402
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 11,
+          "card_status": 12,
+          "create_dispute": 12,
+          "escalation": 11,
+          "freeze_card": 11,
+          "informational_policy": 14,
+          "recent_transactions": 8,
+          "transaction_details": 11,
+          "unsupported_or_uncertain": 16
+        }
+      },
+      "example_count": 1640,
+      "group_count": 1573,
+      "validation_fold": 1
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 31,
+        "card_status": 11,
+        "create_dispute": 11,
+        "escalation": 11,
+        "freeze_card": 12,
+        "informational_policy": 171,
+        "recent_transactions": 31,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1275
+      },
+      "counts_by_source": {
+        "banking77": 1057,
+        "clinc150_oos": 477,
+        "sentinelvoice_v2c1_internal": 106
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 145,
+          "transaction_details": 72,
+          "unsupported_or_uncertain": 840
+        },
+        "clinc150_oos": {
+          "account_balance": 22,
+          "informational_policy": 19,
+          "recent_transactions": 15,
+          "unsupported_or_uncertain": 421
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 9,
+          "card_status": 11,
+          "create_dispute": 11,
+          "escalation": 11,
+          "freeze_card": 12,
+          "informational_policy": 7,
+          "recent_transactions": 16,
+          "transaction_details": 15,
+          "unsupported_or_uncertain": 14
+        }
+      },
+      "example_count": 1640,
+      "group_count": 1573,
+      "validation_fold": 2
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 30,
+        "card_status": 11,
+        "create_dispute": 11,
+        "escalation": 12,
+        "freeze_card": 11,
+        "informational_policy": 172,
+        "recent_transactions": 31,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1274
+      },
+      "counts_by_source": {
+        "banking77": 1075,
+        "clinc150_oos": 462,
+        "sentinelvoice_v2c1_internal": 102
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 142,
+          "transaction_details": 74,
+          "unsupported_or_uncertain": 859
+        },
+        "clinc150_oos": {
+          "account_balance": 20,
+          "informational_policy": 16,
+          "recent_transactions": 25,
+          "unsupported_or_uncertain": 401
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 10,
+          "card_status": 11,
+          "create_dispute": 11,
+          "escalation": 12,
+          "freeze_card": 11,
+          "informational_policy": 14,
+          "recent_transactions": 6,
+          "transaction_details": 13,
+          "unsupported_or_uncertain": 14
+        }
+      },
+      "example_count": 1639,
+      "group_count": 1573,
+      "validation_fold": 3
+    },
+    {
+      "counts_by_intent": {
+        "account_balance": 30,
+        "card_status": 11,
+        "create_dispute": 12,
+        "escalation": 12,
+        "freeze_card": 11,
+        "informational_policy": 171,
+        "recent_transactions": 30,
+        "transaction_details": 87,
+        "unsupported_or_uncertain": 1275
+      },
+      "counts_by_source": {
+        "banking77": 1091,
+        "clinc150_oos": 446,
+        "sentinelvoice_v2c1_internal": 102
+      },
+      "counts_by_source_and_intent": {
+        "banking77": {
+          "informational_policy": 138,
+          "transaction_details": 76,
+          "unsupported_or_uncertain": 877
+        },
+        "clinc150_oos": {
+          "account_balance": 16,
+          "informational_policy": 20,
+          "recent_transactions": 18,
+          "unsupported_or_uncertain": 392
+        },
+        "sentinelvoice_v2c1_internal": {
+          "account_balance": 14,
+          "card_status": 11,
+          "create_dispute": 12,
+          "escalation": 12,
+          "freeze_card": 11,
+          "informational_policy": 13,
+          "recent_transactions": 12,
+          "transaction_details": 11,
+          "unsupported_or_uncertain": 6
+        }
+      },
+      "example_count": 1639,
+      "group_count": 1572,
+      "validation_fold": 4
+    }
+  ],
+  "frozen_finalist_ids": [
+    "direct_v2c1_tfidf_balanced_svc",
+    "direct_bge_balanced_svc",
+    "direct_lsa_balanced_svc"
+  ],
+  "latency_measurement_policy": {
+    "bge_downstream_scope": "classifier prediction on one cached embedding",
+    "bge_end_to_end_scope": "local FastEmbed passage embedding plus classifier prediction",
+    "fit_scope": "complete development dataset only after cross-validation",
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "percentiles": [
+      50,
+      90,
+      95
+    ],
+    "precision_claim": "Local-machine descriptive timing only; not a portable benchmark.",
+    "primary_comparable_bge_latency": "end_to_end",
+    "request_shape": "single example",
+    "sample_count": 200,
+    "sample_selection": "First 200 examples after ordering by SHA-256(random_seed + ':' + example_id).",
+    "tfidf_and_lsa_scope": "representation transform plus classifier prediction",
+    "unchanged_from_step_4": true,
+    "warmup_calls": 25
+  },
+  "latency_sample_example_ids_sha256": "5e1745eb46c1ed8236bc7d2549e02fbdf2afa0e5b9d1cef1e147586c7792bcbe",
+  "model_size_measurement_policy": {
+    "bge_classifier_only_is_not_total_runtime_size": true,
+    "bge_downstream_classifier_bytes_reported_separately": true,
+    "bge_model_cache_bytes_reported_when_reliably_measurable": true,
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "method": "joblib serialization to a temporary local file",
+    "no_final_artifact_frozen": true,
+    "unchanged_from_step_4": true
+  },
+  "new_fold_generation_performed": false,
+  "no_eligible_tuned_winner": false,
+  "overall_tuned_winner": "bge_svc_c_4_0",
+  "ranking_rules": {
+    "eligible_variants_only": true,
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "no_eligible_variant_policy": "Set no_eligible_tuned_winner=true and do not select a winner.",
+    "practical_tie_absolute_difference_below": 0.005,
+    "primary": "highest macro_f1_mean",
+    "tie_break_order": [
+      "lower false_supported_rate",
+      "higher unsupported_or_uncertain_recall",
+      "lower protected_write_false_positive_rate",
+      "lower macro_f1_standard_deviation",
+      "lower inference_p95",
+      "smaller artifact_model_size",
+      "simpler_reversible_architecture"
+    ],
+    "unchanged_from_step_4": true
+  },
+  "raw_text_persisted": false,
+  "runtime_integration_performed": false,
+  "safety_gates": {
+    "all_gates_required": true,
+    "protected_write_false_positive_rate_maximum": 0.01,
+    "protected_write_recall_minimum": 0.8,
+    "relaxation_after_results_allowed": false,
+    "unchanged_from_step_4": true,
+    "unsupported_or_uncertain_recall_minimum": 0.8
+  },
+  "schema_version": "v2c3-bounded-tuning-report.v1",
+  "tournament_config_sha256": "d2c38a9e1fb5e97b395390af94b01c9e5190fef51a7a9b368d691b1db4391284",
+  "tournament_report_sha256": "a61f09a0e61a001085ad789cea6244d794068541914a8d0cadabf836af1e4b0f",
+  "tuning_config_sha256": "bbf583e6d7c4a36e6ba750dad965b6205b401bbacf805a6d3d956e85de9226c5",
+  "tuning_performed": true,
+  "variant_results": [
+    {
+      "candidate_id": "tfidf_svc_c_0_5",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 0.5,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "tfidf_svc_c_0_5",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 6,
+      "fold_metrics": [
+        {
+          "accuracy": 0.973170731707317,
+          "example_count": 1640,
+          "macro_f1": 0.9462897462034279,
+          "validation_fold": 0,
+          "weighted_f1": 0.9731831468777716
+        },
+        {
+          "accuracy": 0.9676829268292683,
+          "example_count": 1640,
+          "macro_f1": 0.9258244853457703,
+          "validation_fold": 1,
+          "weighted_f1": 0.9676000243978993
+        },
+        {
+          "accuracy": 0.9518292682926829,
+          "example_count": 1640,
+          "macro_f1": 0.8745166644477671,
+          "validation_fold": 2,
+          "weighted_f1": 0.9521130247682049
+        },
+        {
+          "accuracy": 0.9591214154972544,
+          "example_count": 1639,
+          "macro_f1": 0.9276542311714042,
+          "validation_fold": 3,
+          "weighted_f1": 0.9593085521235969
+        },
+        {
+          "accuracy": 0.9670530811470409,
+          "example_count": 1639,
+          "macro_f1": 0.9050373079487897,
+          "validation_fold": 4,
+          "weighted_f1": 0.9664072341499524
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.0504164965823293,
+          "p90_ms": 1.1973002459853888,
+          "p95_ms": 1.2388145376462485
+        }
+      },
+      "macro_f1_mean": 0.9158644870234319,
+      "macro_f1_standard_deviation": 0.02445717182459406,
+      "macro_f1_variance": 0.0005981532536577176,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3603952
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9637716516223469,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              135,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              14
+            ],
+            [
+              0,
+              49,
+              0,
+              0,
+              3,
+              0,
+              1,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              48,
+              0,
+              0,
+              1,
+              1,
+              6,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              2,
+              0,
+              0,
+              780,
+              1,
+              4,
+              68
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              1,
+              138,
+              1,
+              9
+            ],
+            [
+              0,
+              0,
+              3,
+              0,
+              0,
+              1,
+              0,
+              409,
+              22
+            ],
+            [
+              8,
+              0,
+              0,
+              0,
+              1,
+              89,
+              4,
+              33,
+              6238
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8727272727272727,
+          "precision": 0.9056603773584906,
+          "recall": 0.8421052631578947,
+          "support": 57
+        },
+        "false_supported_count": 135,
+        "false_supported_rate": 0.021183116271771538,
+        "freeze_card_metrics": {
+          "f1": 0.9107142857142857,
+          "precision": 0.9272727272727272,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.918668131848784,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.903010033444816,
+            "precision": 0.9246575342465754,
+            "recall": 0.8823529411764706,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8990825688073395,
+            "precision": 0.9423076923076923,
+            "recall": 0.8596491228070176,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8727272727272727,
+            "precision": 0.9056603773584906,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9636363636363636,
+            "precision": 1.0,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9107142857142857,
+            "precision": 0.9272727272727272,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9022556390977443,
+            "precision": 0.8934707903780069,
+            "recall": 0.9112149532710281,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9169435215946844,
+            "precision": 0.9324324324324325,
+            "recall": 0.9019607843137255,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9201349831271091,
+            "precision": 0.9008810572687225,
+            "recall": 0.9402298850574713,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9795085184894402,
+            "precision": 0.9802011313639221,
+            "recall": 0.9788168837282285,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 9,
+        "protected_write_false_positive_rate": 0.0011133102424542305,
+        "protected_write_recall": 0.868421052631579,
+        "supported_intent_accuracy": 0.9112328767123288,
+        "unsupported_or_uncertain_recall": 0.9788168837282285,
+        "weighted_f1": 0.9638059740134993
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0011133102424542305
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.868421052631579
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9788168837282285
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9607879576286935,
+          "count": 5381,
+          "false_supported_rate": 0.027906976744186046,
+          "macro_f1_over_classes_present": 0.9331554026776939,
+          "unsupported_or_uncertain_recall": 0.9720930232558139
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9878472222222222,
+          "count": 2304,
+          "false_supported_rate": 0.006944444444444444,
+          "macro_f1_over_classes_present": 0.9666646623921847,
+          "unsupported_or_uncertain_recall": 0.9930555555555556
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8869395711500975,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8895574360878591,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "tfidf_svc",
+        "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+        "id": "tfidf_svc_c_0_5",
+        "parameters": {
+          "C": 0.5
+        },
+        "representation": "v2c1_word_char_tfidf"
+      }
+    },
+    {
+      "candidate_id": "tfidf_svc_c_0_75",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 0.75,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "tfidf_svc_c_0_75",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 5,
+      "fold_metrics": [
+        {
+          "accuracy": 0.973170731707317,
+          "example_count": 1640,
+          "macro_f1": 0.9459046047050381,
+          "validation_fold": 0,
+          "weighted_f1": 0.9731420424900686
+        },
+        {
+          "accuracy": 0.9664634146341463,
+          "example_count": 1640,
+          "macro_f1": 0.9212839203885402,
+          "validation_fold": 1,
+          "weighted_f1": 0.9663919651206017
+        },
+        {
+          "accuracy": 0.9548780487804878,
+          "example_count": 1640,
+          "macro_f1": 0.8863159773872831,
+          "validation_fold": 2,
+          "weighted_f1": 0.9550329339134881
+        },
+        {
+          "accuracy": 0.9609517998779744,
+          "example_count": 1639,
+          "macro_f1": 0.9291552168724717,
+          "validation_fold": 3,
+          "weighted_f1": 0.9610994796092581
+        },
+        {
+          "accuracy": 0.9658328248932275,
+          "example_count": 1639,
+          "macro_f1": 0.9022489902005025,
+          "validation_fold": 4,
+          "weighted_f1": 0.9651186550498292
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.0552710155025125,
+          "p90_ms": 1.1968040722422302,
+          "p95_ms": 1.2831649335566904
+        }
+      },
+      "macro_f1_mean": 0.9169817419107671,
+      "macro_f1_standard_deviation": 0.020787868150823768,
+      "macro_f1_variance": 0.0004321354622560332,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3603953
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.964259575506221,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              134,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              50,
+              0,
+              0,
+              2,
+              0,
+              1,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              48,
+              0,
+              0,
+              1,
+              1,
+              6,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              2,
+              0,
+              0,
+              781,
+              0,
+              5,
+              67
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              1,
+              137,
+              1,
+              10
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0,
+              2,
+              0,
+              405,
+              24
+            ],
+            [
+              8,
+              0,
+              0,
+              0,
+              1,
+              81,
+              4,
+              33,
+              6246
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8727272727272727,
+          "precision": 0.9056603773584906,
+          "recall": 0.8421052631578947,
+          "support": 57
+        },
+        "false_supported_count": 127,
+        "false_supported_rate": 0.019927820492703592,
+        "freeze_card_metrics": {
+          "f1": 0.918918918918919,
+          "precision": 0.9444444444444444,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.9197533845008551,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8963210702341137,
+            "precision": 0.9178082191780822,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9090909090909091,
+            "precision": 0.9433962264150944,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8727272727272727,
+            "precision": 0.9056603773584906,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9636363636363636,
+            "precision": 1.0,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.918918918918919,
+            "precision": 0.9444444444444444,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9065583284968078,
+            "precision": 0.9008073817762399,
+            "recall": 0.9123831775700935,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9163879598662207,
+            "precision": 0.9383561643835616,
+            "recall": 0.8954248366013072,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9142212189616253,
+            "precision": 0.8980044345898004,
+            "recall": 0.9310344827586207,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9799184185754628,
+            "precision": 0.979764705882353,
+            "recall": 0.9800721795072964,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 8,
+        "protected_write_false_positive_rate": 0.0009896091044037606,
+        "protected_write_recall": 0.868421052631579,
+        "supported_intent_accuracy": 0.9090410958904109,
+        "unsupported_or_uncertain_recall": 0.9800721795072964,
+        "weighted_f1": 0.9642515259938567
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0009896091044037606
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.868421052631579
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9800721795072964
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9617171529455492,
+          "count": 5381,
+          "false_supported_rate": 0.026046511627906978,
+          "macro_f1_over_classes_present": 0.9332953352977942,
+          "unsupported_or_uncertain_recall": 0.9739534883720931
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9874131944444444,
+          "count": 2304,
+          "false_supported_rate": 0.006944444444444444,
+          "macro_f1_over_classes_present": 0.9652240045539052,
+          "unsupported_or_uncertain_recall": 0.9930555555555556
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8869395711500975,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8898755780676447,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "tfidf_svc",
+        "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+        "id": "tfidf_svc_c_0_75",
+        "parameters": {
+          "C": 0.75
+        },
+        "representation": "v2c1_word_char_tfidf"
+      }
+    },
+    {
+      "candidate_id": "tfidf_svc_c_1_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "tfidf_svc_c_1_0",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 4,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9725609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.9455689923127457,
+          "validation_fold": 0,
+          "weighted_f1": 0.972558215058434
+        },
+        {
+          "accuracy": 0.9670731707317073,
+          "example_count": 1640,
+          "macro_f1": 0.9213564700766779,
+          "validation_fold": 1,
+          "weighted_f1": 0.966992296316749
+        },
+        {
+          "accuracy": 0.9585365853658536,
+          "example_count": 1640,
+          "macro_f1": 0.8895404722290898,
+          "validation_fold": 2,
+          "weighted_f1": 0.9585135590363479
+        },
+        {
+          "accuracy": 0.9621720561317877,
+          "example_count": 1639,
+          "macro_f1": 0.9302371775169281,
+          "validation_fold": 3,
+          "weighted_f1": 0.9621824078691414
+        },
+        {
+          "accuracy": 0.9646125686394142,
+          "example_count": 1639,
+          "macro_f1": 0.9036158965190848,
+          "validation_fold": 4,
+          "weighted_f1": 0.9638197989491281
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.027729013003409,
+          "p90_ms": 1.0922207962721586,
+          "p95_ms": 1.143762533320114
+        }
+      },
+      "macro_f1_mean": 0.9180638017309054,
+      "macro_f1_standard_deviation": 0.019687003543887673,
+      "macro_f1_variance": 0.0003875781085370458,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3603953
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9649914613320322,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              134,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              50,
+              0,
+              0,
+              2,
+              0,
+              1,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              48,
+              0,
+              0,
+              1,
+              1,
+              6,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              780,
+              0,
+              5,
+              69
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              1,
+              136,
+              1,
+              11
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0,
+              2,
+              0,
+              405,
+              24
+            ],
+            [
+              8,
+              0,
+              0,
+              0,
+              1,
+              75,
+              3,
+              32,
+              6254
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8807339449541285,
+          "precision": 0.9230769230769231,
+          "recall": 0.8421052631578947,
+          "support": 57
+        },
+        "false_supported_count": 119,
+        "false_supported_rate": 0.01867252471363565,
+        "freeze_card_metrics": {
+          "f1": 0.918918918918919,
+          "precision": 0.9444444444444444,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.9210220978800225,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8963210702341137,
+            "precision": 0.9178082191780822,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9090909090909091,
+            "precision": 0.9433962264150944,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8807339449541285,
+            "precision": 0.9230769230769231,
+            "recall": 0.8421052631578947,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9636363636363636,
+            "precision": 1.0,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.918918918918919,
+            "precision": 0.9444444444444444,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9090909090909091,
+            "precision": 0.9069767441860465,
+            "recall": 0.9112149532710281,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9158249158249159,
+            "precision": 0.9444444444444444,
+            "recall": 0.8888888888888888,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9152542372881356,
+            "precision": 0.9,
+            "recall": 0.9310344827586207,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.980327611881809,
+            "precision": 0.9793297839022862,
+            "recall": 0.9813274752863643,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 7,
+        "protected_write_false_positive_rate": 0.0008659079663532904,
+        "protected_write_recall": 0.868421052631579,
+        "supported_intent_accuracy": 0.907945205479452,
+        "unsupported_or_uncertain_recall": 0.9813274752863643,
+        "weighted_f1": 0.9649340431298091
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0008659079663532904
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.868421052631579
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9813274752863643
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9624605091990336,
+          "count": 5381,
+          "false_supported_rate": 0.024651162790697675,
+          "macro_f1_over_classes_present": 0.9339945440896291,
+          "unsupported_or_uncertain_recall": 0.9753488372093023
+        },
+        "clinc150_oos": {
+          "accuracy": 0.98828125,
+          "count": 2304,
+          "false_supported_rate": 0.005952380952380952,
+          "macro_f1_over_classes_present": 0.9666176464109678,
+          "unsupported_or_uncertain_recall": 0.9940476190476191
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8869395711500975,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8900417153772757,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "tfidf_svc",
+        "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+        "id": "tfidf_svc_c_1_0",
+        "parameters": {
+          "C": 1.0
+        },
+        "representation": "v2c1_word_char_tfidf"
+      }
+    },
+    {
+      "candidate_id": "tfidf_svc_c_1_5",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.5,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "tfidf_svc_c_1_5",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 3,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9719512195121951,
+          "example_count": 1640,
+          "macro_f1": 0.9373759779259632,
+          "validation_fold": 0,
+          "weighted_f1": 0.9717323936420103
+        },
+        {
+          "accuracy": 0.9701219512195122,
+          "example_count": 1640,
+          "macro_f1": 0.9236415960797202,
+          "validation_fold": 1,
+          "weighted_f1": 0.969946348082317
+        },
+        {
+          "accuracy": 0.9585365853658536,
+          "example_count": 1640,
+          "macro_f1": 0.8894688563089791,
+          "validation_fold": 2,
+          "weighted_f1": 0.9584579757307449
+        },
+        {
+          "accuracy": 0.9646125686394142,
+          "example_count": 1639,
+          "macro_f1": 0.9319003539214807,
+          "validation_fold": 3,
+          "weighted_f1": 0.964569791479316
+        },
+        {
+          "accuracy": 0.9646125686394142,
+          "example_count": 1639,
+          "macro_f1": 0.9041296890360044,
+          "validation_fold": 4,
+          "weighted_f1": 0.9637750661407143
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.0548749705776572,
+          "p90_ms": 1.1297000222839415,
+          "p95_ms": 1.1837621917948125
+        }
+      },
+      "macro_f1_mean": 0.9173032946544296,
+      "macro_f1_standard_deviation": 0.017913462317036517,
+      "macro_f1_variance": 0.00032089213218388724,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3603953
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9659673090997805,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              134,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              50,
+              0,
+              0,
+              2,
+              0,
+              1,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              47,
+              0,
+              0,
+              1,
+              1,
+              7,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              777,
+              0,
+              4,
+              73
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              1,
+              136,
+              1,
+              11
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0,
+              2,
+              0,
+              405,
+              24
+            ],
+            [
+              8,
+              0,
+              0,
+              0,
+              1,
+              67,
+              3,
+              28,
+              6266
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8703703703703703,
+          "precision": 0.9215686274509803,
+          "recall": 0.8245614035087719,
+          "support": 57
+        },
+        "false_supported_count": 107,
+        "false_supported_rate": 0.016789581045033735,
+        "freeze_card_metrics": {
+          "f1": 0.918918918918919,
+          "precision": 0.9444444444444444,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.9206653037153265,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8963210702341137,
+            "precision": 0.9178082191780822,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9090909090909091,
+            "precision": 0.9433962264150944,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8703703703703703,
+            "precision": 0.9215686274509803,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9636363636363636,
+            "precision": 1.0,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.918918918918919,
+            "precision": 0.9444444444444444,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9114369501466275,
+            "precision": 0.9151943462897526,
+            "recall": 0.9077102803738317,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9158249158249159,
+            "precision": 0.9444444444444444,
+            "recall": 0.8888888888888888,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9194097616345063,
+            "precision": 0.9080717488789237,
+            "recall": 0.9310344827586207,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9809784735812133,
+            "precision": 0.978756638550453,
+            "recall": 0.9832104189549663,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 7,
+        "protected_write_false_positive_rate": 0.0008659079663532904,
+        "protected_write_recall": 0.8596491228070176,
+        "supported_intent_accuracy": 0.9057534246575343,
+        "unsupported_or_uncertain_recall": 0.9832104189549663,
+        "weighted_f1": 0.9658334188425922
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0008659079663532904
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8596491228070176
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9832104189549663
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9641330607693738,
+          "count": 5381,
+          "false_supported_rate": 0.02186046511627907,
+          "macro_f1_over_classes_present": 0.937286302409901,
+          "unsupported_or_uncertain_recall": 0.978139534883721
+        },
+        "clinc150_oos": {
+          "accuracy": 0.98828125,
+          "count": 2304,
+          "false_supported_rate": 0.005952380952380952,
+          "macro_f1_over_classes_present": 0.9666176464109678,
+          "unsupported_or_uncertain_recall": 0.9940476190476191
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.884990253411306,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8880809945162731,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "tfidf_svc",
+        "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+        "id": "tfidf_svc_c_1_5",
+        "parameters": {
+          "C": 1.5
+        },
+        "representation": "v2c1_word_char_tfidf"
+      }
+    },
+    {
+      "candidate_id": "tfidf_svc_c_2_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 2.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "tfidf_svc_c_2_0",
+        "representation": "v2c1_word_char_tfidf",
+        "representation_definition": {
+          "character_tfidf": {
+            "analyzer": "char_wb",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              3,
+              5
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          },
+          "family": "sparse_lexical",
+          "transform": "feature_union",
+          "v2c1_fidelity": "Exact explicit equivalents of the V2-C1 TfidfVectorizer arguments and relevant sklearn defaults.",
+          "word_tfidf": {
+            "analyzer": "word",
+            "binary": false,
+            "decode_error": "strict",
+            "dtype": "float64",
+            "encoding": "utf-8",
+            "input": "content",
+            "lowercase": true,
+            "max_df": 1.0,
+            "max_features": null,
+            "min_df": 1,
+            "ngram_range": [
+              1,
+              2
+            ],
+            "norm": "l2",
+            "preprocessor": null,
+            "smooth_idf": true,
+            "stop_words": null,
+            "strip_accents": null,
+            "sublinear_tf": true,
+            "token_pattern": "(?u)\\b\\w\\w+\\b",
+            "tokenizer": null,
+            "use_idf": true,
+            "vocabulary": null
+          }
+        }
+      },
+      "eligible_rank": 2,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9719512195121951,
+          "example_count": 1640,
+          "macro_f1": 0.9369844903104918,
+          "validation_fold": 0,
+          "weighted_f1": 0.971689080795016
+        },
+        {
+          "accuracy": 0.9689024390243902,
+          "example_count": 1640,
+          "macro_f1": 0.9228474602228915,
+          "validation_fold": 1,
+          "weighted_f1": 0.9686835062229768
+        },
+        {
+          "accuracy": 0.9591463414634146,
+          "example_count": 1640,
+          "macro_f1": 0.889793782469745,
+          "validation_fold": 2,
+          "weighted_f1": 0.9590327875044966
+        },
+        {
+          "accuracy": 0.9640024405125076,
+          "example_count": 1639,
+          "macro_f1": 0.9262543044247403,
+          "validation_fold": 3,
+          "weighted_f1": 0.9639258122664573
+        },
+        {
+          "accuracy": 0.9640024405125076,
+          "example_count": 1639,
+          "macro_f1": 0.9033274062239237,
+          "validation_fold": 4,
+          "weighted_f1": 0.96310189894598
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 1.0553335305303335,
+          "p90_ms": 1.122850098181516,
+          "p95_ms": 1.1740062269382179
+        }
+      },
+      "macro_f1_mean": 0.9158414887303584,
+      "macro_f1_standard_deviation": 0.016968336073250833,
+      "macro_f1_variance": 0.00028792442909478553,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 3603953
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9656013661868749,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              134,
+              1,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              49,
+              0,
+              0,
+              2,
+              1,
+              1,
+              1,
+              3
+            ],
+            [
+              0,
+              0,
+              47,
+              0,
+              0,
+              1,
+              1,
+              7,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              51,
+              0,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              1,
+              1,
+              0,
+              0,
+              773,
+              0,
+              4,
+              77
+            ],
+            [
+              3,
+              1,
+              0,
+              0,
+              0,
+              1,
+              136,
+              1,
+              11
+            ],
+            [
+              1,
+              0,
+              3,
+              0,
+              0,
+              2,
+              0,
+              403,
+              26
+            ],
+            [
+              8,
+              0,
+              0,
+              0,
+              1,
+              63,
+              3,
+              28,
+              6270
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8703703703703703,
+          "precision": 0.9215686274509803,
+          "recall": 0.8245614035087719,
+          "support": 57
+        },
+        "false_supported_count": 103,
+        "false_supported_rate": 0.016161933155499766,
+        "freeze_card_metrics": {
+          "f1": 0.918918918918919,
+          "precision": 0.9444444444444444,
+          "recall": 0.8947368421052632,
+          "support": 57
+        },
+        "macro_f1": 0.9191583475458719,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8963210702341137,
+            "precision": 0.9178082191780822,
+            "recall": 0.8758169934640523,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8990825688073395,
+            "precision": 0.9423076923076923,
+            "recall": 0.8596491228070176,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8703703703703703,
+            "precision": 0.9215686274509803,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9636363636363636,
+            "precision": 1.0,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.918918918918919,
+            "precision": 0.9444444444444444,
+            "recall": 0.8947368421052632,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.9104829210836278,
+            "precision": 0.9180522565320665,
+            "recall": 0.9030373831775701,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9158249158249159,
+            "precision": 0.9444444444444444,
+            "recall": 0.8888888888888888,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9169510807736063,
+            "precision": 0.9076576576576577,
+            "recall": 0.9264367816091954,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9808369182635901,
+            "precision": 0.9778540237055521,
+            "recall": 0.9838380668445003,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 7,
+        "protected_write_false_positive_rate": 0.0008659079663532904,
+        "protected_write_recall": 0.8596491228070176,
+        "supported_intent_accuracy": 0.9019178082191781,
+        "unsupported_or_uncertain_recall": 0.9838380668445003,
+        "weighted_f1": 0.9654237112934588
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0008659079663532904
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8596491228070176
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9838380668445003
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9635755435792603,
+          "count": 5381,
+          "false_supported_rate": 0.02116279069767442,
+          "macro_f1_over_classes_present": 0.9358274915441461,
+          "unsupported_or_uncertain_recall": 0.9788372093023255
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9887152777777778,
+          "count": 2304,
+          "false_supported_rate": 0.005456349206349206,
+          "macro_f1_over_classes_present": 0.9679619866019225,
+          "unsupported_or_uncertain_recall": 0.9945436507936508
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8830409356725146,
+          "count": 513,
+          "false_supported_rate": 0.017543859649122806,
+          "macro_f1_over_classes_present": 0.8860719255351542,
+          "unsupported_or_uncertain_recall": 0.9824561403508771
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "tfidf_svc",
+        "finalist_id": "direct_v2c1_tfidf_balanced_svc",
+        "id": "tfidf_svc_c_2_0",
+        "parameters": {
+          "C": 2.0
+        },
+        "representation": "v2c1_word_char_tfidf"
+      }
+    },
+    {
+      "candidate_id": "bge_svc_c_0_25",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 0.25,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "bge_svc_c_0_25",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": 12,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9457317073170731,
+          "example_count": 1640,
+          "macro_f1": 0.889740777203699,
+          "validation_fold": 0,
+          "weighted_f1": 0.9474071247743747
+        },
+        {
+          "accuracy": 0.9420731707317073,
+          "example_count": 1640,
+          "macro_f1": 0.896993728357206,
+          "validation_fold": 1,
+          "weighted_f1": 0.9437839421364851
+        },
+        {
+          "accuracy": 0.9335365853658537,
+          "example_count": 1640,
+          "macro_f1": 0.86833708991877,
+          "validation_fold": 2,
+          "weighted_f1": 0.9363247349872514
+        },
+        {
+          "accuracy": 0.9353264185478951,
+          "example_count": 1639,
+          "macro_f1": 0.8596117272421666,
+          "validation_fold": 3,
+          "weighted_f1": 0.9375177781866041
+        },
+        {
+          "accuracy": 0.9420378279438683,
+          "example_count": 1639,
+          "macro_f1": 0.8727247898735214,
+          "validation_fold": 4,
+          "weighted_f1": 0.9431071545317694
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.09856198448687792,
+          "p90_ms": 0.11072475463151932,
+          "p95_ms": 0.11313121067360044
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 10.479332995600998,
+          "p90_ms": 17.441696242894974,
+          "p95_ms": 20.96570143476127
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.8774816225190726,
+      "macro_f1_standard_deviation": 0.013831791195094614,
+      "macro_f1_variance": 0.0001913184476646969,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 29307,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9397414003415467,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              147,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              3
+            ],
+            [
+              0,
+              55,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              55,
+              0,
+              0,
+              1,
+              0,
+              1,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              50,
+              0,
+              1,
+              0,
+              0,
+              6
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              57,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              3,
+              1,
+              7,
+              5,
+              7,
+              763,
+              2,
+              3,
+              65
+            ],
+            [
+              2,
+              0,
+              1,
+              0,
+              0,
+              0,
+              145,
+              2,
+              3
+            ],
+            [
+              0,
+              1,
+              8,
+              0,
+              0,
+              2,
+              3,
+              411,
+              10
+            ],
+            [
+              33,
+              11,
+              5,
+              11,
+              6,
+              214,
+              12,
+              60,
+              6021
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8270676691729323,
+          "precision": 0.7236842105263158,
+          "recall": 0.9649122807017544,
+          "support": 57
+        },
+        "false_supported_count": 352,
+        "false_supported_rate": 0.05523301427898949,
+        "freeze_card_metrics": {
+          "f1": 0.890625,
+          "precision": 0.8028169014084507,
+          "recall": 1.0,
+          "support": 57
+        },
+        "macro_f1": 0.876540618648851,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8698224852071006,
+            "precision": 0.7945945945945946,
+            "recall": 0.9607843137254902,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.88,
+            "precision": 0.8088235294117647,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8270676691729323,
+            "precision": 0.7236842105263158,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.8130081300813008,
+            "precision": 0.7575757575757576,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.890625,
+            "precision": 0.8028169014084507,
+            "recall": 1.0,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8302502720348205,
+            "precision": 0.7769857433808554,
+            "recall": 0.8913551401869159,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9119496855345912,
+            "precision": 0.8787878787878788,
+            "recall": 0.9477124183006536,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9013157894736842,
+            "precision": 0.8616352201257862,
+            "recall": 0.9448275862068966,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9648265363352295,
+            "precision": 0.9857563850687623,
+            "recall": 0.9447669857210105,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 35,
+        "protected_write_false_positive_rate": 0.004329539831766452,
+        "protected_write_recall": 0.9824561403508771,
+        "supported_intent_accuracy": 0.9221917808219178,
+        "unsupported_or_uncertain_recall": 0.9447669857210105,
+        "weighted_f1": 0.941525641013448
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.004329539831766452
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9824561403508771
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9447669857210105
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9370005575171901,
+          "count": 5381,
+          "false_supported_rate": 0.06255813953488372,
+          "macro_f1_over_classes_present": 0.9066854053216993,
+          "unsupported_or_uncertain_recall": 0.9374418604651162
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9665798611111112,
+          "count": 2304,
+          "false_supported_rate": 0.03373015873015873,
+          "macro_f1_over_classes_present": 0.924673885131341,
+          "unsupported_or_uncertain_recall": 0.9662698412698413
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.847953216374269,
+          "count": 513,
+          "false_supported_rate": 0.2631578947368421,
+          "macro_f1_over_classes_present": 0.841194587068159,
+          "unsupported_or_uncertain_recall": 0.7368421052631579
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "bge_svc",
+        "finalist_id": "direct_bge_balanced_svc",
+        "id": "bge_svc_c_0_25",
+        "parameters": {
+          "C": 0.25
+        },
+        "representation": "bge_small_en_v1_5"
+      }
+    },
+    {
+      "candidate_id": "bge_svc_c_0_5",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 0.5,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "bge_svc_c_0_5",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": 9,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9536585365853658,
+          "example_count": 1640,
+          "macro_f1": 0.9163633858312858,
+          "validation_fold": 0,
+          "weighted_f1": 0.9546184032056131
+        },
+        {
+          "accuracy": 0.948170731707317,
+          "example_count": 1640,
+          "macro_f1": 0.9124053640140846,
+          "validation_fold": 1,
+          "weighted_f1": 0.9494345355249357
+        },
+        {
+          "accuracy": 0.9365853658536586,
+          "example_count": 1640,
+          "macro_f1": 0.8751073258952455,
+          "validation_fold": 2,
+          "weighted_f1": 0.939059514600983
+        },
+        {
+          "accuracy": 0.9438682123245882,
+          "example_count": 1639,
+          "macro_f1": 0.8867983151812586,
+          "validation_fold": 3,
+          "weighted_f1": 0.9453618839857196
+        },
+        {
+          "accuracy": 0.9505796217205613,
+          "example_count": 1639,
+          "macro_f1": 0.903718587805341,
+          "validation_fold": 4,
+          "weighted_f1": 0.9514231581218486
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.09845802560448647,
+          "p90_ms": 0.10925416136160493,
+          "p95_ms": 0.11196010746061802
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 7.924166973680258,
+          "p90_ms": 12.385999923571942,
+          "p95_ms": 16.95151039166376
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.898878595745443,
+      "macro_f1_standard_deviation": 0.01564048155319848,
+      "macro_f1_variance": 0.000244624663215942,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 29307,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9465723347157844,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              146,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              4
+            ],
+            [
+              0,
+              54,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              54,
+              0,
+              0,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              52,
+              0,
+              1,
+              0,
+              0,
+              4
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              55,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              3,
+              1,
+              2,
+              3,
+              5,
+              777,
+              1,
+              1,
+              63
+            ],
+            [
+              3,
+              0,
+              0,
+              0,
+              0,
+              0,
+              144,
+              2,
+              4
+            ],
+            [
+              0,
+              1,
+              5,
+              0,
+              0,
+              2,
+              2,
+              415,
+              10
+            ],
+            [
+              25,
+              5,
+              5,
+              7,
+              6,
+              194,
+              10,
+              58,
+              6063
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8780487804878049,
+          "precision": 0.8181818181818182,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "false_supported_count": 310,
+        "false_supported_rate": 0.04864271143888279,
+        "freeze_card_metrics": {
+          "f1": 0.8870967741935484,
+          "precision": 0.8208955223880597,
+          "recall": 0.9649122807017544,
+          "support": 57
+        },
+        "macro_f1": 0.8983212057807882,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8848484848484849,
+            "precision": 0.8248587570621468,
+            "recall": 0.954248366013072,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9152542372881356,
+            "precision": 0.8852459016393442,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8780487804878049,
+            "precision": 0.8181818181818182,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.8739495798319328,
+            "precision": 0.8387096774193549,
+            "recall": 0.9122807017543859,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8870967741935484,
+            "precision": 0.8208955223880597,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8482532751091703,
+            "precision": 0.7961065573770492,
+            "recall": 0.9077102803738317,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9201277955271565,
+            "precision": 0.9,
+            "recall": 0.9411764705882353,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9090909090909091,
+            "precision": 0.8682008368200836,
+            "recall": 0.9540229885057471,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9682210156499521,
+            "precision": 0.9856933831897252,
+            "recall": 0.9513572885611172,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 24,
+        "protected_write_false_positive_rate": 0.0029688273132112814,
+        "protected_write_recall": 0.956140350877193,
+        "supported_intent_accuracy": 0.9298630136986301,
+        "unsupported_or_uncertain_recall": 0.9513572885611172,
+        "weighted_f1": 0.947888651716918
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0029688273132112814
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.956140350877193
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9513572885611172
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9418323731648393,
+          "count": 5381,
+          "false_supported_rate": 0.0572093023255814,
+          "macro_f1_over_classes_present": 0.9120180815001714,
+          "unsupported_or_uncertain_recall": 0.9427906976744186
+        },
+        "clinc150_oos": {
+          "accuracy": 0.97265625,
+          "count": 2304,
+          "false_supported_rate": 0.025793650793650792,
+          "macro_f1_over_classes_present": 0.9381440556867311,
+          "unsupported_or_uncertain_recall": 0.9742063492063492
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8791423001949318,
+          "count": 513,
+          "false_supported_rate": 0.21052631578947367,
+          "macro_f1_over_classes_present": 0.8778431267619157,
+          "unsupported_or_uncertain_recall": 0.7894736842105263
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "bge_svc",
+        "finalist_id": "direct_bge_balanced_svc",
+        "id": "bge_svc_c_0_5",
+        "parameters": {
+          "C": 0.5
+        },
+        "representation": "bge_small_en_v1_5"
+      }
+    },
+    {
+      "candidate_id": "bge_svc_c_1_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "bge_svc_c_1_0",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": 8,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9579268292682926,
+          "example_count": 1640,
+          "macro_f1": 0.9204508770662988,
+          "validation_fold": 0,
+          "weighted_f1": 0.958629057078666
+        },
+        {
+          "accuracy": 0.9530487804878048,
+          "example_count": 1640,
+          "macro_f1": 0.9224780328007678,
+          "validation_fold": 1,
+          "weighted_f1": 0.954009455547358
+        },
+        {
+          "accuracy": 0.9408536585365853,
+          "example_count": 1640,
+          "macro_f1": 0.883764861257671,
+          "validation_fold": 2,
+          "weighted_f1": 0.9428556562209338
+        },
+        {
+          "accuracy": 0.9469188529591214,
+          "example_count": 1639,
+          "macro_f1": 0.9011615765142102,
+          "validation_fold": 3,
+          "weighted_f1": 0.9482054753492137
+        },
+        {
+          "accuracy": 0.9572910311165345,
+          "example_count": 1639,
+          "macro_f1": 0.9240714311943334,
+          "validation_fold": 4,
+          "weighted_f1": 0.9578655032445444
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.09731249883770943,
+          "p90_ms": 0.09992104023694992,
+          "p95_ms": 0.10117115452885628
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 7.393334002699703,
+          "p90_ms": 12.749020650517195,
+          "p95_ms": 15.680152107961463
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.9103853557666562,
+      "macro_f1_standard_deviation": 0.015675363147932015,
+      "macro_f1_variance": 0.0002457170098195451,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 29307,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9512076116125885,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              146,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              4
+            ],
+            [
+              0,
+              54,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              54,
+              0,
+              0,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              53,
+              0,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              55,
+              0,
+              0,
+              1,
+              1
+            ],
+            [
+              3,
+              0,
+              2,
+              3,
+              3,
+              780,
+              1,
+              0,
+              64
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              144,
+              1,
+              4
+            ],
+            [
+              0,
+              1,
+              5,
+              0,
+              0,
+              1,
+              1,
+              415,
+              12
+            ],
+            [
+              20,
+              3,
+              3,
+              7,
+              5,
+              177,
+              10,
+              51,
+              6097
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8925619834710744,
+          "precision": 0.84375,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "false_supported_count": 276,
+        "false_supported_rate": 0.04330770437784403,
+        "freeze_card_metrics": {
+          "f1": 0.9090909090909091,
+          "precision": 0.859375,
+          "recall": 0.9649122807017544,
+          "support": 57
+        },
+        "macro_f1": 0.9100509592777603,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8957055214723927,
+            "precision": 0.8439306358381503,
+            "recall": 0.954248366013072,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9391304347826087,
+            "precision": 0.9310344827586207,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8925619834710744,
+            "precision": 0.84375,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.8833333333333333,
+            "precision": 0.8412698412698413,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9090909090909091,
+            "precision": 0.859375,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8585580627407815,
+            "precision": 0.8116545265348595,
+            "recall": 0.9112149532710281,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9230769230769231,
+            "precision": 0.9056603773584906,
+            "recall": 0.9411764705882353,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.918141592920354,
+            "precision": 0.8848614072494669,
+            "recall": 0.9540229885057471,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.970859872611465,
+            "precision": 0.9854533699692904,
+            "recall": 0.956692295622156,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 19,
+        "protected_write_false_positive_rate": 0.0023503216229589312,
+        "protected_write_recall": 0.956140350877193,
+        "supported_intent_accuracy": 0.932054794520548,
+        "unsupported_or_uncertain_recall": 0.956692295622156,
+        "weighted_f1": 0.9522390371375965
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0023503216229589312
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.956140350877193
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.956692295622156
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9459208325590039,
+          "count": 5381,
+          "false_supported_rate": 0.05186046511627907,
+          "macro_f1_over_classes_present": 0.9176257507642789,
+          "unsupported_or_uncertain_recall": 0.9481395348837209
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9761284722222222,
+          "count": 2304,
+          "false_supported_rate": 0.021825396825396824,
+          "macro_f1_over_classes_present": 0.9431573641679267,
+          "unsupported_or_uncertain_recall": 0.9781746031746031
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8947368421052632,
+          "count": 513,
+          "false_supported_rate": 0.15789473684210525,
+          "macro_f1_over_classes_present": 0.8942725199367891,
+          "unsupported_or_uncertain_recall": 0.8421052631578947
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "bge_svc",
+        "finalist_id": "direct_bge_balanced_svc",
+        "id": "bge_svc_c_1_0",
+        "parameters": {
+          "C": 1.0
+        },
+        "representation": "bge_small_en_v1_5"
+      }
+    },
+    {
+      "candidate_id": "bge_svc_c_2_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 2.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "bge_svc_c_2_0",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": 7,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9628048780487805,
+          "example_count": 1640,
+          "macro_f1": 0.9301913688334813,
+          "validation_fold": 0,
+          "weighted_f1": 0.9632932496001134
+        },
+        {
+          "accuracy": 0.9573170731707317,
+          "example_count": 1640,
+          "macro_f1": 0.9261021236487618,
+          "validation_fold": 1,
+          "weighted_f1": 0.9579836578530195
+        },
+        {
+          "accuracy": 0.9420731707317073,
+          "example_count": 1640,
+          "macro_f1": 0.8904128788929349,
+          "validation_fold": 2,
+          "weighted_f1": 0.9442128421246763
+        },
+        {
+          "accuracy": 0.947528981086028,
+          "example_count": 1639,
+          "macro_f1": 0.8982450555386912,
+          "validation_fold": 3,
+          "weighted_f1": 0.9487459590823858
+        },
+        {
+          "accuracy": 0.9627821842586943,
+          "example_count": 1639,
+          "macro_f1": 0.9398644319898707,
+          "validation_fold": 4,
+          "weighted_f1": 0.9632729914599816
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.09829149348661304,
+          "p90_ms": 0.1094202627427876,
+          "p95_ms": 0.11076673399657011
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 6.756707967724651,
+          "p90_ms": 10.615611972752959,
+          "p95_ms": 13.746108376653845
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.916963171780748,
+      "macro_f1_standard_deviation": 0.019174249845861368,
+      "macro_f1_variance": 0.00036765185715151473,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 29307,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9545010978287387,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              146,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              4
+            ],
+            [
+              0,
+              54,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              54,
+              0,
+              0,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              54,
+              0,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              53,
+              0,
+              0,
+              2,
+              2
+            ],
+            [
+              3,
+              0,
+              2,
+              3,
+              2,
+              785,
+              1,
+              0,
+              60
+            ],
+            [
+              4,
+              0,
+              0,
+              0,
+              0,
+              0,
+              143,
+              1,
+              5
+            ],
+            [
+              0,
+              1,
+              5,
+              0,
+              0,
+              1,
+              1,
+              415,
+              12
+            ],
+            [
+              16,
+              1,
+              3,
+              6,
+              4,
+              166,
+              9,
+              47,
+              6121
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8925619834710744,
+          "precision": 0.84375,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "false_supported_count": 252,
+        "false_supported_rate": 0.0395418170406402,
+        "freeze_card_metrics": {
+          "f1": 0.9137931034482759,
+          "precision": 0.8983050847457628,
+          "recall": 0.9298245614035088,
+          "support": 57
+        },
+        "macro_f1": 0.9168687638959133,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.906832298136646,
+            "precision": 0.863905325443787,
+            "recall": 0.954248366013072,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.9557522123893806,
+            "precision": 0.9642857142857143,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8925619834710744,
+            "precision": 0.84375,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9,
+            "precision": 0.8571428571428571,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9137931034482759,
+            "precision": 0.8983050847457628,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8659680088251517,
+            "precision": 0.8202716823406478,
+            "recall": 0.9170560747663551,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9225806451612903,
+            "precision": 0.910828025477707,
+            "recall": 0.934640522875817,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.9211986681465039,
+            "precision": 0.8905579399141631,
+            "recall": 0.9540229885057471,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9731319554848966,
+            "precision": 0.9861446753665216,
+            "recall": 0.9604581829593598,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 16,
+        "protected_write_false_positive_rate": 0.0019792182088075212,
+        "protected_write_recall": 0.9385964912280702,
+        "supported_intent_accuracy": 0.9336986301369863,
+        "unsupported_or_uncertain_recall": 0.9604581829593598,
+        "weighted_f1": 0.95540379176488
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0019792182088075212
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9385964912280702
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9604581829593598
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9488942575729419,
+          "count": 5381,
+          "false_supported_rate": 0.04837209302325581,
+          "macro_f1_over_classes_present": 0.9216206293664074,
+          "unsupported_or_uncertain_recall": 0.9516279069767442
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9791666666666666,
+          "count": 2304,
+          "false_supported_rate": 0.017857142857142856,
+          "macro_f1_over_classes_present": 0.9481065693340451,
+          "unsupported_or_uncertain_recall": 0.9821428571428571
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.9025341130604289,
+          "count": 513,
+          "false_supported_rate": 0.14035087719298245,
+          "macro_f1_over_classes_present": 0.9026447894518418,
+          "unsupported_or_uncertain_recall": 0.8596491228070176
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "bge_svc",
+        "finalist_id": "direct_bge_balanced_svc",
+        "id": "bge_svc_c_2_0",
+        "parameters": {
+          "C": 2.0
+        },
+        "representation": "bge_small_en_v1_5"
+      }
+    },
+    {
+      "candidate_id": "bge_svc_c_4_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 4.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "bge_svc_c_4_0",
+        "representation": "bge_small_en_v1_5",
+        "representation_definition": {
+          "automatic_regeneration_during_run": false,
+          "batch_size": 256,
+          "cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+          "cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+          "dimensions": 384,
+          "external_api": false,
+          "family": "frozen_local_sentence_embedding",
+          "fine_tuning": false,
+          "model_identifier": "BAAI/bge-small-en-v1.5",
+          "ordering": "development dataset order",
+          "transform": "fastembed_passage_embedding"
+        }
+      },
+      "eligible_rank": 1,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9652439024390244,
+          "example_count": 1640,
+          "macro_f1": 0.9361352504130385,
+          "validation_fold": 0,
+          "weighted_f1": 0.9656666697480986
+        },
+        {
+          "accuracy": 0.9579268292682926,
+          "example_count": 1640,
+          "macro_f1": 0.928726199725231,
+          "validation_fold": 1,
+          "weighted_f1": 0.9584382641751353
+        },
+        {
+          "accuracy": 0.9432926829268292,
+          "example_count": 1640,
+          "macro_f1": 0.8993686926164144,
+          "validation_fold": 2,
+          "weighted_f1": 0.9453270674194236
+        },
+        {
+          "accuracy": 0.9481391092129348,
+          "example_count": 1639,
+          "macro_f1": 0.9016578025479927,
+          "validation_fold": 3,
+          "weighted_f1": 0.9494526391225634
+        },
+        {
+          "accuracy": 0.9646125686394142,
+          "example_count": 1639,
+          "macro_f1": 0.9511655007493807,
+          "validation_fold": 4,
+          "weighted_f1": 0.9650535143465794
+        }
+      ],
+      "latency": {
+        "downstream_classifier_on_cached_embedding": {
+          "p50_ms": 0.09793753270059824,
+          "p90_ms": 0.09959220187738538,
+          "p95_ms": 0.10012912680394948
+        },
+        "end_to_end_local_embedding_and_classifier": {
+          "p50_ms": 8.660395513288677,
+          "p90_ms": 12.845458742231129,
+          "p95_ms": 15.982612111838527
+        },
+        "primary_scope": "end_to_end_local_embedding_and_classifier"
+      },
+      "macro_f1_mean": 0.9234106892104116,
+      "macro_f1_standard_deviation": 0.020058436388562594,
+      "macro_f1_variance": 0.00040234087035401195,
+      "model_size": {
+        "embedding_model_weight_cache_measurement": "not reliably exposed by FastEmbed; not guessed",
+        "frozen_embedding_model_weight_cache_bytes": null,
+        "scope": "classifier bytes are not the total BGE runtime model size",
+        "serialized_downstream_classifier_bytes": 29307,
+        "total_runtime_bytes": null
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9558428885093926,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              146,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              4
+            ],
+            [
+              0,
+              54,
+              0,
+              0,
+              0,
+              3,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              54,
+              0,
+              0,
+              1,
+              0,
+              1,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              54,
+              0,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              53,
+              0,
+              0,
+              2,
+              2
+            ],
+            [
+              3,
+              0,
+              2,
+              3,
+              1,
+              788,
+              0,
+              0,
+              59
+            ],
+            [
+              5,
+              0,
+              0,
+              0,
+              0,
+              0,
+              141,
+              1,
+              6
+            ],
+            [
+              1,
+              0,
+              5,
+              0,
+              0,
+              2,
+              1,
+              414,
+              12
+            ],
+            [
+              10,
+              0,
+              2,
+              5,
+              3,
+              167,
+              7,
+              47,
+              6132
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.9,
+          "precision": 0.8571428571428571,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "false_supported_count": 241,
+        "false_supported_rate": 0.03781578534442178,
+        "freeze_card_metrics": {
+          "f1": 0.9298245614035088,
+          "precision": 0.9298245614035088,
+          "recall": 0.9298245614035088,
+          "support": 57
+        },
+        "macro_f1": 0.9237894971425253,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.9182389937106918,
+            "precision": 0.8848484848484849,
+            "recall": 0.954248366013072,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.972972972972973,
+            "precision": 1.0,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.9,
+            "precision": 0.8571428571428571,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.907563025210084,
+            "precision": 0.8709677419354839,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9298245614035088,
+            "precision": 0.9298245614035088,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8668866886688669,
+            "precision": 0.8191268191268192,
+            "recall": 0.9205607476635514,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9245901639344263,
+            "precision": 0.9276315789473685,
+            "recall": 0.9215686274509803,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.92,
+            "precision": 0.8903225806451613,
+            "recall": 0.9517241379310345,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9740290683821777,
+            "precision": 0.9861691862335156,
+            "recall": 0.9621842146555782,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 13,
+        "protected_write_false_positive_rate": 0.0016081147946561108,
+        "protected_write_recall": 0.9385964912280702,
+        "supported_intent_accuracy": 0.9336986301369863,
+        "unsupported_or_uncertain_recall": 0.9621842146555782,
+        "weighted_f1": 0.9567194036736163
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0016081147946561108
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9385964912280702
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9621842146555782
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9494517747630552,
+          "count": 5381,
+          "false_supported_rate": 0.04744186046511628,
+          "macro_f1_over_classes_present": 0.920931847359795,
+          "unsupported_or_uncertain_recall": 0.9525581395348838
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9817708333333334,
+          "count": 2304,
+          "false_supported_rate": 0.01488095238095238,
+          "macro_f1_over_classes_present": 0.9522188486503003,
+          "unsupported_or_uncertain_recall": 0.9851190476190477
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.9064327485380117,
+          "count": 513,
+          "false_supported_rate": 0.12280701754385964,
+          "macro_f1_over_classes_present": 0.9070515504334841,
+          "unsupported_or_uncertain_recall": 0.8771929824561403
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "bge_svc",
+        "finalist_id": "direct_bge_balanced_svc",
+        "id": "bge_svc_c_4_0",
+        "parameters": {
+          "C": 4.0
+        },
+        "representation": "bge_small_en_v1_5"
+      }
+    },
+    {
+      "candidate_id": "lsa_svc_components_128_c_1_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "lsa_svc_components_128_c_1_0",
+        "representation": "tfidf_lsa",
+        "representation_definition": {
+          "family": "dense_lsa",
+          "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+          "normalizer": {
+            "copy": false,
+            "norm": "l2"
+          },
+          "tfidf_base": "v2c1_word_char_tfidf",
+          "transform": "tfidf_then_truncated_svd_then_normalize",
+          "truncated_svd": {
+            "algorithm": "randomized",
+            "n_components": 128,
+            "n_iter": 5,
+            "random_state": 20260928
+          }
+        }
+      },
+      "eligible_rank": 15,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9225609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.8529636094394686,
+          "validation_fold": 0,
+          "weighted_f1": 0.9252325306164183
+        },
+        {
+          "accuracy": 0.9097560975609756,
+          "example_count": 1640,
+          "macro_f1": 0.7999591915654349,
+          "validation_fold": 1,
+          "weighted_f1": 0.9132910210887168
+        },
+        {
+          "accuracy": 0.9079268292682927,
+          "example_count": 1640,
+          "macro_f1": 0.7917189546654202,
+          "validation_fold": 2,
+          "weighted_f1": 0.9114334792854281
+        },
+        {
+          "accuracy": 0.9151921903599756,
+          "example_count": 1639,
+          "macro_f1": 0.8269060664340587,
+          "validation_fold": 3,
+          "weighted_f1": 0.9179304252217516
+        },
+        {
+          "accuracy": 0.9133618059792556,
+          "example_count": 1639,
+          "macro_f1": 0.8103233766124855,
+          "validation_fold": 4,
+          "weighted_f1": 0.915158381949252
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 2.926437940914184,
+          "p90_ms": 3.0938041862100363,
+          "p95_ms": 3.1952648365404457
+        }
+      },
+      "macro_f1_mean": 0.8163742397433736,
+      "macro_f1_standard_deviation": 0.02174236041366292,
+      "macro_f1_variance": 0.0004727302363576163,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 40427871
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.91375945352525,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              138,
+              1,
+              1,
+              0,
+              0,
+              0,
+              2,
+              0,
+              11
+            ],
+            [
+              0,
+              45,
+              0,
+              0,
+              6,
+              1,
+              1,
+              0,
+              4
+            ],
+            [
+              0,
+              0,
+              52,
+              0,
+              0,
+              1,
+              1,
+              2,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              50,
+              0,
+              3,
+              0,
+              0,
+              4
+            ],
+            [
+              0,
+              6,
+              0,
+              0,
+              47,
+              1,
+              1,
+              0,
+              2
+            ],
+            [
+              2,
+              2,
+              7,
+              4,
+              2,
+              731,
+              4,
+              7,
+              97
+            ],
+            [
+              9,
+              2,
+              0,
+              1,
+              0,
+              2,
+              127,
+              1,
+              11
+            ],
+            [
+              1,
+              1,
+              20,
+              1,
+              1,
+              8,
+              0,
+              374,
+              29
+            ],
+            [
+              40,
+              2,
+              5,
+              1,
+              2,
+              271,
+              27,
+              98,
+              5927
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.7323943661971831,
+          "precision": 0.611764705882353,
+          "recall": 0.9122807017543859,
+          "support": 57
+        },
+        "false_supported_count": 446,
+        "false_supported_rate": 0.06998273968303781,
+        "freeze_card_metrics": {
+          "f1": 0.8173913043478261,
+          "precision": 0.8103448275862069,
+          "recall": 0.8245614035087719,
+          "support": 57
+        },
+        "macro_f1": 0.8176218258380248,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8046647230320699,
+            "precision": 0.7263157894736842,
+            "recall": 0.9019607843137255,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.7758620689655172,
+            "precision": 0.7627118644067796,
+            "recall": 0.7894736842105263,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.7323943661971831,
+            "precision": 0.611764705882353,
+            "recall": 0.9122807017543859,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.8771929824561403,
+            "precision": 0.8771929824561403,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8173913043478261,
+            "precision": 0.8103448275862069,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.7801494130202775,
+            "precision": 0.7180746561886051,
+            "recall": 0.8539719626168224,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8037974683544303,
+            "precision": 0.7791411042944786,
+            "recall": 0.8300653594771242,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.8157033805888768,
+            "precision": 0.7759336099585062,
+            "recall": 0.8597701149425288,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9514407255799021,
+            "precision": 0.9738744659875124,
+            "recall": 0.9300172603169622,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 44,
+        "protected_write_false_positive_rate": 0.0054428500742206825,
+        "protected_write_recall": 0.868421052631579,
+        "supported_intent_accuracy": 0.856986301369863,
+        "unsupported_or_uncertain_recall": 0.9300172603169622,
+        "weighted_f1": 0.9166659244518748
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0054428500742206825
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.868421052631579
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9300172603169622
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9094963761382643,
+          "count": 5381,
+          "false_supported_rate": 0.08302325581395349,
+          "macro_f1_over_classes_present": 0.8616844826405519,
+          "unsupported_or_uncertain_recall": 0.9169767441860465
+        },
+        "clinc150_oos": {
+          "accuracy": 0.95703125,
+          "count": 2304,
+          "false_supported_rate": 0.03819444444444445,
+          "macro_f1_over_classes_present": 0.8967154958231425,
+          "unsupported_or_uncertain_recall": 0.9618055555555556
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.7641325536062378,
+          "count": 513,
+          "false_supported_rate": 0.21052631578947367,
+          "macro_f1_over_classes_present": 0.7605552476618077,
+          "unsupported_or_uncertain_recall": 0.7894736842105263
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "lsa_svc",
+        "finalist_id": "direct_lsa_balanced_svc",
+        "id": "lsa_svc_components_128_c_1_0",
+        "parameters": {
+          "C": 1.0,
+          "n_components": 128
+        },
+        "representation": "tfidf_lsa"
+      }
+    },
+    {
+      "candidate_id": "lsa_svc_components_256_c_0_5",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 0.5,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "lsa_svc_components_256_c_0_5",
+        "representation": "tfidf_lsa",
+        "representation_definition": {
+          "family": "dense_lsa",
+          "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+          "normalizer": {
+            "copy": false,
+            "norm": "l2"
+          },
+          "tfidf_base": "v2c1_word_char_tfidf",
+          "transform": "tfidf_then_truncated_svd_then_normalize",
+          "truncated_svd": {
+            "algorithm": "randomized",
+            "n_components": 256,
+            "n_iter": 5,
+            "random_state": 20260928
+          }
+        }
+      },
+      "eligible_rank": 14,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9457317073170731,
+          "example_count": 1640,
+          "macro_f1": 0.8934098549607327,
+          "validation_fold": 0,
+          "weighted_f1": 0.9469901739287593
+        },
+        {
+          "accuracy": 0.926829268292683,
+          "example_count": 1640,
+          "macro_f1": 0.8376263208982386,
+          "validation_fold": 1,
+          "weighted_f1": 0.9287249495917898
+        },
+        {
+          "accuracy": 0.925609756097561,
+          "example_count": 1640,
+          "macro_f1": 0.8451711126676537,
+          "validation_fold": 2,
+          "weighted_f1": 0.92792641088659
+        },
+        {
+          "accuracy": 0.9280048810250152,
+          "example_count": 1639,
+          "macro_f1": 0.8820728403927185,
+          "validation_fold": 3,
+          "weighted_f1": 0.9297713103516787
+        },
+        {
+          "accuracy": 0.9341061622940817,
+          "example_count": 1639,
+          "macro_f1": 0.8487505002528741,
+          "validation_fold": 4,
+          "weighted_f1": 0.9351414616143765
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 4.2849170276895165,
+          "p90_ms": 4.499624646268785,
+          "p95_ms": 4.57734142546542
+        }
+      },
+      "macro_f1_mean": 0.8614061258344435,
+      "macro_f1_standard_deviation": 0.022093308501954935,
+      "macro_f1_variance": 0.0004881142805625542,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 80035183
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9320565991705294,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              135,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              46,
+              0,
+              1,
+              6,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              50,
+              0,
+              0,
+              1,
+              1,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              55,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              54,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              1,
+              0,
+              7,
+              3,
+              1,
+              748,
+              2,
+              6,
+              88
+            ],
+            [
+              8,
+              1,
+              0,
+              0,
+              0,
+              0,
+              137,
+              1,
+              6
+            ],
+            [
+              0,
+              1,
+              17,
+              0,
+              1,
+              5,
+              2,
+              385,
+              24
+            ],
+            [
+              30,
+              3,
+              3,
+              2,
+              1,
+              208,
+              12,
+              83,
+              6031
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.746268656716418,
+          "precision": 0.6493506493506493,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "false_supported_count": 342,
+        "false_supported_rate": 0.05366389455515456,
+        "freeze_card_metrics": {
+          "f1": 0.9,
+          "precision": 0.8571428571428571,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "macro_f1": 0.8620603519696384,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8256880733944955,
+            "precision": 0.7758620689655172,
+            "recall": 0.8823529411764706,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8440366972477065,
+            "precision": 0.8846153846153846,
+            "recall": 0.8070175438596491,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.746268656716418,
+            "precision": 0.6493506493506493,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9322033898305084,
+            "precision": 0.9016393442622951,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9,
+            "precision": 0.8571428571428571,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8215266337177375,
+            "precision": 0.7751295336787565,
+            "recall": 0.8738317757009346,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8838709677419355,
+            "precision": 0.8726114649681529,
+            "recall": 0.8954248366013072,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.8433734939759037,
+            "precision": 0.805439330543933,
+            "recall": 0.8850574712643678,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9615752551020408,
+            "precision": 0.9773132393453249,
+            "recall": 0.9463361054448455,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 36,
+        "protected_write_false_positive_rate": 0.004453240969816922,
+        "protected_write_recall": 0.9122807017543859,
+        "supported_intent_accuracy": 0.8821917808219178,
+        "unsupported_or_uncertain_recall": 0.9463361054448455,
+        "weighted_f1": 0.9337471213463497
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.004453240969816922
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9122807017543859
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9463361054448455
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9273369262218918,
+          "count": 5381,
+          "false_supported_rate": 0.0644186046511628,
+          "macro_f1_over_classes_present": 0.8847224757394025,
+          "unsupported_or_uncertain_recall": 0.9355813953488372
+        },
+        "clinc150_oos": {
+          "accuracy": 0.96875,
+          "count": 2304,
+          "false_supported_rate": 0.028273809523809524,
+          "macro_f1_over_classes_present": 0.9275223685149661,
+          "unsupported_or_uncertain_recall": 0.9717261904761905
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8167641325536062,
+          "count": 513,
+          "false_supported_rate": 0.14035087719298245,
+          "macro_f1_over_classes_present": 0.8155109834462384,
+          "unsupported_or_uncertain_recall": 0.8596491228070176
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "lsa_svc",
+        "finalist_id": "direct_lsa_balanced_svc",
+        "id": "lsa_svc_components_256_c_0_5",
+        "parameters": {
+          "C": 0.5,
+          "n_components": 256
+        },
+        "representation": "tfidf_lsa"
+      }
+    },
+    {
+      "candidate_id": "lsa_svc_components_256_c_1_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "lsa_svc_components_256_c_1_0",
+        "representation": "tfidf_lsa",
+        "representation_definition": {
+          "family": "dense_lsa",
+          "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+          "normalizer": {
+            "copy": false,
+            "norm": "l2"
+          },
+          "tfidf_base": "v2c1_word_char_tfidf",
+          "transform": "tfidf_then_truncated_svd_then_normalize",
+          "truncated_svd": {
+            "algorithm": "randomized",
+            "n_components": 256,
+            "n_iter": 5,
+            "random_state": 20260928
+          }
+        }
+      },
+      "eligible_rank": 13,
+      "fold_metrics": [
+        {
+          "accuracy": 0.947560975609756,
+          "example_count": 1640,
+          "macro_f1": 0.9097675691463832,
+          "validation_fold": 0,
+          "weighted_f1": 0.9488059877836419
+        },
+        {
+          "accuracy": 0.926829268292683,
+          "example_count": 1640,
+          "macro_f1": 0.8328848442206799,
+          "validation_fold": 1,
+          "weighted_f1": 0.9287750959446723
+        },
+        {
+          "accuracy": 0.9292682926829269,
+          "example_count": 1640,
+          "macro_f1": 0.8499836125938657,
+          "validation_fold": 2,
+          "weighted_f1": 0.9315115072983894
+        },
+        {
+          "accuracy": 0.9298352654057352,
+          "example_count": 1639,
+          "macro_f1": 0.884443234193983,
+          "validation_fold": 3,
+          "weighted_f1": 0.9316172183476781
+        },
+        {
+          "accuracy": 0.9395973154362416,
+          "example_count": 1639,
+          "macro_f1": 0.8649845950034682,
+          "validation_fold": 4,
+          "weighted_f1": 0.9405252889401595
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 4.315332975238562,
+          "p90_ms": 4.578437423333526,
+          "p95_ms": 4.734450310934335
+        }
+      },
+      "macro_f1_mean": 0.868412771031676,
+      "macro_f1_standard_deviation": 0.026761221688854434,
+      "macro_f1_variance": 0.0007161629862800129,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 80035183
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9346181995608686,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              135,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              46,
+              0,
+              1,
+              6,
+              1,
+              0,
+              0,
+              3
+            ],
+            [
+              0,
+              1,
+              50,
+              0,
+              0,
+              1,
+              1,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              55,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              55,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              1,
+              0,
+              6,
+              3,
+              0,
+              754,
+              1,
+              8,
+              83
+            ],
+            [
+              8,
+              1,
+              0,
+              0,
+              0,
+              1,
+              137,
+              1,
+              5
+            ],
+            [
+              0,
+              1,
+              17,
+              0,
+              1,
+              5,
+              2,
+              388,
+              21
+            ],
+            [
+              22,
+              3,
+              2,
+              3,
+              1,
+              209,
+              10,
+              81,
+              6042
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.7575757575757576,
+          "precision": 0.6666666666666666,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "false_supported_count": 331,
+        "false_supported_rate": 0.05193786285893614,
+        "freeze_card_metrics": {
+          "f1": 0.9166666666666666,
+          "precision": 0.873015873015873,
+          "recall": 0.9649122807017544,
+          "support": 57
+        },
+        "macro_f1": 0.8684955688886552,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8463949843260188,
+            "precision": 0.8132530120481928,
+            "recall": 0.8823529411764706,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8440366972477065,
+            "precision": 0.8846153846153846,
+            "recall": 0.8070175438596491,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.7575757575757576,
+            "precision": 0.6666666666666666,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9243697478991597,
+            "precision": 0.8870967741935484,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.9166666666666666,
+            "precision": 0.873015873015873,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8244942591580099,
+            "precision": 0.774922918807811,
+            "recall": 0.8808411214953271,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8925081433224755,
+            "precision": 0.8896103896103896,
+            "recall": 0.8954248366013072,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.8471615720524017,
+            "precision": 0.8066528066528067,
+            "recall": 0.8919540229885058,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9632522917497011,
+            "precision": 0.9789371354504213,
+            "recall": 0.9480621371410639,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 33,
+        "protected_write_false_positive_rate": 0.004082137555665512,
+        "protected_write_recall": 0.9210526315789473,
+        "supported_intent_accuracy": 0.8876712328767123,
+        "unsupported_or_uncertain_recall": 0.9480621371410639,
+        "weighted_f1": 0.9362493765660289
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.004082137555665512
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9210526315789473
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9480621371410639
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9299386731090875,
+          "count": 5381,
+          "false_supported_rate": 0.06302325581395349,
+          "macro_f1_over_classes_present": 0.888894885031792,
+          "unsupported_or_uncertain_recall": 0.9369767441860465
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9709201388888888,
+          "count": 2304,
+          "false_supported_rate": 0.025793650793650792,
+          "macro_f1_over_classes_present": 0.9325229271009885,
+          "unsupported_or_uncertain_recall": 0.9742063492063492
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8206627680311891,
+          "count": 513,
+          "false_supported_rate": 0.14035087719298245,
+          "macro_f1_over_classes_present": 0.8192590998108903,
+          "unsupported_or_uncertain_recall": 0.8596491228070176
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "lsa_svc",
+        "finalist_id": "direct_lsa_balanced_svc",
+        "id": "lsa_svc_components_256_c_1_0",
+        "parameters": {
+          "C": 1.0,
+          "n_components": 256
+        },
+        "representation": "tfidf_lsa"
+      }
+    },
+    {
+      "candidate_id": "lsa_svc_components_256_c_2_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 2.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "lsa_svc_components_256_c_2_0",
+        "representation": "tfidf_lsa",
+        "representation_definition": {
+          "family": "dense_lsa",
+          "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+          "normalizer": {
+            "copy": false,
+            "norm": "l2"
+          },
+          "tfidf_base": "v2c1_word_char_tfidf",
+          "transform": "tfidf_then_truncated_svd_then_normalize",
+          "truncated_svd": {
+            "algorithm": "randomized",
+            "n_components": 256,
+            "n_iter": 5,
+            "random_state": 20260928
+          }
+        }
+      },
+      "eligible_rank": 11,
+      "fold_metrics": [
+        {
+          "accuracy": 0.95,
+          "example_count": 1640,
+          "macro_f1": 0.9161376141642634,
+          "validation_fold": 0,
+          "weighted_f1": 0.9510142505481615
+        },
+        {
+          "accuracy": 0.9280487804878049,
+          "example_count": 1640,
+          "macro_f1": 0.8355605781261066,
+          "validation_fold": 1,
+          "weighted_f1": 0.9299100683582909
+        },
+        {
+          "accuracy": 0.9317073170731708,
+          "example_count": 1640,
+          "macro_f1": 0.8640324637213532,
+          "validation_fold": 2,
+          "weighted_f1": 0.9336376564269995
+        },
+        {
+          "accuracy": 0.9310555216595485,
+          "example_count": 1639,
+          "macro_f1": 0.8896057188628733,
+          "validation_fold": 3,
+          "weighted_f1": 0.9328398404036162
+        },
+        {
+          "accuracy": 0.9414276998169616,
+          "example_count": 1639,
+          "macro_f1": 0.8701519638800341,
+          "validation_fold": 4,
+          "weighted_f1": 0.9421165022720733
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 4.310271004214883,
+          "p90_ms": 4.540562490001321,
+          "p95_ms": 4.688868497032672
+        }
+      },
+      "macro_f1_mean": 0.8750976677509261,
+      "macro_f1_standard_deviation": 0.026850850756250207,
+      "macro_f1_variance": 0.0007209681863344223,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 80035183
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9364479141253964,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              135,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              15
+            ],
+            [
+              0,
+              47,
+              0,
+              1,
+              6,
+              1,
+              0,
+              0,
+              2
+            ],
+            [
+              0,
+              1,
+              50,
+              0,
+              0,
+              1,
+              1,
+              3,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              55,
+              0,
+              1,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              53,
+              2,
+              0,
+              0,
+              2
+            ],
+            [
+              1,
+              0,
+              4,
+              1,
+              0,
+              756,
+              1,
+              9,
+              84
+            ],
+            [
+              8,
+              1,
+              0,
+              0,
+              0,
+              1,
+              136,
+              1,
+              6
+            ],
+            [
+              0,
+              1,
+              12,
+              0,
+              1,
+              5,
+              2,
+              392,
+              22
+            ],
+            [
+              19,
+              2,
+              4,
+              3,
+              1,
+              204,
+              9,
+              78,
+              6053
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.7874015748031497,
+          "precision": 0.7142857142857143,
+          "recall": 0.8771929824561403,
+          "support": 57
+        },
+        "false_supported_count": 320,
+        "false_supported_rate": 0.05021183116271771,
+        "freeze_card_metrics": {
+          "f1": 0.8983050847457628,
+          "precision": 0.8688524590163934,
+          "recall": 0.9298245614035088,
+          "support": 57
+        },
+        "macro_f1": 0.8755603929406301,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8544303797468354,
+            "precision": 0.8282208588957055,
+            "recall": 0.8823529411764706,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8623853211009175,
+            "precision": 0.9038461538461539,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.7874015748031497,
+            "precision": 0.7142857142857143,
+            "recall": 0.8771929824561403,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9401709401709402,
+            "precision": 0.9166666666666666,
+            "recall": 0.9649122807017544,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8983050847457628,
+            "precision": 0.8688524590163934,
+            "recall": 0.9298245614035088,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8275862068965517,
+            "precision": 0.7785787847579815,
+            "recall": 0.883177570093458,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.8918032786885246,
+            "precision": 0.8947368421052632,
+            "recall": 0.8888888888888888,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.8540305010893247,
+            "precision": 0.8115942028985508,
+            "recall": 0.9011494252873563,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9639302492236643,
+            "precision": 0.9784998383446492,
+            "recall": 0.9497881688372822,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 28,
+        "protected_write_false_positive_rate": 0.0034636318654131617,
+        "protected_write_recall": 0.9035087719298246,
+        "supported_intent_accuracy": 0.8898630136986302,
+        "unsupported_or_uncertain_recall": 0.9497881688372822,
+        "weighted_f1": 0.9379176964634193
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0034636318654131617
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9035087719298246
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9497881688372822
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.9325404199962832,
+          "count": 5381,
+          "false_supported_rate": 0.06023255813953488,
+          "macro_f1_over_classes_present": 0.8925481258189009,
+          "unsupported_or_uncertain_recall": 0.9397674418604651
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9704861111111112,
+          "count": 2304,
+          "false_supported_rate": 0.025793650793650792,
+          "macro_f1_over_classes_present": 0.9290651561563742,
+          "unsupported_or_uncertain_recall": 0.9742063492063492
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8245614035087719,
+          "count": 513,
+          "false_supported_rate": 0.15789473684210525,
+          "macro_f1_over_classes_present": 0.8242520893586869,
+          "unsupported_or_uncertain_recall": 0.8421052631578947
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "lsa_svc",
+        "finalist_id": "direct_lsa_balanced_svc",
+        "id": "lsa_svc_components_256_c_2_0",
+        "parameters": {
+          "C": 2.0,
+          "n_components": 256
+        },
+        "representation": "tfidf_lsa"
+      }
+    },
+    {
+      "candidate_id": "lsa_svc_components_384_c_1_0",
+      "definition": {
+        "architecture": "direct_9_way",
+        "architecture_definition": {
+          "description": "One estimator predicts exactly one frozen intent."
+        },
+        "classifier": "step5_balanced_linear_svc",
+        "classifier_definition": {
+          "class": "LinearSVC",
+          "parameters": {
+            "C": 1.0,
+            "class_weight": "balanced",
+            "dual": "auto",
+            "fit_intercept": true,
+            "intercept_scaling": 1.0,
+            "loss": "squared_hinge",
+            "max_iter": 2000,
+            "multi_class": "ovr",
+            "penalty": "l2",
+            "random_state": 20260928,
+            "tol": 0.0001,
+            "verbose": 0
+          }
+        },
+        "id": "lsa_svc_components_384_c_1_0",
+        "representation": "tfidf_lsa",
+        "representation_definition": {
+          "family": "dense_lsa",
+          "fit_boundary": "TF-IDF and TruncatedSVD are newly fit inside every training fold.",
+          "normalizer": {
+            "copy": false,
+            "norm": "l2"
+          },
+          "tfidf_base": "v2c1_word_char_tfidf",
+          "transform": "tfidf_then_truncated_svd_then_normalize",
+          "truncated_svd": {
+            "algorithm": "randomized",
+            "n_components": 384,
+            "n_iter": 5,
+            "random_state": 20260928
+          }
+        }
+      },
+      "eligible_rank": 10,
+      "fold_metrics": [
+        {
+          "accuracy": 0.9591463414634146,
+          "example_count": 1640,
+          "macro_f1": 0.9256766655983188,
+          "validation_fold": 0,
+          "weighted_f1": 0.9596518935957703
+        },
+        {
+          "accuracy": 0.9402439024390243,
+          "example_count": 1640,
+          "macro_f1": 0.8687937635123542,
+          "validation_fold": 1,
+          "weighted_f1": 0.9415963034789678
+        },
+        {
+          "accuracy": 0.9414634146341463,
+          "example_count": 1640,
+          "macro_f1": 0.8736613086065877,
+          "validation_fold": 2,
+          "weighted_f1": 0.9427276079217476
+        },
+        {
+          "accuracy": 0.9481391092129348,
+          "example_count": 1639,
+          "macro_f1": 0.914170668618725,
+          "validation_fold": 3,
+          "weighted_f1": 0.949032433613938
+        },
+        {
+          "accuracy": 0.9517998779743746,
+          "example_count": 1639,
+          "macro_f1": 0.8806964147814654,
+          "validation_fold": 4,
+          "weighted_f1": 0.952203279644099
+        }
+      ],
+      "latency": {
+        "primary_scope": "representation_and_classifier",
+        "representation_and_classifier": {
+          "p50_ms": 5.856021016370505,
+          "p90_ms": 6.181412748992443,
+          "p95_ms": 6.333541986532509
+        }
+      },
+      "macro_f1_mean": 0.8925997642234902,
+      "macro_f1_standard_deviation": 0.02291927494463752,
+      "macro_f1_variance": 0.0005252931639878892,
+      "model_size": {
+        "scope": "fold-independent full-development fitted representation and classifier",
+        "serialized_fitted_candidate_bytes": 119642479
+      },
+      "oof_prediction_count": 8198,
+      "oof_predictions_persisted": false,
+      "pooled_oof_metrics": {
+        "accuracy": 0.9481580873383753,
+        "confusion_matrix": {
+          "label_order": [
+            "account_balance",
+            "card_status",
+            "create_dispute",
+            "escalation",
+            "freeze_card",
+            "informational_policy",
+            "recent_transactions",
+            "transaction_details",
+            "unsupported_or_uncertain"
+          ],
+          "values": [
+            [
+              138,
+              0,
+              0,
+              0,
+              0,
+              0,
+              3,
+              0,
+              12
+            ],
+            [
+              1,
+              47,
+              0,
+              0,
+              6,
+              2,
+              0,
+              0,
+              1
+            ],
+            [
+              0,
+              1,
+              47,
+              0,
+              0,
+              1,
+              1,
+              6,
+              1
+            ],
+            [
+              0,
+              0,
+              0,
+              56,
+              0,
+              1,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              54,
+              0,
+              0,
+              1,
+              2
+            ],
+            [
+              1,
+              0,
+              2,
+              0,
+              1,
+              768,
+              1,
+              6,
+              77
+            ],
+            [
+              6,
+              1,
+              0,
+              0,
+              0,
+              1,
+              138,
+              1,
+              6
+            ],
+            [
+              0,
+              0,
+              10,
+              0,
+              0,
+              2,
+              1,
+              405,
+              17
+            ],
+            [
+              15,
+              4,
+              1,
+              1,
+              3,
+              159,
+              6,
+              64,
+              6120
+            ]
+          ]
+        },
+        "create_dispute_metrics": {
+          "f1": 0.8034188034188035,
+          "precision": 0.7833333333333333,
+          "recall": 0.8245614035087719,
+          "support": 57
+        },
+        "false_supported_count": 253,
+        "false_supported_rate": 0.039698729013023695,
+        "freeze_card_metrics": {
+          "f1": 0.8925619834710744,
+          "precision": 0.84375,
+          "recall": 0.9473684210526315,
+          "support": 57
+        },
+        "macro_f1": 0.8926714501779068,
+        "per_class": {
+          "account_balance": {
+            "f1": 0.8789808917197452,
+            "precision": 0.8571428571428571,
+            "recall": 0.9019607843137255,
+            "support": 153
+          },
+          "card_status": {
+            "f1": 0.8545454545454545,
+            "precision": 0.8867924528301887,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "create_dispute": {
+            "f1": 0.8034188034188035,
+            "precision": 0.7833333333333333,
+            "recall": 0.8245614035087719,
+            "support": 57
+          },
+          "escalation": {
+            "f1": 0.9824561403508771,
+            "precision": 0.9824561403508771,
+            "recall": 0.9824561403508771,
+            "support": 57
+          },
+          "freeze_card": {
+            "f1": 0.8925619834710744,
+            "precision": 0.84375,
+            "recall": 0.9473684210526315,
+            "support": 57
+          },
+          "informational_policy": {
+            "f1": 0.8581005586592179,
+            "precision": 0.8222698072805139,
+            "recall": 0.897196261682243,
+            "support": 856
+          },
+          "recent_transactions": {
+            "f1": 0.9108910891089109,
+            "precision": 0.92,
+            "recall": 0.9019607843137255,
+            "support": 153
+          },
+          "transaction_details": {
+            "f1": 0.8823529411764706,
+            "precision": 0.8385093167701864,
+            "recall": 0.9310344827586207,
+            "support": 435
+          },
+          "unsupported_or_uncertain": {
+            "f1": 0.9707351891506067,
+            "precision": 0.981398332264272,
+            "recall": 0.9603012709869763,
+            "support": 6373
+          }
+        },
+        "protected_write_false_positive_count": 23,
+        "protected_write_false_positive_rate": 0.0028451261751608115,
+        "protected_write_recall": 0.8859649122807017,
+        "supported_intent_accuracy": 0.9057534246575343,
+        "unsupported_or_uncertain_recall": 0.9603012709869763,
+        "weighted_f1": 0.9490221245315286
+      },
+      "raw_text_persisted": false,
+      "safety_gate_result": {
+        "eligible": true,
+        "gates": {
+          "protected_write_false_positive_rate": {
+            "operator": "<=",
+            "passed": true,
+            "threshold": 0.01,
+            "value": 0.0028451261751608115
+          },
+          "protected_write_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.8859649122807017
+          },
+          "unsupported_or_uncertain_recall": {
+            "operator": ">=",
+            "passed": true,
+            "threshold": 0.8,
+            "value": 0.9603012709869763
+          }
+        }
+      },
+      "source_breakdowns": {
+        "banking77": {
+          "accuracy": 0.942947407545066,
+          "count": 5381,
+          "false_supported_rate": 0.05023255813953489,
+          "macro_f1_over_classes_present": 0.9081243430926124,
+          "unsupported_or_uncertain_recall": 0.9497674418604651
+        },
+        "clinc150_oos": {
+          "accuracy": 0.9787326388888888,
+          "count": 2304,
+          "false_supported_rate": 0.01636904761904762,
+          "macro_f1_over_classes_present": 0.9494653652487341,
+          "unsupported_or_uncertain_recall": 0.9836309523809523
+        },
+        "sentinelvoice_v2c1_internal": {
+          "accuracy": 0.8654970760233918,
+          "count": 513,
+          "false_supported_rate": 0.07017543859649122,
+          "macro_f1_over_classes_present": 0.8658299914149771,
+          "unsupported_or_uncertain_recall": 0.9298245614035088
+        }
+      },
+      "tuning_variant": {
+        "architecture": "direct_9_way",
+        "family": "lsa_svc",
+        "finalist_id": "direct_lsa_balanced_svc",
+        "id": "lsa_svc_components_384_c_1_0",
+        "parameters": {
+          "C": 1.0,
+          "n_components": 384
+        },
+        "representation": "tfidf_lsa"
+      }
+    }
+  ]
+}

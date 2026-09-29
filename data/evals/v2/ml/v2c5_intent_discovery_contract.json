@@ -1,0 +1,522 @@
+{
+  "analysis_role": "offline_unsupervised_taxonomy_discovery_governance",
+  "cluster_diagnostics": {
+    "automatic_intent_creation_gate": false,
+    "membership_probability_semantics": "HDBSCAN membership probability is not a semantic correctness probability.",
+    "representative_selection": [
+      "representative_example_ids",
+      "nearest_to_centroid_or_medoid_like_representatives",
+      "boundary_example_ids"
+    ],
+    "required_outputs": [
+      "discovery_example_count",
+      "unique_normalized_text_count",
+      "cluster_count",
+      "noise_or_unassigned_count",
+      "clustered_coverage",
+      "cluster_size_distribution",
+      "cluster_persistence_or_stability_where_available",
+      "membership_probability_where_available",
+      "source_distribution_per_cluster",
+      "current_taxonomy_distribution_per_cluster",
+      "native_external_label_distribution_per_cluster_where_available",
+      "representative_example_ids",
+      "nearest_to_centroid_or_medoid_like_representatives",
+      "sensitivity_run_consistency_diagnostics"
+    ],
+    "semantic_quality_pass_fail_gate": false,
+    "sensitivity_consistency_required": true
+  },
+  "deduplication": {
+    "canonical_unit": "normalized_text_sha256",
+    "cross_dataset_duplicates_increase_clustering_density": false,
+    "duplicate_occurrences_retained_as_metadata": true,
+    "hash_algorithm": "SHA-256",
+    "metadata_preserved": [
+      "all_source_occurrences",
+      "source_datasets",
+      "original_ids",
+      "existing_sentinelvoice_labels",
+      "native_external_labels_where_available",
+      "group_provenance",
+      "lineage_provenance"
+    ],
+    "normalization": {
+      "steps": [
+        "Unicode NFKC normalization",
+        "Unicode lowercase",
+        "trim leading and trailing whitespace",
+        "collapse every whitespace run to one ASCII space"
+      ],
+      "version": "unicode-nfkc-lower-whitespace.v1"
+    },
+    "required_before_clustering": true,
+    "source_precedence": [
+      "sentinelvoice_v2c1_internal",
+      "banking77",
+      "clinc150_oos"
+    ],
+    "tie_breaking": [
+      "source_precedence",
+      "train before validation or val",
+      "source_row_index ascending with nulls last",
+      "example_id lexicographic"
+    ],
+    "vectors_per_unique_normalized_text": 1
+  },
+  "execution_status": {
+    "classifier_training_performed": false,
+    "clustering_performed": false,
+    "contract_frozen": false,
+    "discovery_corpus_built": false,
+    "embeddings_generated": false,
+    "final_evaluation_performed": false,
+    "human_adjudication_performed": false,
+    "taxonomy_changed": false,
+    "umap_performed": false,
+    "v2c5_holdout_created": false
+  },
+  "future_supervised_evaluation": {
+    "steps": {
+      "17": "build_and_freeze_eligible_discovery_corpus",
+      "18": "run_unsupervised_discovery",
+      "19": "perform_human_taxonomy_adjudication",
+      "20": "freeze_expanded_taxonomy",
+      "21": "build_expanded_supervised_dataset_and_new_final_holdout",
+      "22": "train_and_select_expanded_taxonomy_classifier",
+      "23": "perform_once_only_final_evaluation_and_final_taxonomy_freeze"
+    },
+    "v2d_entry_condition": "Only proceed to V2-D shadow integration if the ML-routing phase has a candidate meeting its frozen criteria."
+  },
+  "holdout_policy": {
+    "creation_timing": "after Step 20 taxonomy freeze and before supervised model selection",
+    "excluded_uses_until_final_evaluation": [
+      "training",
+      "embedding_or_model_selection",
+      "threshold_selection",
+      "taxonomy_discovery",
+      "cluster_analysis",
+      "error_analysis"
+    ],
+    "new_independently_authored_v2c5_holdout_required": true,
+    "old_v2c4_holdout_is_v2c5_final_evidence": false,
+    "old_v2c4_holdout_rejection_reason": "It was authored for the old nine-intent taxonomy and cannot provide final evidence after the label space changes.",
+    "step_16_creates_holdout": false
+  },
+  "human_adjudication": {
+    "allowed_decisions": [
+      "map_to_existing_intent",
+      "candidate_new_intent",
+      "remain_unsupported",
+      "mixed_or_incoherent",
+      "needs_split_review",
+      "noise_or_insufficient_evidence"
+    ],
+    "boundary_example_review_required": true,
+    "mandatory_before_taxonomy_change": true,
+    "new_intent_criteria": [
+      "coherent_user_goal_or_request_semantics",
+      "meaningful_distinction_from_existing_intents",
+      "sufficient_evidence_across_multiple_examples",
+      "not_merely_the_same_entity_or_topic_with_different_wording",
+      "not_simply_a_dataset_specific_label_artifact",
+      "not_created_solely_because_of_one_protected_action_keyword",
+      "operational_meaning_can_be_clearly_described"
+    ],
+    "noise_is_acceptable_result": true,
+    "representative_example_review_required": true,
+    "review_outcome_required_for_every_cluster": true
+  },
+  "hypotheses": {
+    "primary": "Coherent latent user-goal groups may exist inside the current unsupported_or_uncertain catch-all label and may justify human-reviewed taxonomy changes.",
+    "v2c4_diagnostic_input": {
+      "candidate_b_protected_misses_by_stage": {
+        "stage_1": 11,
+        "stage_2": 1,
+        "total": 12
+      },
+      "candidate_b_total_errors": 78,
+      "candidate_b_total_errors_originating_at_stage_1": 53,
+      "candidate_b_unsupported_design_lane_correct_counts": {
+        "ambiguous_or_fragment": {
+          "correct": 0,
+          "total": 6
+        },
+        "no_current_request": {
+          "correct": 1,
+          "total": 6
+        },
+        "non_action_context": {
+          "correct": 1,
+          "total": 6
+        },
+        "unsupported_current_request": {
+          "correct": 6,
+          "total": 6
+        },
+        "wrong_object_or_scope": {
+          "correct": 3,
+          "total": 6
+        }
+      },
+      "candidate_b_unsupported_false_supported_at_stage_1": {
+        "count": 19,
+        "total": 19
+      },
+      "diagnostic_categories_are_clustering_features": false,
+      "diagnostic_categories_are_target_classes": false,
+      "diagnostic_categories_may_select_hdbscan_parameters": false,
+      "role": "hypothesis_prompts_only"
+    },
+    "v2c4_interpretation_limits": {
+      "establishes_specific_new_intent_taxonomy": false,
+      "establishes_unsupported_or_uncertain_must_be_split": false,
+      "human_adjudication_required": true
+    }
+  },
+  "objective": "Discover whether coherent latent user-goal groups exist within development-eligible examples currently labeled unsupported_or_uncertain and whether human review finds evidence for taxonomy changes.",
+  "phase": "V2-C5",
+  "primary_discovery_method": {
+    "algorithm": "HDBSCAN",
+    "excluded_supporting_algorithms": [
+      "KMeans",
+      "AgglomerativeClustering",
+      "BERTopic",
+      "LLM_clustering",
+      "GraphRAG",
+      "other_unfrozen_clustering_methods"
+    ],
+    "existing_labels_supplied_as_clustering_inputs": false,
+    "future_robustness_comparison_requires_pre_result_contract": true,
+    "input_population": "primary_cluster_population",
+    "output_role": "exploratory_evidence_not_ground_truth",
+    "parameters": {
+      "allow_single_cluster": false,
+      "cluster_selection_epsilon": 0.0,
+      "cluster_selection_method": "eom",
+      "metric": "euclidean",
+      "min_cluster_size": 30,
+      "min_samples": 10
+    },
+    "supporting_algorithms_in_primary_experiment": [],
+    "why_fit_for_purpose": [
+      "latent_group_count_is_unknown",
+      "variable_density_groups_are_plausible",
+      "ambiguous_or_noisy_examples_may_remain_unclustered"
+    ]
+  },
+  "prohibited_actions": [
+    "build_step_17_discovery_corpus",
+    "generate_embeddings",
+    "run_hdbscan",
+    "run_umap",
+    "inspect_cluster_output",
+    "create_cluster_report",
+    "use_native_labels_as_clustering_features",
+    "use_cfpb",
+    "use_v2c4_augmentation_in_primary_discovery",
+    "access_v2c4_final_holdout",
+    "create_v2c5_holdout",
+    "define_new_intents",
+    "change_current_nine_intent_taxonomy",
+    "train_classifier",
+    "tune_model",
+    "add_runtime_tools",
+    "start_v2d"
+  ],
+  "protected_action_guardrails": {
+    "explicit_current_action_or_request_semantics_required": true,
+    "future_protected_action_requires_product_and_safety_design_review": true,
+    "new_protected_write_intent_may_be_created_by_clustering_alone": false,
+    "protected_intents": [
+      "create_dispute",
+      "freeze_card"
+    ],
+    "topic_similarity_automatically_implies_protected_intent": false,
+    "topic_similarity_examples": [
+      "fraud",
+      "card_problem",
+      "lost_card",
+      "purchase_issue"
+    ]
+  },
+  "representation": {
+    "cache_reuse_policy": {
+      "otherwise_create_new_deterministic_cache_in_future_step": true,
+      "required_exact_matches": [
+        "text_order",
+        "normalized_text_hashes",
+        "model_identifier",
+        "embedding_method",
+        "dimensions"
+      ]
+    },
+    "dimensions": 384,
+    "external_api": false,
+    "fine_tuning": false,
+    "input_space": "original_384_dimensional_embedding_space",
+    "l2_euclidean_cosine_relation": "For L2-normalized vectors, Euclidean distance is monotonically related to cosine distance for nearest-neighbor geometry.",
+    "l2_normalization_required": true,
+    "method": "passage_embed",
+    "model": "BAAI/bge-small-en-v1.5",
+    "provider": "FastEmbed",
+    "umap_reduced_vectors_used_for_clustering": false
+  },
+  "reproducibility": {
+    "canonical_json": {
+      "ensure_ascii": false,
+      "indent": 2,
+      "sort_keys": true,
+      "trailing_newline": true
+    },
+    "contract_freeze_condition": "The USER commits this contract.",
+    "deterministic_future_build_required": true,
+    "pinned_inputs": {
+      "v2c3_data_registry": {
+        "path": "data/evals/v2/ml/v2c3_data_registry.json",
+        "sha256": "978dd7b04fcad23e3a01add65598ffda73aee9323118ffcc382dcd2bdce01316"
+      },
+      "v2c3_dataset_manifest": {
+        "path": "data/evals/v2/ml/v2c3_dataset.manifest.json",
+        "sha256": "abe82919c24855d8d35a7c383843aaab4a5a2048ac868ad6a7b6be0791d34030"
+      },
+      "v2c3_development_dataset": {
+        "path": "data/evals/v2/ml/v2c3_development_dataset.json",
+        "sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca"
+      },
+      "v2c3_experiment_contract": {
+        "path": "data/evals/v2/ml/v2c3_experiment_contract.json",
+        "sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998"
+      },
+      "v2c4_closeout": {
+        "path": "data/evals/v2/ml/v2c4_closeout.json",
+        "sha256": "70d643228516eec5149ed200588e1fec448bd5a9ac7e221a14ab03b8296d2195"
+      },
+      "v2c4_selection_probe_manifest": {
+        "path": "data/evals/v2/ml/v2c4_selection_probe.manifest.json",
+        "sha256": "e1658f4049bf151a8b4302876034eaa948ef8dda9b61ddf7f253987aa676b945"
+      },
+      "v2c4_selection_probe_postmortem_report": {
+        "path": "data/evals/v2/ml/v2c4_selection_probe_postmortem_report.json",
+        "sha256": "a4380f2db4721e484decd52452a2985c65388378ed57483b466ba88d75f5940d"
+      },
+      "v2c4_training_augmentation_manifest": {
+        "path": "data/evals/v2/ml/v2c4_training_augmentation.manifest.json",
+        "sha256": "3549f03e872af99c5c1b315d3eaff641fd8c3fb84deb9eaa5398b381c89a296f"
+      }
+    },
+    "step_17_source_membership_and_output_hashes_required": true,
+    "wall_clock_timestamp_in_canonical_outputs": false
+  },
+  "runtime_scope": {
+    "classifier_output_role": "advisory_only",
+    "existing_architecture_retained": [
+      "one_primary_conversational_agent",
+      "deterministic_application_services",
+      "typed_tool_set",
+      "deterministic_authorization",
+      "explicit_confirmation",
+      "policy_rag",
+      "human_escalation"
+    ],
+    "new_infrastructure_allowed": false,
+    "prohibited_additions": [
+      "graphrag",
+      "multi_agent_architecture",
+      "new_vector_database",
+      "new_runtime_tool_merely_because_a_cluster_exists"
+    ],
+    "recognized_intent_may_route_to": [
+      "capability_explanation",
+      "unsupported_response",
+      "policy_answer",
+      "human_handoff"
+    ],
+    "runtime_behavior_changed": false,
+    "v1_tool_scope_frozen": true
+  },
+  "schema_version": "v2c5-intent-discovery-contract.v1",
+  "sensitivity_analysis": {
+    "all_other_parameters_identical_to_primary": true,
+    "configuration_count": 9,
+    "grid": {
+      "min_cluster_size": [
+        15,
+        30,
+        60
+      ],
+      "min_samples": [
+        5,
+        10,
+        15
+      ]
+    },
+    "post_hoc_best_looking_configuration_selection_allowed": false,
+    "primary_30_10_result_remains_primary": true,
+    "purpose": "Measure whether semantic groupings are reasonably stable across plausible density settings.",
+    "semantic_inspection_may_choose_parameters": false
+  },
+  "source_eligibility": {
+    "eligible_source_roles": [
+      {
+        "development_assignment_required": true,
+        "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+        "record_id": "internal_train",
+        "registry_role": "v2c3_development",
+        "source_id": "sentinelvoice_v2c1_internal",
+        "source_split": "train"
+      },
+      {
+        "development_assignment_required": true,
+        "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+        "record_id": "internal_validation",
+        "registry_role": "v2c3_development",
+        "source_id": "sentinelvoice_v2c1_internal",
+        "source_split": "validation"
+      },
+      {
+        "development_assignment_required": true,
+        "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+        "record_id": "banking77_train",
+        "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+        "source_id": "banking77",
+        "source_split": "train"
+      },
+      {
+        "development_assignment_required": true,
+        "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+        "record_id": "clinc_finance_train",
+        "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+        "source_id": "clinc150_oos",
+        "source_split": "train"
+      },
+      {
+        "development_assignment_required": true,
+        "materialized_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+        "record_id": "clinc_finance_val",
+        "registry_role": "v2c3_conditional_development_and_fresh_lockbox_source",
+        "source_id": "clinc150_oos",
+        "source_split": "val"
+      }
+    ],
+    "label_metadata_policy": {
+      "current_sentinelvoice_labels_may_be_audit_metadata": true,
+      "current_sentinelvoice_labels_supplied_as_clustering_features": false,
+      "native_external_labels_may_be_interpretation_metadata": true,
+      "native_external_labels_supplied_as_clustering_features": false
+    },
+    "primary_cluster_population": {
+      "current_v2_taxonomy_label": "unsupported_or_uncertain",
+      "dataset_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "dataset_sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+      "development_or_training_eligibility_required": true,
+      "population_role": "density_driving_members",
+      "supported_intents_included": false,
+      "unique_normalized_text_only": true
+    },
+    "reference_anchor_population": {
+      "density_driving_members": false,
+      "eligible_use": "later_reference_or_contrast_only",
+      "known_supported_intents": [
+        "account_balance",
+        "card_status",
+        "create_dispute",
+        "escalation",
+        "freeze_card",
+        "informational_policy",
+        "recent_transactions",
+        "transaction_details"
+      ],
+      "separate_from_primary_cluster_population": true
+    }
+  },
+  "source_exclusions": {
+    "all_test_only_or_final_evaluation_sources": {
+      "discovery_eligible": false
+    },
+    "banking77_test": {
+      "discovery_eligible": false,
+      "record_id": "banking77_test",
+      "source_split": "test"
+    },
+    "cfpb": {
+      "discovery_eligible": false,
+      "policy": "external_evaluation_and_research_only",
+      "scope": "all narratives, annotations, labels, and metadata-derived targets"
+    },
+    "clinc_test": {
+      "discovery_eligible": false,
+      "record_ids": [
+        "clinc_finance_test",
+        "clinc_oos_test"
+      ],
+      "source_split": "test"
+    },
+    "consumed_v2c3_challenge": {
+      "discovery_eligible": false,
+      "path": "data/evals/v2/ml/v2c3_challenge_set.json",
+      "role": "consumed_v2c3_safety_challenge"
+    },
+    "consumed_v2c3_external_lockbox": {
+      "discovery_eligible": false,
+      "manifest_path": "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+      "role": "consumed_v2c3_external_regression"
+    },
+    "v2c3_internal_locked_test": {
+      "discovery_eligible": false,
+      "record_id": "internal_locked_test",
+      "role": "frozen_historical_internal_evaluation"
+    },
+    "v2c4_final_safety_holdout": {
+      "discovery_eligible": false,
+      "paths": [
+        "data/evals/v2/ml/v2c4_safety_holdout.json",
+        "data/evals/v2/ml/v2c4_safety_holdout_seed.json"
+      ],
+      "role": "sealed_v2c4_final_safety_holdout",
+      "v2c5_final_evidence": false
+    },
+    "v2c4_postmortem_review_examples": {
+      "discovery_eligible_as_special_source": false,
+      "path": "data/evals/v2/ml/v2c4_selection_probe_postmortem_report.json",
+      "role": "hypothesis_prompts_only"
+    },
+    "v2c4_selection_probe": {
+      "discovery_eligible": false,
+      "path": "data/evals/v2/ml/v2c4_selection_probe.json",
+      "role": "consumed_v2c4_model_selection_probe"
+    },
+    "v2c4_targeted_synthetic_augmentation": {
+      "future_secondary_diagnostic_use_requires_separate_governance": true,
+      "path": "data/evals/v2/ml/v2c4_training_augmentation.json",
+      "primary_discovery_eligible": false,
+      "rationale": "The 360 examples were purpose-built around known V2-C4 decision-boundary failures under the existing taxonomy; including them could manufacture or amplify the structure V2-C5 must investigate independently."
+    }
+  },
+  "status": "draft_awaiting_user_commit",
+  "taxonomy_change_rules": {
+    "cluster_automatically_defines_intent": false,
+    "current_nine_intent_taxonomy_changed_in_step_16": false,
+    "fixed_target_intent_count": null,
+    "human_adjudication_controls_changes": true,
+    "new_protected_write_intent_requires_separate_product_and_safety_review": true,
+    "recognized_but_unsupported_intent_allowed": true,
+    "recognized_intents_automatically_create_runtime_tools": false,
+    "step_20_freezes_taxonomy_only_after_human_adjudication": true,
+    "supported_candidate_categories": [
+      "supported_informational_concept",
+      "supported_read_only_concept_if_existing_product_capability_supports_it",
+      "recognized_but_unsupported_user_goal",
+      "escalation_worthy_category"
+    ]
+  },
+  "visualization": {
+    "algorithm": "UMAP",
+    "clustering_input": false,
+    "hdbscan_parameter_selection_evidence": false,
+    "random_state": 20260928,
+    "role": "two_dimensional_visualization_only",
+    "taxonomy_evidence_by_itself": false,
+    "visual_separation_establishes_valid_intent": false
+  }
+}

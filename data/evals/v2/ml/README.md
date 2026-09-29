@@ -483,6 +483,64 @@ nine-intent holdout is not valid final evidence for a changed label space.
 Additional recognized intents do not automatically imply additional runtime
 tools. This entry is roadmap-only and adds no V2-C5 code or data.
 
+## V2-C5 Step 16 intent-discovery contract
+
+V2-C4 is closed without a selected candidate. V2-C5 therefore starts with
+taxonomy discovery, not Candidate C, and investigates whether the current
+unsupported_or_uncertain bucket contains coherent latent user-goal groups.
+The V2-C4 Stage-1 and unsupported-boundary findings are hypothesis prompts
+only: they are not clustering labels, target classes, parameter-selection
+evidence, or proof that unsupported_or_uncertain must be split. No cluster or
+new intent exists at Step 16.
+
+Primary discovery is frozen to unique normalized texts from the existing
+V2-C3 development dataset whose current label is unsupported_or_uncertain.
+Only development-assigned internal train/validation, BANKING77 train, and CLINC
+finance train/validation records are eligible. Supported intents are excluded
+from density estimation and may later serve only as separate reference anchors.
+Exact normalized-text duplicates contribute one vector while preserving all
+source and label metadata. Native external and current SentinelVoice labels may
+support post-clustering interpretation or audit, but are never clustering
+features. CFPB, test and locked sets, consumed V2-C3 evaluation data, the V2-C4
+probe and postmortem review examples, and the V2-C4 final holdout are excluded.
+The purpose-built V2-C4 augmentation is also excluded from primary discovery
+because it could manufacture or amplify the known boundary structure being
+investigated.
+
+The architecture decision is frozen BAAI/bge-small-en-v1.5 FastEmbed
+passage embeddings, L2 normalization, HDBSCAN in the original 384-dimensional
+space, and mandatory human adjudication. The primary HDBSCAN configuration is
+Euclidean distance, EOM selection, epsilon 0.0, no single cluster, minimum
+cluster size 30, and minimum samples 10. A bounded 3-by-3 sensitivity grid uses
+cluster sizes 15/30/60 and minimum samples 5/10/15 without replacing the
+primary result. UMAP uses random seed 20260928 only for two-dimensional
+visualization; it is not clustering input, taxonomy evidence, or parameter-
+selection evidence.
+
+This choice fits an unknown cluster count where noise is expected. KMeans,
+agglomerative clustering, topic models or BERTopic, and LLM grouping remain
+outside the primary experiment because fixed-count assumptions, additional
+complexity, or less deterministic behavior are not yet justified. Tradeoffs
+include density sensitivity, embedding-space dependence, cluster instability,
+human-review cost, and clusters that may capture phrasing or topic rather than
+user intent. Reversibility is high because discovery outputs cannot affect the
+runtime until humans explicitly adjudicate and a later step freezes a taxonomy.
+
+Human reviewers must inspect representative and boundary examples and may map
+a cluster to an existing intent, propose a candidate new intent, leave it
+unsupported, mark it mixed or needing split review, or classify it as noise or
+insufficient evidence. There is no predetermined intent count, and clusters do
+not automatically create intents or tools. Protected intents still require
+explicit current-action semantics; topic similarity cannot imply freeze_card
+or create_dispute. SentinelVoice's V1 tool scope and deterministic application
+authority remain unchanged.
+
+The old nine-intent V2-C4 holdout cannot provide V2-C5 final evidence. After
+human adjudication and the Step 20 taxonomy freeze, Step 21 must create a new
+independently authored V2-C5 holdout before supervised model selection. Step 16
+creates no corpus, embeddings, clusters, taxonomy change, model, runtime
+integration, or holdout.
+
 ## Reproduce V2-C1
 
 ```bash

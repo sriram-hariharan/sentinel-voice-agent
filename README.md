@@ -3819,6 +3819,35 @@ Recognizing more intents also does not automatically authorize or create more
 runtime tools. V2-C5 is roadmap-only here: no clustering code or dataset is
 created by Step 9.
 
+### V2-C5 discovery contract
+
+V2-C4 closed without a selected candidate, so V2-C5 begins with taxonomy
+discovery rather than Candidate C. Step 16 freezes methodology only: the first
+question is whether development-eligible examples currently labeled
+unsupported_or_uncertain contain coherent latent user-goal groups. Clustering
+is exploratory and does not establish that the catch-all label must be split,
+that any cluster is an intent, or that the taxonomy should change.
+
+The architecture choice is frozen BAAI/bge-small-en-v1.5 passage embeddings,
+HDBSCAN over L2-normalized 384-dimensional vectors, and mandatory human
+adjudication. HDBSCAN fits because the latent group count is unknown and noise
+is expected; UMAP is visualization-only. KMeans, agglomerative clustering,
+topic models or BERTopic, and LLM grouping are not included now because their
+fixed-count assumptions, added complexity, or weaker deterministic
+reproducibility have no demonstrated need. Tradeoffs include density and
+embedding-space sensitivity, cluster instability, human-review cost, and the
+risk that groups reflect phrasing or topic instead of user intent. The decision
+is highly reversible because discovery output cannot change runtime behavior
+until a later human-adjudicated taxonomy freeze.
+
+There is no predetermined intent count and no automatic tool expansion.
+Protected actions still require explicit request semantics; topic similarity
+cannot create freeze-card or dispute actions. CFPB and all test, lockbox,
+consumed-selection, and final-evaluation sources remain excluded. The old
+nine-intent V2-C4 holdout cannot become V2-C5 final evidence; a new independent
+holdout is required after taxonomy freeze and before supervised model selection.
+Step 16 builds no corpus, embeddings, clusters, intents, models, or holdout.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

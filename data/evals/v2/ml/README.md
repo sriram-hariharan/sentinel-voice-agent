@@ -246,9 +246,48 @@ sentinelvoice_env/bin/python scripts/run_v2c3_bounded_tuning.py run
 
 The 1,922-example external lockbox, 270-example challenge set, CFPB, historical
 test splits, and V2-C1 locked test remain untouched. Step 5 writes only a
-development-CV tuning report; it does not freeze a final model artifact or
-integrate routing into the runtime. No tuning result is recorded here because
-the bounded search has not been run.
+development-CV tuning report and does not integrate routing into the runtime.
+The completed search selected `bge_svc_c_4_0`: frozen local
+`BAAI/bge-small-en-v1.5` passage embeddings and balanced LinearSVC `C=4.0`.
+No final-evaluation source contributed to that decision.
+
+## V2-C3 Step 6 final freeze and untouched evaluation
+
+Step 6 freezes the selection before any final score is observed.
+`v2c3_final_evaluation_config.json` records the exact selected representation
+and classifier parameters, development and selection-lineage hashes, final-set
+hashes and compositions, the historical comparator, metrics, safety gates,
+acceptance rules, and prohibited sources. It contains no final scores and
+keeps `final_evaluation_performed=false`.
+
+The runner separates three operations:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c3_final_evaluation.py preflight
+sentinelvoice_env/bin/python scripts/run_v2c3_final_evaluation.py prepare-final-model
+sentinelvoice_env/bin/python scripts/run_v2c3_final_evaluation.py evaluate
+```
+
+`preflight` checks hashes, the Step 5 winner, the 8,198-example development
+dataset and frozen BGE cache, text-free external-lockbox manifest counts, the
+challenge manifest, and the frozen V2-C1 artifact. It performs no fitting,
+inference, final-text parsing, or final embedding generation.
+
+`prepare-final-model` is the one development-only fit. It loads the existing
+BGE development cache, fits only the selected balanced LinearSVC `C=4.0` on all
+8,198 examples with no CV, and writes a trusted-local, runtime-ineligible
+classifier plus text-free lineage metadata. It cannot regenerate embeddings or
+read the lockbox or challenge set.
+
+Only the later explicit `evaluate` mode reconstructs the exact 1,922
+external-lockbox members from frozen BANKING77 train and CLINC train/validation
+identities and hashes, loads the balanced 270-example challenge set, and
+generates their BGE embeddings. It reports the two datasets separately for
+exactly `final_v2c3` and the frozen V2-C1 historical baseline. The comparison
+is not post-test model selection: results cannot trigger retuning, threshold
+tuning, or a switch back to V2-C1. CFPB remains separate for later
+complex-narrative evaluation or expansion research. Final evaluation has not
+been run, so no Step 6 scores are documented.
 
 ## Reproduce V2-C1
 

@@ -1,0 +1,365 @@
+{
+  "schema_version": "v2c3-final-evaluation-config.v1",
+  "config_version": "2026-09-28.v1",
+  "experiment_phase": "V2-C3-Step-6",
+  "advisory_only": true,
+  "runtime_authority": false,
+  "model_selection_complete": true,
+  "final_evaluation_performed": false,
+  "selected_model": {
+    "id": "final_v2c3",
+    "selected_tuning_variant": "bge_svc_c_4_0",
+    "representation": {
+      "family": "frozen_local_sentence_embedding",
+      "model_identifier": "BAAI/bge-small-en-v1.5",
+      "dimensions": 384,
+      "fastembed_method": "passage_embed",
+      "fine_tuning": false,
+      "external_api": false
+    },
+    "classifier": {
+      "class": "LinearSVC",
+      "parameters": {
+        "C": 4.0,
+        "class_weight": "balanced",
+        "random_state": 20260928,
+        "penalty": "l2",
+        "loss": "squared_hinge",
+        "dual": "auto",
+        "tol": 0.0001,
+        "max_iter": 2000,
+        "fit_intercept": true,
+        "intercept_scaling": 1.0,
+        "multi_class": "ovr",
+        "verbose": 0
+      }
+    },
+    "training": {
+      "dataset_path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "expected_example_count": 8198,
+      "use_all_development_examples": true,
+      "cross_validation_at_final_fit": false,
+      "development_embedding_cache_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+      "development_embedding_cache_metadata_path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+      "automatic_embedding_regeneration": false,
+      "final_evaluation_data_allowed": false
+    },
+    "artifact": {
+      "path": "artifacts/v2/classifier/v2c3_final_classifier.joblib",
+      "metadata_path": "data/evals/v2/ml/v2c3_final_model_metadata.json",
+      "artifact_schema_version": "v2c3-final-classifier-artifact.v1",
+      "metadata_schema_version": "v2c3-final-model-metadata.v1",
+      "trusted_local_only": true,
+      "runtime_authority": false,
+      "final_evaluation_performed_when_created": false
+    }
+  },
+  "comparator": {
+    "id": "frozen_v2c1_baseline",
+    "role": "historical_comparison_only",
+    "eligible_to_replace_selected_model": false,
+    "artifact_path": "artifacts/v2/classifier/classifier.joblib",
+    "artifact_sha256": "e815eb629de3ae56140a09f92baf563e9aaeec1204b45c23774210452d03285c",
+    "artifact_size_bytes": 318080,
+    "artifact_component": "intent_model",
+    "model_selection_path": "data/evals/v2/ml/model_selection.json",
+    "model_selection_sha256": "700af92377110b585967a7300ff1b1682f45f84ac8d0aa09e18c8b85d540dab3",
+    "classifier_config_path": "data/evals/v2/ml/classifier_config.json",
+    "classifier_config_sha256": "9274b47487fd1e92818bd61878b9464c1283cdc10c1020c5ef5c26c2bbddf6bf",
+    "classifier_report_path": "data/evals/v2/ml/classifier_report.json",
+    "classifier_report_sha256": "dcf940890b2602e040ed3f0a30b0f45f0c34e352707896ea64079b20c929f843",
+    "definition": {
+      "representation": {
+        "class": "FeatureUnion",
+        "word_tfidf": {
+          "analyzer": "word",
+          "ngram_range": [1, 2],
+          "sublinear_tf": true
+        },
+        "character_tfidf": {
+          "analyzer": "char_wb",
+          "ngram_range": [3, 5],
+          "sublinear_tf": true
+        }
+      },
+      "classifier": {
+        "class": "LinearSVC",
+        "parameters": {
+          "C": 0.5,
+          "class_weight": null,
+          "random_state": 20260926,
+          "penalty": "l2",
+          "loss": "squared_hinge",
+          "dual": "auto",
+          "tol": 0.0001,
+          "max_iter": 1000,
+          "fit_intercept": true,
+          "intercept_scaling": 1.0,
+          "multi_class": "ovr",
+          "verbose": 0
+        }
+      }
+    }
+  },
+  "frozen_input_hashes": {
+    "development_dataset": {
+      "path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca"
+    },
+    "experiment_contract": {
+      "path": "data/evals/v2/ml/v2c3_experiment_contract.json",
+      "sha256": "0167a0f0eedde245101219510ccee977052dcf8206fb753f9be9516d81c2c998"
+    },
+    "data_registry": {
+      "path": "data/evals/v2/ml/v2c3_data_registry.json",
+      "sha256": "978dd7b04fcad23e3a01add65598ffda73aee9323118ffcc382dcd2bdce01316"
+    },
+    "dataset_manifest": {
+      "path": "data/evals/v2/ml/v2c3_dataset.manifest.json",
+      "sha256": "abe82919c24855d8d35a7c383843aaab4a5a2048ac868ad6a7b6be0791d34030"
+    },
+    "cv_folds": {
+      "path": "data/evals/v2/ml/v2c3_cv_folds.json",
+      "sha256": "53c49dfe3da1027c9c957e901bca3fca8c2aaa8173e79139e06a1103407c58aa",
+      "assignment_sha256": "71bb40c78ffbff5d33d8527c77725f784c5d81b37d6348eb1fac30de96e532f8"
+    },
+    "tournament_config": {
+      "path": "data/evals/v2/ml/v2c3_tournament_config.json",
+      "sha256": "d2c38a9e1fb5e97b395390af94b01c9e5190fef51a7a9b368d691b1db4391284"
+    },
+    "tournament_report": {
+      "path": "data/evals/v2/ml/v2c3_tournament_report.json",
+      "sha256": "a61f09a0e61a001085ad789cea6244d794068541914a8d0cadabf836af1e4b0f"
+    },
+    "tuning_config": {
+      "path": "data/evals/v2/ml/v2c3_tuning_config.json",
+      "sha256": "bbf583e6d7c4a36e6ba750dad965b6205b401bbacf805a6d3d956e85de9226c5"
+    },
+    "tuning_report": {
+      "path": "data/evals/v2/ml/v2c3_tuning_report.json",
+      "sha256": "6b91040b8db6b8fa802a99a8b80cc7558fe6c12f7590f6a9657b1546dc03414e"
+    },
+    "development_builder": {
+      "path": "scripts/build_v2c3_development_dataset.py",
+      "sha256": "00dcac10555ce04040a23361ead310a236de7ba1d6c5dc96d63d30565e0b9d53"
+    },
+    "challenge_builder": {
+      "path": "scripts/build_v2c3_challenge_set.py",
+      "sha256": "3b27f0e3d1d9342284a907befeba0cbb8bf7b9ba45b79d28673b8f3539ecaead"
+    },
+    "development_embedding_cache": {
+      "path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.npz",
+      "sha256": "eddaa00ddec7335dd63a49d1650e274d993603f8d52e6b48016089f79514ba89"
+    },
+    "development_embedding_cache_metadata": {
+      "path": "data/evals/v2/ml/local/v2c3_bge_small_en_v1_5.metadata.json",
+      "sha256": "a8477d65c231faebb1edc29c8ded60384d800df991c655a7411e6d6e619eaea3",
+      "ordered_example_ids_sha256": "62595e99df01335aeaec56b2816fdb5fb8b81c8c13b65e256086af9df1816434"
+    }
+  },
+  "external_lockbox": {
+    "manifest_path": "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+    "manifest_sha256": "651bbe2ebe61bb5b1e9139c24cacac340973172f5637278c12d50cf596334364",
+    "expected_count": 1922,
+    "contains_text": false,
+    "expected_source_counts": {
+      "banking77": 1346,
+      "clinc150_oos": 576
+    },
+    "expected_intent_counts": {
+      "account_balance": 24,
+      "informational_policy": 200,
+      "recent_transactions": 24,
+      "transaction_details": 95,
+      "unsupported_or_uncertain": 1579
+    },
+    "allowed_source_slices": {
+      "banking77": ["train"],
+      "clinc150_oos": ["train", "val"]
+    },
+    "source_inputs": {
+      "banking77_train": {
+        "path": "data/evals/v2/external/raw/banking77/train.csv",
+        "sha256": "b06e26ac675513959a63135f11b94ea7786ed02da65db93a5650d8838cbc664b"
+      },
+      "banking77_raw_manifest": {
+        "path": "data/evals/v2/external/raw/banking77/manifest.json",
+        "sha256": "44c0d68cec41ba18d3d95a9f93cc87ea633b0379bc099c0b6d441fd09525a3cf"
+      },
+      "banking77_mapping": {
+        "path": "data/evals/v2/external/banking77_intent_mapping.json",
+        "sha256": "cb0ff5db910d15ab59dc1fea563b09d6593cc9f7f25fa4ca99ac21e2b0dab68a"
+      },
+      "clinc_source": {
+        "path": "data/evals/v2/external/raw/clinc_oos/data_full.json",
+        "sha256": "36923c3705a59e08fe9c3883d8bc2dd966ef93e22cb78ac41171782a698d56e0"
+      },
+      "clinc_raw_manifest": {
+        "path": "data/evals/v2/external/raw/clinc_oos/manifest.json",
+        "sha256": "25b0c99ca673285cae49013b79710f4a08b36b48841236ae323712873c226aa5"
+      },
+      "clinc_mapping": {
+        "path": "data/evals/v2/external/clinc_finance_intent_mapping.json",
+        "sha256": "b156e23f7cdfc55851afb81dc11d867941e7bd54b158a24874d1d2334b503fc7"
+      }
+    },
+    "reconstruction_policy": {
+      "membership_source": "text-free frozen manifest only",
+      "membership_changes_allowed": false,
+      "new_semantic_mapping_allowed": false,
+      "verify_example_id": true,
+      "verify_source_identity": true,
+      "verify_source_label": true,
+      "verify_text_sha256": true,
+      "verify_normalized_text_sha256": true,
+      "verify_frozen_target_and_risk": true
+    }
+  },
+  "challenge_set": {
+    "path": "data/evals/v2/ml/v2c3_challenge_set.json",
+    "sha256": "4493b9baa8363408c917fe29de069dec82f925c8c3a605878a08eba06b051e5c",
+    "manifest_path": "data/evals/v2/ml/v2c3_challenge_set.manifest.json",
+    "manifest_sha256": "51389b7e693156433edd6e7f0c2fe5b2c3a1ab0f34a261b47de7a7cda6e48b38",
+    "expected_count": 270,
+    "expected_intent_counts": {
+      "account_balance": 30,
+      "card_status": 30,
+      "create_dispute": 30,
+      "escalation": 30,
+      "freeze_card": 30,
+      "informational_policy": 30,
+      "recent_transactions": 30,
+      "transaction_details": 30,
+      "unsupported_or_uncertain": 30
+    },
+    "data_role": "final_challenge_evaluation",
+    "training_eligible": false,
+    "model_selection_eligible": false,
+    "threshold_selection_eligible": false
+  },
+  "evaluated_models": [
+    "final_v2c3",
+    "frozen_v2c1_baseline"
+  ],
+  "metrics": {
+    "datasets_reported_separately": true,
+    "combined_final_metric_allowed": false,
+    "implementation_source": "scripts/run_v2c3_model_tournament.py",
+    "common": [
+      "count",
+      "accuracy",
+      "macro_f1_over_gold_classes_present",
+      "weighted_f1",
+      "per_class_precision_recall_f1",
+      "confusion_matrix",
+      "supported_intent_accuracy",
+      "unsupported_or_uncertain_recall",
+      "false_supported_rate",
+      "protected_write_recall",
+      "protected_write_false_positive_count",
+      "protected_write_false_positive_rate"
+    ],
+    "external_lockbox_additional": ["source_breakdown"],
+    "challenge_additional": [
+      "freeze_card_metrics",
+      "create_dispute_metrics",
+      "escalation_metrics"
+    ],
+    "protected_write_recall_zero_denominator": "NOT_APPLICABLE",
+    "comparison_deltas": [
+      "accuracy_delta",
+      "macro_f1_delta",
+      "unsupported_recall_delta",
+      "false_supported_rate_delta",
+      "protected_write_recall_delta_when_applicable",
+      "protected_write_fpr_delta"
+    ]
+  },
+  "safety_definitions": {
+    "protected_write_intents": ["create_dispute", "freeze_card"],
+    "protected_write_recall": "Exact protected-intent match among gold create_dispute/freeze_card; cross-predicting the other protected intent is incorrect.",
+    "protected_write_false_positive": "Gold is not create_dispute/freeze_card and prediction is create_dispute/freeze_card.",
+    "false_supported": "Gold is unsupported_or_uncertain and prediction is any other intent.",
+    "unchanged_from_step_4_and_5": true
+  },
+  "final_acceptance_policy": {
+    "applies_to_model": "final_v2c3",
+    "challenge_set": {
+      "protected_write_false_positive_rate_maximum": 0.01,
+      "protected_write_recall_minimum": 0.8,
+      "unsupported_or_uncertain_recall_minimum": 0.8
+    },
+    "external_lockbox": {
+      "protected_write_false_positive_rate_maximum": 0.01,
+      "unsupported_or_uncertain_recall_minimum": 0.8,
+      "protected_write_recall": "NOT_APPLICABLE when the gold denominator is zero"
+    },
+    "all_required_gates_must_pass": true,
+    "macro_f1_or_accuracy_gate": false,
+    "retuning_after_final_results_allowed": false,
+    "model_switching_after_final_results_allowed": false
+  },
+  "final_test_embedding_policy": {
+    "generation_timing": "evaluate mode only",
+    "model_identifier": "BAAI/bge-small-en-v1.5",
+    "fine_tuning": false,
+    "external_api": false,
+    "development_cache_modified": false,
+    "committed": false
+  },
+  "report": {
+    "path": "data/evals/v2/ml/v2c3_final_evaluation_report.json",
+    "schema_version": "v2c3-final-evaluation-report.v1",
+    "required_top_level_fields": [
+      "schema_version",
+      "experiment_phase",
+      "final_evaluation_config_sha256",
+      "frozen_input_hashes",
+      "final_v2c3_artifact_sha256",
+      "final_v2c3_artifact_metadata_sha256",
+      "comparator_artifact_sha256",
+      "environment",
+      "dataset_integrity",
+      "integrity_verification",
+      "external_lockbox_results",
+      "challenge_set_results",
+      "comparison_role",
+      "comparison_deltas",
+      "final_acceptance_policy",
+      "safety_gate_results",
+      "final_safety_acceptable",
+      "model_selection_completed_before_final_evaluation",
+      "final_lockbox_used",
+      "challenge_set_used",
+      "cfpb_used",
+      "hyperparameter_tuning_on_final_data",
+      "threshold_tuning_on_final_data",
+      "model_switching_after_final_results",
+      "final_model_training_used_development_only",
+      "combined_final_metric_reported",
+      "raw_text_persisted",
+      "runtime_integration_performed"
+    ],
+    "dataset_result_sections": [
+      "external_lockbox_results",
+      "challenge_set_results"
+    ],
+    "required_model_ids_per_dataset": [
+      "final_v2c3",
+      "frozen_v2c1_baseline"
+    ],
+    "raw_text_persisted": false,
+    "combined_final_metric_reported": false,
+    "cfpb_used": false
+  },
+  "prohibited_sources": [
+    "CFPB narratives and annotations",
+    "BANKING77 test.csv",
+    "CLINC test",
+    "CLINC oos_train",
+    "CLINC oos_val",
+    "CLINC oos_test",
+    "V2-C1 locked_test",
+    "any source outside the frozen lockbox manifest and challenge set"
+  ]
+}

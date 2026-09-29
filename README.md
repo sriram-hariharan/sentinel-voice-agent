@@ -8,7 +8,9 @@ V2-C2 measures frozen-model generalization on separately governed public
 external benchmarks. V2-C3 now freezes the next model-development and
 data-governance contract, provides deterministic development-data and
 fresh-lockbox builders, records the fixed-preset Step 4 model tournament, and
-freezes a bounded Step 5 finalist search before any tuning score is observed.
+records the bounded Step 5 selection. Step 6 freezes the selected model and
+the untouched final-evaluation procedure; no final evaluation result is yet
+recorded.
 **Primary target roles:** AI Engineer, GenAI Engineer, Applied AI Engineer, Machine Learning Engineer  
 **Primary interface:** Browser-based realtime voice  
 **Primary model provider:** Groq  
@@ -170,9 +172,19 @@ balanced LinearSVC, and TF-IDF plus LSA with balanced LinearSVC.
 Step 5 freezes exactly 15 configurations across only those three families. It
 reuses the same five development folds and existing frozen BGE cache, tunes
 only the predeclared LinearSVC `C` values and five LSA component/`C` pairs, and
-does not create new folds, representations, classifiers, or architectures. No
-final evaluation data is used, and no tuning result is documented before the
-bounded search is run locally.
+does not create new folds, representations, classifiers, or architectures.
+The completed development-only search selected frozen local
+`BAAI/bge-small-en-v1.5` embeddings with balanced LinearSVC `C=4.0`.
+
+Step 6 does not reopen model selection. It prepares that fixed classifier once
+on all 8,198 development examples by loading the frozen development embedding
+cache; it performs no final-fit CV and does not regenerate development
+embeddings. Final evaluation remains a later explicit action over exactly two
+untouched sets reported separately: the 1,922-example external lockbox and the
+balanced 270-example SentinelVoice challenge set. The frozen V2-C1 classifier
+is scored only as a historical comparator. Final results cannot trigger model
+switching, retuning, or threshold tuning, and CFPB stays separate for later
+complex-narrative evaluation and dataset-expansion research.
 
 ### Local voice setup
 
@@ -3668,6 +3680,19 @@ remain separate: development is for fitting and group-aware CV, the external
 fresh lockbox is for final historical-domain generalization, and the synthetic
 challenge set is for final balanced task/safety behavior after every model and
 threshold decision is frozen.
+
+Step 5 completed those development-only decisions and selected frozen local
+`BAAI/bge-small-en-v1.5` embeddings with a balanced LinearSVC at `C=4.0`.
+Step 6 freezes that choice in
+`data/evals/v2/ml/v2c3_final_evaluation_config.json`. Its preparation path fits
+the selected classifier once on all 8,198 development examples using the
+existing BGE cache and cannot read either final set. Its evaluation path is
+separate and restricted to the 1,922 frozen external-lockbox members and the
+270 balanced challenge examples, with the frozen V2-C1 intent classifier as a
+historical comparison only. External and challenge metrics remain separate;
+final outcomes cannot trigger retuning, threshold changes, or a comparator
+swap. CFPB remains outside Step 6 for later complex-narrative work. No Step 6
+final score is recorded because final evaluation has not run.
 
 ### Why this extension is useful
 

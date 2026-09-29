@@ -215,9 +215,10 @@ already frozen fold artifact and validated BGE cache, creates one OOF prediction
 per development example, applies the predeclared safety gates and ranking, and
 writes `v2c3_tournament_report.json` without raw text or final-test metrics.
 
-The 1,922 external fresh-lockbox examples and 270 challenge examples remain
-untouched. V2-C1 locked test, BANKING77 test, CLINC test/OOS test, and CFPB are
-also prohibited. Step 4 selected three technically distinct, safety-eligible
+At Step 4, the 1,922 external-lockbox examples and 270 challenge examples had
+not yet been used; Step 6 later consumed both for final evaluation. V2-C1
+locked test, BANKING77 test, CLINC test/OOS test, and CFPB were also prohibited.
+Step 4 selected three technically distinct, safety-eligible
 finalists: direct V2-C1 word-plus-character TF-IDF with balanced LinearSVC,
 direct frozen BGE-small with balanced LinearSVC, and direct TF-IDF plus LSA
 with balanced LinearSVC. The TF-IDF candidate was the Step 4 winner. These
@@ -244,14 +245,16 @@ sentinelvoice_env/bin/python scripts/run_v2c3_bounded_tuning.py preflight
 sentinelvoice_env/bin/python scripts/run_v2c3_bounded_tuning.py run
 ```
 
-The 1,922-example external lockbox, 270-example challenge set, CFPB, historical
-test splits, and V2-C1 locked test remain untouched. Step 5 writes only a
-development-CV tuning report and does not integrate routing into the runtime.
+At Step 5, the 1,922-example external lockbox and 270-example challenge had not
+yet been used; Step 6 later consumed both for final evaluation. CFPB,
+historical test splits, and V2-C1 locked test stayed outside Step 5. Step 5
+writes only a development-CV tuning report and does not integrate routing into
+the runtime.
 The completed search selected `bge_svc_c_4_0`: frozen local
 `BAAI/bge-small-en-v1.5` passage embeddings and balanced LinearSVC `C=4.0`.
 No final-evaluation source contributed to that decision.
 
-## V2-C3 Step 6 final freeze and untouched evaluation
+## V2-C3 Step 6 final freeze and evaluation
 
 Step 6 freezes the selection before any final score is observed.
 `v2c3_final_evaluation_config.json` records the exact selected representation
@@ -296,6 +299,47 @@ nests the no-inference pre-evaluation snapshot under
 `pre_evaluation_integrity` and completed work under `evaluation_execution`.
 This is reporting clarification only and changes no model, prediction, metric,
 safety gate, or acceptance result.
+
+## V2-C4 safety-recovery contract and fresh holdout
+
+V2-C3 is closed. Its final safety acceptance failed and is not hidden or tuned
+away: both required external-lockbox gates passed, while challenge
+protected-write false-positive rate, exact protected-write recall, and
+unsupported recall all failed their predeclared gates. The V2-C3 external
+lockbox and challenge are therefore consumed final-evaluation datasets. V2-C4
+may use them only for diagnostics, historical comparison, and separately
+reported regression measurement; they are no longer untouched holdouts and
+cannot provide V2-C4 final acceptance.
+
+`v2c4_experiment_contract.json` freezes the new experiment before individual
+V2-C3 challenge mistakes are reviewed. Its scope is limited to the three
+failed safety behaviors, and it preserves the same gates: protected-write
+false-positive rate at most `0.01`, protected-write recall at least `0.80`, and
+unsupported recall at least `0.80`. `v2c4_error_analysis_config.json` freezes
+the future failure categories before results are categorized. No error analysis
+or model-change selection has occurred yet.
+
+V2-C4 receives a new synthetic final safety holdout rather than recycling the
+V2-C3 challenge. The seed and deterministic builder create 360 examples—40 for
+each frozen intent—with explicit gold labels, independent V2-C4 lineage, and
+deliberate protected-action and unsupported boundaries. The builder rejects
+normalized duplicates and overlap with V2-C3 development, the consumed V2-C3
+challenge, or the consumed external lockbox hashes. It also requires the
+predeclared safety-pattern coverage and protected-mention hard negatives in
+every non-protected lane.
+
+```bash
+sentinelvoice_env/bin/python scripts/build_v2c4_safety_holdout.py --write
+sentinelvoice_env/bin/python scripts/build_v2c4_safety_holdout.py --check
+```
+
+Every holdout record has `training_eligible=false`,
+`model_selection_eligible=false`, `threshold_selection_eligible=false`, and
+`error_analysis_eligible=false`. The holdout contains no predictions and may be
+evaluated only once after a future V2-C4 candidate is selected and frozen using
+development evidence. This step performs no V2-C3 error analysis, training,
+inference, tuning, runtime integration, or V2-C4 evaluation. It makes no
+improvement claim. CFPB remains separate evaluation/research data.
 
 ## Reproduce V2-C1
 

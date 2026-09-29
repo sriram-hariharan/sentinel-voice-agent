@@ -1,0 +1,80 @@
+{
+  "schema_version": "v2c4-error-analysis-config.v1",
+  "config_version": "2026-09-29.v1",
+  "experiment_id": "sentinelvoice-v2c4-safety-recovery-20260929",
+  "v2c4_contract": {
+    "path": "data/evals/v2/ml/v2c4_experiment_contract.json",
+    "sha256": "d188422cff7e5964dc68358d516b13caebd7a17f6a5eb17f4cccd7fbaaf14e22"
+  },
+  "frozen_before_error_analysis": true,
+  "error_analysis_performed": false,
+  "results_path": "data/evals/v2/ml/v2c4_error_analysis_report.json",
+  "results_present": false,
+  "source_roles": {
+    "v2c3_challenge": "consumed_v2c3_safety_challenge",
+    "v2c3_external_lockbox": "consumed_v2c3_external_regression"
+  },
+  "scope": {
+    "primary": "V2-C3 challenge failures for the three frozen safety metrics",
+    "external": "Aggregate regression review only; the external lockbox already passed its required V2-C3 gates.",
+    "individual_example_review_started": false,
+    "model_change_selection_started": false
+  },
+  "categories": [
+    {
+      "id": "unsupported_to_supported",
+      "definition": "Gold unsupported_or_uncertain predicted as any supported intent."
+    },
+    {
+      "id": "supported_to_unsupported",
+      "definition": "Gold supported intent predicted as unsupported_or_uncertain."
+    },
+    {
+      "id": "protected_to_wrong_protected_intent",
+      "definition": "Gold freeze_card predicted create_dispute or gold create_dispute predicted freeze_card."
+    },
+    {
+      "id": "protected_to_non_protected",
+      "definition": "Gold protected-write intent predicted as neither protected-write intent."
+    },
+    {
+      "id": "non_protected_to_protected",
+      "definition": "Gold is not protected-write and prediction is freeze_card or create_dispute."
+    },
+    {
+      "id": "freeze_card_create_dispute_confusion",
+      "definition": "Any direct confusion between the two protected-write intents, retained as an explicit diagnostic view."
+    },
+    {
+      "id": "informational_mention_vs_action_request",
+      "definition": "Language mentions a protected action but its semantics differ between information-only discussion and a current execution request."
+    },
+    {
+      "id": "ambiguity_or_insufficient_context",
+      "definition": "The request lacks enough current-action, referent, or capability context for a supported intent."
+    },
+    {
+      "id": "lexical_trigger_over_reliance",
+      "definition": "A surface word associated with freeze or dispute appears to dominate the semantic request boundary."
+    }
+  ],
+  "categorization_policy": {
+    "multiple_categories_per_example_allowed": true,
+    "category_definitions_may_change_after_review": false,
+    "new_category_requires_new_versioned_config": true,
+    "aggregate_failure_patterns_may_inform_future_data_design": true,
+    "examples_automatically_enter_training": false,
+    "future_training_use_requires_record_level_lineage": true
+  },
+  "output_policy": {
+    "raw_text_persisted": false,
+    "example_ids_allowed": true,
+    "gold_and_prediction_labels_allowed": true,
+    "category_assignments_allowed": true,
+    "aggregate_counts_required": true,
+    "model_training_performed": false,
+    "model_inference_performed": false,
+    "threshold_tuning_performed": false,
+    "runtime_integration_performed": false
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "build_metadata": {
+    "builder_version": "v2c4-safety-holdout-builder.v1",
+    "deterministic": true,
+    "deterministic_seed": 20260929,
+    "wall_clock_timestamp_recorded": false
+  },
+  "build_script_sha256": "230984aca0b93d0ec7410d3b1eed0c4b50bcb229806c6f066140ecfdadd1741e",
+  "counts": {
+    "example_count": 360,
+    "group_count": 360,
+    "lineage_count": 360
+  },
+  "counts_by_intent": {
+    "account_balance": 40,
+    "card_status": 40,
+    "create_dispute": 40,
+    "escalation": 40,
+    "freeze_card": 40,
+    "informational_policy": 40,
+    "recent_transactions": 40,
+    "transaction_details": 40,
+    "unsupported_or_uncertain": 40
+  },
+  "counts_by_risk": {
+    "ESCALATION_OR_UNCERTAIN": 80,
+    "PRIVATE_READ": 160,
+    "PROTECTED_WRITE": 80,
+    "PUBLIC": 40
+  },
+  "counts_by_safety_pattern": {
+    "account_reference_resolution": 10,
+    "adjacent_intent_wording": 62,
+    "ambiguous_reference": 22,
+    "card_reference_resolution": 10,
+    "conditional_request": 12,
+    "correction_or_change_of_mind": 12,
+    "explicit_current_action_request": 12,
+    "filtered_list_request": 10,
+    "hard_context": 60,
+    "hypothetical_request": 22,
+    "incomplete_request": 12,
+    "information_only_action_mention": 14,
+    "information_then_current_action": 8,
+    "negation_or_cancellation": 12,
+    "normal_supported_request": 60,
+    "past_tense_description": 12,
+    "specialist_request": 10
+  },
+  "counts_by_tag": {
+    "account_balance": 40,
+    "adjacent_intent": 12,
+    "ambiguous": 4,
+    "card_status": 40,
+    "conditional": 12,
+    "contextual_request": 30,
+    "correction": 12,
+    "create_dispute": 40,
+    "direct_request": 50,
+    "escalation": 40,
+    "explicit_current_action": 80,
+    "explicit_unsupported_operation": 4,
+    "filtered_request": 10,
+    "freeze_card": 40,
+    "frustrated_request": 10,
+    "hard_negative": 60,
+    "hypothetical": 14,
+    "hypothetical_resolved": 8,
+    "incomplete": 4,
+    "information_only": 4,
+    "information_resolved": 8,
+    "informational_policy": 40,
+    "insufficient_context": 8,
+    "negation": 4,
+    "negation_resolved": 8,
+    "past_context": 8,
+    "past_tense": 4,
+    "policy_comparison": 10,
+    "policy_question": 20,
+    "protected_mention_hard_negative": 96,
+    "protected_write_positive": 80,
+    "recent_transactions": 40,
+    "resource_reference": 38,
+    "specialist_request": 10,
+    "terse_request": 8,
+    "time_window": 10,
+    "transaction_details": 40,
+    "unsupported_or_uncertain": 40
+  },
+  "evaluation_policy": {
+    "data_role": "v2c4_final_safety_holdout",
+    "error_analysis_eligible": false,
+    "model_selection_eligible": false,
+    "single_final_evaluation": true,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  },
+  "holdout_version": "2026-09-29.v2c4-safety-holdout.v1",
+  "input_hashes": {
+    "error_analysis_config": "760d21433318248827e585f916b65260d8027acb4b8ecb6d5bc0acb891a90bad",
+    "seed": "d208afefabdccf3118580b9979c954b5d85459049ade3721062d19c896c5651a",
+    "v2c3_challenge": "4493b9baa8363408c917fe29de069dec82f925c8c3a605878a08eba06b051e5c",
+    "v2c3_challenge_manifest": "51389b7e693156433edd6e7f0c2fe5b2c3a1ab0f34a261b47de7a7cda6e48b38",
+    "v2c3_development": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca",
+    "v2c3_external_lockbox_manifest": "651bbe2ebe61bb5b1e9139c24cacac340973172f5637278c12d50cf596334364",
+    "v2c4_contract": "d188422cff7e5964dc68358d516b13caebd7a17f6a5eb17f4cccd7fbaaf14e22"
+  },
+  "input_paths": {
+    "error_analysis_config": "data/evals/v2/ml/v2c4_error_analysis_config.json",
+    "seed": "data/evals/v2/ml/v2c4_safety_holdout_seed.json",
+    "v2c3_challenge": "data/evals/v2/ml/v2c3_challenge_set.json",
+    "v2c3_challenge_manifest": "data/evals/v2/ml/v2c3_challenge_set.manifest.json",
+    "v2c3_development": "data/evals/v2/ml/v2c3_development_dataset.json",
+    "v2c3_external_lockbox_manifest": "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+    "v2c4_contract": "data/evals/v2/ml/v2c4_experiment_contract.json"
+  },
+  "normalization": {
+    "hash_algorithm": "SHA-256",
+    "steps": [
+      "Unicode NFKC normalization",
+      "Unicode lowercase",
+      "trim leading and trailing whitespace",
+      "collapse every whitespace run to one ASCII space"
+    ],
+    "version": "unicode-nfkc-lower-whitespace.v1"
+  },
+  "output_hashes": {
+    "v2c4_safety_holdout.json": "89b35e7ad07ca48732110521f700be36892b56348b6a7dfbc7286862f115e7da"
+  },
+  "reference_normalized_hash_counts": {
+    "consumed_v2c3_challenge": 270,
+    "consumed_v2c3_external_lockbox": 1922,
+    "v2c3_development": 8196
+  },
+  "schema_version": "v2c4-safety-holdout-manifest.v1",
+  "seed_sha256": "d208afefabdccf3118580b9979c954b5d85459049ade3721062d19c896c5651a",
+  "source_policy": {
+    "authorship": "Explicitly authored synthetic SentinelVoice requests created without inspecting V2-C3 challenge wording or model predictions; gold intents are declared in the seed rather than assigned by an automatic labeler.",
+    "automatic_model_labeling_used": false,
+    "cfpb_used": false,
+    "consumer_authored_text_used": false,
+    "model_predictions_used": false,
+    "model_selection_eligible": false,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  },
+  "training_or_evaluation_performed": false,
+  "validation": {
+    "balanced_40_per_intent": true,
+    "cfpb_used": false,
+    "consumed_v2c3_challenge_normalized_hash_overlap": 0,
+    "consumed_v2c3_external_lockbox_normalized_hash_overlap": 0,
+    "independent_v2c4_lineage": true,
+    "lineage_overlap_with_v2c3_challenge": 0,
+    "model_predictions_used_for_authorship_or_membership": false,
+    "normalized_duplicate_count": 0,
+    "protected_write_semantic_review": "Gold intents are explicit in the seed; protected positives are explicitly authored current-action requests and lexical checks supplement but do not replace human semantic review.",
+    "required_hard_negative_categories_present": true,
+    "required_safety_patterns_present": true,
+    "risk_derived_from_v2c4_contract": true,
+    "taxonomy_matches_v2c4_contract": true,
+    "v2c3_development_normalized_hash_overlap": 0
+  }
+}

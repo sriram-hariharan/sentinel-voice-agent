@@ -9,7 +9,7 @@ external benchmarks. V2-C3 now freezes the next model-development and
 data-governance contract, provides deterministic development-data and
 fresh-lockbox builders, records the fixed-preset Step 4 model tournament, and
 records the bounded Step 5 selection. Step 6 freezes the selected model and
-the untouched final-evaluation procedure. Final evaluation is complete: the
+the predeclared final-evaluation procedure. Final evaluation is complete: the
 external-lockbox safety gates passed, the challenge safety gates failed, and
 overall final safety acceptance is false. No retuning or model switching
 occurred.
@@ -165,9 +165,10 @@ direct versus supported-then-intent hierarchical classification. Every
 candidate uses the same precomputed five `StratifiedGroupKFold` assignments.
 This is representation/model-family selection, not hyperparameter tuning.
 
-The 1,922-example fresh external lockbox and the 270-example synthetic
-challenge set remain untouched, as do historical test splits and CFPB. Step 4
-selected three technically distinct, safety-eligible finalists: direct
+At Step 4, the 1,922-example external lockbox and 270-example synthetic
+challenge had not yet been used. Step 6 subsequently consumed both for final
+evaluation; historical test splits and CFPB remained separate. Step 4 selected
+three technically distinct, safety-eligible finalists: direct
 word-plus-character TF-IDF with balanced LinearSVC, frozen BGE-small with
 balanced LinearSVC, and TF-IDF plus LSA with balanced LinearSVC.
 
@@ -181,7 +182,7 @@ The completed development-only search selected frozen local
 Step 6 does not reopen model selection. It prepares that fixed classifier once
 on all 8,198 development examples by loading the frozen development embedding
 cache; it performs no final-fit CV and does not regenerate development
-embeddings. Final evaluation used exactly two previously untouched sets,
+embeddings. Final evaluation used exactly two pre-frozen sets,
 reported separately: the 1,922-example external lockbox and the balanced
 270-example SentinelVoice challenge set. The external safety gates passed, but
 all three challenge safety gates failed, so overall final safety acceptance is
@@ -189,6 +190,16 @@ false. The frozen V2-C1 classifier was scored only as a historical comparator.
 The result triggered no model switching, retuning, or threshold tuning, and
 CFPB stays separate for later complex-narrative evaluation and dataset-
 expansion research.
+
+V2-C4 is a new, separately frozen safety-recovery experiment. The V2-C3
+external lockbox and challenge set are now consumed final-evaluation data: they
+may support diagnostics, historical comparison, and regression measurement,
+but they are no longer untouched holdouts and cannot establish V2-C4 final
+acceptance. Before any V2-C3 failure analysis or model improvement, V2-C4
+freezes its methodology, error categories, and a new independently authored,
+balanced 360-example safety holdout. That holdout is ineligible for training,
+model or threshold selection, and error analysis until its one final
+evaluation. No V2-C4 improvement is claimed, and CFPB remains separate.
 
 ### Local voice setup
 
@@ -3701,6 +3712,24 @@ passed, all three challenge safety gates failed, and
 complex-narrative work. The execution-status schema distinguishes the
 pre-evaluation integrity snapshot from operations completed during evaluation;
 that clarification changes no prediction, metric, gate, or decision.
+
+V2-C4 begins only after acknowledging that failed safety acceptance. It does
+not retune V2-C3 against its final tests. The 1,922-example external lockbox is
+now `consumed_v2c3_external_regression`, and the 270-example challenge is now
+`consumed_v2c3_safety_challenge`; neither may be called fresh or used as V2-C4
+acceptance evidence. The V2-C4 contract preserves the same protected-write
+false-positive, protected-write recall, and unsupported-recall gates and
+freezes error-analysis categories before individual failures are reviewed.
+
+The new V2-C4 final safety holdout contains 360 independently authored
+synthetic examples, balanced at 40 per intent. Its deterministic builder
+rejects normalized-text overlap with V2-C3 development, the consumed challenge,
+or the consumed external lockbox, and rejects reused challenge lineage. Every
+record is ineligible for training, model selection, threshold selection, and
+error analysis until final evaluation. This step creates methodology and data
+infrastructure only: it performs no error analysis, training, inference, model
+selection, runtime integration, or final evaluation. CFPB remains separate
+evaluation/research data.
 
 ### Why this extension is useful
 

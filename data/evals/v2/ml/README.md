@@ -463,8 +463,10 @@ and the classifier remains advisory only. Deterministic SentinelVoice
 application code continues to own authentication, authorization, resource
 ownership, confirmation, protected tool execution, idempotency, and state
 transitions. No V2-C4 classifier is approved as an authorization mechanism.
-The next phase is V2-C5 intent discovery and taxonomy expansion; implementation
-has not started.
+The next phase is V2-C5 intent discovery and taxonomy expansion. Steps 16-18
+have frozen the discovery contract, corpus, and primary clustering evidence;
+Step 19 supplies the local human-adjudication workflow without changing the
+taxonomy.
 
 ## Roadmap: V2-C4 → V2-C5 → V2-D
 
@@ -574,6 +576,73 @@ semantic truth or selection evidence. No cluster automatically becomes an
 intent. Step 19 performs human semantic adjudication before Step 20 can freeze
 any taxonomy change. The runner and tests do not themselves establish or claim
 clustering results.
+
+## V2-C5 Step 19 human taxonomy adjudication
+
+Step 18 is frozen at exactly 35 primary `mcs30_ms10` clusters. These clusters
+are proposals for inspection, not intents. Step 19 is a standard-library-only
+local review workflow and never invokes embeddings, HDBSCAN, UMAP, or a
+classifier. It reads only the hash-pinned Step 18 contract, report,
+assignments, manifest, discovery corpus, and runner.
+
+The workflow uses the git-ignored local workfile
+`data/evals/v2/ml/local/v2c5_taxonomy_review_workfile.json`. `build` creates it
+once with deterministic descending-member-count ordering and every record set
+to `UNREVIEWED`; it refuses to overwrite an existing file. The workfile stores
+cluster identifiers, counts, representative and boundary discovery IDs, and
+source/native-label concentrations, but no duplicated utterance text. `show`
+and `next` join review text from the frozen discovery corpus at display time and
+separate representative examples from boundary cases. External labels and
+source datasets are displayed as metadata only.
+
+The commands are:
+
+```bash
+sentinelvoice_env/bin/python scripts/review_v2c5_taxonomy.py build
+sentinelvoice_env/bin/python scripts/review_v2c5_taxonomy.py check
+sentinelvoice_env/bin/python scripts/review_v2c5_taxonomy.py summary
+sentinelvoice_env/bin/python scripts/review_v2c5_taxonomy.py show --cluster-id <ID>
+sentinelvoice_env/bin/python scripts/review_v2c5_taxonomy.py next
+sentinelvoice_env/bin/python scripts/review_v2c5_taxonomy.py set \
+  --cluster-id <ID> \
+  --decision <DECISION> \
+  --human-theme <THEME> \
+  --confidence <HIGH|MEDIUM|LOW> \
+  --runtime-change-required <true|false|null> \
+  --human-rationale <RATIONALE>
+sentinelvoice_env/bin/python scripts/review_v2c5_taxonomy.py export
+```
+
+`set` accepts exactly one explicit human decision:
+`MAP_TO_EXISTING_INTENT`, `CANDIDATE_NEW_INTENT`, `REMAIN_UNSUPPORTED`,
+`NEEDS_SPLIT_REVIEW`, `MIXED_OR_INCOHERENT`, or `INSUFFICIENT_EVIDENCE`.
+All reviewed decisions require a human theme, confidence, an explicitly
+supplied runtime-change value (`true`, `false`, or unresolved `null`), and a
+rationale. `null` is valid when runtime implications remain unresolved,
+including `NEEDS_SPLIT_REVIEW`, `MIXED_OR_INCOHERENT`, and
+`INSUFFICIENT_EVIDENCE`; it is never inferred from the decision.
+Existing-intent mappings additionally require
+`--target-existing-intent`; new-intent candidates instead require
+`--candidate-intent-name`; all other decisions require both fields to remain
+empty.
+
+Existing mappings are limited to `informational_policy`, `account_balance`,
+`recent_transactions`, `transaction_details`, `card_status`, `freeze_card`,
+`create_dispute`, and `escalation`. `unsupported_or_uncertain` is not a
+supported target. No protected action is inferred: topic similarity to a
+frozen card or a disputed transaction does not establish explicit current
+action semantics.
+
+`check` validates the frozen hashes, exact cluster set, ordering, and review
+field consistency without writing the workfile. `export` refuses while any
+cluster remains unreviewed. A completed export creates the tracked, text-free
+`v2c5_taxonomy_adjudication.json` and
+`v2c5_taxonomy_adjudication.manifest.json`, with frozen Step 18 hashes, the
+review-script hash, cluster/review totals, and decision counts. These artifacts
+remain human discovery evidence only: `taxonomy_changed=false`,
+`new_intents_created=false`, `classifier_training_performed=false`,
+`runtime_behavior_changed=false`, `final_taxonomy_frozen=false`, and
+`step20_required=true`.
 
 ## Reproduce V2-C1
 

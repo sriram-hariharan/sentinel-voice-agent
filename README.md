@@ -3798,9 +3798,10 @@ unsupported boundary, but those diagnostic findings do not establish a taxonomy
 change and require human adjudication. Step 14 was skipped: the final safety
 holdout was never accessed or evaluated because no development candidate passed
 selection. Consequently, no final V2-C4 safety-acceptance or production-readiness
-claim exists. The next phase is V2-C5 intent discovery and taxonomy expansion;
-Steps 16 and 17 froze its contract and 6,372-record discovery corpus, and Step
-18 provides the still-unexecuted clustering runner.
+claim exists. The next phase is V2-C5 intent discovery and taxonomy expansion.
+Steps 16 and 17 froze its contract and 6,372-record discovery corpus, Step 18
+froze the primary clustering evidence, and Step 19 supplies local human-
+adjudication machinery without changing the taxonomy.
 
 ### ML roadmap after V2-C4
 
@@ -3869,6 +3870,30 @@ runs and cannot be replaced post hoc. Optional seeded UMAP is non-blocking and
 visualization-only. Cluster, source, and native-label diagnostics are
 exploratory: clusters do not become intents automatically, and Step 19 performs
 human semantic adjudication before any later taxonomy decision.
+
+Step 18 is now frozen with 35 primary `mcs30_ms10` clusters. Step 19 adds a
+standard-library-only local human-review workflow in
+`scripts/review_v2c5_taxonomy.py`; it does not rerun embeddings, HDBSCAN, UMAP,
+or any classifier. `build` creates the ignored
+`data/evals/v2/ml/local/v2c5_taxonomy_review_workfile.json` with all 35 records
+set to `UNREVIEWED`. `check`, `summary`, `show`, and `next` validate or display
+that work without changing it, while `set` records only explicit human input.
+`build` refuses to overwrite an existing workfile.
+
+The allowed decisions are `MAP_TO_EXISTING_INTENT`,
+`CANDIDATE_NEW_INTENT`, `REMAIN_UNSUPPORTED`, `NEEDS_SPLIT_REVIEW`,
+`MIXED_OR_INCOHERENT`, and `INSUFFICIENT_EVIDENCE`. Mapping may target only the
+eight supported intents; `unsupported_or_uncertain` is not a supported mapping
+target. Native external labels and source concentrations remain metadata only.
+In particular, card or dispute topic similarity cannot infer `freeze_card` or
+`create_dispute`; those mappings require an explicit human decision grounded in
+current-action semantics.
+
+Only after all 35 clusters have reviewed decisions may `export` create the
+tracked, text-free adjudication artifact and manifest. That export is human
+discovery evidence only: it changes no taxonomy, creates no intent, trains no
+classifier, changes no runtime behavior, does not freeze the final taxonomy,
+and leaves Step 20 required.
 
 ### Why this extension is useful
 

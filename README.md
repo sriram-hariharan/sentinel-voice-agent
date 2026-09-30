@@ -3805,21 +3805,21 @@ adjudication machinery without changing the taxonomy.
 
 ### ML roadmap after V2-C4
 
-The phase order is **V2-C4 → V2-C5 → V2-D**. V2-C4 remains the controlled
-safety-recovery experiment for the frozen nine-intent taxonomy. V2-C5, **Intent
-Discovery and Taxonomy Expansion**, asks whether that taxonomy should expand
-before the separately governed V2-D phase begins.
+The phase order is **V2-C4 → V2-C5 → V2-C6 → V2-D**. V2-C4 remains the
+controlled safety-recovery experiment for the frozen nine-intent taxonomy.
+V2-C5, **Intent Discovery and Taxonomy Expansion**, tested an expanded taxonomy
+and closed after its candidate failed final safety gates. V2-C6 performs
+generalization diagnosis and separately governed remediation before the V2-D
+phase can begin.
 
-V2-C5 will use only development- or training-eligible sources. Frozen sentence
-embeddings and HDBSCAN may propose candidate clusters, but clustering is
-advisory: human-in-the-loop adjudication decides whether a group represents a
-coherent, useful intent. There is no fixed target intent count. CFPB narratives,
-annotations, labels, and metadata-derived targets remain outside taxonomy
-discovery and training. Any expanded taxonomy requires a new fresh final
-holdout; the nine-intent V2-C4 holdout cannot serve as final evidence for it.
-Recognizing more intents also does not automatically authorize or create more
-runtime tools. V2-C5 is roadmap-only here: no clustering code or dataset is
-created by Step 9.
+V2-C5 used only development- or training-eligible sources. Frozen sentence
+embeddings and HDBSCAN proposed candidate clusters, but clustering remained
+advisory: human-in-the-loop adjudication decided whether a group represented a
+coherent, useful intent. CFPB narratives, annotations, labels, and
+metadata-derived targets remained outside taxonomy discovery and training. The
+expanded taxonomy required a fresh final holdout; the nine-intent V2-C4 holdout
+could not serve as final evidence for it. Recognizing more intents did not
+automatically authorize or create more runtime tools.
 
 ### V2-C5 discovery contract
 
@@ -4302,6 +4302,49 @@ not reuse this holdout as its final test or tune directly against its examples.
 Before any final V2-C6 evaluation, it must freeze a new evaluation contract and
 a fresh independently authored final holdout. Runtime integration remains
 blocked until a future candidate passes its predeclared safety gates.
+
+### V2-C6 Step 29A generalization-diagnosis contract
+
+`data/evals/v2/ml/v2c6_generalization_diagnosis_contract.json` freezes a
+development-side diagnosis before any remediation begins. It hash-binds the
+8,198-record expanded development dataset and manifest, the selected
+candidate's existing OOF results and manifest, the completed aggregate V2-C5
+final results and state, and the frozen taxonomy. The consumed raw V2-C5 final
+holdout is explicitly prohibited: Step 29A and the future Step 29B may not
+open, inspect, search, copy, hash, paraphrase, train on, or tune against its
+individual records. Committed V2-C5 aggregate results remain historical
+context only.
+
+The contract predeclares nine diagnostic areas: development source
+composition, group structure, duplicate and normalized-duplicate structure,
+lexical diversity, class imbalance, existing development OOF behavior,
+authoring/provenance concentration, priority intent boundaries, and effective
+sample size. Effective sample size must report raw rows, unique groups, and
+unique normalized texts separately. Boundary analysis focuses on
+`cancel_transfer`, `close_account`, `create_dispute`, `freeze_card`,
+`account_blocked`, `transfer_failed_or_declined`, `transfer_pending`, and
+`unsupported_or_uncertain` using development-side evidence only. No new
+semantic-similarity threshold is introduced.
+
+Step 29A distinguishes direct observations, unconfirmed hypotheses, supported
+diagnoses backed by measurable development-side evidence, and causal claims.
+Class imbalance, the final performance drop, or unsupported overprediction do
+not alone establish a root cause, and Step 29B cannot make a causal claim from
+observational diagnosis alone. It may recommend remediation categories, but it
+cannot train or select a model, change the taxonomy, weaken safety gates, or
+implement remediation. The future aggregate/statistical outputs are
+`v2c6_generalization_diagnosis.json` and
+`v2c6_generalization_diagnosis.manifest.json`; no runner or diagnosis is
+created in Step 29A.
+
+Before any future V2-C6 final evaluation, a new evaluation contract and fresh
+independently authored holdout must be frozen. No consumed V2-C5 holdout
+example may be reused, and runtime integration remains blocked until a future
+candidate passes its predeclared safety gates. The frozen status is
+`diagnosis_performed=false`, `model_training_performed=false`,
+`model_selection_performed=false`, `final_holdout_accessed=false`, and
+`runtime_behavior_changed=false`; the next required step is
+`v2c6_generalization_diagnosis`.
 
 ### Why this extension is useful
 

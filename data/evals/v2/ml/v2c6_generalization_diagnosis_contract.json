@@ -1,0 +1,314 @@
+{
+  "allowed_remediation_recommendations": [
+    "improve_training_data_diversity",
+    "rebalance_development_data",
+    "improve_group_or_source_independence",
+    "improve_intent_definitions_or_boundaries",
+    "hard_negative_generation",
+    "unsupported_class_redesign",
+    "reconsider_representation_or_classifier_family",
+    "taxonomy_revision"
+  ],
+  "architecture_decision": {
+    "alternatives_rejected": [
+      {
+        "alternative": "inspect_individual_v2c5_final_holdout_errors",
+        "reason": "The once-only V2-C5 holdout is consumed and may remain historical aggregate evidence only."
+      },
+      {
+        "alternative": "tune_or_select_from_v2c5_final_results",
+        "reason": "Using consumed final evidence for selection would invalidate a future clean evaluation claim."
+      },
+      {
+        "alternative": "begin_remediation_before_diagnosis_is_frozen",
+        "reason": "A predeclared diagnostic boundary keeps evidence collection separate from remediation choices."
+      }
+    ],
+    "chosen": "frozen_development_side_generalization_diagnosis",
+    "problem": "V2-C5 development OOF evidence and once-only final evidence show a substantial generalization gap and failed protected-action safety gates without establishing a root cause.",
+    "reversibility": "The diagnostic contract and future aggregate report are reversible; consumed final-holdout access and evidence leakage are not.",
+    "tradeoffs": [
+      "Development-side diagnosis can identify measurable concentration, dependence, imbalance, duplication, lexical, and boundary evidence but cannot directly inspect final-example failures.",
+      "Incomplete provenance metadata may limit authoring-family conclusions.",
+      "Observational associations can support diagnosis but do not by themselves establish causation."
+    ]
+  },
+  "claim_policy": {
+    "insufficient_alone_for_causal_or_root_cause_claim": [
+      "class_imbalance_exists",
+      "final_performance_dropped",
+      "unsupported_or_uncertain_was_overpredicted"
+    ],
+    "levels": [
+      {
+        "definition": "A directly computed, reproducible statistic or relationship from an allowed frozen input.",
+        "name": "observation"
+      },
+      {
+        "definition": "A plausible explanation prompted by observations and labeled as unconfirmed.",
+        "name": "hypothesis"
+      },
+      {
+        "definition": "A hypothesis supported by explicitly reported, measurable development-side evidence from the predeclared analyses, with limitations and alternatives stated.",
+        "name": "supported_diagnosis"
+      },
+      {
+        "definition": "A claim that a factor caused the V2-C5 final outcome; Step 29B may not make this claim from observational diagnosis alone and would require a separately frozen causal design and evidence.",
+        "name": "causal_claim"
+      }
+    ],
+    "maximum_claim_authorized_by_step29b": "supported_diagnosis",
+    "measurable_development_side_evidence_required_for_supported_diagnosis": true,
+    "root_cause_claim_from_aggregate_final_metrics_only_permitted": false
+  },
+  "contract_status": {
+    "contract_frozen": true,
+    "diagnosis_performed": false,
+    "final_holdout_accessed": false,
+    "model_selection_performed": false,
+    "model_training_performed": false,
+    "next_required": "v2c6_generalization_diagnosis",
+    "remediation_implemented": false,
+    "runtime_behavior_changed": false,
+    "taxonomy_changed": false
+  },
+  "contract_version": "v2c6-generalization-diagnosis-contract.v1",
+  "diagnosis_questions": [
+    {
+      "id": "development_source_composition",
+      "metadata_contingency": "Report unavailable fields explicitly; do not infer missing provenance.",
+      "ordinal": 1,
+      "required_measures": [
+        "examples_per_intent",
+        "unique_groups_per_intent",
+        "examples_per_group_distribution_by_intent",
+        "source_dataset_distribution_by_intent_where_available",
+        "source_role_distribution_by_intent_where_available",
+        "provenance_distribution_by_intent_where_available",
+        "synthetic_vs_external_or_source_category_distribution_where_represented"
+      ]
+    },
+    {
+      "id": "group_structure",
+      "ordinal": 2,
+      "required_measures": [
+        "group_size_distribution",
+        "multi_intent_group_count_and_rate",
+        "intent_count_per_group_distribution",
+        "dominant_intent_share_per_group_distribution",
+        "examples_in_largest_1_5_10_and_25_groups",
+        "largest_group_share_by_intent"
+      ]
+    },
+    {
+      "id": "duplicate_and_near_duplicate_structure",
+      "ordinal": 3,
+      "required_measures": [
+        "exact_duplicate_count_and_rate",
+        "normalized_duplicate_count_and_rate",
+        "within_intent_exact_duplicate_concentration",
+        "within_intent_normalized_duplicate_concentration",
+        "cross_intent_exact_duplicate_conflict_count",
+        "cross_intent_normalized_duplicate_conflict_count",
+        "conflicting_intent_sets_without_raw_text"
+      ],
+      "semantic_near_duplicate_threshold": null,
+      "semantic_threshold_policy": "No semantic-similarity threshold may be invented in Step 29B unless a separately frozen contract supplies it."
+    },
+    {
+      "id": "lexical_diversity",
+      "ordinal": 4,
+      "required_measures": [
+        "character_length_distribution_by_intent",
+        "token_length_distribution_by_intent",
+        "vocabulary_size_and_unique_token_count_by_intent",
+        "type_token_ratio_by_intent",
+        "hapax_token_rate_by_intent",
+        "unigram_bigram_and_trigram_concentration_by_intent",
+        "top_10_and_top_25_ngram_token_coverage_by_intent",
+        "intent_specific_token_concentration"
+      ],
+      "text_policy": "Development text may be analyzed, but future tracked outputs should contain statistics and phrase hashes rather than copied utterances."
+    },
+    {
+      "id": "class_imbalance",
+      "ordinal": 5,
+      "required_measures": [
+        "raw_examples_per_intent",
+        "relative_frequency_per_intent",
+        "unsupported_or_uncertain_frequency_and_share",
+        "maximum_to_minimum_intent_count_ratio",
+        "maximum_to_median_intent_count_ratio",
+        "unsupported_or_uncertain_to_each_intent_count_ratio"
+      ]
+    },
+    {
+      "id": "development_oof_behavior",
+      "input_policy": "Use only already-generated V2-C5 model-selection outputs; do not rerun inference, train, or select a model.",
+      "ordinal": 6,
+      "required_measures": [
+        "selected_candidate_per_intent_precision_recall_f1_and_support",
+        "selected_candidate_frozen_order_confusion_matrix",
+        "unsupported_or_uncertain_prediction_count_and_rate",
+        "gold_protected_to_exact_other_protected_non_protected_and_unsupported_counts",
+        "gold_non_protected_predicted_as_protected_count_and_rate",
+        "fold_accuracy_and_macro_f1_mean_standard_deviation_minimum_maximum_and_range_where_available"
+      ]
+    },
+    {
+      "id": "authoring_and_provenance_concentration",
+      "metadata_contingency": "Measure only explicit authoring, template, source, and provenance fields; do not infer an author or template family from text or native labels.",
+      "ordinal": 7,
+      "required_measures": [
+        "unique_authoring_template_source_and_provenance_categories_by_intent_where_available",
+        "largest_category_share_by_intent_where_available",
+        "category_herfindahl_hirschman_index_by_intent_where_available",
+        "raw_count_to_unique_provenance_category_ratio_by_intent_where_available",
+        "missing_metadata_count_and_rate_for_each_concentration_field"
+      ]
+    },
+    {
+      "focus_intents": [
+        "cancel_transfer",
+        "close_account",
+        "create_dispute",
+        "freeze_card",
+        "account_blocked",
+        "transfer_failed_or_declined",
+        "transfer_pending",
+        "unsupported_or_uncertain"
+      ],
+      "id": "intent_boundary_diagnostics",
+      "ordinal": 8,
+      "required_measures": [
+        "pairwise_development_oof_confusion_counts_and_rates",
+        "pairwise_vocabulary_jaccard_overlap",
+        "pairwise_top_unigram_bigram_and_trigram_overlap",
+        "pairwise_normalized_text_collision_counts",
+        "protected_to_unsupported_and_unsupported_to_protected_confusion_counts"
+      ],
+      "scope": "Development-side evidence only. No V2-C5 final-holdout example or per-example prediction may be inspected."
+    },
+    {
+      "id": "effective_sample_size",
+      "ordinal": 9,
+      "required_measures": [
+        "raw_example_count_by_intent",
+        "unique_group_count_by_intent",
+        "unique_normalized_text_count_by_intent",
+        "unique_group_to_raw_example_ratio_by_intent",
+        "unique_normalized_text_to_raw_example_ratio_by_intent",
+        "unsupported_or_uncertain_raw_group_and_normalized_text_counts"
+      ],
+      "required_interpretation": "Raw row count is not interchangeable with independent linguistic-pattern count; 4,769 unsupported_or_uncertain rows must be reported alongside group and normalized-text counts."
+    }
+  ],
+  "final_result_context": {
+    "allowed_role": "Historical aggregate evidence motivating development-side diagnosis only.",
+    "development_pooled_oof_macro_f1": 0.8850476526181243,
+    "final_exact_protected_write_recall": 0.4,
+    "final_macro_f1": 0.5632279946795209,
+    "final_new_seven_intent_macro_f1": 0.45253940739110227,
+    "final_protected_write_false_positive_rate": 0.014583333333333334,
+    "final_unsupported_or_uncertain_recall": 0.85,
+    "individual_final_examples_permitted": false,
+    "selected_candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none"
+  },
+  "fresh_holdout_requirement": {
+    "consumed_v2c5_final_holdout_examples_reused": false,
+    "fresh_independently_authored_holdout_required": true,
+    "fresh_holdout_must_be_frozen_before_v2c6_model_selection_or_training_decisions_that_depend_on_evaluation": true,
+    "new_v2c6_evaluation_contract_required": true,
+    "runtime_integration_blocked_until_future_candidate_passes_predeclared_safety_gates": true,
+    "v2c5_aggregate_results_role": "historical_evidence_only"
+  },
+  "future_outputs": {
+    "diagnosis": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis.json",
+      "preferred_content": "aggregate_and_statistical",
+      "raw_final_holdout_text_permitted": false,
+      "schema_version": "v2c6-generalization-diagnosis.v1"
+    },
+    "generated_by_step29a": false,
+    "manifest": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis.manifest.json",
+      "raw_final_holdout_text_permitted": false,
+      "schema_version": "v2c6-generalization-diagnosis-manifest.v1"
+    }
+  },
+  "input_policy": {
+    "allowed_uses": {
+      "expanded_development_dataset": "Development-side statistical and lexical diagnosis.",
+      "final_evaluation_results": "Verify and report only committed aggregate historical context; never use for tuning or selection.",
+      "model_selection_results": "Read the already-generated selected-candidate OOF aggregates and fold metrics without rerunning inference.",
+      "taxonomy": "Interpret frozen labels, protected intents, and risk metadata without changing them."
+    },
+    "consumed_v2c5_final_holdout": {
+      "path": "data/evals/v2/ml/v2c5_final_holdout.json",
+      "status": "explicitly_prohibited_raw_input"
+    },
+    "final_holdout_accessed_meaning": "No raw or individual V2-C5 final-holdout record is opened, read, searched, copied, hashed, paraphrased, or otherwise inspected during V2-C6 diagnosis.",
+    "individual_v2c5_final_holdout_examples_permitted": false
+  },
+  "phase": "V2-C6 Step 29A",
+  "prohibited_during_diagnosis": {
+    "add_v2c5_final_holdout_examples_to_development": true,
+    "change_taxonomy": true,
+    "create_new_classifier": true,
+    "inspect_individual_v2c5_final_holdout_records": true,
+    "model_or_hyperparameter_selection_using_final_holdout_performance": true,
+    "paraphrase_v2c5_final_holdout_examples": true,
+    "retroactively_change_v2c5_conclusions": true,
+    "threshold_tuning_against_final_results": true,
+    "train_against_v2c5_final_holdout_labels_or_examples": true,
+    "treat_v2c5_final_holdout_as_reusable_test_set": true,
+    "weaken_safety_gates": true
+  },
+  "remediation_boundary": {
+    "diagnosis_may_recommend_categories_only": true,
+    "remediation_implemented_by_step29a_or_step29b": false,
+    "separately_frozen_v2c6_experiment_required": true
+  },
+  "schema_version": "v2c6-generalization-diagnosis-contract.v1",
+  "source_artifacts": {
+    "expanded_development_dataset": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "expanded_development_manifest": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+    },
+    "final_evaluation_results": {
+      "access_scope": "aggregate_only",
+      "path": "data/evals/v2/ml/v2c5_final_evaluation_results.json",
+      "sha256": "e3104ce8c7893dc111989f804fd05a82dc63cf2e3a22483374962f87337aa4b4"
+    },
+    "final_evaluation_results_manifest": {
+      "path": "data/evals/v2/ml/v2c5_final_evaluation_results.manifest.json",
+      "sha256": "de23cb584c069e94f26f07659bbcb6db99c0763cfb561c321eb0d3a5b2fd689c"
+    },
+    "final_evaluation_state": {
+      "expected_state": "completed",
+      "path": "data/evals/v2/ml/v2c5_final_evaluation_state.json",
+      "sha256": "3dbd632757724a8ad93bb71b83ee83340c59bff69ae54cce61895b7bc54103ec"
+    },
+    "model_selection_results": {
+      "access_scope": "existing_aggregate_oof_and_fold_metrics_only",
+      "path": "data/evals/v2/ml/v2c5_model_selection_results.json",
+      "sha256": "12686ff407c06e83e27d98f9b7a566f6fe0368c9c2828a5f9b54e9aed7e35ab4"
+    },
+    "model_selection_results_manifest": {
+      "path": "data/evals/v2/ml/v2c5_model_selection_results.manifest.json",
+      "sha256": "2c9b6b3344a4a7e30a4992ad687605c3708dd95d4ac15ff353fa5dc43504005e"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  }
+}

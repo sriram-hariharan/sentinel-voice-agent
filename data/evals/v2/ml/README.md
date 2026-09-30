@@ -468,22 +468,23 @@ have frozen the discovery contract, corpus, and primary clustering evidence;
 Step 19 supplies the local human-adjudication workflow without changing the
 taxonomy.
 
-## Roadmap: V2-C4 → V2-C5 → V2-D
+## Roadmap: V2-C4 → V2-C5 → V2-C6 → V2-D
 
-V2-C5, **Intent Discovery and Taxonomy Expansion**, sits between the current
-V2-C4 nine-intent safety-recovery experiment and the separately governed V2-D
-phase. Its purpose is to discover whether the taxonomy should expand, not to
-assume that it must.
+V2-C5, **Intent Discovery and Taxonomy Expansion**, followed the V2-C4
+nine-intent safety-recovery experiment and tested a human-adjudicated expanded
+taxonomy. It closed after the selected candidate failed final safety gates.
+V2-C6 now performs generalization diagnosis and separately frozen remediation
+before the separately governed V2-D phase. Its diagnosis must not revise the
+historical V2-C5 result or consume that holdout as reusable evidence.
 
-V2-C5 may use only development- or training-eligible sources. Frozen sentence
-embeddings with HDBSCAN provide advisory candidate-cluster discovery; a human
-adjudicator, not clustering, decides whether any cluster becomes an intent.
-There is no fixed target intent count. CFPB narratives, annotations, labels,
-and metadata-derived targets are excluded from taxonomy discovery and training.
-An expanded taxonomy requires a new fresh final holdout, because the V2-C4
-nine-intent holdout is not valid final evidence for a changed label space.
-Additional recognized intents do not automatically imply additional runtime
-tools. These constraints continue to govern the implemented discovery steps.
+V2-C5 used only development- or training-eligible sources. Frozen sentence
+embeddings with HDBSCAN provided advisory candidate-cluster discovery; a human
+adjudicator, not clustering, decided whether any cluster became an intent.
+CFPB narratives, annotations, labels, and metadata-derived targets were
+excluded from taxonomy discovery and training. The expanded taxonomy required
+a fresh final holdout because the V2-C4 nine-intent holdout was not valid final
+evidence for a changed label space. Additional recognized intents did not
+automatically imply additional runtime tools.
 
 ## V2-C5 Step 16 intent-discovery contract
 
@@ -1280,6 +1281,92 @@ The next phase is **V2-C6 remediation / generalization diagnosis**. V2-C6 must:
   final holdout before final V2-C6 evaluation; and
 - keep runtime integration blocked until a future candidate passes its
   predeclared safety gates.
+
+## V2-C6 Step 29A generalization-diagnosis contract
+
+`v2c6_generalization_diagnosis_contract.json` freezes the diagnosis boundary
+before any V2-C6 analysis or remediation. It hash-pins the 8,198-record V2-C5
+expanded development dataset and manifest, existing model-selection results
+and manifest, aggregate final-evaluation results and manifest, completed
+final-evaluation state, and frozen taxonomy and manifest. The only permitted
+role for V2-C5 final results is committed aggregate historical context:
+
+- development pooled OOF macro-F1: `0.8850476526181243`;
+- final macro-F1: `0.5632279946795209`;
+- final new-seven-intent macro-F1: `0.45253940739110227`;
+- final exact protected-write recall: `0.4`;
+- final protected-write false-positive rate: `0.014583333333333334`; and
+- final `unsupported_or_uncertain` recall: `0.85`.
+
+The raw consumed `v2c5_final_holdout.json` is explicitly prohibited. Neither
+Step 29A nor Step 29B may open or inspect individual records, add them to
+development, paraphrase them, train against their labels or examples, tune
+thresholds or choose models from their results, weaken safety gates, revise
+the V2-C5 conclusion, or treat the holdout as reusable final evidence.
+
+The future Step 29B diagnosis must answer nine frozen development-side
+questions:
+
+1. Development source composition: examples and unique groups per intent,
+   examples-per-group distributions, available source/provenance distributions,
+   and represented synthetic versus external/source categories.
+2. Group structure: group sizes, multi-intent groups, within-group intent
+   concentration, and whether the largest groups dominate development evidence.
+3. Duplicate structure: exact and normalized duplicate rates, within-intent
+   concentration, and cross-intent conflicts. No new semantic-similarity
+   threshold is authorized.
+4. Lexical diversity: text lengths, vocabulary and unique-token statistics,
+   type-token and hapax statistics, and repeated unigram/bigram/trigram
+   concentration by intent.
+5. Class imbalance: raw and relative intent frequencies,
+   `unsupported_or_uncertain` dominance, and maximum/minimum/median imbalance
+   ratios.
+6. Development OOF behavior: the selected candidate's existing per-intent
+   metrics, confusion matrix, unsupported prediction rate, protected-write
+   confusion patterns, and available fold variance. No inference may be rerun.
+7. Authoring/provenance concentration: explicit authoring, template, source,
+   and provenance family concentration where metadata exists; missing metadata
+   must be reported rather than inferred.
+8. Intent boundaries: development-side confusions and lexical overlap among
+   `cancel_transfer`, `close_account`, `create_dispute`, `freeze_card`,
+   `account_blocked`, `transfer_failed_or_declined`, `transfer_pending`, and
+   `unsupported_or_uncertain`.
+9. Effective sample size: raw examples, unique groups, and unique normalized
+   texts per intent. In particular, 4,769 unsupported rows must not be treated
+   automatically as 4,769 independent linguistic patterns.
+
+The evidence language is also frozen. An **observation** is a directly computed
+statistic; a **hypothesis** is an explicitly unconfirmed explanation; a
+**supported diagnosis** requires measurable, reproducible development-side
+evidence and stated limitations; and a **causal claim** is not authorized from
+Step 29B observational evidence alone. Class imbalance, a final performance
+drop, or unsupported overprediction is individually insufficient for a causal
+or root-cause claim.
+
+Step 29B may recommend training-diversity improvements, rebalancing,
+group/source independence, intent-boundary improvements, hard negatives,
+unsupported-class redesign, a different representation/classifier family, or
+taxonomy revision. It must not implement any remedy. Remediation requires a
+separately frozen V2-C6 experiment.
+
+The future outputs are aggregate/statistical and contain no raw final-holdout
+text:
+
+- `v2c6_generalization_diagnosis.json`;
+- `v2c6_generalization_diagnosis.manifest.json`.
+
+Before any V2-C6 final evaluation, the project must freeze a new evaluation
+contract and fresh independently authored holdout. No V2-C5 final-holdout
+example may be reused, and V2-C5 aggregate results remain historical evidence
+only. Runtime integration stays blocked until a future candidate passes its
+predeclared safety gates.
+
+Step 29A creates no runner and performs no diagnosis, model training, model
+selection, remediation, taxonomy change, holdout access, or runtime change.
+The contract records `contract_frozen=true`, `diagnosis_performed=false`,
+`model_training_performed=false`, `model_selection_performed=false`,
+`final_holdout_accessed=false`, `runtime_behavior_changed=false`, and
+`next_required=v2c6_generalization_diagnosis`.
 
 ## Reproduce V2-C1
 

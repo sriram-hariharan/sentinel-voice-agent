@@ -1368,6 +1368,69 @@ The contract records `contract_frozen=true`, `diagnosis_performed=false`,
 `final_holdout_accessed=false`, `runtime_behavior_changed=false`, and
 `next_required=v2c6_generalization_diagnosis`.
 
+## V2-C6 Step 29B deterministic generalization diagnosis
+
+`scripts/run_v2c6_generalization_diagnosis.py` implements the frozen Step 29A
+contract as a standard-library-only statistical workflow. It consumes the
+frozen 8,198-record expanded development dataset, frozen group/fold artifacts,
+the selected candidate's already-generated OOF aggregates and fold metrics,
+the frozen taxonomy/risk mapping, and only the aggregate V2-C5 final context
+explicitly allowed by the contract. The consumed raw
+`v2c5_final_holdout.json` is protected by an executable read guard and remains
+prohibited on preflight, run, and result-checking paths.
+
+The CLI has exactly three modes:
+
+- `--preflight` verifies the contract and every frozen source binding, exact
+  development and taxonomy counts, selected candidate, folds, aggregate final
+  context, and output availability. It writes nothing.
+- `--run` deterministically prepares
+  `v2c6_generalization_diagnosis.json` and its manifest during future local
+  execution. It refuses to overwrite either output.
+- `--check-results` requires both artifacts and validates canonical
+  serialization, deterministic recomputation, result and runner hashes, source
+  lineage, counts, selected candidate, governance, and
+  `next_required=v2c6_remediation_design`. It writes nothing.
+
+The diagnosis reports exact source/intent and group distributions; singleton,
+multi-record, multi-intent, and largest-group concentration; exact and NFKC
+lowercase/whitespace-normalized duplicates; deterministic regex-token lexical
+statistics and unigram/bigram/trigram concentration; class/risk imbalance;
+existing selected-candidate OOF metrics, confusion-derived unsupported and
+protected-write behavior, and fold variance; explicit provenance/authoring
+concentration; the eight frozen focus-intent confusion and lexical-overlap
+boundaries; and raw-row, unique-group, exact-text, and normalized-text
+evidence-independence proxies. Missing provenance fields are emitted as
+`available=false` with `reason="metadata_not_present"`; provenance is never
+inferred from utterance wording or native labels.
+
+This step does not train or fit a model, call classifier prediction, generate
+embeddings or examples, perform model selection or evaluation, tune thresholds,
+change labels or taxonomy, implement remediation, or alter runtime behavior.
+Its historical V2-C5 section is aggregate-only and contains no individual
+consumed-holdout record. Observations cite metric paths; hypotheses are marked
+unproven; supported diagnoses require evidence, confidence, and limitations;
+and `causal_claims` remains empty because this observational diagnosis cannot
+establish a root cause. Recommendations use only contract-frozen category IDs
+and describe what a separate experiment must freeze before implementation.
+
+The architecture choice is deterministic analysis of already-frozen
+development and OOF evidence. It is reproducible, inexpensive, reversible, and
+measures the corpus before remediation. Immediate synthetic-data generation,
+class rebalancing, representation/classifier changes, classifier tuning, and
+inspection of consumed final examples were rejected for this step because they
+would intervene before diagnosis, provide weak evidence, or create leakage
+risk. Development statistics cannot fully characterize final-distribution
+shift, lexical/group associations do not prove causality, and absent provenance
+can limit authoring-family findings.
+
+No diagnosis result is claimed until the user runs `--run` and validates it
+locally. Step 29C is the separately governed remediation-design phase based on
+measured Step 29B evidence. A future V2-C6 final evaluation must first freeze a
+new evaluation contract and a fresh independently authored holdout; no consumed
+V2-C5 final example may be reused. Runtime integration remains blocked until a
+future candidate passes predeclared safety gates.
+
 ## Reproduce V2-C1
 
 ```bash

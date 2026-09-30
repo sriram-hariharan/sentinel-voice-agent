@@ -4346,6 +4346,55 @@ candidate passes its predeclared safety gates. The frozen status is
 `runtime_behavior_changed=false`; the next required step is
 `v2c6_generalization_diagnosis`.
 
+### V2-C6 Step 29B deterministic generalization diagnosis
+
+Step 29B adds `scripts/run_v2c6_generalization_diagnosis.py`, a
+standard-library-only, deterministic statistical diagnosis over the frozen
+8,198-record development corpus, its frozen group/fold artifacts, the selected
+candidate's existing OOF aggregates, and frozen taxonomy/risk metadata. The
+only V2-C5 final-evaluation inputs are the aggregate historical values allowed
+by the Step 29A contract. The consumed raw `v2c5_final_holdout.json` remains an
+explicitly guarded, prohibited path.
+
+The runner supports exactly `--preflight`, `--run`, and `--check-results`.
+Preflight validates frozen hashes, lineage, record and intent counts, the
+selected candidate, the completed aggregate final context, and output
+availability without writing. A future local `--run` computes the nine frozen
+diagnostic sections: source composition, group structure, duplicate structure,
+lexical diversity, class imbalance, existing OOF behavior and fold variance,
+explicit provenance concentration, focus-intent boundaries, and
+evidence-independence proxies. `--check-results` deterministically recomputes
+and validates the result/manifest serialization, hashes, lineage, counts,
+governance, and next-step marker without writing.
+
+Step 29B performs no training, fitting, prediction, embeddings, model
+selection, threshold tuning, evaluation, label or taxonomy change, data
+generation, remediation, or runtime change. Missing provenance metadata is
+reported as unavailable rather than inferred from wording. Observations must
+reference computed metrics, hypotheses remain explicitly unproven, supported
+diagnoses require measurable evidence and limitations, and causal claims
+remain empty under this observational design. No diagnosis result or root-cause
+conclusion is claimed until the user generates and validates the artifacts
+locally.
+
+The architecture choice is deterministic statistical diagnosis over already
+frozen development and OOF evidence. It directly measures group dependence,
+imbalance, duplication, lexical diversity, OOF behavior, and intent boundaries
+without leaking the consumed final holdout, and is inexpensive, reproducible,
+and fully reversible. Immediately generating or rebalancing data, changing the
+embedding/classifier family, tuning another classifier, or inspecting consumed
+holdout examples was rejected at this stage because each would act before the
+development corpus is diagnosed, provide weak engineering evidence, or risk
+test-set leakage. The tradeoff is that development-side statistics and
+aggregate final context cannot fully characterize final-distribution shift or
+prove causality, and missing provenance can limit authoring-family conclusions.
+
+Step 29C is a separately governed remediation design based on measured Step
+29B evidence. Any later V2-C6 final evaluation requires a new evaluation
+contract and a fresh independently authored holdout; the consumed V2-C5
+holdout cannot be reused. Runtime integration stays blocked until a future
+candidate passes its predeclared safety gates.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

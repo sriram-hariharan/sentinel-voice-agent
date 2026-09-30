@@ -1,15 +1,26 @@
 {
-  "evaluation_attempt_count": 1,
-  "failure": null,
+  "all_mandatory_safety_gates_pass": false,
+  "evaluation_completed": true,
   "final_holdout_accessed": true,
   "final_holdout_evaluated": true,
   "final_holdout_inference_performed": true,
-  "phase": "V2-C5 Step 23B/C",
+  "final_model_acceptance_claimed": false,
+  "model_retraining_performed": false,
+  "phase": "V2-C5 Step 23C",
+  "prediction_count": 640,
+  "prediction_sequence_sha256": "6741ef89da7b0bf2ced671d14e26bc303a1eda9d0f66ddd759fa3a7ed51fd153",
   "results": {
-    "results_manifest_sha256": "de23cb584c069e94f26f07659bbcb6db99c0763cfb561c321eb0d3a5b2fd689c",
-    "results_sha256": "e3104ce8c7893dc111989f804fd05a82dc63cf2e3a22483374962f87337aa4b4"
+    "path": "data/evals/v2/ml/v2c5_final_evaluation_results.json",
+    "schema_version": "v2c5-final-evaluation-results.v1",
+    "sha256": "e3104ce8c7893dc111989f804fd05a82dc63cf2e3a22483374962f87337aa4b4"
   },
-  "schema_version": "v2c5-final-evaluation-state.v1",
+  "runner": {
+    "path": "scripts/run_v2c5_final_evaluation.py",
+    "sha256": "abcc53eab08e8621db17e6b99e35a0d64f4e924bc881f039ae48a722d7573ac8"
+  },
+  "runtime_behavior_changed": false,
+  "runtime_eligible": false,
+  "schema_version": "v2c5-final-evaluation-results-manifest.v1",
   "source_lineage": {
     "classifier_artifact_sha256": "c2c5ef7db1b0a0cfa8328da300f39669808f36ef6386c1f440c3e49f7c4fe6f7",
     "declared_final_holdout_dataset_sha256": "bffe60f05c596fda0ec7e3b731b4de00d16729b5a11765861a0d49065c2bf71d",
@@ -22,5 +33,5 @@
     "selected_model_manifest_sha256": "c72c9ecd80b3d0cdac6789a843ed96d1a0df7c8c0ddf64c82d521fc3a03520c7",
     "taxonomy_sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
   },
-  "state": "completed"
+  "threshold_tuning_performed": false
 }

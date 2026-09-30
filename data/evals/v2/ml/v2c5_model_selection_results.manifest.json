@@ -1,0 +1,65 @@
+{
+  "candidate_count": 27,
+  "completed_candidate_count": 27,
+  "contract": {
+    "path": "data/evals/v2/ml/v2c5_model_selection_contract.json",
+    "sha256": "25cc90a5e8607a65158e43c45ea52636ade5d145182279952b35047b4077a918"
+  },
+  "development_record_count": 8198,
+  "embeddings_generated_for_development_only": true,
+  "final_holdout_accessed": false,
+  "final_holdout_evaluated": false,
+  "final_holdout_inference_performed": false,
+  "final_model_acceptance_claimed": false,
+  "fold_artifact": {
+    "assignment_sha256": "3e465864cbd0b0bf96dce12081f9acfe69e8ffad55e83dafe7be838066668681",
+    "path": "data/evals/v2/ml/v2c5_model_selection_folds.json",
+    "sha256": "419e705289dc9da0f65891644db2e777c9d82d4a941e7007c49b829a508dd7eb"
+  },
+  "model_selection_success": true,
+  "phase": "V2-C5 Step 22B1",
+  "results": {
+    "path": "data/evals/v2/ml/v2c5_model_selection_results.json",
+    "schema_version": "v2c5-model-selection-results.v1",
+    "sha256": "12686ff407c06e83e27d98f9b7a566f6fe0368c9c2828a5f9b54e9aed7e35ab4"
+  },
+  "runner": {
+    "path": "scripts/run_v2c5_model_selection.py",
+    "sha256": "916b1ef6afc9d991b590bce8e21f601c8c32449e296e3ef8f4b83061ddaf0dd5"
+  },
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c5-model-selection-results-manifest.v1",
+  "selected_candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+  "source_artifacts": {
+    "expanded_development_dataset": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "expanded_development_manifest": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+    },
+    "final_holdout_contract": {
+      "path": "data/evals/v2/ml/v2c5_final_holdout_contract.json",
+      "sha256": "ed3b65870304bd9d4d89f80bd720021d9c46908264506a29ca3a37b876803791"
+    },
+    "final_holdout_manifest": {
+      "path": "data/evals/v2/ml/v2c5_final_holdout.manifest.json",
+      "sha256": "4bf4839cb5da0073b98ac4811de2e84432b4d4d99e61dc5dd1d7798e014d343e"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "source_development_dataset": {
+    "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+    "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+  },
+  "step23_permitted": true,
+  "threshold_tuning_performed": false
+}

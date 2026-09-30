@@ -780,6 +780,69 @@ dataset is built, and a new independently authored final holdout is authored
 and frozen. Existing final/test data, CFPB, V2-C3 challenge/lockbox sources, and
 the V2-C4 holdout remain prohibited.
 
+## V2-C5 Step 21B expanded development dataset
+
+Step 21B converts the historical occurrence-level V2-C3 development population
+to the frozen 16-intent V2-C5 taxonomy without model-generated labels. Its
+hash-pinned inputs are exactly:
+
+- `v2c3_development_dataset.json`
+- `v2c5_discovery_corpus.json` and its manifest
+- `v2c5_intent_discovery_assignments.json`, report, and manifest
+- `v2c5_taxonomy_freeze.json` and its manifest
+- `v2c5_split_relabel_adjudication.json` and its manifest
+
+The builder retains the original 8,198 development occurrences, example IDs,
+text, grouping, source provenance, mapping metadata, and ordering. The 1,825
+historically supported records keep their intents. Each of the 6,373 historical
+`unsupported_or_uncertain` occurrences rejoins the Step 17 corpus through the
+frozen normalization contract and resolves to one of 6,372 discovery IDs. It
+then consumes only `primary_canonical_cluster_id` from the Step 18 primary
+assignment. Sensitivity assignments are diagnostic only. Primary noise remains
+unsupported; other clusters consume Step 20 frozen resolutions, and all 975
+split-cluster discovery texts consume the completed Step 21A evidence.
+
+Step 17 deduplicated one normalized-text occurrence only to prevent duplicate
+vectors from affecting HDBSCAN density. That deduplication is not a supervised
+sampling decision. Step 21B preserves both original occurrences and gives them
+the same discovery-level relabel result, retaining the historical development
+distribution rather than silently training on only 6,372 texts.
+
+The standard-library-only commands are:
+
+```bash
+sentinelvoice_env/bin/python \
+  scripts/build_v2c5_expanded_development_dataset.py --check
+sentinelvoice_env/bin/python \
+  scripts/build_v2c5_expanded_development_dataset.py --write
+```
+
+`--check` validates all frozen hashes and bindings, occurrence coverage,
+primary-only joins, every Step 20 cluster resolution, Step 21A split coverage,
+the exact frozen label and risk spaces, source exclusions, duplicate retention,
+and deterministic output bytes when outputs exist. It writes nothing. `--write`
+runs the same validation and creates
+`v2c5_expanded_development_dataset.json` and its manifest. The manifest derives
+final class and risk counts from the build; no final per-intent distribution is
+preselected. Relabel provenance fields are metadata, while `text` remains the
+only future classifier input.
+
+The chosen architecture is deterministic occurrence-level relabel
+reconstruction from frozen discovery and human-adjudication evidence. Manual
+review of all 8,198 records is unnecessary and error-prone; native source labels
+are not SentinelVoice taxonomy truth; model pseudo-labeling would create
+circular supervision; and using only the deduplicated discovery corpus would
+change the historical occurrence distribution. The tradeoffs are deterministic
+propagation of any frozen discovery/adjudication mistake and additional
+provenance metadata. Reversibility is high because this is a separate versioned
+development artifact with no runtime effect.
+
+Step 21B consumes no final, test, challenge, external lockbox, CFPB,
+selection-probe, or V2-C4 holdout data. It trains and evaluates no model and
+changes no runtime behavior. Step 21 remains incomplete until a new,
+independently authored V2-C5 final holdout is frozen, and Step 22 training or
+model selection must not begin before that holdout exists.
+
 ## Reproduce V2-C1
 
 ```bash

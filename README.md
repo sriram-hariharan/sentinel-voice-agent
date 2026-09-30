@@ -3966,6 +3966,48 @@ supervised development dataset is built, and a new independently authored final
 holdout is frozen. No existing final, test, CFPB, challenge, lockbox, or V2-C4
 holdout data participates in Step 21A.
 
+### V2-C5 Step 21B expanded development dataset
+
+Step 21B deterministically reconstructs the historical 8,198-record V2-C3
+development population under the frozen 16-intent V2-C5 taxonomy. It consumes
+only the hash-pinned V2-C3 development dataset, Step 17 discovery corpus and
+manifest, Step 18 primary assignments plus report and manifest, Step 20
+taxonomy freeze and manifest, and completed Step 21A split adjudication and
+manifest. Native external labels remain provenance only, and sensitivity
+assignments cannot influence a target.
+
+The 1,825 historically supported occurrences retain their existing intents.
+Each of the 6,373 historically unsupported occurrences rejoins its Step 17
+discovery record by the frozen normalized-text hash, then uses only the Step 18
+primary assignment. Primary noise remains `unsupported_or_uncertain`;
+non-noise clusters consume the Step 20 resolution, with split clusters resolved
+by Step 21A. Step 17's 6,372-record population was deduplicated only to prevent
+duplicate density vectors during clustering. Step 21B restores the original
+occurrence distribution, including both occurrences of the one normalized
+duplicate, for supervised development data.
+
+The standard-library-only builder is
+`scripts/build_v2c5_expanded_development_dataset.py`. `--check` validates the
+full frozen derivation and writes nothing; if generated outputs exist, it also
+checks them byte-for-byte. `--write` creates the deterministic tracked dataset
+and manifest. Final per-intent counts are derived from the frozen evidence, not
+selected in advance. Relabel provenance is audit metadata and only utterance
+text is a future classifier input.
+
+This occurrence-level reconstruction avoids unnecessary manual relabeling,
+native-label inference, circular model pseudo-labeling, and the distribution
+shift that would result from training only on 6,372 deduplicated texts. The
+tradeoff is that frozen clustering or adjudication mistakes propagate
+deterministically and require additional provenance metadata. The result is
+highly reversible because it is a separate development artifact and changes no
+runtime behavior or historical experiment.
+
+Step 21 remains incomplete after Step 21B until a new, independently authored
+V2-C5 final holdout is frozen. Step 22 training and model selection must not
+begin before that holdout exists. Step 21B accesses no final, test, challenge,
+lockbox, CFPB, selection-probe, or V2-C4 holdout data and performs no model
+training, evaluation, or runtime change.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

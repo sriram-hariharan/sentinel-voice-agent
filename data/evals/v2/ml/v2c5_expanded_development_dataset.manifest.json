@@ -1,0 +1,163 @@
+{
+  "builder": {
+    "path": "scripts/build_v2c5_expanded_development_dataset.py",
+    "sha256": "c44553540e1d4a6926f488d64a7e66f15c6348aa811309a8cfa3c10211e322ac",
+    "version": "v2c5-expanded-development-dataset-builder.v1"
+  },
+  "counts": {
+    "final_intent_counts": {
+      "account_balance": 153,
+      "account_blocked": 52,
+      "cancel_transfer": 91,
+      "card_status": 57,
+      "close_account": 51,
+      "create_dispute": 57,
+      "escalation": 57,
+      "freeze_card": 57,
+      "informational_policy": 1745,
+      "lost_or_stolen_phone": 53,
+      "passcode_recovery": 69,
+      "recent_transactions": 153,
+      "transaction_details": 606,
+      "transfer_failed_or_declined": 173,
+      "transfer_pending": 55,
+      "unsupported_or_uncertain": 4769
+    },
+    "historical_supported_occurrences": 1825,
+    "historical_unsupported_occurrences": 6373,
+    "output_occurrences": 8198,
+    "relabel_source_counts": {
+      "FROZEN_CLUSTER_RESOLUTION": 2119,
+      "PRIMARY_NOISE": 3278,
+      "RETAINED_EXISTING_INTENT": 1825,
+      "SPLIT_ADJUDICATION": 976
+    },
+    "risk_counts": {
+      "ESCALATION_OR_UNCERTAIN": 4948,
+      "PRIVATE_READ": 1249,
+      "PROTECTED_WRITE": 256,
+      "PUBLIC": 1745
+    },
+    "split_discovery_texts": 975,
+    "unique_unsupported_discovery_texts": 6372
+  },
+  "dataset": {
+    "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+    "schema_version": "v2c5-expanded-development-dataset.v1",
+    "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07",
+    "version": "v2c5-expanded-development.v1"
+  },
+  "exclusion_and_integrity_checks": {
+    "banking77_test_records": 0,
+    "cfpb_records": 0,
+    "classifier_scores_used_as_target_evidence": false,
+    "clinc_test_records": 0,
+    "consumed_challenge_or_final_evaluation_records": 0,
+    "consumed_v2c3_external_lockbox_records": 0,
+    "duplicate_occurrence_difference": 1,
+    "embedding_similarity_used_as_target_evidence": false,
+    "every_original_example_preserved_exactly_once": true,
+    "final_or_test_role_records": 0,
+    "llm_outputs_used_as_target_evidence": false,
+    "model_predictions_used_as_target_evidence": false,
+    "native_external_labels_used_as_target_evidence": false,
+    "sealed_or_holdout_data_accessed": false,
+    "sensitivity_assignments_used_as_target_evidence": false
+  },
+  "execution_status": {
+    "classifier_evaluation_performed": false,
+    "classifier_training_performed": false,
+    "expanded_development_dataset_built": true,
+    "fresh_holdout_created": false,
+    "runtime_behavior_changed": false,
+    "step21_complete": false,
+    "step22_permitted": false
+  },
+  "next_required": "new_independently_authored_v2c5_final_holdout",
+  "phase": "V2-C5 Step 21B",
+  "protected_write_intents": [
+    "cancel_transfer",
+    "close_account",
+    "create_dispute",
+    "freeze_card"
+  ],
+  "risk_by_intent": {
+    "account_balance": "PRIVATE_READ",
+    "account_blocked": "PRIVATE_READ",
+    "cancel_transfer": "PROTECTED_WRITE",
+    "card_status": "PRIVATE_READ",
+    "close_account": "PROTECTED_WRITE",
+    "create_dispute": "PROTECTED_WRITE",
+    "escalation": "ESCALATION_OR_UNCERTAIN",
+    "freeze_card": "PROTECTED_WRITE",
+    "informational_policy": "PUBLIC",
+    "lost_or_stolen_phone": "ESCALATION_OR_UNCERTAIN",
+    "passcode_recovery": "ESCALATION_OR_UNCERTAIN",
+    "recent_transactions": "PRIVATE_READ",
+    "transaction_details": "PRIVATE_READ",
+    "transfer_failed_or_declined": "PRIVATE_READ",
+    "transfer_pending": "PRIVATE_READ",
+    "unsupported_or_uncertain": "ESCALATION_OR_UNCERTAIN"
+  },
+  "schema_version": "v2c5-expanded-development-dataset-manifest.v1",
+  "source_artifacts": {
+    "development_dataset": {
+      "path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca"
+    },
+    "discovery_assignments": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_assignments.json",
+      "sha256": "aa91a38a3dde57747a8694c404ef00105dcdb0e4233c995749edc1d129596ac0"
+    },
+    "discovery_corpus": {
+      "path": "data/evals/v2/ml/v2c5_discovery_corpus.json",
+      "sha256": "0a873fe5797fdd93689e7d5054b029cd7b9068017b0ecff54af000641e282e01"
+    },
+    "discovery_corpus_manifest": {
+      "path": "data/evals/v2/ml/v2c5_discovery_corpus.manifest.json",
+      "sha256": "8917c6b27b59c672286672ea3ad915b0195d9ef937605662a01e4209bca4162d"
+    },
+    "discovery_manifest": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery.manifest.json",
+      "sha256": "a0ea3f8353c12b341fbb4142b67dff507c227d94a55c73993f9fca9645162fb9"
+    },
+    "discovery_report": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_report.json",
+      "sha256": "ca007ab1ade5e07e377022a5add49c641b209ae2812c3d4217734c0aeaa7c3c1"
+    },
+    "split_adjudication": {
+      "path": "data/evals/v2/ml/v2c5_split_relabel_adjudication.json",
+      "sha256": "4ddf3df61e371de0be82affa4bcd15272ac598cf432d85ce876a6b9a18e1ee65"
+    },
+    "split_adjudication_manifest": {
+      "path": "data/evals/v2/ml/v2c5_split_relabel_adjudication.manifest.json",
+      "sha256": "3d92dbea5a3a7751e45ab8c8698528a4d0da446310afd05814810373700ade44"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "taxonomy_intent_labels": [
+    "account_balance",
+    "account_blocked",
+    "cancel_transfer",
+    "card_status",
+    "close_account",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "lost_or_stolen_phone",
+    "passcode_recovery",
+    "recent_transactions",
+    "transaction_details",
+    "transfer_failed_or_declined",
+    "transfer_pending",
+    "unsupported_or_uncertain"
+  ]
+}

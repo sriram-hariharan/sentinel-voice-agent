@@ -1213,15 +1213,73 @@ holdout observation is not reversible. This durable one-way state is necessary
 because routing predictions may affect protected banking actions and the final
 safety evidence must be auditable rather than silently repeatable.
 
-After implementation validation, prepare the frozen Step 23B state locally:
+Before Step 23C, the frozen Step 23B state was prepared with:
 
 ```bash
 sentinelvoice_env/bin/python scripts/run_v2c5_final_evaluation.py --preflight
 sentinelvoice_env/bin/python scripts/run_v2c5_final_evaluation.py --initialize-state
 ```
 
-Do not run `--evaluate` until the separately authorized Step 23C once-only
-evaluation. `--check-results` becomes applicable only after that evaluation.
+That initialization workflow is now historical: the state is `completed`, the
+once-only Step 23C evaluation has consumed the holdout, and neither state
+initialization nor evaluation may be repeated as a clean V2-C5 run.
+
+## V2-C5 Step 23C final evaluation and closeout
+
+The once-only V2-C5 final evaluation completed successfully as an evaluation
+procedure; its safety outcome was a failure. The frozen candidate was
+`BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none`. The final holdout contained
+640 records, balanced at exactly 40 records for each of the 16 intents.
+
+Final metrics:
+
+| Metric | Value |
+| --- | ---: |
+| Accuracy | `0.5125` |
+| Balanced accuracy | `0.5125` |
+| Macro-F1 | `0.5632279946795209` |
+| Historical-nine-label macro-F1 | `0.6945055116269591` |
+| New-seven-intent macro-F1 | `0.45253940739110227` |
+
+Mandatory safety gates:
+
+| Gate | Observed | Frozen threshold | Result |
+| --- | ---: | ---: | --- |
+| Protected-write false-positive rate | `0.014583333333333334` | `<= 0.01` | **FAILED** |
+| Exact protected-write recall | `0.4` | `>= 0.80` | **FAILED** |
+| `unsupported_or_uncertain` recall | `0.85` | `>= 0.80` | **PASSED** |
+
+The final governance outcome is:
+
+- `all_mandatory_safety_gates_pass=false`;
+- `final_model_acceptance_claimed=false`;
+- `runtime_eligible=false`;
+- `runtime_behavior_changed=false`.
+
+V2-C5 final evaluation is complete, but the classifier is rejected for runtime
+integration. Step 24 runtime integration is blocked for this candidate, and
+the failed thresholds must not be weakened. The final-evaluation state is
+`completed`, so the holdout is consumed and **MUST NOT** be reused as a clean
+final holdout. The evaluation must not be rerun and represented as a clean
+V2-C5 result.
+
+Development-only OOF macro-F1 was approximately `0.8850`, compared with final
+macro-F1 of approximately `0.5632`. This is a substantial
+development-to-final generalization gap. Evidence-supported observations are
+particularly weak final performance for several expanded and protected
+intents, together with heavy over-selection of `unsupported_or_uncertain` on
+the final evaluation. These observations do not establish an exact root
+cause. Further diagnosis must use development-side evidence or newly collected
+diagnostic data and must not tune against examples from this consumed holdout.
+
+The next phase is **V2-C6 remediation / generalization diagnosis**. V2-C6 must:
+
+- not reuse the consumed V2-C5 holdout as its new final test;
+- not tune directly against the consumed holdout examples;
+- freeze a new evaluation contract and create a fresh, independently authored
+  final holdout before final V2-C6 evaluation; and
+- keep runtime integration blocked until a future candidate passes its
+  predeclared safety gates.
 
 ## Reproduce V2-C1
 

@@ -4257,6 +4257,52 @@ refuse reruns. There is no force, reset, or retry option. Tests use only
 synthetic holdouts, fake embeddings, and synthetic classifier behavior, so
 Step 23B performs no real holdout access, embeddings, inference, or evaluation.
 
+### V2-C5 Step 23C final evaluation and closeout
+
+The once-only V2-C5 final evaluation is complete. The evaluated candidate was
+`BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none`, and the independently
+authored final holdout contained 640 records with exactly 40 records per
+intent. The observed final metrics were:
+
+| Metric | Value |
+| --- | ---: |
+| Accuracy | `0.5125` |
+| Balanced accuracy | `0.5125` |
+| Macro-F1 | `0.5632279946795209` |
+| Historical-nine-label macro-F1 | `0.6945055116269591` |
+| New-seven-intent macro-F1 | `0.45253940739110227` |
+
+The mandatory safety-gate results were:
+
+| Gate | Observed | Frozen threshold | Result |
+| --- | ---: | ---: | --- |
+| Protected-write false-positive rate | `0.014583333333333334` | `<= 0.01` | **FAILED** |
+| Exact protected-write recall | `0.4` | `>= 0.80` | **FAILED** |
+| `unsupported_or_uncertain` recall | `0.85` | `>= 0.80` | **PASSED** |
+
+Accordingly, `all_mandatory_safety_gates_pass=false`,
+`final_model_acceptance_claimed=false`, `runtime_eligible=false`, and
+`runtime_behavior_changed=false`. The V2-C5 classifier is rejected for runtime
+integration, and Step 24 runtime integration is blocked for this candidate.
+The frozen thresholds must not be weakened.
+
+The completed evaluation consumed this holdout. It **MUST NOT** be reused as a
+clean final holdout, and the evaluation must not be rerun and presented as a
+clean V2-C5 result. Development OOF macro-F1 was approximately `0.8850`, versus
+final macro-F1 of approximately `0.5632`, demonstrating a substantial
+development-to-final generalization gap. Evidence-supported observations are
+particularly weak final performance for several expanded and protected
+intents, and heavy over-selection of `unsupported_or_uncertain`. These results
+do not establish an exact root cause. Further diagnosis must use
+development-side evidence or new diagnostic data, not tuning against the
+consumed holdout.
+
+The next phase is V2-C6 remediation and generalization diagnosis. V2-C6 must
+not reuse this holdout as its final test or tune directly against its examples.
+Before any final V2-C6 evaluation, it must freeze a new evaluation contract and
+a fresh independently authored final holdout. Runtime integration remains
+blocked until a future candidate passes its predeclared safety gates.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

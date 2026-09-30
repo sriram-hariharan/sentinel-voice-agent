@@ -4084,13 +4084,61 @@ prohibited path rather than an overlap input. Exact hashing cannot detect every
 semantic near-paraphrase, the synthetic balanced distribution does not estimate
 production prevalence, and 40 examples per intent provide finite resolution.
 
-Step 21 becomes complete only after a successful final-holdout write and
-subsequent check. Step 22 may then compare and tune models using development
-data only; it may not inspect holdout texts, run holdout inference, use holdout
-labels or errors, select thresholds from it, or use it for augmentation. Step
-23 owns the once-only final evaluation after the model-selection methodology,
-candidate, evaluation implementation, acceptance metrics, and safety gates are
-frozen.
+The final holdout and manifest are now frozen and deterministically checked, so
+Step 21 is complete and Step 22 is permitted. Step 22 may compare and tune
+models using development data only; it may not inspect holdout texts, run
+holdout inference, use holdout labels or errors, select thresholds from it, or
+use it for augmentation. Step 23 owns the once-only final evaluation after the
+model-selection methodology, candidate, evaluation implementation, acceptance
+metrics, and safety gates are frozen.
+
+### V2-C5 Step 22A development-only model-selection contract
+
+Step 22A freezes the expanded-taxonomy experiment before any model work. The
+configuration-only contract at
+`data/evals/v2/ml/v2c5_model_selection_contract.json` hash-pins the Step 20
+taxonomy, the 8,198-example Step 21B expanded development dataset, and their
+manifests. It also pins the Step 21C holdout contract and reads only the sealed
+holdout manifest to confirm that the holdout is frozen, unevaluated, and permits
+Step 22. The sealed 640-example holdout dataset is not opened, inspected,
+embedded, or used for inference.
+
+The bounded matrix contains exactly 27 configurations across five families:
+word TF-IDF plus LinearSVC, character TF-IDF plus LinearSVC, their exact
+FeatureUnion plus LinearSVC, BGE-small passage embeddings plus LinearSVC, and
+BGE-small plus balanced LogisticRegression. LinearSVC varies `C` over `0.25`,
+`1.0`, and `4.0` with both unweighted and balanced class weights; logistic
+regression uses the same `C` values with balanced class weights. The historical
+V2-C3 BGE-small, balanced LinearSVC at `C=4.0` is therefore present exactly
+once, but it receives no incumbent preference.
+
+Only the frozen V2-C5 development dataset may participate. No new selection
+probe is created, and CFPB, external test splits, consumed V2-C3 challenge or
+lockbox evidence, every V2-C4 development/final artifact, and the V2-C5 final
+holdout remain prohibited. Future execution must use five-fold shuffled
+`StratifiedGroupKFold` with seed `20260930`, grouping exclusively by frozen
+`group_id`. Fold assignments must be frozen before candidate scoring, every
+record must appear in exactly one validation fold, and non-group-aware fallback
+is forbidden.
+
+Selection first requires pooled out-of-fold protected-write false-positive
+rate at most `0.01`, exact protected-write recall at least `0.80`, and
+`unsupported_or_uncertain` recall at least `0.80`. Among gate-passing
+candidates, ordering is mean fold macro-F1, worst-fold macro-F1, protected-write
+false-positive rate, unsupported recall, local prediction latency, then lexical
+candidate ID, with an explicit absolute numerical tie tolerance of `1e-12`.
+Threshold tuning is prohibited. If no candidate passes, no candidate is
+selected, gates remain unchanged, the holdout remains sealed, and Step 23 is
+prohibited.
+
+This contract step performs no vectorization, embedding generation, training,
+cross-validation, inference, candidate evaluation, or model selection. The
+architecture deliberately compares bounded lexical and semantic linear
+baselines rather than assuming the V2-C3 winner transfers to the expanded
+taxonomy. The tradeoff is a deliberately narrow search that may miss a global
+optimum, while remaining inexpensive, auditable, and reversible before final
+evaluation. The next required step is development-only execution of the frozen
+matrix.
 
 ### Why this extension is useful
 

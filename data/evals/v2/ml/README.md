@@ -948,13 +948,79 @@ balanced synthetic distribution is not production prevalence, and 40 examples
 per class give finite resolution. The design remains reversible before the
 once-only final evaluation.
 
-Step 21 becomes complete only after `--write` succeeds and `--check` validates
-the frozen outputs. Step 22 may then use only Step 21B development evidence for
-model comparison and tuning; it cannot inspect or evaluate the final holdout,
-use its labels or errors, alter model choices or thresholds from it, or use it
-as augmentation. Step 23 owns the single final evaluation after the selected
-candidate, evaluation implementation, acceptance metrics, and safety gates are
-frozen.
+The final holdout and manifest are now frozen and deterministically checked.
+Step 21 is complete, and the manifest permits Step 22. Step 22 may use only Step
+21B development evidence for model comparison and tuning; it cannot inspect or
+evaluate the final holdout, use its labels or errors, alter model choices or
+thresholds from it, or use it as augmentation. Step 23 owns the single final
+evaluation after the selected candidate, evaluation implementation, acceptance
+metrics, and safety gates are frozen.
+
+## V2-C5 Step 22A development-only model-selection contract
+
+The configuration-only `v2c5_model_selection_contract.json` freezes the V2-C5
+experiment before training, embedding generation, vectorization, CV, inference,
+or candidate evaluation. It hash-pins the Step 20 taxonomy and manifest, the
+Step 21B expanded development dataset and manifest, the Step 21C1 holdout
+contract, and the Step 21C2 final-holdout manifest. Only the holdout manifest is
+read to verify `final_holdout_frozen=true`, `final_holdout_evaluated=false`, and
+`step22_permitted=true`; `v2c5_final_holdout.json` remains unopened and is not a
+Step 22 input.
+
+The frozen matrix has exactly five families and 27 configurations:
+
+- word `(1,2)` TF-IDF with LinearSVC: six configurations;
+- `char_wb` `(3,5)` TF-IDF with LinearSVC: six configurations;
+- the exact word/character FeatureUnion with LinearSVC: six configurations;
+- 384-dimensional L2-normalized FastEmbed passage embeddings from
+  `BAAI/bge-small-en-v1.5` with LinearSVC: six configurations;
+- the same BGE representation with balanced `lbfgs` LogisticRegression: three
+  configurations.
+
+Every LinearSVC family crosses `C=[0.25,1.0,4.0]` with
+`class_weight=[null,"balanced"]`; logistic regression uses the same `C` grid
+with balanced weighting only. The historical V2-C3 BGE-small plus balanced
+LinearSVC at `C=4.0` appears exactly once. The contract excludes tree boosting,
+fine-tuned neural classifiers, LLM classification, extra embedding models,
+threshold tuning, and hierarchical classification from this bounded step.
+
+Only all 8,198 occurrence-level records in
+`v2c5_expanded_development_dataset.json` are eligible. No new model-selection
+probe is created. CFPB, BANKING77 test, CLINC test, consumed V2-C3 challenge and
+external lockbox evidence, V2-C4 probe/augmentation/postmortem/final evidence,
+and the V2-C5 final holdout are prohibited. Future execution must use
+`StratifiedGroupKFold(n_splits=5, shuffle=true, random_state=20260930)` and group
+exclusively by frozen `group_id`. It must freeze fold assignments before any
+candidate scoring, prove each record occurs in exactly one validation fold, and
+fail rather than fall back to non-group-aware CV.
+
+The primary metric is mean fold macro-F1. Required reporting also includes
+pooled OOF macro-F1, accuracy, balanced accuracy, per-intent metrics, the frozen
+16-label confusion matrix, worst-fold macro-F1, separate new-seven and
+historical-nine macro-F1, local fit and prediction timing, and resulting
+artifact size. Selection eligibility requires all three pooled OOF gates:
+
+- protected-write FPR `<= 0.01`, measured among non-protected gold examples
+  predicted as any protected-write intent;
+- exact protected-write recall `>= 0.80`, requiring the predicted protected
+  intent to equal the gold protected intent;
+- `unsupported_or_uncertain` recall `>= 0.80`.
+
+Gate-passing candidates are ordered by highest mean fold macro-F1, highest
+worst-fold macro-F1, lowest protected-write FPR, highest unsupported recall,
+lowest local prediction latency, then lexical candidate ID. Numerical ties use
+an absolute `1e-12` tolerance rather than raw floating-point equality. If no
+candidate passes, no selection is made, gates cannot be weakened, the final
+holdout remains sealed, and Step 23 remains prohibited.
+
+The architecture is a bounded comparison of sparse lexical and existing local
+semantic representations with linear classifiers. It is inexpensive,
+reproducible, interpretable, and suitable for the development-set size, but its
+narrow grid can miss a global optimum, TF-IDF may generalize less semantically,
+BGE costs more CPU, and linear boundaries remain limited. The decision is
+highly reversible because it creates no runtime authority and preserves the
+sealed final evidence. The next required step is
+`run_v2c5_development_model_selection`; no runner is implemented by Step 22A.
 
 ## Reproduce V2-C1
 

@@ -4131,14 +4131,47 @@ Threshold tuning is prohibited. If no candidate passes, no candidate is
 selected, gates remain unchanged, the holdout remains sealed, and Step 23 is
 prohibited.
 
-This contract step performs no vectorization, embedding generation, training,
+This contract step performed no vectorization, embedding generation, training,
 cross-validation, inference, candidate evaluation, or model selection. The
 architecture deliberately compares bounded lexical and semantic linear
 baselines rather than assuming the V2-C3 winner transfers to the expanded
 taxonomy. The tradeoff is a deliberately narrow search that may miss a global
 optimum, while remaining inexpensive, auditable, and reversible before final
-evaluation. The next required step is development-only execution of the frozen
-matrix.
+evaluation.
+
+### V2-C5 Step 22B1 development-only runner
+
+`scripts/run_v2c5_model_selection.py` now implements the frozen experiment,
+but it has not been executed and no empirical result is claimed. `--preflight`
+validates the hash-pinned development, taxonomy, contract, and holdout-manifest
+governance inputs without model work or writes. `--prepare-folds` freezes the
+text-free five-fold `StratifiedGroupKFold` assignment before scoring;
+`--check-folds` validates it without writing. `--run` requires those existing
+folds and evaluates all 27 configurations sequentially, while
+`--check-results` validates the complete text-free result and selection.
+
+Each TF-IDF representation is fitted independently on a fold's training text
+and only then transforms its validation text. The frozen pretrained BGE passage
+representation may be generated once for the 8,198 development records and
+reused from an ignored lineage-checked local cache. Its cache is keyed by the
+contract and dataset hashes, ordered example IDs and text hashes, model name,
+384-dimensional shape, and L2-normalization state. The runner reads the V2-C5
+final-holdout manifest only; it explicitly rejects opening or hashing the
+sealed holdout dataset.
+
+The local workflow is:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --preflight
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --prepare-folds
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --check-folds
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --run
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --check-results
+```
+
+Step 22B1 remains development-only. A gate-passing selected candidate would
+permit the separately governed Step 23 once-only evaluation; it would not by
+itself establish final acceptance or change runtime behavior.
 
 ### Why this extension is useful
 

@@ -1019,8 +1019,55 @@ reproducible, interpretable, and suitable for the development-set size, but its
 narrow grid can miss a global optimum, TF-IDF may generalize less semantically,
 BGE costs more CPU, and linear boundaries remain limited. The decision is
 highly reversible because it creates no runtime authority and preserves the
-sealed final evidence. The next required step is
-`run_v2c5_development_model_selection`; no runner is implemented by Step 22A.
+sealed final evidence.
+
+## V2-C5 Step 22B1 development-only model-selection runner
+
+`scripts/run_v2c5_model_selection.py` implements the Step 22A contract without
+changing it. The runner exists but has not been executed: no fold, embedding,
+candidate-result, selection, or empirical-performance claim is recorded here.
+Its modes are:
+
+- `--preflight`: verify all frozen source hashes, the exact expanded taxonomy
+  and development population, and the final-holdout manifest's frozen,
+  unevaluated, Step-22-permitted status; perform no model work and write
+  nothing;
+- `--prepare-folds`: create deterministic, text-free tracked fold and manifest
+  artifacts using the frozen group-aware five-fold settings, refusing to
+  replace incompatible artifacts;
+- `--check-folds`: reproduce and validate fold bytes, lineage, complete
+  validation assignment, and zero group leakage without writing;
+- `--run`: require the already-frozen folds, build or reuse the ignored local
+  development-only BGE cache, evaluate the complete 27-candidate matrix, and
+  write text-free result and manifest artifacts only after all candidates
+  complete;
+- `--check-results`: validate source/fold lineage, the complete matrix, metric
+  and gate schemas, and the frozen selection rule without fitting or writing.
+
+For every lexical candidate and fold, word, character, or combined TF-IDF is
+fitted only on training-fold text before training and validation transforms are
+made. It is never fitted globally. BGE is a frozen pretrained feature extractor
+and may be computed once over development text; the ignored
+`local/v2c5_model_selection_bge_cache.npz` and its manifest pin the development
+and contract hashes, representation definition, ordered IDs and text hashes,
+row count, 384 dimensions, L2 normalization, and cache bytes. No raw text is
+stored in cache metadata or tracked Step 22 artifacts.
+
+Run locally in this order:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --preflight
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --prepare-folds
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --check-folds
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --run
+sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --check-results
+```
+
+All five modes reject the sealed V2-C5 final-holdout dataset as an input; only
+its frozen manifest may be read for governance. Step 22B1 does not tune
+thresholds, alter runtime behavior, or establish final acceptance. Step 23 is
+permitted only if all 27 candidates complete and the frozen development-only
+selection rule chooses a candidate that passes all three mandatory gates.
 
 ## Reproduce V2-C1
 

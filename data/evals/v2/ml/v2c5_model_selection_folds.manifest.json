@@ -1,0 +1,161 @@
+{
+  "contract": {
+    "path": "data/evals/v2/ml/v2c5_model_selection_contract.json",
+    "sha256": "25cc90a5e8607a65158e43c45ea52636ade5d145182279952b35047b4077a918"
+  },
+  "cross_validation": {
+    "fail_if_group_aware_cv_unavailable": true,
+    "fold_assignment": {
+      "each_record_appears_in_exactly_one_validation_fold": true,
+      "freeze_and_record_before_candidate_scoring": true,
+      "group_must_not_cross_train_and_validation": true
+    },
+    "group_field": "group_id",
+    "label_field": "intent",
+    "method": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "non_group_aware_fallback_allowed": false,
+    "random_state": 20260930,
+    "shuffle": true
+  },
+  "final_holdout_accessed": false,
+  "fold_artifact": {
+    "path": "data/evals/v2/ml/v2c5_model_selection_folds.json",
+    "schema_version": "v2c5-model-selection-folds.v1",
+    "sha256": "419e705289dc9da0f65891644db2e777c9d82d4a941e7007c49b829a508dd7eb"
+  },
+  "fold_summaries": [
+    {
+      "example_count": 1640,
+      "group_count": 1573,
+      "intent_counts": {
+        "account_balance": 30,
+        "account_blocked": 10,
+        "cancel_transfer": 18,
+        "card_status": 11,
+        "close_account": 10,
+        "create_dispute": 11,
+        "escalation": 12,
+        "freeze_card": 12,
+        "informational_policy": 349,
+        "lost_or_stolen_phone": 11,
+        "passcode_recovery": 14,
+        "recent_transactions": 31,
+        "transaction_details": 121,
+        "transfer_failed_or_declined": 35,
+        "transfer_pending": 11,
+        "unsupported_or_uncertain": 954
+      },
+      "validation_fold": 0
+    },
+    {
+      "example_count": 1640,
+      "group_count": 1571,
+      "intent_counts": {
+        "account_balance": 31,
+        "account_blocked": 10,
+        "cancel_transfer": 18,
+        "card_status": 12,
+        "close_account": 10,
+        "create_dispute": 11,
+        "escalation": 11,
+        "freeze_card": 11,
+        "informational_policy": 349,
+        "lost_or_stolen_phone": 11,
+        "passcode_recovery": 14,
+        "recent_transactions": 31,
+        "transaction_details": 121,
+        "transfer_failed_or_declined": 35,
+        "transfer_pending": 11,
+        "unsupported_or_uncertain": 954
+      },
+      "validation_fold": 1
+    },
+    {
+      "example_count": 1640,
+      "group_count": 1572,
+      "intent_counts": {
+        "account_balance": 31,
+        "account_blocked": 10,
+        "cancel_transfer": 18,
+        "card_status": 12,
+        "close_account": 11,
+        "create_dispute": 12,
+        "escalation": 11,
+        "freeze_card": 11,
+        "informational_policy": 349,
+        "lost_or_stolen_phone": 10,
+        "passcode_recovery": 14,
+        "recent_transactions": 30,
+        "transaction_details": 121,
+        "transfer_failed_or_declined": 35,
+        "transfer_pending": 11,
+        "unsupported_or_uncertain": 954
+      },
+      "validation_fold": 2
+    },
+    {
+      "example_count": 1639,
+      "group_count": 1573,
+      "intent_counts": {
+        "account_balance": 30,
+        "account_blocked": 11,
+        "cancel_transfer": 19,
+        "card_status": 11,
+        "close_account": 10,
+        "create_dispute": 12,
+        "escalation": 11,
+        "freeze_card": 11,
+        "informational_policy": 349,
+        "lost_or_stolen_phone": 10,
+        "passcode_recovery": 14,
+        "recent_transactions": 31,
+        "transaction_details": 122,
+        "transfer_failed_or_declined": 34,
+        "transfer_pending": 11,
+        "unsupported_or_uncertain": 953
+      },
+      "validation_fold": 3
+    },
+    {
+      "example_count": 1639,
+      "group_count": 1574,
+      "intent_counts": {
+        "account_balance": 31,
+        "account_blocked": 11,
+        "cancel_transfer": 18,
+        "card_status": 11,
+        "close_account": 10,
+        "create_dispute": 11,
+        "escalation": 12,
+        "freeze_card": 12,
+        "informational_policy": 349,
+        "lost_or_stolen_phone": 11,
+        "passcode_recovery": 13,
+        "recent_transactions": 30,
+        "transaction_details": 121,
+        "transfer_failed_or_declined": 34,
+        "transfer_pending": 11,
+        "unsupported_or_uncertain": 954
+      },
+      "validation_fold": 4
+    }
+  ],
+  "integrity": {
+    "each_record_validation_assignment_count": 1,
+    "group_leakage_count": 0,
+    "raw_text_persisted": false
+  },
+  "phase": "V2-C5 Step 22B1",
+  "record_count": 8198,
+  "runner": {
+    "path": "scripts/run_v2c5_model_selection.py",
+    "sha256": "916b1ef6afc9d991b590bce8e21f601c8c32449e296e3ef8f4b83061ddaf0dd5"
+  },
+  "schema_version": "v2c5-model-selection-folds-manifest.v1",
+  "source_development_dataset": {
+    "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+    "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+  },
+  "unique_group_count": 7863
+}

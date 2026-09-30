@@ -481,7 +481,7 @@ and metadata-derived targets are excluded from taxonomy discovery and training.
 An expanded taxonomy requires a new fresh final holdout, because the V2-C4
 nine-intent holdout is not valid final evidence for a changed label space.
 Additional recognized intents do not automatically imply additional runtime
-tools. This entry is roadmap-only and adds no V2-C5 code or data.
+tools. These constraints continue to govern the implemented discovery steps.
 
 ## V2-C5 Step 16 intent-discovery contract
 
@@ -553,9 +553,27 @@ copied into the primary corpus.
 
 The corpus builder accepts only raw text as the future embedding field. It does
 not generate BGE embeddings, run HDBSCAN or UMAP, inspect clusters, change the
-taxonomy, train a classifier, or alter runtime behavior. Step 18 will separately
-perform the frozen BGE embedding and HDBSCAN protocol after the user generates
-and freezes the Step 17 corpus and manifest.
+taxonomy, train a classifier, or alter runtime behavior. The Step 18 runner
+performs the frozen BGE embedding and HDBSCAN protocol only when the user
+explicitly executes it against the frozen Step 17 corpus and manifest.
+
+## V2-C5 Step 18 unsupervised discovery runner
+
+The frozen Step 17 primary corpus contains 6,372 unique normalized texts. Step
+18 is the actual unsupervised discovery step: its runner generates or verifies
+local BGE-small passage embeddings, L2-normalizes the 384-dimensional vectors,
+and gives HDBSCAN only the original 384-dimensional representation. The primary
+configuration remains minimum cluster size 30 and minimum samples 10. It is one
+member of exactly nine total bounded sensitivity runs and cannot be replaced
+post hoc by a result that appears more attractive.
+
+Seeded UMAP support is optional, non-blocking, and visualization-only; UMAP
+coordinates never become clustering input. Cluster membership, native-label
+concentration, and source concentration are exploratory diagnostics rather than
+semantic truth or selection evidence. No cluster automatically becomes an
+intent. Step 19 performs human semantic adjudication before Step 20 can freeze
+any taxonomy change. The runner and tests do not themselves establish or claim
+clustering results.
 
 ## Reproduce V2-C1
 

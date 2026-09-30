@@ -1,0 +1,186 @@
+{
+  "assignments": {
+    "path": "data/evals/v2/ml/v2c5_intent_discovery_assignments.json",
+    "sha256": "aa91a38a3dde57747a8694c404ef00105dcdb0e4233c995749edc1d129596ac0"
+  },
+  "embedding_cache": {
+    "container_path": "data/evals/v2/ml/local/v2c5_bge_small_en_v1_5_l2.npz",
+    "container_sha256": "6cc4946eff6110a0626f626ec08e7b85b7bf2f81250c456f0ea3d8f978e4af40",
+    "local_generated_artifact": true,
+    "matrix_content_sha256": "345b324bb6b8acb6d5b2471cb6774bde2cc3769a0743ad4c00aa806c97c50e18",
+    "metadata_path": "data/evals/v2/ml/local/v2c5_bge_small_en_v1_5_l2.metadata.json",
+    "metadata_sha256": "d3bf3235c2943eec538b779f14b7db66fa4eb4b6c89c0566bddc66289713aadf",
+    "tracked_by_git": false
+  },
+  "execution_status": {
+    "clustering_performed": true,
+    "embeddings_generated_or_exact_cache_verified": true,
+    "supervised_training_performed": false,
+    "taxonomy_changed": false,
+    "umap_performed": false
+  },
+  "frozen_inputs": {
+    "contract": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_contract.json",
+      "sha256": "acc48bace76a5ae93ff9a1818856e3b2dc0ad3585c80e8ba7a3f582208a71427"
+    },
+    "corpus": {
+      "path": "data/evals/v2/ml/v2c5_discovery_corpus.json",
+      "sha256": "0a873fe5797fdd93689e7d5054b029cd7b9068017b0ecff54af000641e282e01"
+    },
+    "corpus_manifest": {
+      "path": "data/evals/v2/ml/v2c5_discovery_corpus.manifest.json",
+      "sha256": "8917c6b27b59c672286672ea3ad915b0195d9ef937605662a01e4209bca4162d"
+    },
+    "ordered_discovery_id_sha256": "8d1087625ea9429df5c43e4820d88f6a17c7419e5b3a6fa606706b651640ca99",
+    "ordered_normalized_text_sha256": "6b3fd2f4e2ac3806860b6c8de76e514c756579a9d5a22a4552c2dad8c5017953",
+    "record_count": 6372
+  },
+  "governance": {
+    "analysis_role": "unsupervised_taxonomy_discovery_evidence",
+    "classifier_output_role": "advisory_only",
+    "final_acceptance_evidence": false,
+    "human_adjudication_required": true,
+    "new_intents_created": false,
+    "runtime_behavior_changed": false,
+    "supervised_training_performed": false,
+    "taxonomy_changed": false
+  },
+  "hdbscan": {
+    "implementation": "sklearn.cluster.HDBSCAN",
+    "primary_config_id": "mcs30_ms10",
+    "primary_parameters": {
+      "allow_single_cluster": false,
+      "cluster_selection_epsilon": 0.0,
+      "cluster_selection_method": "eom",
+      "metric": "euclidean",
+      "min_cluster_size": 30,
+      "min_samples": 10
+    },
+    "sensitivity_configurations": [
+      {
+        "config_id": "mcs15_ms5",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 15,
+          "min_samples": 5
+        }
+      },
+      {
+        "config_id": "mcs15_ms10",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 15,
+          "min_samples": 10
+        }
+      },
+      {
+        "config_id": "mcs15_ms15",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 15,
+          "min_samples": 15
+        }
+      },
+      {
+        "config_id": "mcs30_ms5",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 30,
+          "min_samples": 5
+        }
+      },
+      {
+        "config_id": "mcs30_ms10",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 30,
+          "min_samples": 10
+        }
+      },
+      {
+        "config_id": "mcs30_ms15",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 30,
+          "min_samples": 15
+        }
+      },
+      {
+        "config_id": "mcs60_ms5",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 60,
+          "min_samples": 5
+        }
+      },
+      {
+        "config_id": "mcs60_ms10",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 60,
+          "min_samples": 10
+        }
+      },
+      {
+        "config_id": "mcs60_ms15",
+        "parameters": {
+          "allow_single_cluster": false,
+          "cluster_selection_epsilon": 0.0,
+          "cluster_selection_method": "eom",
+          "metric": "euclidean",
+          "min_cluster_size": 60,
+          "min_samples": 15
+        }
+      }
+    ],
+    "total_fit_count": 9
+  },
+  "package_versions": {
+    "fastembed": "0.8.1",
+    "numpy": "2.5.3",
+    "onnx_runtime": "1.30.0",
+    "python": "3.14.3",
+    "scikit_learn": "1.9.1"
+  },
+  "report": {
+    "path": "data/evals/v2/ml/v2c5_intent_discovery_report.json",
+    "sha256": "ca007ab1ade5e07e377022a5add49c641b209ae2812c3d4217734c0aeaa7c3c1"
+  },
+  "schema_version": "v2c5-intent-discovery-manifest.v1",
+  "script": {
+    "path": "scripts/run_v2c5_intent_discovery.py",
+    "sha256": "85700b8f54c3bf5c0e00780af8fcd88d9093d6c0a4b2b993a86b3d5acfac5ce3"
+  },
+  "umap": {
+    "artifact": null,
+    "performed": false,
+    "reason": "not_requested",
+    "requested": false,
+    "required_for_primary_results": false
+  }
+}

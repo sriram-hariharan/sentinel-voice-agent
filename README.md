@@ -3799,7 +3799,8 @@ change and require human adjudication. Step 14 was skipped: the final safety
 holdout was never accessed or evaluated because no development candidate passed
 selection. Consequently, no final V2-C4 safety-acceptance or production-readiness
 claim exists. The next phase is V2-C5 intent discovery and taxonomy expansion;
-its implementation has not started.
+Steps 16 and 17 froze its contract and 6,372-record discovery corpus, and Step
+18 provides the still-unexecuted clustering runner.
 
 ### ML roadmap after V2-C4
 
@@ -3858,6 +3859,16 @@ population and never drive primary HDBSCAN density. Building this corpus changes
 no taxonomy or runtime behavior: clustering has not occurred, and Step 18 will
 separately generate frozen BGE embeddings and run the predeclared HDBSCAN
 protocol.
+
+Step 18 implements that actual unsupervised discovery protocol without claiming
+results. It embeds the 6,372 frozen unique texts with BGE-small passage
+embeddings, L2-normalizes the 384-dimensional vectors, and clusters only that
+original space. The primary HDBSCAN configuration remains minimum cluster size
+30 and minimum samples 10. It is one member of exactly nine total sensitivity
+runs and cannot be replaced post hoc. Optional seeded UMAP is non-blocking and
+visualization-only. Cluster, source, and native-label diagnostics are
+exploratory: clusters do not become intents automatically, and Step 19 performs
+human semantic adjudication before any later taxonomy decision.
 
 ### Why this extension is useful
 

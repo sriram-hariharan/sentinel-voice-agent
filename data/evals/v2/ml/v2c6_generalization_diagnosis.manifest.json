@@ -1,0 +1,45 @@
+{
+  "development_record_count": 8198,
+  "diagnosis_completed": true,
+  "governance": {
+    "diagnosis_completed": true,
+    "embeddings_generated": false,
+    "model_inference_performed": false,
+    "model_selection_performed": false,
+    "model_training_performed": false,
+    "raw_v2c5_holdout_accessed": false,
+    "remediation_implemented": false,
+    "runtime_behavior_changed": false,
+    "taxonomy_changed": false,
+    "threshold_tuning_performed": false
+  },
+  "intent_count": 16,
+  "next_required": "v2c6_remediation_design",
+  "output_contains_raw_consumed_holdout_text": false,
+  "phase": "V2-C6 Step 29B",
+  "result": {
+    "path": "data/evals/v2/ml/v2c6_generalization_diagnosis.json",
+    "schema_version": "v2c6-generalization-diagnosis.v1",
+    "sha256": "58177bd3aacf52bbff2268fd834e883457e8241f36e35f5e84943f196f688536"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_generalization_diagnosis.py",
+    "sha256": "ca1579ef7173ff01b2f7cfc147ebcb875e33421e7dd6b26d9db315e9c6a9496b"
+  },
+  "schema_version": "v2c6-generalization-diagnosis-manifest.v1",
+  "selected_candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+  "source_lineage": {
+    "development_dataset_sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07",
+    "development_manifest_sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16",
+    "diagnosis_contract_sha256": "4276c28eff6158ee947ac26466c7b65ac8830718accba8252de606a49b0493a4",
+    "final_evaluation_results_manifest_sha256": "de23cb584c069e94f26f07659bbcb6db99c0763cfb561c321eb0d3a5b2fd689c",
+    "final_evaluation_results_sha256": "e3104ce8c7893dc111989f804fd05a82dc63cf2e3a22483374962f87337aa4b4",
+    "final_evaluation_state_sha256": "3dbd632757724a8ad93bb71b83ee83340c59bff69ae54cce61895b7bc54103ec",
+    "fold_artifact_sha256": "419e705289dc9da0f65891644db2e777c9d82d4a941e7007c49b829a508dd7eb",
+    "fold_manifest_sha256": "8d134759b5b74f499c3394cdbc34ddb1849260afad429eb94af9240f450afc0d",
+    "model_selection_manifest_sha256": "2c9b6b3344a4a7e30a4992ad687605c3708dd95d4ac15ff353fa5dc43504005e",
+    "model_selection_results_sha256": "12686ff407c06e83e27d98f9b7a566f6fe0368c9c2828a5f9b54e9aed7e35ab4",
+    "taxonomy_manifest_sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9",
+    "taxonomy_sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+  }
+}

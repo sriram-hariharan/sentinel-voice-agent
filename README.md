@@ -4052,6 +4052,46 @@ selection, augmentation, taxonomy discovery, and pre-final error analysis.
 Step 23 may evaluate it exactly once only after the candidate, evaluation logic,
 acceptance criteria, and all Step 22 decisions are frozen.
 
+### V2-C5 Step 21C2 independent authoring and deterministic sealing
+
+Step 21C2A completed independent synthetic authoring of an ignored local seed
+containing 640 examples: exactly 40 for each of the 16 frozen intents. The
+authoring session used the Step 21C1 contract and Step 20 taxonomy semantics,
+not development utterances, historical evaluation examples, model outputs, or
+the sealed V2-C4 holdout. The seed preserves human-authored gold labels and
+contains no authoritative risk, prediction, embedding, or similarity fields.
+
+The standard-library-only Step 21C2B builder is
+`scripts/build_v2c5_final_holdout.py`. Its deterministic validation derives
+risk exclusively from the Step 20 taxonomy and rejects raw or normalized
+duplicates, invalid labels or metadata, and exact normalized-text overlap with
+the V2-C5 expanded development dataset, consumed V2-C3 challenge, text-free
+V2-C3 external-lockbox hash manifest, historical development/training evidence
+covered by Step 21B, and any V2-C5 model-selection probe that predates the
+build. The frozen normalization is Unicode NFKC, lowercase, trimmed, and
+whitespace-collapsed. No embedding, semantic similarity, classifier, or model
+output participates in construction.
+
+```bash
+sentinelvoice_env/bin/python scripts/build_v2c5_final_holdout.py --check
+sentinelvoice_env/bin/python scripts/build_v2c5_final_holdout.py --write
+```
+
+`--check` writes nothing and validates existing tracked outputs when present.
+`--write` performs the same checks before creating the 640-record sealed V2-C5
+holdout and manifest. The obsolete V2-C4 holdout remains unopened and is a
+prohibited path rather than an overlap input. Exact hashing cannot detect every
+semantic near-paraphrase, the synthetic balanced distribution does not estimate
+production prevalence, and 40 examples per intent provide finite resolution.
+
+Step 21 becomes complete only after a successful final-holdout write and
+subsequent check. Step 22 may then compare and tune models using development
+data only; it may not inspect holdout texts, run holdout inference, use holdout
+labels or errors, select thresholds from it, or use it for augmentation. Step
+23 owns the once-only final evaluation after the model-selection methodology,
+candidate, evaluation implementation, acceptance metrics, and safety gates are
+frozen.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

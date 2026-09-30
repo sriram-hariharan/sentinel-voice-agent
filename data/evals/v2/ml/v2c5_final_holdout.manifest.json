@@ -1,0 +1,179 @@
+{
+  "builder": {
+    "path": "scripts/build_v2c5_final_holdout.py",
+    "sha256": "f8816132d2d934733342580f334a99bc87fb7b9ebc998dcde7cde534e438af91",
+    "version": "v2c5-final-holdout-builder.v1"
+  },
+  "counts": {
+    "intent_counts": {
+      "account_balance": 40,
+      "account_blocked": 40,
+      "cancel_transfer": 40,
+      "card_status": 40,
+      "close_account": 40,
+      "create_dispute": 40,
+      "escalation": 40,
+      "freeze_card": 40,
+      "informational_policy": 40,
+      "lost_or_stolen_phone": 40,
+      "passcode_recovery": 40,
+      "recent_transactions": 40,
+      "transaction_details": 40,
+      "transfer_failed_or_declined": 40,
+      "transfer_pending": 40,
+      "unsupported_or_uncertain": 40
+    },
+    "internal_exact_duplicate_count": 0,
+    "internal_normalized_duplicate_count": 0,
+    "non_protected_count": 480,
+    "protected_write_positive_count": 160,
+    "risk_counts": {
+      "ESCALATION_OR_UNCERTAIN": 160,
+      "PRIVATE_READ": 280,
+      "PROTECTED_WRITE": 160,
+      "PUBLIC": 40
+    },
+    "total_count": 640
+  },
+  "dataset": {
+    "path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "schema_version": "v2c5-final-holdout.v1",
+    "sha256": "bffe60f05c596fda0ec7e3b731b4de00d16729b5a11765861a0d49065c2bf71d",
+    "version": "v2c5-final-holdout.v1"
+  },
+  "evaluation_governance": {
+    "augmentation_source_eligible": false,
+    "error_analysis_eligible_before_final_evaluation": false,
+    "final_evaluation_step": "V2-C5 Step 23",
+    "model_selection_eligible": false,
+    "single_final_evaluation_only": true,
+    "step22_may_inspect_individual_holdout_examples": false,
+    "step22_may_run_holdout_inference": false,
+    "step22_may_tune_from_holdout": false,
+    "step22_may_use_holdout_errors": false,
+    "taxonomy_discovery_eligible": false,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  },
+  "execution_status": {
+    "classifier_evaluation_performed": false,
+    "classifier_training_performed": false,
+    "final_holdout_contract_frozen": true,
+    "final_holdout_evaluated": false,
+    "final_holdout_examples_created": true,
+    "final_holdout_frozen": true,
+    "model_selection_performed": false,
+    "runtime_behavior_changed": false,
+    "step21_complete": true,
+    "step22_permitted": true
+  },
+  "integrity_and_overlap_checks": {
+    "embeddings_used": false,
+    "model_predictions_used": false,
+    "normalized_overlap_counts": {
+      "all_historical_development_and_training_text_used_in_v2c5": 0,
+      "consumed_v2c3_challenge": 0,
+      "consumed_v2c3_external_lockbox": 0,
+      "preexisting_v2c5_model_selection_probe": 0,
+      "v2c5_expanded_development_dataset": 0
+    },
+    "prohibited_source_counts": {
+      "cfpb_records": 0,
+      "sealed_v2c4_final_holdout_records": 0,
+      "v2c4_postmortem_records": 0,
+      "v2c4_selection_probe_records": 0,
+      "v2c4_training_augmentation_records": 0
+    },
+    "sealed_v2c4_holdout_accessed": false,
+    "semantic_similarity_used": false,
+    "vector_similarity_used": false
+  },
+  "next_required": "v2c5_expanded_taxonomy_model_selection",
+  "phase": "V2-C5 Step 21C2B",
+  "protected_write_intents": [
+    "cancel_transfer",
+    "close_account",
+    "create_dispute",
+    "freeze_card"
+  ],
+  "risk_by_intent": {
+    "account_balance": "PRIVATE_READ",
+    "account_blocked": "PRIVATE_READ",
+    "cancel_transfer": "PROTECTED_WRITE",
+    "card_status": "PRIVATE_READ",
+    "close_account": "PROTECTED_WRITE",
+    "create_dispute": "PROTECTED_WRITE",
+    "escalation": "ESCALATION_OR_UNCERTAIN",
+    "freeze_card": "PROTECTED_WRITE",
+    "informational_policy": "PUBLIC",
+    "lost_or_stolen_phone": "ESCALATION_OR_UNCERTAIN",
+    "passcode_recovery": "ESCALATION_OR_UNCERTAIN",
+    "recent_transactions": "PRIVATE_READ",
+    "transaction_details": "PRIVATE_READ",
+    "transfer_failed_or_declined": "PRIVATE_READ",
+    "transfer_pending": "PRIVATE_READ",
+    "unsupported_or_uncertain": "ESCALATION_OR_UNCERTAIN"
+  },
+  "schema_version": "v2c5-final-holdout-manifest.v1",
+  "seed": {
+    "path": "data/evals/v2/ml/local/v2c5_final_holdout_seed.json",
+    "schema_version": "v2c5-final-holdout-seed.v1",
+    "sha256": "7c2cd7b366ce3f89c60cbda3059b2d39301ece0e8592d261085674837564bc3a"
+  },
+  "source_artifacts": {
+    "challenge": {
+      "path": "data/evals/v2/ml/v2c3_challenge_set.json",
+      "sha256": "4493b9baa8363408c917fe29de069dec82f925c8c3a605878a08eba06b051e5c"
+    },
+    "challenge_manifest": {
+      "path": "data/evals/v2/ml/v2c3_challenge_set.manifest.json",
+      "sha256": "51389b7e693156433edd6e7f0c2fe5b2c3a1ab0f34a261b47de7a7cda6e48b38"
+    },
+    "contract": {
+      "path": "data/evals/v2/ml/v2c5_final_holdout_contract.json",
+      "sha256": "ed3b65870304bd9d4d89f80bd720021d9c46908264506a29ca3a37b876803791"
+    },
+    "development": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "development_manifest": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+    },
+    "lockbox_manifest": {
+      "path": "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+      "sha256": "651bbe2ebe61bb5b1e9139c24cacac340973172f5637278c12d50cf596334364"
+    },
+    "preexisting_v2c5_model_selection_probes": {
+      "artifacts": [],
+      "record_count": 0
+    },
+    "taxonomy": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "taxonomy_intent_labels": [
+    "account_balance",
+    "account_blocked",
+    "cancel_transfer",
+    "card_status",
+    "close_account",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "lost_or_stolen_phone",
+    "passcode_recovery",
+    "recent_transactions",
+    "transaction_details",
+    "transfer_failed_or_declined",
+    "transfer_pending",
+    "unsupported_or_uncertain"
+  ]
+}

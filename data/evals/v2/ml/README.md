@@ -898,6 +898,64 @@ selection, augmentation, taxonomy discovery, or pre-final error analysis. It
 may be evaluated once in Step 23 only after the candidate, evaluation logic,
 and acceptance criteria are frozen.
 
+## V2-C5 Step 21C2 independent authoring and deterministic sealing
+
+Step 21C2A independently authored the ignored local seed
+`local/v2c5_final_holdout_seed.json`: 640 synthetic examples with exactly 40
+examples for every frozen intent. Authoring used only the Step 21C1 contract,
+Step 20 taxonomy semantics, and taxonomy manifest. It did not inspect
+development utterances, consumed evaluation examples, external dataset text,
+model behavior, or the sealed V2-C4 final holdout. Gold intents are supplied by
+the human-authored seed; risk is intentionally absent and cannot be inferred
+from model output.
+
+Step 21C2B adds the standard-library-only deterministic builder
+`scripts/build_v2c5_final_holdout.py`:
+
+```bash
+sentinelvoice_env/bin/python scripts/build_v2c5_final_holdout.py --check
+sentinelvoice_env/bin/python scripts/build_v2c5_final_holdout.py --write
+```
+
+The builder hash-pins the Step 21C1 contract, Step 20 taxonomy and manifest,
+Step 21B expanded development data and manifest, consumed V2-C3 challenge and
+manifest, and the text-free consumed V2-C3 external-lockbox manifest. It uses
+the frozen `unicode-nfkc-lower-whitespace.v1` normalization and rejects exact
+normalized overlap with development, historical development/training evidence,
+the consumed challenge, the external lockbox, and any pre-existing V2-C5
+model-selection probe. It also rejects invalid seed structure, non-sequential
+IDs, unknown labels, incomplete qualitative coverage, raw or normalized
+duplicates, seed-supplied risk, and prediction, embedding, vector, or
+similarity metadata. It never performs semantic similarity detection.
+
+`--check` validates all inputs and any existing tracked outputs without writing.
+`--write` performs identical validation before deterministically creating
+`v2c5_final_holdout.json` and `v2c5_final_holdout.manifest.json`. The output is
+balanced at 640 examples, contains 160 protected-write positives and 480
+non-protected examples, derives every risk from Step 20, and is ineligible for
+training, model or threshold selection, augmentation, taxonomy discovery, and
+pre-final error analysis. The sealed V2-C4 holdout remains unopened and is
+explicitly prohibited as an input.
+
+The architecture is independent synthetic authoring followed by deterministic
+exact-overlap validation and sealing. It creates auditable fresh evidence for
+the expanded taxonomy without allowing development or model behavior to shape
+the test set. Semantic filtering, model-assisted relabeling, development
+sampling, V2-C4 reuse, and direct external-test adoption were rejected because
+they introduce model influence, leakage, taxonomy mismatch, or non-SentinelVoice
+gold labels. Exact hashing does not catch every semantic near-paraphrase, the
+balanced synthetic distribution is not production prevalence, and 40 examples
+per class give finite resolution. The design remains reversible before the
+once-only final evaluation.
+
+Step 21 becomes complete only after `--write` succeeds and `--check` validates
+the frozen outputs. Step 22 may then use only Step 21B development evidence for
+model comparison and tuning; it cannot inspect or evaluate the final holdout,
+use its labels or errors, alter model choices or thresholds from it, or use it
+as augmentation. Step 23 owns the single final evaluation after the selected
+candidate, evaluation implementation, acceptance metrics, and safety gates are
+frozen.
+
 ## Reproduce V2-C1
 
 ```bash

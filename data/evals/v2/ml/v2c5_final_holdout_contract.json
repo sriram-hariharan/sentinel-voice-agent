@@ -1,0 +1,327 @@
+{
+  "architecture_decision": {
+    "alternatives_rejected": [
+      {
+        "alternative": "reuse_v2c4_final_holdout",
+        "reason": "The V2-C4 holdout covers only the historical nine-intent taxonomy and is invalid final evidence for the expanded label space."
+      },
+      {
+        "alternative": "sample_step21b_development",
+        "reason": "Sampling development data would leak training examples and their historical distribution into final evidence."
+      },
+      {
+        "alternative": "use_banking77_or_clinc_test",
+        "reason": "External test labels are not SentinelVoice taxonomy truth and do not encode its permission-sensitive semantics."
+      },
+      {
+        "alternative": "mirror_natural_development_imbalance",
+        "reason": "The development distribution would provide weak final evidence for newly discovered low-frequency intents."
+      },
+      {
+        "alternative": "author_after_step22_errors",
+        "reason": "Post-error generation would contaminate final evaluation with model-specific failure knowledge."
+      }
+    ],
+    "chosen": "balanced_independently_authored_synthetic_final_holdout",
+    "problem": "The prior V2-C4 holdout cannot provide valid acceptance evidence for the frozen 16-intent V2-C5 taxonomy.",
+    "reversibility": "High before Step 23 final evaluation; a later evaluation version may use a separately governed holdout without rewriting this experiment.",
+    "tradeoffs": [
+      "Synthetic examples may not perfectly represent production traffic.",
+      "Balanced class prevalence is not production prevalence.",
+      "Forty examples per class provide finite statistical resolution.",
+      "Independent authoring requires careful human review."
+    ],
+    "why_suitable": "A balanced synthetic holdout provides controlled, reproducible, inexpensive final evidence for every frozen intent while emphasizing permission-sensitive semantic boundaries."
+  },
+  "authorship_contract": {
+    "author_may_know": [
+      "frozen_v2c5_taxonomy_definitions",
+      "frozen_permission_and_protected_action_semantics",
+      "qualitative_boundary_coverage_requirements"
+    ],
+    "author_must_not_inspect_while_authoring": [
+      "development_utterances",
+      "historical_training_utterances",
+      "consumed_evaluation_utterances",
+      "v2c4_final_holdout_contents",
+      "v2c5_model_predictions_or_errors"
+    ],
+    "authorship_method": "independently_authored_synthetic",
+    "future_examples_authored_directly_for_known_gold_intent": true,
+    "gold_label_determined_by_classifier_or_llm_prediction": false,
+    "independent_from_development_examples": true,
+    "prohibited_construction_methods": [
+      "sample_step21b_development_records",
+      "paraphrase_known_development_records",
+      "copy_banking77_examples",
+      "copy_clinc_examples",
+      "use_banking77_test",
+      "use_clinc_test",
+      "use_cfpb",
+      "copy_v2c3_challenge_records",
+      "copy_v2c3_external_lockbox_records",
+      "copy_v2c4_probe_augmentation_or_postmortem_records",
+      "inspect_or_copy_sealed_v2c4_final_holdout",
+      "use_v2c5_model_predictions_or_errors",
+      "use_classifier_scores",
+      "use_embedding_or_similarity_search_against_model_errors",
+      "post_hoc_generation_targeted_to_step22_failures"
+    ],
+    "raw_future_holdout_text_present": false
+  },
+  "boundary_coverage": {
+    "conceptual_boundaries": [
+      {
+        "intent": "freeze_card",
+        "separate_from": [
+          "card_status",
+          "informational_policy",
+          "unsupported_bank_account_freeze"
+        ]
+      },
+      {
+        "intent": "create_dispute",
+        "separate_from": [
+          "transaction_details",
+          "unsupported_merchant_refund_request"
+        ]
+      },
+      {
+        "intent": "cancel_transfer",
+        "separate_from": [
+          "transfer_pending",
+          "transfer_failed_or_declined",
+          "unsupported_generic_transfer_execution"
+        ]
+      },
+      {
+        "intent": "close_account",
+        "separate_from": [
+          "informational_or_account_management_questions"
+        ]
+      },
+      {
+        "intent": "account_blocked",
+        "separate_from": [
+          "unsupported_request_to_freeze_or_block_bank_account"
+        ]
+      },
+      {
+        "intent": "transfer_pending",
+        "separate_from": [
+          "generic_transfer_timing_informational_policy"
+        ]
+      },
+      {
+        "intent": "informational_policy",
+        "separate_from": [
+          "direct_unsupported_operations"
+        ]
+      },
+      {
+        "intent": "lost_or_stolen_phone",
+        "separate_from": [
+          "unrelated_card_loss_or_freeze_semantics"
+        ]
+      },
+      {
+        "intent": "passcode_recovery",
+        "separate_from": [
+          "pin_guidance_or_pin_change_semantics"
+        ]
+      }
+    ],
+    "each_intent_requires_mixed_formulations": true,
+    "neighboring_intent_boundary_required_where_applicable": true,
+    "non_protected_lane_requirements": {
+      "include_protected_action_or_topic_mentions_as_hard_negatives_where_semantically_appropriate": true,
+      "topic_mention_must_not_imply_protected_write": true
+    },
+    "protected_write_lane_requirements": {
+      "explicit_current_action_semantics_required": true,
+      "required_request_variation": [
+        "direct",
+        "polite",
+        "indirect"
+      ],
+      "topic_mention_alone_is_insufficient": true
+    },
+    "required_qualitative_tags": [
+      "clear_direct",
+      "natural_paraphrase_or_colloquial",
+      "short_voice_style",
+      "longer_contextual",
+      "neighboring_intent_boundary_where_applicable"
+    ],
+    "unsupported_or_uncertain_requirements": {
+      "heterogeneous_out_of_scope_goals_required": true,
+      "single_topic_paraphrase_set_prohibited": true
+    }
+  },
+  "contract_status": {
+    "classifier_training_performed": false,
+    "final_holdout_contract_frozen": true,
+    "final_holdout_evaluated": false,
+    "final_holdout_examples_created": false,
+    "model_selection_performed": false,
+    "next_required": "independently_author_v2c5_final_holdout_examples",
+    "runtime_behavior_changed": false,
+    "step21_complete": false,
+    "step22_permitted": false
+  },
+  "contract_version": "v2c5-final-holdout-contract.v1",
+  "evaluation_governance": {
+    "augmentation_source_eligible": false,
+    "error_analysis_eligible_before_final_evaluation": false,
+    "final_evaluation_step": "V2-C5 Step 23",
+    "final_evaluation_requires_frozen_acceptance_criteria": true,
+    "final_evaluation_requires_frozen_candidate_and_model": true,
+    "final_evaluation_requires_frozen_evaluation_logic": true,
+    "model_selection_eligible": false,
+    "single_final_evaluation_only": true,
+    "step22_requires_created_and_frozen_final_holdout": true,
+    "step22_may_inspect_individual_holdout_examples": false,
+    "step22_may_run_holdout_inference": false,
+    "step22_may_tune_from_holdout": false,
+    "step22_may_use_holdout_errors": false,
+    "taxonomy_discovery_eligible": false,
+    "threshold_selection_eligible": false,
+    "training_eligible": false
+  },
+  "holdout_design": {
+    "class_balanced": true,
+    "examples_per_intent": 40,
+    "intent_count": 16,
+    "mirrors_step21b_development_distribution": false,
+    "non_protected_example_count": 480,
+    "protected_write_example_count": 160,
+    "rationale": [
+      "Preserves continuity with the prior V2-C4 safety-holdout design.",
+      "Provides equal final-evaluation representation for newly discovered intents.",
+      "Provides 160 protected-write positives and 480 non-protected examples for false-positive analysis.",
+      "Keeps final evaluation manageable and inexpensive."
+    ],
+    "total_example_count": 640
+  },
+  "overlap_policy": {
+    "duplicate_normalized_text_within_holdout_rejected": true,
+    "future_model_selection_probe_included_if_created_before_build": true,
+    "normalization_version": "unicode-nfkc-lower-whitespace.v1",
+    "prefer_frozen_text_or_normalized_hashes_over_opening_source_data": true,
+    "prohibited_overlap_inputs": [
+      {
+        "artifact": "sealed_v2c4_final_holdout",
+        "path": "data/evals/v2/ml/v2c4_safety_holdout.json",
+        "reason": "The obsolete sealed holdout must remain unopened and cannot become V2-C5 overlap evidence."
+      }
+    ],
+    "required_exact_normalized_text_overlap_rejection": [
+      {
+        "artifact": "v2c5_expanded_development_dataset",
+        "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+        "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+      },
+      {
+        "artifact": "consumed_v2c3_challenge",
+        "path": "data/evals/v2/ml/v2c3_challenge_set.json",
+        "use": "normalized_hashes_for_overlap_rejection_only"
+      },
+      {
+        "artifact": "consumed_v2c3_external_lockbox",
+        "path": "data/evals/v2/ml/v2c3_fresh_lockbox_manifest.json",
+        "use": "frozen_manifest_hash_lineage_for_overlap_rejection_only"
+      },
+      {
+        "artifact": "all_historical_development_and_training_text_used_in_v2c5",
+        "coverage": "v2c5_expanded_development_dataset_and_its_frozen_sources"
+      },
+      {
+        "artifact": "future_v2c5_model_selection_probe",
+        "condition": "required_if_created_before_final_holdout_build"
+      }
+    ],
+    "sealed_v2c4_holdout_accessed": false,
+    "v2c4_holdout_hash_or_contents_required_for_overlap_check": false
+  },
+  "phase": "V2-C5 Step 21C1",
+  "prohibited_sources": [
+    "v2c5_expanded_development_examples_as_authorship_material",
+    "banking77_examples",
+    "banking77_test",
+    "clinc_examples",
+    "clinc_test",
+    "cfpb",
+    "consumed_v2c3_challenge",
+    "consumed_v2c3_external_lockbox",
+    "v2c4_selection_probe",
+    "v2c4_training_augmentation",
+    "v2c4_postmortem_review_examples",
+    "sealed_v2c4_final_holdout"
+  ],
+  "schema_version": "v2c5-final-holdout-contract.v1",
+  "source_artifacts": {
+    "expanded_development_dataset": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "expanded_development_manifest": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "taxonomy": {
+    "intent_count": 16,
+    "intent_label_order": [
+      "account_balance",
+      "account_blocked",
+      "cancel_transfer",
+      "card_status",
+      "close_account",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "lost_or_stolen_phone",
+      "passcode_recovery",
+      "recent_transactions",
+      "transaction_details",
+      "transfer_failed_or_declined",
+      "transfer_pending",
+      "unsupported_or_uncertain"
+    ],
+    "protected_write_intents": [
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card"
+    ],
+    "risk_by_intent": {
+      "account_balance": "PRIVATE_READ",
+      "account_blocked": "PRIVATE_READ",
+      "cancel_transfer": "PROTECTED_WRITE",
+      "card_status": "PRIVATE_READ",
+      "close_account": "PROTECTED_WRITE",
+      "create_dispute": "PROTECTED_WRITE",
+      "escalation": "ESCALATION_OR_UNCERTAIN",
+      "freeze_card": "PROTECTED_WRITE",
+      "informational_policy": "PUBLIC",
+      "lost_or_stolen_phone": "ESCALATION_OR_UNCERTAIN",
+      "passcode_recovery": "ESCALATION_OR_UNCERTAIN",
+      "recent_transactions": "PRIVATE_READ",
+      "transaction_details": "PRIVATE_READ",
+      "transfer_failed_or_declined": "PRIVATE_READ",
+      "transfer_pending": "PRIVATE_READ",
+      "unsupported_or_uncertain": "ESCALATION_OR_UNCERTAIN"
+    },
+    "risk_mapping_source": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+    "taxonomy_version": "v2c5-taxonomy.v1"
+  }
+}

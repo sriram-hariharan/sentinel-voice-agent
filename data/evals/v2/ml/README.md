@@ -843,6 +843,61 @@ changes no runtime behavior. Step 21 remains incomplete until a new,
 independently authored V2-C5 final holdout is frozen, and Step 22 training or
 model selection must not begin before that holdout exists.
 
+## V2-C5 Step 21C1 final-holdout contract freeze
+
+Step 21C1 freezes final-holdout methodology before any V2-C5 final example is
+authored. The text-free
+`data/evals/v2/ml/v2c5_final_holdout_contract.json` pins the Step 20 taxonomy
+freeze and manifest plus the Step 21B expanded development dataset and
+manifest. The exact design is 40 independently authored synthetic examples for
+each of the 16 frozen intents: 640 total, with 160 protected-write positives
+and 480 non-protected examples. Class balance provides equal final evidence for
+new intents and is intentionally different from development prevalence.
+
+The future author may know taxonomy definitions, permission semantics, and
+qualitative boundary requirements, but must not inspect development utterances
+while writing. Sampling or paraphrasing Step 21B, copying BANKING77, CLINC,
+CFPB, consumed V2-C3 evaluation sources, V2-C4 development evidence, or the
+sealed V2-C4 holdout is prohibited. Predictions, classifier scores,
+embedding/similarity searches against errors, LLM-selected gold labels, and
+post-Step-22-failure generation are also prohibited. Every example must be
+written directly for a known gold intent.
+
+Every intent must mix clear/direct, natural or colloquial, short voice-style,
+longer contextual, and neighboring-boundary formulations where appropriate.
+Protected-write positives require explicit current-action semantics and varied
+direct, polite, and indirect requests; topic mention alone is insufficient.
+Non-protected lanes include protected-topic hard negatives where appropriate.
+The unsupported lane must span heterogeneous out-of-scope goals rather than 40
+variations of one topic. The contract also records the important card,
+transaction, transfer, account, phone, passcode, and policy boundaries that the
+future seed must cover.
+
+The future deterministic builder must reject duplicates inside the holdout and
+exact normalized-text overlap with Step 21B development, the consumed V2-C3
+challenge, the consumed V2-C3 external lockbox, all historical development or
+training text used in V2-C5, and any V2-C5 model-selection probe created before
+the holdout build. Frozen hashes or text-free manifests should be used where
+available. The V2-C4 final holdout is explicitly excluded from overlap checking
+and remains unopened.
+
+The chosen architecture is a balanced independently authored synthetic final
+holdout. V2-C4 reuse, development sampling, external test adoption, natural
+imbalance, and generation after observing Step 22 errors were rejected because
+they lack expanded-label coverage, leak development evidence, substitute
+external labels for SentinelVoice semantics, weaken low-frequency evidence, or
+contaminate final evaluation. Tradeoffs are synthetic-domain limitations,
+non-production prevalence, finite per-class resolution, and careful human
+review. Reversibility is high before final evaluation.
+
+Step 21C1 creates no holdout examples and performs no training, inference,
+evaluation, model selection, or runtime change. Step 21 remains incomplete and
+Step 22 remains prohibited until the independently authored final holdout is
+built and frozen. Once frozen, it is ineligible for training, model/threshold
+selection, augmentation, taxonomy discovery, or pre-final error analysis. It
+may be evaluated once in Step 23 only after the candidate, evaluation logic,
+and acceptance criteria are frozen.
+
 ## Reproduce V2-C1
 
 ```bash

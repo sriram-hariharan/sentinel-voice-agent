@@ -4008,6 +4008,50 @@ begin before that holdout exists. Step 21B accesses no final, test, challenge,
 lockbox, CFPB, selection-probe, or V2-C4 holdout data and performs no model
 training, evaluation, or runtime change.
 
+### V2-C5 Step 21C1 final-holdout contract freeze
+
+Step 21C1 freezes the methodology for a new V2-C5 final holdout before any
+holdout utterance is authored. The text-free contract at
+`data/evals/v2/ml/v2c5_final_holdout_contract.json` hash-pins the Step 20
+taxonomy and current Step 21B development artifacts. It freezes exactly 40
+independently authored synthetic examples for each of the 16 intents: 640
+examples total, including 160 protected-write positives and 480 non-protected
+examples. This balanced final-evaluation design deliberately does not mirror
+the imbalanced development distribution.
+
+Future authors may know the frozen taxonomy, permission semantics, and required
+qualitative boundaries, but must not inspect development utterances while
+authoring. The contract prohibits sampling or paraphrasing development data,
+copying external or consumed evaluation records, classifier- or LLM-derived
+gold labels, similarity-driven generation, and post-hoc generation from Step 22
+errors. It requires varied direct, colloquial, short voice-style, contextual,
+and neighboring-boundary formulations, with explicit current-action semantics
+for protected writes and hard negatives where topic mentions must not imply
+protected authority.
+
+The future builder must reject normalized-text duplicates within the holdout
+and overlap with V2-C5 development, consumed V2-C3 challenge/lockbox evidence,
+all historical training text used in V2-C5, and any model-selection probe that
+exists before the holdout build. The obsolete V2-C4 holdout is not an overlap
+input: its contents remain unopened and it is explicitly prohibited as V2-C5
+evidence.
+
+The architectural choice is a balanced, independently authored synthetic
+holdout. Reusing V2-C4, sampling development, adopting BANKING77/CLINC test,
+mirroring natural imbalance, or authoring after model failures were rejected
+because they omit the expanded taxonomy, leak development evidence, substitute
+external labels for SentinelVoice semantics, weaken rare-intent evidence, or
+contaminate final evaluation. Tradeoffs include synthetic-domain limitations,
+non-production prevalence, finite 40-example class resolution, and human-review
+cost. The choice remains highly reversible before final evaluation.
+
+No holdout examples exist at Step 21C1. Step 21 remains incomplete and Step 22
+remains prohibited until the independently authored holdout is built and
+frozen. Once frozen, it is ineligible for training, model or threshold
+selection, augmentation, taxonomy discovery, and pre-final error analysis.
+Step 23 may evaluate it exactly once only after the candidate, evaluation logic,
+acceptance criteria, and all Step 22 decisions are frozen.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

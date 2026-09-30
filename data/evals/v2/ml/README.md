@@ -713,6 +713,73 @@ Step 21 remains required to construct the expanded supervised dataset and a
 new, independently authored final holdout. The old V2-C4 holdout remains
 prohibited as final evidence for the changed label space.
 
+## V2-C5 Step 21A split-cluster relabel review
+
+Step 20 froze branch semantics for nine `NEEDS_SPLIT_REVIEW` clusters without
+automatically relabeling individual discovery texts. Those clusters contain
+975 unique normalized development texts. Frozen Step 20 semantics plus clean
+native-label evidence deterministically resolve 397 records. The other 578 are
+wording-dependent and require explicit human review, distributed as follows:
+
+- `cluster-25a4740ae330f948`: 161
+- `cluster-bab7911ea80f612b`: 221
+- `cluster-3db20683a0becc1c`: 86
+- `cluster-783d0d28bd4c4992`: 66
+- `cluster-2b49d15c7f2e42b9`: 44
+
+Native external labels remain metadata/evidence only and were not clustering
+features. They select deterministic branches only for the exact hash-pinned
+label/cluster combinations frozen by Step 21A. Manual records start completely
+`UNREVIEWED`; their native labels never prepopulate a human decision. Human
+review is limited to `informational_policy` or
+`unsupported_or_uncertain`, following the Step 20 distinction between generic
+guidance and direct operations or customer-specific investigations.
+
+The local workflow is:
+
+```bash
+sentinelvoice_env/bin/python scripts/review_v2c5_split_relabels.py build
+sentinelvoice_env/bin/python scripts/review_v2c5_split_relabels.py check
+sentinelvoice_env/bin/python scripts/review_v2c5_split_relabels.py summary
+sentinelvoice_env/bin/python scripts/review_v2c5_split_relabels.py show \
+  --discovery-id <ID>
+sentinelvoice_env/bin/python scripts/review_v2c5_split_relabels.py next
+sentinelvoice_env/bin/python scripts/review_v2c5_split_relabels.py set \
+  --discovery-id <ID> \
+  --final-intent <informational_policy|unsupported_or_uncertain> \
+  --confidence <HIGH|MEDIUM|LOW> \
+  --reviewer-note <OPTIONAL_NOTE>
+sentinelvoice_env/bin/python scripts/review_v2c5_split_relabels.py export
+```
+
+The ignored local workfile is
+`data/evals/v2/ml/local/v2c5_split_relabel_workfile.json`. It stores stable
+identity and source/native-label metadata but no utterance text; `show` and
+`next` join text from the frozen discovery corpus only at display time.
+`check` writes nothing and verifies all six frozen source hashes, development-
+only lineage, the 578/397/975 partition, exact per-cluster counts and mappings,
+non-overlap, allowed labels, and any existing exports. `build` refuses to
+overwrite human work. `export` refuses until all 578 manual records are
+reviewed, then creates deterministic, tracked, text-free adjudication and
+manifest artifacts.
+
+The architecture choice is hybrid deterministic plus targeted human
+relabeling. It reduces unnecessary review where frozen branch evidence is
+unambiguous while preserving human judgment where speech act matters. Manual
+review of all 975 was rejected because 397 already have deterministic frozen
+evidence. Bulk-mapping all 975 from native labels was rejected because several
+native classes mix informational guidance with direct operations or specific
+investigations. The tradeoff is 578 explicit reviews. The result is highly
+reversible because it is separate versioned development evidence and changes
+no runtime behavior.
+
+Step 21A trains no classifier, exports no expanded development dataset, creates
+no fresh holdout, and changes no runtime behavior. Step 21 remains incomplete
+until the review export is complete, the expanded supervised development
+dataset is built, and a new independently authored final holdout is authored
+and frozen. Existing final/test data, CFPB, V2-C3 challenge/lockbox sources, and
+the V2-C4 holdout remain prohibited.
+
 ## Reproduce V2-C1
 
 ```bash

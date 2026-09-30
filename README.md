@@ -3934,6 +3934,38 @@ Step 21 must build the expanded supervised dataset and a new, independently
 authored final holdout. The old V2-C4 holdout remains prohibited as V2-C5 final
 evidence.
 
+### V2-C5 Step 21A split-cluster relabel review
+
+Step 20 froze branch semantics for nine split clusters but did not assign an
+intent to each individual discovery text. Those clusters contain 975 unique
+normalized development texts. Exactly 397 have clean native-label evidence
+that deterministically selects an already-frozen Step 20 branch; the remaining
+578 are wording-dependent and require explicit human review. Native external
+labels remain metadata and evidence only, and were never clustering features.
+
+The standard-library-only workflow in
+`scripts/review_v2c5_split_relabels.py` creates an ignored, text-free local
+workfile for those 578 records. It joins utterance text from the frozen corpus
+only for `show` and `next`, restricts each human choice to the cluster's frozen
+branch targets, and exports text-free development evidence only after every
+manual record is reviewed. It does not train a classifier, build the expanded
+development dataset, create a holdout, or change runtime behavior.
+
+The architecture choice is hybrid deterministic plus targeted human
+relabeling. It avoids unnecessary review for 397 records whose clean native
+labels unambiguously select a frozen branch, while retaining human judgment for
+578 records where the wording and speech act distinguish guidance from a
+direct operation or customer-specific investigation. Reviewing all 975 was
+rejected as unnecessary; bulk-mapping all records from native labels was
+rejected because several labels mix those speech acts. The tradeoff is a
+substantial but bounded manual review. Reversibility remains high because the
+result is separate, versioned development-data evidence with no runtime effect.
+
+Step 21 remains incomplete until the Step 21A review is exported, the expanded
+supervised development dataset is built, and a new independently authored final
+holdout is frozen. No existing final, test, CFPB, challenge, lockbox, or V2-C4
+holdout data participates in Step 21A.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

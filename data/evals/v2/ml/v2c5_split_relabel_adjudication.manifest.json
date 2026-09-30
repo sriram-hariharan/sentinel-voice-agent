@@ -1,0 +1,47 @@
+{
+  "adjudication": {
+    "path": "data/evals/v2/ml/v2c5_split_relabel_adjudication.json",
+    "sha256": "4ddf3df61e371de0be82affa4bcd15272ac598cf432d85ce876a6b9a18e1ee65"
+  },
+  "all_reviewed": true,
+  "classifier_training_performed": false,
+  "deterministic_mapping_count": 397,
+  "development_dataset_built": false,
+  "fresh_holdout_created": false,
+  "manual_review_count": 578,
+  "phase": "V2-C5 Step 21A",
+  "review_script": {
+    "path": "scripts/review_v2c5_split_relabels.py",
+    "sha256": "0f940b1542a3d3d51d85ed610a4350bae279c243336ac0886041809cd027dda5"
+  },
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c5-split-relabel-adjudication-manifest.v1",
+  "source_artifacts": {
+    "development_dataset": {
+      "path": "data/evals/v2/ml/v2c3_development_dataset.json",
+      "sha256": "3783042b3656e3170c2bf001a0fe059d65cad415ed259365d095a1e19fe689ca"
+    },
+    "discovery_assignments": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_assignments.json",
+      "sha256": "aa91a38a3dde57747a8694c404ef00105dcdb0e4233c995749edc1d129596ac0"
+    },
+    "discovery_corpus": {
+      "path": "data/evals/v2/ml/v2c5_discovery_corpus.json",
+      "sha256": "0a873fe5797fdd93689e7d5054b029cd7b9068017b0ecff54af000641e282e01"
+    },
+    "taxonomy_adjudication": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_adjudication.json",
+      "sha256": "e63e6a9afc575c603587f2a2119badd597bebbed3e57febc8f5384c16ea99d5d"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "split_coverage_count": 975,
+  "step21_complete": false
+}

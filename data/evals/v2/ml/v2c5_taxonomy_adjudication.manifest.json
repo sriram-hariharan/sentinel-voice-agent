@@ -1,0 +1,57 @@
+{
+  "adjudication": {
+    "path": "data/evals/v2/ml/v2c5_taxonomy_adjudication.json",
+    "sha256": "e63e6a9afc575c603587f2a2119badd597bebbed3e57febc8f5384c16ea99d5d"
+  },
+  "classifier_training_performed": false,
+  "cluster_count": 35,
+  "decision_counts": {
+    "CANDIDATE_NEW_INTENT": 9,
+    "INSUFFICIENT_EVIDENCE": 0,
+    "MAP_TO_EXISTING_INTENT": 4,
+    "MIXED_OR_INCOHERENT": 0,
+    "NEEDS_SPLIT_REVIEW": 9,
+    "REMAIN_UNSUPPORTED": 13
+  },
+  "external_labels_are_metadata_only": true,
+  "final_taxonomy_frozen": false,
+  "human_adjudication_completed": true,
+  "new_intents_created": false,
+  "phase": "V2-C5 Step 19",
+  "protected_action_intents_inferred_automatically": false,
+  "review_script": {
+    "path": "scripts/review_v2c5_taxonomy.py",
+    "sha256": "6e516f895c7d43a978d4040bb0dc6f3bebbe864abe858b314b3004e73c042f51"
+  },
+  "reviewed_count": 35,
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c5-taxonomy-adjudication-manifest.v1",
+  "source_artifacts": {
+    "contract": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_contract.json",
+      "sha256": "acc48bace76a5ae93ff9a1818856e3b2dc0ad3585c80e8ba7a3f582208a71427"
+    },
+    "discovery_assignments": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_assignments.json",
+      "sha256": "aa91a38a3dde57747a8694c404ef00105dcdb0e4233c995749edc1d129596ac0"
+    },
+    "discovery_corpus": {
+      "path": "data/evals/v2/ml/v2c5_discovery_corpus.json",
+      "sha256": "0a873fe5797fdd93689e7d5054b029cd7b9068017b0ecff54af000641e282e01"
+    },
+    "discovery_report": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_report.json",
+      "sha256": "ca007ab1ade5e07e377022a5add49c641b209ae2812c3d4217734c0aeaa7c3c1"
+    },
+    "step18_manifest": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery.manifest.json",
+      "sha256": "a0ea3f8353c12b341fbb4142b67dff507c227d94a55c73993f9fca9645162fb9"
+    },
+    "step18_script": {
+      "path": "scripts/run_v2c5_intent_discovery.py",
+      "sha256": "85700b8f54c3bf5c0e00780af8fcd88d9093d6c0a4b2b993a86b3d5acfac5ce3"
+    }
+  },
+  "step20_required": true,
+  "taxonomy_changed": false
+}

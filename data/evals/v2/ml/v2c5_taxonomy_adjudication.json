@@ -1,0 +1,1827 @@
+{
+  "adjudications": [
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:759e6c94c2cbb32a880f2a74f4d96f806ace5f205ba3543cfde5f673a16537e6",
+        "v2c5-discovery:78cfaf6fef5acd551363fb434d55b9eb35bddfec4a1e108d31d31141e0842247",
+        "v2c5-discovery:1cf6f18f404508158742bd9a8d11fe14c9d1dfa5d146e55ad511eef1e0334ffe",
+        "v2c5-discovery:6c92bf1a8ebda4a77596d5618226862b1f184d0b1a9698829c421e18e8761689",
+        "v2c5-discovery:9990dfa1d757b1e9c75d3b2f4bc0839ab739fc2a119306dd00e3b97b6152440d"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-25a4740ae330f948",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster is related around obtaining and managing cards, but it combines several distinct customer goals: disposable virtual card acquisition, virtual card acquisition, disposable-card limits, spare cards, and physical-card ordering. It should not be accepted as one SentinelVoice intent without further split review.",
+      "human_theme": "Card acquisition and virtual/disposable card management",
+      "member_count": 237,
+      "native_external_label_concentration": {
+        "counts": {
+          "disposable_card_limits": 76,
+          "get_disposable_virtual_card": 70,
+          "getting_spare_card": 13,
+          "getting_virtual_card": 56,
+          "new_card": 13,
+          "order_physical_card": 9
+        },
+        "dominant": "disposable_card_limits",
+        "dominant_proportion": 0.3206751054852321,
+        "proportions": {
+          "disposable_card_limits": 0.3206751054852321,
+          "get_disposable_virtual_card": 0.29535864978902954,
+          "getting_spare_card": 0.05485232067510549,
+          "getting_virtual_card": 0.23628691983122363,
+          "new_card": 0.05485232067510549,
+          "order_physical_card": 0.0379746835443038
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:4acc49f99755504ca0e2942d5e08e262c5fb7f2d7f55aca03303be57058d9450",
+        "v2c5-discovery:d680b776bc50704ea4d9f30681d9941b46dfc21a9ebfbf661cab24cb53e88930",
+        "v2c5-discovery:d64d474c054cc7b72aa1e3bd2691c55f0f2d162236b2073ee952102c7efcc66b",
+        "v2c5-discovery:5019da08ee54334b79690b2ef6ece1b0e86e87efb736e135be7b71f9b50990c3",
+        "v2c5-discovery:cdcf25170a3d62ca56986212f1de34b8f89998aac35a762449cc23644a068801"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 224,
+          "clinc150_oos": 13
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 0.9451476793248945,
+        "proportions": {
+          "banking77": 0.9451476793248945,
+          "clinc150_oos": 0.05485232067510549
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:495cabb4a4f10a03fb4aa5172afc159951b4761ebc24299da50a761b2c9a5ffd",
+        "v2c5-discovery:0e898bc60af7cd9a34c099e752ced3aea348eb3b90bb20e2e28de836e3bc918d",
+        "v2c5-discovery:eba9abe5eead1804ae64a617cd4f457d97e0b00043e69b036e3d387cfd8f2c6f",
+        "v2c5-discovery:e9b52925da0c37207b113c8f7674b16a0efabd4d3b5216d5e8412cdad4dbca66",
+        "v2c5-discovery:4b39f2fa4828781f0e5d99589de028295bad0fe41b22947d9e41ad3dfdd0585b"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-f12522f661dcaf5d",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster contains bill balance, due-date, minimum-payment, and bill-payment requests. These are coherent around bill management but are outside SentinelVoice's current supported capabilities and do not justify expanding V1 scope.",
+      "human_theme": "Bill payment and bill management",
+      "member_count": 227,
+      "native_external_label_concentration": {
+        "counts": {
+          "bill_balance": 51,
+          "bill_due": 45,
+          "min_payment": 79,
+          "pay_bill": 52
+        },
+        "dominant": "min_payment",
+        "dominant_proportion": 0.34801762114537443,
+        "proportions": {
+          "bill_balance": 0.22466960352422907,
+          "bill_due": 0.19823788546255505,
+          "min_payment": 0.34801762114537443,
+          "pay_bill": 0.2290748898678414
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:adcbfb90b4bf4ce66a3a604b062863cefc40c4d1a59c637565c7dfe2ff16285d",
+        "v2c5-discovery:3eccff72561a88be10985253c0b608eb114f83c7397771f1af5d17cb5a69281f",
+        "v2c5-discovery:95ad2161c15b805b0b045787cf2f1bb5ba558e836a92d6577bb14406ad386db2",
+        "v2c5-discovery:0d7f9e5e0df9fc071d07a520f07b62862f19bb77787300972052fd1932b137a3",
+        "v2c5-discovery:abaa1d060cd74f87c81cd75368aa41be17a32e7037b58987b5bc77e349b16fb4"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 227
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:f5980b8de14f6893fc54021b4ba91172180d5a7aadd67eb15049fd6a987b13fd",
+        "v2c5-discovery:56841f5f2a990ba062fb4f0756b081bf8fd719fa758d941d2522267bd86b0662",
+        "v2c5-discovery:dd4b543cefcfc53ab0b05cf4cad5543a0dda496c980ecce1f1366265c16d2e88",
+        "v2c5-discovery:48d686cf32d227ef6a39c3374fbed99f595f00a836ae437dfd4178a773cd6750",
+        "v2c5-discovery:6497b0ad6999959b59d65519b220af256b97c975cb5ea44a3567f2ea937d906d"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-bab7911ea80f612b",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster is clearly PIN-related, but it mixes informational requests about finding or changing a PIN with direct requests to actually change the PIN. Informational questions may map to informational_policy, while direct PIN-change actions are not currently supported, so the cluster should be split before assigning one intent.",
+      "human_theme": "PIN information and PIN change requests",
+      "member_count": 221,
+      "native_external_label_concentration": {
+        "counts": {
+          "change_pin": 95,
+          "get_physical_card": 62,
+          "pin_change": 65
+        },
+        "dominant": "change_pin",
+        "dominant_proportion": 0.42792792792792794,
+        "proportions": {
+          "change_pin": 0.42792792792792794,
+          "get_physical_card": 0.27927927927927926,
+          "pin_change": 0.2927927927927928
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:48db573cf9339708f5a447cdd9503477f39a7598579a460beee14ceedb8896c6",
+        "v2c5-discovery:c7bf553bec5198b72c25dace9ee71481d798795f791016e98a4030354caa4197",
+        "v2c5-discovery:ab0fe19ec868d16ab6659b9e11481797ad99720b676620e75e4b8b2a45acfeee",
+        "v2c5-discovery:ddc634ec0416d0078856c1492cbd7efb8a6834e34c6bdc766de9487b0e49a69a",
+        "v2c5-discovery:03cbcb64d0c56fb522c5f16ac7f2cdb06578f7452e2a18fbed5fde82f49cc449"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 157,
+          "clinc150_oos": 65
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 0.7072072072072072,
+        "proportions": {
+          "banking77": 0.7072072072072072,
+          "clinc150_oos": 0.2927927927927928
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:4611a5dfbbed06d7d5c01d24e30e3336929c0e5ec86a8ce3243074566c91d09b",
+        "v2c5-discovery:04c73168c4dd8981546d4c0f4cbad6ea65de7b34f7f9b900c928d9115eb6e423",
+        "v2c5-discovery:c4b5a5e3e65dc12ed31ef9cac751d85b76dfab20cd12061f2dce34804d48498b",
+        "v2c5-discovery:0a0e051e4bf3bd0c45ee566106067a654e860ebb6d447e6df537a7ec9e238564",
+        "v2c5-discovery:678cc19757f8dc0234deb15f30576df47f843a581528975b434bf8d48a203926"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-56d2ffbdbe650346",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently concerns pending, failed, or reverted account top-ups. SentinelVoice does not currently support top-up operations or top-up status lookup, so these requests should remain outside the supported scope.",
+      "human_theme": "Top-up status and failure problems",
+      "member_count": 177,
+      "native_external_label_concentration": {
+        "counts": {
+          "pending_top_up": 58,
+          "top_up_failed": 66,
+          "top_up_reverted": 53
+        },
+        "dominant": "top_up_failed",
+        "dominant_proportion": 0.3728813559322034,
+        "proportions": {
+          "pending_top_up": 0.327683615819209,
+          "top_up_failed": 0.3728813559322034,
+          "top_up_reverted": 0.2994350282485876
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:fff3e41066a3a418daab8e6ca97b2530a17b6905147353dad2fe697acb012f70",
+        "v2c5-discovery:5996eefad77ffbd7f8586f7601f2cb30a9938babea06e7b8aa509db43ab4091a",
+        "v2c5-discovery:2766bc4f526a536d76599b8e698ddf0d053721718e5b167e3a2f4432edc0e3d0",
+        "v2c5-discovery:5c092d4cf6680a83c52ea0587a1820ea5b0077574cfbc11e6ad960bfcabe34ff",
+        "v2c5-discovery:790a178e35e3f8fe34206670c741934af15e2ad2888bb647c1c6923dc52f7a8c"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 177
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:cec78b5333f29edfb7376a224ac1e557ffebe15d139ed7156664ea5138baaddb",
+        "v2c5-discovery:d4cb83351a6b79f625181536c137aec221560efce425d688fd9a55ee89f4b986",
+        "v2c5-discovery:9162d707384fa40778335e01a001499d4e8c18188247ab9c09994df6f02e220a",
+        "v2c5-discovery:bc7a9fa6e5ba98566f726a37462faef353a19930971a0f0d2df8c750b7c6e883",
+        "v2c5-discovery:c2d0eff9ca1d7867f54ee76203c602669fa5b6842b971d9b098113047349d58d"
+      ],
+      "candidate_intent_name": "transfer_failed_or_declined",
+      "canonical_cluster_id": "cluster-3c52f1b1fc6eccb5",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster consistently represents customers asking why a transfer was declined, failed, rejected, or blocked for a beneficiary. This is a coherent banking-support goal that is not cleanly represented by the existing SentinelVoice taxonomy, so it should be considered as a candidate new intent in Step 20.",
+      "human_theme": "Failed or declined transfer investigation",
+      "member_count": 173,
+      "native_external_label_concentration": {
+        "counts": {
+          "beneficiary_not_allowed": 57,
+          "declined_transfer": 64,
+          "failed_transfer": 52
+        },
+        "dominant": "declined_transfer",
+        "dominant_proportion": 0.3699421965317919,
+        "proportions": {
+          "beneficiary_not_allowed": 0.32947976878612717,
+          "declined_transfer": 0.3699421965317919,
+          "failed_transfer": 0.30057803468208094
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:2159f00e09088730e54d964c7a2daa554347431560827f512f0e8becac6b1f8b",
+        "v2c5-discovery:b41396850ce577d8849d410ac1d06c9bcabec19ac88dde158d42419a4e0f07c6",
+        "v2c5-discovery:66a08367318c3a5debf31e3e59963cc6de72fd7c4d77c54fbeffef0326578771",
+        "v2c5-discovery:18c3d65c659c568a55fed58319b3d52f10096d7f7fac5f08aac4a850d7d0fb46",
+        "v2c5-discovery:17995315af6e25937beb1f8d004b7d7398b0a573cd21435ed187c5ddccef6baa"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 173
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:c5a0cb16573d0650ffcf1f3368290feee53b2d958ef3578a36af38d07b3f1944",
+        "v2c5-discovery:2d0631bd9d515f9d9f01d2325a5525f97ffe7c7a88b6180a35a4f9ec3a0d281b",
+        "v2c5-discovery:f590aaf4ed5a94f7f0d63141bfe45e05441ddf414e002a17249cd50656620ecb",
+        "v2c5-discovery:df892201de85ad30b10980b312ec8922d58f5e1af0669c8e4f2d23784858da75",
+        "v2c5-discovery:015389c7fb4501fd395dc024076b7c3b8931b9f74e1f925a1f4d51019be5f19e"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-b4254457ec8205db",
+      "confidence": "HIGH",
+      "decision": "MAP_TO_EXISTING_INTENT",
+      "human_rationale": "The cluster consists primarily of informational requests about how to activate a card or link a card to the app. These are procedural banking-policy questions and can be handled by the existing informational_policy intent without adding a new runtime capability.",
+      "human_theme": "Card activation and card-linking guidance",
+      "member_count": 139,
+      "native_external_label_concentration": {
+        "counts": {
+          "activate_my_card": 93,
+          "card_linking": 45,
+          "order_physical_card": 1
+        },
+        "dominant": "activate_my_card",
+        "dominant_proportion": 0.6690647482014388,
+        "proportions": {
+          "activate_my_card": 0.6690647482014388,
+          "card_linking": 0.3237410071942446,
+          "order_physical_card": 0.007194244604316547
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:e42fe2541387673916f5bc127c0a17b17bd0dc6e3440ece25117af0a5c501d2a",
+        "v2c5-discovery:42f5f5ed651c60aa42cd8d0e97f0a0acdebb4f9e16e37ea1f8ec021ecd661089",
+        "v2c5-discovery:fb6fbed20c1c6775ee8c1e644511b0c78bbe55b20d13ec2f6183bd63f039e53a",
+        "v2c5-discovery:b72a9a7cdbd9b9ca3535b298b4b3400a76127ea4d0bfc7051d1b056f5f78f1ee",
+        "v2c5-discovery:6e273989493757db97ff67186751018dca447c543e17b71577678ef8050ace74"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 139
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": "informational_policy"
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:dcc91b6aba869eab61d355677cee8b0c546a2217f59e2ef8f471a4795bc79495",
+        "v2c5-discovery:eaff6ce80ceca0c4a1fccad5cadb33436985eb236d40aec701c33cd9215ec8cb",
+        "v2c5-discovery:a89199059f3a07279bf35a6b353476114c0f203615c084a85162608bd719bf53",
+        "v2c5-discovery:7bb847fd5da65ab4a166baa042bb09488439628a559d8f9fb30b93270e58821c",
+        "v2c5-discovery:5f7f5c79da00832966ae118607e2fb9249adf9d0e0303e2b6cff21381a270deb"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-e92864f71372fce3",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster is consistently about identity verification, but it mixes informational requests about the verification process with customers who are unable to complete verification. Guidance may fit informational_policy, while verification failures may require different handling or escalation, so the cluster should be split before assigning one intent.",
+      "human_theme": "Identity verification guidance and verification failures",
+      "member_count": 125,
+      "native_external_label_concentration": {
+        "counts": {
+          "unable_to_verify_identity": 57,
+          "verify_my_identity": 67,
+          "verify_top_up": 1
+        },
+        "dominant": "verify_my_identity",
+        "dominant_proportion": 0.536,
+        "proportions": {
+          "unable_to_verify_identity": 0.456,
+          "verify_my_identity": 0.536,
+          "verify_top_up": 0.008
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:9f567515b4e9b60b8c03b99b0b5e10e6eb3dceb861e00ced4c59cd82f9e39c54",
+        "v2c5-discovery:f211f75778929644aaeea1720cc054329e95ab15e6d5903bfbe732f6902dfd4b",
+        "v2c5-discovery:81cca61cf9cf51c1bfc46b72923c02d98470edd2b18d7d0620dfccd718f4fcc0",
+        "v2c5-discovery:d9cfe92f76636342e8d0d7a6fef5a0d51d6aaa4f1f355df1402866a96e8de83a",
+        "v2c5-discovery:2b8c7eea5d2f4d9ee1ade10a78cfa7fbc2de07f2b7677898547821619fc41478"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 125
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:88dba3f274d413c2572a8423ae72c921c3c8c0bd50747b88fe44e5dd3ec62e24",
+        "v2c5-discovery:42e2947537608a38674b9b4c223de66544b85652e28e72e1478b5204ead25f1f",
+        "v2c5-discovery:7025ca5cc77aa1ec6d2063c0cb20ce0c6f56204bfd1d8f5df3159390ceaf0732",
+        "v2c5-discovery:cd5a0d990668e589772e736b28f5a8e8cb3cd72cbd7b30b59fcc5e2556544c0f",
+        "v2c5-discovery:74bf4eb794e09f6a5447550a9be5754dc6ea89057ec85ae02164c55eaa94c1c7"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-9bfbcb8e59c48e5c",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster is predominantly about retrieving customer-specific APR or interest-rate information for cards and accounts, with one related credit-limit example. SentinelVoice has no current tool or supported capability for these account attributes, so the cluster should remain unsupported.",
+      "human_theme": "APR and account interest-rate lookup",
+      "member_count": 123,
+      "native_external_label_concentration": {
+        "counts": {
+          "apr": 88,
+          "credit_limit": 1,
+          "interest_rate": 34
+        },
+        "dominant": "apr",
+        "dominant_proportion": 0.7154471544715447,
+        "proportions": {
+          "apr": 0.7154471544715447,
+          "credit_limit": 0.008130081300813009,
+          "interest_rate": 0.2764227642276423
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:dcc07cacfa22c91efa1f79bcc39e3c33b4de183a7411585caafdf8e2d86bd189",
+        "v2c5-discovery:4be6601ccaec0fc43ef58ac3ae388632b8a776b23d96b6f2ed51b6f398e7d823",
+        "v2c5-discovery:037922a96e919822cf9382fff669efc611f4f0bafc447fc820e0f9b3b48c3f4d",
+        "v2c5-discovery:152460f9dfa00c8b5268d305684f6afdf146b059eba879dd170d8cb7f7c40efa",
+        "v2c5-discovery:8aaf5f1b60c58016e331570d87ad9330b9430670abd171f13ae1e0365385b2ac"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 123
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:16fe1b477d2ce6094ee073063841d7b586479660202912c5855a35708f3c23c1",
+        "v2c5-discovery:6873db89711c513118e975714fd069d2f43b6c9372e968364006f2f6f49ba840",
+        "v2c5-discovery:2043e5336650cc703df98bea08d366beb129f10daec5527f59c87953008b54cd",
+        "v2c5-discovery:525347d4ee78b5a714ee9508887689a6e022ad083e02b3a6865823fda7b5a713",
+        "v2c5-discovery:13fd5ea7dbf1508d501c6b59304e9808c459e5d7ff486073e9eb6e9f5d7c866c"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-b640b5ccfa12891b",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster concerns top-up limits and automatic top-up configuration. Top-up functionality is outside SentinelVoice's current V1 capabilities, so these requests should remain unsupported rather than being added to the existing informational_policy intent.",
+      "human_theme": "Top-up limits and automatic top-up settings",
+      "member_count": 104,
+      "native_external_label_concentration": {
+        "counts": {
+          "automatic_top_up": 56,
+          "top_up_limits": 48
+        },
+        "dominant": "automatic_top_up",
+        "dominant_proportion": 0.5384615384615384,
+        "proportions": {
+          "automatic_top_up": 0.5384615384615384,
+          "top_up_limits": 0.46153846153846156
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:05a40fa6aeb88732b847ab1d96b1cefa05feee21ef21885d9e1e51c30e71c624",
+        "v2c5-discovery:b4a42415ec7dcbdf41f88e8a7fc56ef9a734bcb1a15e0c05d3011daee4500516",
+        "v2c5-discovery:75859c8f021af7bca8b6990f1a2ba9f01e7f277a34c2c4ea77e0d0e3cae557f6",
+        "v2c5-discovery:cfad4e8b145ad3d0e2443548bb486ed1fdd8c7a0d5ae941fc1b27ae66a34e29f",
+        "v2c5-discovery:c532a53f43ed8c0be7cbdf43026cf415f683e324c42a611d6c2e95162be6bd9b"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 104
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:0a1c358ba570fb4998ed9e667e4ad6f5c627a7841d4f27c13322214c32be5756",
+        "v2c5-discovery:a2c52c943779f1772ace26355c654976644920feb34436dd0da82d8316dd17da",
+        "v2c5-discovery:ed4d3f9029d9b3f0fcdee82281835e78c976fd32f3deface7d64fd5e6eee745b",
+        "v2c5-discovery:6b6f636e7a663cd65d849410a05e36a04361a665cc1a3cef3e3511cbb86f5a86",
+        "v2c5-discovery:334a0fcc9b8a2b5bc0f6af856a5b880fbd8d5efbace0bebecb1ae1b4ae3fa81e"
+      ],
+      "candidate_intent_name": "cancel_transfer",
+      "canonical_cluster_id": "cluster-9c182bcd6203a6a5",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster is strongly centered on customers asking to cancel or stop a transfer, often because it was sent by mistake. This is a coherent banking-support goal distinct from dispute creation and from canceling an unconfirmed SentinelVoice action. SentinelVoice currently has no transfer-cancellation tool, so Step 20 should decide whether this becomes a recognized intent and how it is handled.",
+      "human_theme": "Transfer cancellation requests",
+      "member_count": 91,
+      "native_external_label_concentration": {
+        "counts": {
+          "cancel_transfer": 79,
+          "declined_transfer": 1,
+          "request_refund": 11
+        },
+        "dominant": "cancel_transfer",
+        "dominant_proportion": 0.8681318681318682,
+        "proportions": {
+          "cancel_transfer": 0.8681318681318682,
+          "declined_transfer": 0.01098901098901099,
+          "request_refund": 0.12087912087912088
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:8736ed6681aab4086cfbf17387e45f3877dff805c2b975d454eafa8aa7f8444d",
+        "v2c5-discovery:54ae6aaf442fedde716ee9468a39f4fac3bb1e8e3b60931efa0e5b31adcd9f65",
+        "v2c5-discovery:4460b51af6d8bb67fb17889acfd5ad55dc69a594d0fdcfaf251eca38429a722d",
+        "v2c5-discovery:08168893b398e2b54f6017b87551c40bfebcaabd0fc2f2c135b9d92215ef9ff5",
+        "v2c5-discovery:dfd628562e8acf8eca4bfbdd1362a2232152cf2b2e7121388c046b9694ec74b3"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 91
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:3b3baabff8e8442c8ef6960b96eb953adecdc12dd99c9c95680ea209a3e63a82",
+        "v2c5-discovery:fca8d42d55cef13dc8fce73e467fed0ced625e45a1b36814b6adc759c851c584",
+        "v2c5-discovery:b450a2f6e981c9687b02eebf30aada05b633e8373d9d03863b4fab946a12d803",
+        "v2c5-discovery:f3bb5a35e1b7c22a6f07ebfb19bf5729a2d8b885316dd208b285fca052178f1f",
+        "v2c5-discovery:1402c5e65c6334ca0dfd4ecb25dfefc89aedf04475d953206a3bc884913e6be7"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-3db20683a0becc1c",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster is consistently about changing personal account details, but it mixes informational requests about how to make a change with direct requests for SentinelVoice to perform the update, including legal-name changes. These require different handling, and SentinelVoice has no current personal-details update tool, so the cluster should be split before assigning one intent.",
+      "human_theme": "Personal-details change guidance and direct update requests",
+      "member_count": 90,
+      "native_external_label_concentration": {
+        "counts": {
+          "edit_personal_details": 85,
+          "verify_my_identity": 1
+        },
+        "dominant": "edit_personal_details",
+        "dominant_proportion": 0.9883720930232558,
+        "proportions": {
+          "edit_personal_details": 0.9883720930232558,
+          "verify_my_identity": 0.011627906976744186
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:08a818dc2965fe7e07aaccfc0aa27d3fbf0c5dd7824a5390cc06531d88d8407f",
+        "v2c5-discovery:9713237458061a6fc2e6bb5d442be158d1e9489b63caba45810c9fd0b4459b5c",
+        "v2c5-discovery:56fd7fed36bf276461f8c6976a2c47a0ebe29a6ce7e0bfadc21b274efd44a80a",
+        "v2c5-discovery:4826fd94969bd44387953b505a2b8fc2e0d92a2e1c889c0054006a93b729f834",
+        "v2c5-discovery:32979cdfa028bc9978eda8f56869391b874da34740d4abd3ddf768f69ddacaeb"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 86,
+          "sentinelvoice_v2c1_internal": 4
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 0.9555555555555556,
+        "proportions": {
+          "banking77": 0.9555555555555556,
+          "sentinelvoice_v2c1_internal": 0.044444444444444446
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:734ea9f8ba2d7f9d932f6affede97c657032778eab435a3ecf74aad8773cd93c",
+        "v2c5-discovery:58577e0b1289fb80a825c1891a20210dc24d0f0eb0ffba2d8b3b74a3f7394d9f",
+        "v2c5-discovery:4153025b1cb9d1d8ef846a2eb94c53e3f9d8f3aede509ee63e9a2565ce3f2f56",
+        "v2c5-discovery:efb3e96bd3dbe94897dd421805a7a6028c4be227e3c869a955f8b2e9596b74a3",
+        "v2c5-discovery:ce6a979b824efdf59343a718914412a1d4daa3e8cbec31fca51b8229035b45df"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-667773abc98dc995",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster is highly coherent around ordering additional checks or checkbooks. SentinelVoice has no current capability to place check orders, and this functionality is outside the frozen V1 scope, so the cluster should remain unsupported.",
+      "human_theme": "Ordering checks or checkbooks",
+      "member_count": 90,
+      "native_external_label_concentration": {
+        "counts": {
+          "order_checks": 90
+        },
+        "dominant": "order_checks",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "order_checks": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:e8e36f774edfe20c479c30c2fb22877df37260a27b0c8a3cccea976441f9f982",
+        "v2c5-discovery:bc9e7eb65c4ad8464d7143d3f56b1e5f38d94b81ad3ad559586b693dfdac2e7b",
+        "v2c5-discovery:7d02f1df3664ce9cb034e17913c9211cd081c38e248220740333ecfecc959a83",
+        "v2c5-discovery:2787087acf9819ef126f8cec7340a495dcb248242bce01adf4b3615da7546d3c",
+        "v2c5-discovery:ab5ed9c52b8e3bb2400c53adeca13212905b6282b75999ef06959f2d67619636"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 90
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:5feef4d4e219050e1aa69f9b6ab9a769f7063b4b5c84f92908cfa6f4cda6e9e5",
+        "v2c5-discovery:fea9a9e13dd7b0cefbed043fb448565013d3e8ce4e2cc9ddf1b453e6ecf7aafd",
+        "v2c5-discovery:68d090e83387e3105c53e80748be2f90b5b878e0b59df04c4d962d9e127ede3e",
+        "v2c5-discovery:87c7c5ac96fa8ea6643734a8c9f9a65906b9856caf4ef9884cc9fac6bb947595",
+        "v2c5-discovery:d8d308680784167db34a3bd0ace6d3fe15c42eabf2282398645b01e828a7277b"
+      ],
+      "candidate_intent_name": "transfer_fee_charged",
+      "canonical_cluster_id": "cluster-9d9626407e037b50",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster is strongly centered on customers asking why a transfer fee was charged, with a smaller related group asking about fees for transfer-funded top-ups. Explaining an unexpected customer-specific fee may require both transaction context and fee-policy reasoning, so this should be considered as a distinct candidate intent in Step 20.",
+      "human_theme": "Unexpected transfer fees",
+      "member_count": 90,
+      "native_external_label_concentration": {
+        "counts": {
+          "top_up_by_bank_transfer_charge": 16,
+          "transfer_fee_charged": 74
+        },
+        "dominant": "transfer_fee_charged",
+        "dominant_proportion": 0.8222222222222222,
+        "proportions": {
+          "top_up_by_bank_transfer_charge": 0.17777777777777778,
+          "transfer_fee_charged": 0.8222222222222222
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:78ffd57477c59d7a333446082f31cf814e7bd0a05a4ca8c8d8df37e0de6cb36b",
+        "v2c5-discovery:610c19b1f0faaa31127e42482a075583e629321ae365d1949f8af2ff0f6a7a63",
+        "v2c5-discovery:5f9f9c4cf5c6ba391e4a2f7bd5e7e6d8e71f6cda3ecf92a0f99d3f065c75f666",
+        "v2c5-discovery:e6e642d889a7d0f7c3d51bc8edf5c0be16d9e0d7173a5fd753c0378dabfbb2f9",
+        "v2c5-discovery:b3a0291984c466ee27b2a8bc23184830e72f24cdac73b22d6d77a9f1e1019e8b"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 90
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:e8b9048af28a95b5255227f380715759331b7fe938909b48465ba038c9883df3",
+        "v2c5-discovery:ef7e13367d79bb62cc1b69b2478d1b376736a5fed1f91fa6a8a96162794f759c",
+        "v2c5-discovery:c78b025ea27f2a7a4405871f241e41ffcc14d957d7bfbef170f87f7737ce331e",
+        "v2c5-discovery:85623846acfdac417607354f09a99b5e83b1228cdca7f0068bda261786341070",
+        "v2c5-discovery:c2d52f85d083caf2d4c8fb84807852a6a0fc3751253d58ec326f5ec5edb5aa97"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-ca2ca918e26510fc",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster is highly coherent around verifying or authenticating a card used for top-ups. Top-up functionality is outside SentinelVoice's current V1 capabilities, so these requests should remain unsupported.",
+      "human_theme": "Top-up card verification",
+      "member_count": 84,
+      "native_external_label_concentration": {
+        "counts": {
+          "verify_top_up": 84
+        },
+        "dominant": "verify_top_up",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "verify_top_up": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:803d751dc3fd6cd81d18ca80d647617d96a1555a0fe1774e8284e27a1f571b39",
+        "v2c5-discovery:9ccc97926a64f6a409aca0b1f5213d284f00e4318468d4c264d996f4ffc88654",
+        "v2c5-discovery:21370ba8a20f116a3711374f94fa790b8b2097ce4f353b069c3dff525beac32d",
+        "v2c5-discovery:2a2cdf98b9dc6eedb57136a74dff7178219cafda3a5a850981883e2f91facac2",
+        "v2c5-discovery:e8afb814060c370284ddb2ea3968d4d4e9254e23db900054bfaa877ca37ad7f7"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 84
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:301a191aa8e4ee7a98e809104f9014611a5c9af9f55e1152e12d133a34cdcfaa",
+        "v2c5-discovery:2f8adcc6b998dba5f74f2dde4bba155bdc2786acd0e94468cbc928d236adfa0a",
+        "v2c5-discovery:6c7896ca7b876efe67cb9a6718d8cf7ef42914dc4e8e70a97134936ccf02d9d5",
+        "v2c5-discovery:3e5db0baf43d8c6bc5b13415b26df0b0f214dcf453e161e7c0cc2d1dab90263e",
+        "v2c5-discovery:da2b401856046685f7eb83035f0be3cecf5480b0e42f7e0f24fc4377df10b1bd"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-cb42832dd44b8a70",
+      "confidence": "MEDIUM",
+      "decision": "MAP_TO_EXISTING_INTENT",
+      "human_rationale": "The cluster is highly coherent around customers asking where funds came from or identifying the source of transferred money. This is best handled as customer-specific transaction information through the existing transaction_details intent, although some 'source of funds' wording could also refer to compliance questions, so confidence is medium.",
+      "human_theme": "Source or origin of transferred funds",
+      "member_count": 81,
+      "native_external_label_concentration": {
+        "counts": {
+          "transfer_not_received_by_recipient": 1,
+          "verify_source_of_funds": 80
+        },
+        "dominant": "verify_source_of_funds",
+        "dominant_proportion": 0.9876543209876543,
+        "proportions": {
+          "transfer_not_received_by_recipient": 0.012345679012345678,
+          "verify_source_of_funds": 0.9876543209876543
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:69eae2f6228130e73c8c4cc2055ea6246b39580ab6214a90488b5ed5ddf71674",
+        "v2c5-discovery:05eb3eaa08855d6cdaa623f6d8e1fd628502f6b457b658e0ed0bd206913bf765",
+        "v2c5-discovery:dab25550a53cfbe818ed4c615481d4e9be20b145779530b3e971e9b98a72b455",
+        "v2c5-discovery:119c49e1e15b75b947b1dcbf69a030803f41ca93b3aab4b6b9c15e00912f8e6e",
+        "v2c5-discovery:6e753831bc8b743e540e6f92087aa5d1416e040260dec4a1018e505ed3f2829e"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 81
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": "transaction_details"
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:a7e7ca99b2c2e4aa4efd48b411b682e2f3d192ba0ae3eefacbe897a1f56af978",
+        "v2c5-discovery:7a0802aa55326905e0f3cddfbf6605e432f0f68d86ff449764722f9cac28d813",
+        "v2c5-discovery:d5267b2b8d13d9e59a57c6987099177ec2f87f0b0611697f77ce18b0b22d314d",
+        "v2c5-discovery:0be7cd0cec38702ecfbf3b65e72e2a2f4d0161e36e5eecf67829101abdd80a0c",
+        "v2c5-discovery:24c3b08cb7610b16314f58ef8216bef6ca7df832265493d05fa1d1c65a96a894"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-d8ae664886c213a2",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster mixes two distinct customer goals: retrieving the current credit limit and requesting an increase to that limit. A credit-limit lookup is a customer-specific read, while increasing a limit is an account-changing request with different capability and safety requirements. The cluster should therefore be split before assigning one SentinelVoice intent.",
+      "human_theme": "Credit-limit lookup and credit-limit change requests",
+      "member_count": 75,
+      "native_external_label_concentration": {
+        "counts": {
+          "credit_limit": 35,
+          "credit_limit_change": 33
+        },
+        "dominant": "credit_limit",
+        "dominant_proportion": 0.5147058823529411,
+        "proportions": {
+          "credit_limit": 0.5147058823529411,
+          "credit_limit_change": 0.4852941176470588
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:877554f145532dc88e6543283d043114ee60668b8fb8603205df290f9541963f",
+        "v2c5-discovery:6a184c398222e298d785c8734379d6f72e9b079b43795805b978477cf945579b",
+        "v2c5-discovery:dc8c9a2626aa938da123165c1eab06a394b61929bc43a34b8b846bb71fa9f07c",
+        "v2c5-discovery:96cf814763db84575b752e956b86e2a4ab5cf5ce004dc5906316a1a07229c219",
+        "v2c5-discovery:6097de13524433763bfbac0f0e2c8ed06820e962c6344c6eac6d44600e9c76ee"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 68,
+          "sentinelvoice_v2c1_internal": 7
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 0.9066666666666666,
+        "proportions": {
+          "clinc150_oos": 0.9066666666666666,
+          "sentinelvoice_v2c1_internal": 0.09333333333333334
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:7db64ba611d280395ff81204bca0ea0f70e079cb4b9afcc78fbf0eeff3e9cd43",
+        "v2c5-discovery:0847807270b25df90260aad47d30cf9bc36e8f1fd2b66abcc6fe3a74c17f1b7a",
+        "v2c5-discovery:bd86700a7423aa013fa298791ee23d3c32f87a7fe8d6d2aa9f956369a3f345a0",
+        "v2c5-discovery:cf5b74f7599a09a4fa6dadb9ab0d835b7aadeaafbf08907e38d1b97c4dd10204",
+        "v2c5-discovery:e1251a0811acb865d6da84e5ad86106d6ead034580dd8ad52d7aab1d7b4af2df"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-783d0d28bd4c4992",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster contains multiple distinct transfer goals. Some examples ask for procedural guidance on how to move money into or between accounts, while others directly request that money be transferred. It also spans different transfer directions. Informational guidance and execution of a money movement require different runtime behavior, capabilities, and permission handling, so the cluster should be split before assigning a SentinelVoice intent.",
+      "human_theme": "Money transfer guidance and execution requests",
+      "member_count": 72,
+      "native_external_label_concentration": {
+        "counts": {
+          "topping_up_by_card": 6,
+          "transfer": 19,
+          "transfer_into_account": 47
+        },
+        "dominant": "transfer_into_account",
+        "dominant_proportion": 0.6527777777777778,
+        "proportions": {
+          "topping_up_by_card": 0.08333333333333333,
+          "transfer": 0.2638888888888889,
+          "transfer_into_account": 0.6527777777777778
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:7c2bc99e13916df3d205192b9f0df7e1c546dd0be635b808543bb1bc48d45e34",
+        "v2c5-discovery:f3be697fa2794451e17329c10d78c2ad3b1ad5e19275fdbdc223ea74debbffad",
+        "v2c5-discovery:a707d818ebe72c4892e31878fa4d05e01cdd8f48181cd26f799457eaaea70e91",
+        "v2c5-discovery:7048abf60293ba3e1d4b43cb6d6777287654b7b9c355cb5251cc340eba7251e3",
+        "v2c5-discovery:365300b5bfc088e468195ada287a86875900251f6379e77062a3c2fb858d5082"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 53,
+          "clinc150_oos": 19
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 0.7361111111111112,
+        "proportions": {
+          "banking77": 0.7361111111111112,
+          "clinc150_oos": 0.2638888888888889
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:211e31e5a77d8b7dffde0077a3386a67e2cfe27e97f79874eea5820297555bd9",
+        "v2c5-discovery:8eeb6703271af033d1876ce9ec2d9deae49f8af97c1ac3d4f94f05354eff3f48",
+        "v2c5-discovery:3202bf0aab3f83ca4b56ffe06021be34334ec74c12298173d1fd6f64f8740fca",
+        "v2c5-discovery:6920d7103fcaf014ad4176db46111c570d902b0d01884b40365c90be03bef425",
+        "v2c5-discovery:85ceae4fc148f0d9e13c7e99aba924ac7b26b98f065fa794ccd2771ace6b1b67"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-f82c44397767cd42",
+      "confidence": "HIGH",
+      "decision": "MAP_TO_EXISTING_INTENT",
+      "human_rationale": "The cluster consistently asks whether currency exchange is supported and how to exchange one currency for another through the app. These are informational capability and procedural questions that can be answered through SentinelVoice policy guidance. The examples do not provide clear evidence of a distinct runtime action that SentinelVoice must execute.",
+      "human_theme": "Currency exchange capability and guidance",
+      "member_count": 72,
+      "native_external_label_concentration": {
+        "counts": {
+          "exchange_via_app": 71,
+          "supported_cards_and_currencies": 1
+        },
+        "dominant": "exchange_via_app",
+        "dominant_proportion": 0.9861111111111112,
+        "proportions": {
+          "exchange_via_app": 0.9861111111111112,
+          "supported_cards_and_currencies": 0.013888888888888888
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:14cab713ebb11532f46c9f35160bee31d176c38b685b500893917e08a19f8c1b",
+        "v2c5-discovery:6579f1e3af4bb427f477556d8cd3c9fae48b0ca4605adec15136b0279bb8d950",
+        "v2c5-discovery:2144fd4248b507e26588517a7d390affa11a6cde9d5063aab69e1c8a39d6ba98",
+        "v2c5-discovery:53d68e26f189f0e87620d8bfad2cd8fa22097af5c5662c7f46a6f25714a09043",
+        "v2c5-discovery:2071758545e351ff87c35ac106feb1c770957f5ef22fbdd88f8d0d1f9ae396b4"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 72
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": "informational_policy"
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:21b1f8152a59408387a4946884ea578f04eab00d1e93a986d69cd907f45fa567",
+        "v2c5-discovery:b7dffd6eef8f659fcf8f44b1c91602ffb825fc79f45b8469364339e556982174",
+        "v2c5-discovery:f7671a82db7c02e5423c806808d19a018ebf953e9e69626fb821813ced30c588",
+        "v2c5-discovery:7df87638fa70e60fe6d2504b864d7d9ace2e24aae3ca712478849b9b043b6ecf",
+        "v2c5-discovery:8f3c2c3ad67ee83adfb6eccaa41757ed96740a8a6ae468a3f5009674c68fbdfd"
+      ],
+      "candidate_intent_name": "passcode_recovery",
+      "canonical_cluster_id": "cluster-cfbf7fb0669b0ecf",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster consistently represents customers who cannot access their account because they forgot their passcode or password, are locked out, or need to reset a credential. This is a distinct security-sensitive support goal with response behavior different from generic informational policy: SentinelVoice must not reveal stored credentials and should instead guide or route the customer through an approved recovery flow. Whether this requires a new runtime capability is deferred to Step 20.",
+      "human_theme": "Forgotten passcode and account-access recovery",
+      "member_count": 69,
+      "native_external_label_concentration": {
+        "counts": {
+          "passcode_forgotten": 69
+        },
+        "dominant": "passcode_forgotten",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "passcode_forgotten": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:418742f5328574008c125c1d49ffa2c3a02a2f3fbe075e9a09c1e208eb55c111",
+        "v2c5-discovery:56e3a200cc63028011a0f883308c4324a32a852143018f152b32df19846d7b2a",
+        "v2c5-discovery:d7c0b564c42a85dd5ecf4625fad352e1f0593d1030091020ce961398f46aec1b",
+        "v2c5-discovery:4872847054dba001ffe8c5887b9b0835170f8b4f40b8b3cc5e6ab02d0df9151b",
+        "v2c5-discovery:6f1245455cc37ed0e9ffab3f21d1e32beaf264f6503766c48941d83c4a768320"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 69
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:162edeced06e2ef6bd46b46fcf08eba256de6e1ffc3066e294b1ed48d6f0225c",
+        "v2c5-discovery:4faffc8536f35505fca198268b90b3634313eab205b18c325ad83e91a42a5844",
+        "v2c5-discovery:3ecc6bdc9e3873da4b76846aa35083d239f842a28e89807185e03b301ceb7c98",
+        "v2c5-discovery:f4046605d96113941e35de2402201c53913010d492d446278fe9948da04465b3",
+        "v2c5-discovery:6ec1333cbfa6792279035d3d0f8086c2ccf4d35ae37e51e7e3292cf961f00db7"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-3b55443356cf6fa9",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently asks for the customer's personal credit score or where to view it. This is primarily a customer-specific private-data lookup rather than a generic informational-policy question. SentinelVoice's current V1 tools and synthetic banking backend do not provide credit-score data or a credit-score lookup capability, so the goal should remain unsupported rather than be mapped to an existing intent.",
+      "human_theme": "Personal credit-score lookup",
+      "member_count": 68,
+      "native_external_label_concentration": {
+        "counts": {
+          "credit_score": 68
+        },
+        "dominant": "credit_score",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "credit_score": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:e9995cc5c797cd4a4cecd91adb133570ed37b9d96a4860f306157727bc49f252",
+        "v2c5-discovery:d3a8e4ca171cc366000cae95ad6e98ba254e918b228224261c2df5cac8e06660",
+        "v2c5-discovery:fa1d3add2c8153d275a8caed6bc77c353db55b474dd185dda0b0481d31678bc6",
+        "v2c5-discovery:76b00f2fe17f57e3251c36628f5dc0493aaf8365ce20063163aaa9933f6ca55b",
+        "v2c5-discovery:a139338762d9c0f662aee8e64df4d0135e8f9b9a474bcecae79d2bb6ade4caaa"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 68
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:aa19307c900af58ee8da6cbfc26499fa34d00336c360169ada0f2434f2ff92bb",
+        "v2c5-discovery:9d0d78de769514eb64f98ba9d0d621803d02f229790a0d0257976a300e7948fd",
+        "v2c5-discovery:88975d829fd8a0ae5f9125c0bb2e725395ceffb2340c8a17f2c3d1c39afb8c9a",
+        "v2c5-discovery:6139a6cd97feefa5bd8662438d5f916981e52810de27f172a5ac9b2a3b2c4630",
+        "v2c5-discovery:d44d2e47f3c521f583ccc8c145ab09f9f6d0835c480b8b2c85e42cae3216a888"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-2b49d15c7f2e42b9",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster mixes two distinct customer goals. Some examples ask for generic card-delivery timing or expected wait times, which can be answered through informational policy. Others ask why a specific already-issued card has not arrived or whether it may be lost, which is a customer-specific delivery-status or investigation request. These require different information sources and runtime behavior, so the cluster should be split before assigning one SentinelVoice intent.",
+      "human_theme": "Card delivery estimates and delayed-card investigation",
+      "member_count": 66,
+      "native_external_label_concentration": {
+        "counts": {
+          "card_arrival": 44,
+          "card_delivery_estimate": 22
+        },
+        "dominant": "card_arrival",
+        "dominant_proportion": 0.6666666666666666,
+        "proportions": {
+          "card_arrival": 0.6666666666666666,
+          "card_delivery_estimate": 0.3333333333333333
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:a51849a4569f924b5748181fa64f613a79426c95193a5b3d44ba47692b909ae5",
+        "v2c5-discovery:a3c4230bca830258bc055292b0e2fdc8925d31c93a85674f7a13d3baa52ccd44",
+        "v2c5-discovery:d3150efd092a2f1de572a69498908079271eb2ccd8539faefc9c8817915aec75",
+        "v2c5-discovery:0742dc1c8f6fac00426fd23e2834ac7186a62d601d8589f8e8012e0cfad21919",
+        "v2c5-discovery:796bdb59bad6d2888912b3ef37497df8524035542c02eeea0655f3c84f28c42a"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 66
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:9127dc89adf1fbaa8449931c26b23395758315f2c108bcdf963b74517af94a38",
+        "v2c5-discovery:beb049f617d0f5e88110eb4dac65ceaf619316157966ca9cdfd692231561ca1c",
+        "v2c5-discovery:f7cfd1a1836532fb93024388ff1e719811d2693ffc7b96cc9a5db23e58b8baff",
+        "v2c5-discovery:15af69defff9e84bcbd9976810fa805531f09331f5a57618b175d286f64330b1",
+        "v2c5-discovery:e14114d26f8ef56c3ff7c1da67d56ba40c524b8e9f1d284d0c5532574167f1a7"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-55319f7d231f08e3",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently represents customers seeking a refund for a purchased item, including both procedural questions and direct refund requests. These are merchant-refund goals rather than transaction disputes and should not be mapped to create_dispute without evidence of an unauthorized or disputed banking transaction. SentinelVoice V1 has no merchant-order or refund-processing capability, so this goal should remain unsupported.",
+      "human_theme": "Merchant purchase refund requests",
+      "member_count": 61,
+      "native_external_label_concentration": {
+        "counts": {
+          "request_refund": 61
+        },
+        "dominant": "request_refund",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "request_refund": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:fa075fd0d8f84db4ce44c405347e9186b04b8a058b2d4ceaf4e8a30220d8d42e",
+        "v2c5-discovery:8b99668eae50b97b1aee8e874abafc95ccc3c11068fe19c316644cf61dceaa8d",
+        "v2c5-discovery:997b95ab53ce4dbb948dcdaf6901dfd68004ec16e9692a0017cbfcc52f921045",
+        "v2c5-discovery:d1c5d00f0a36917de18a392e5de441734284cae8e18689489a4b2afa08b11f14",
+        "v2c5-discovery:d6b357ab8d2dbc025f386ac1f59c524934ab7ca40ef041f8b0d7100991d7c3dd"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 61
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:849f9c800e307cbc0a941f2c17f94ad73c27d49f4ecfbd4f246f61bbae73d576",
+        "v2c5-discovery:8c21611ada83d79b6b07a2e484204ce71d00f401928b3d4a1f04f2ac7855dc03",
+        "v2c5-discovery:42c880dd34ce5784497550a7a27442dd76aa0e9508c47a253e78aa73590c4a27",
+        "v2c5-discovery:a918727e392d28b9c82fd4b1f0113723643e6ba1a342860abac33fb15ec6dc3f",
+        "v2c5-discovery:fdc3efe17b7eaf356c3c039cb6c72663bfbed82cd64bea2acf51712954aa6787"
+      ],
+      "candidate_intent_name": "lost_or_stolen_phone",
+      "canonical_cluster_id": "cluster-f9a5115f146f8ccb",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster consistently represents customers whose phone has been lost or stolen and who need help protecting access to their banking account or app. This is a distinct security-sensitive goal that should not be mapped to freeze_card because the compromised resource is the device or app session rather than necessarily the payment card. It also requires more specific handling than generic informational policy. The exact runtime response or capability should be determined in Step 20.",
+      "human_theme": "Lost or stolen phone account-security support",
+      "member_count": 53,
+      "native_external_label_concentration": {
+        "counts": {
+          "lost_or_stolen_phone": 53
+        },
+        "dominant": "lost_or_stolen_phone",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "lost_or_stolen_phone": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:474833b3945fc1ba83134402dd2e2234a4b4d14217a97330ddd190da63886369",
+        "v2c5-discovery:41b9ca65bd242637d63e4ec85abc40a36e6a71dae81cab73a4d11d2dbc589df1",
+        "v2c5-discovery:d348116ec2ee0888bbf0e59ca6af58f27ce51578263a5d92593f329cea378984",
+        "v2c5-discovery:9d539e746e7e18bcf488abcb210776ceb399ef468f819197a204ac361655113f",
+        "v2c5-discovery:049dd10dd1ecd99977649a86afbc91b0095b5e65c3a283999d44dd4abdc2bf5c"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 53
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:1876b43cee21401ae55d8d8c735d71f415c5b4cea5a4bfe92a0f4e575e5253d0",
+        "v2c5-discovery:f9225a02a60b61fba6353e2f096da316ff5f06d34fbc92f3b011bef8fd6c6e6c",
+        "v2c5-discovery:fe3eb488ac682421a46367649203225ae3d7995aeb60c622a83f7c1832cbe692",
+        "v2c5-discovery:cc4faac2e904c1c0de1a29e11549cb94a85de762b73a24597bbdb7ced000071c",
+        "v2c5-discovery:634de2f65235a8655ed399e0f0b1320bc30e28377b72d28c728aa5281698a307"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-3aa64426d2d2cbf1",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently asks for the current status or progress of a customer's credit-card application. This is a customer-specific private lookup and should not be mapped to informational_policy or card_status, because card_status concerns an existing issued card rather than an application in progress. SentinelVoice V1 has no credit-application system or application-status lookup capability, so this goal should remain unsupported.",
+      "human_theme": "Credit-card application status lookup",
+      "member_count": 52,
+      "native_external_label_concentration": {
+        "counts": {
+          "application_status": 52
+        },
+        "dominant": "application_status",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "application_status": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:ca711ca757a26924c45286cc47b16e5bb8e80dd992eed0c974fec3478e69f69b",
+        "v2c5-discovery:a324cdb5f4fdc95b0a05b147f00bcf1da21ee54283941fbd9aa27c019c542062",
+        "v2c5-discovery:2f244dc46b5ff26072fef003d6be7792755e1cb49f4d865b8206bf9aa4ffd1d4",
+        "v2c5-discovery:58206745e3543f8042d1598413580233cec7d0111868e6fbb1ccdea155980822",
+        "v2c5-discovery:7829862f48aadf2b6958693ad50c97d75a95205fda8ce6ae6c76bd1644c6c790"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 52
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:e26a8e6608b4d771319f2572d8eb7032c212d77c2830fffb34208ebcf1df3412",
+        "v2c5-discovery:64e719761245c43d1a75485fa396ed0ad471b625c25c99340917a5af557bb3c0",
+        "v2c5-discovery:b0e28245e29ae1b24a7c60ad47609f61df40abc44627ba5682cfad7d4924a3ab",
+        "v2c5-discovery:a20689d2ffd1e84dbceda6f617807f22bd2e53baa2fa82816cab97ecb6c2cda4",
+        "v2c5-discovery:b936ba4eb84258366f89a9ddfab9d75576be5ba5f7f3fb2d093922d4d23608e4"
+      ],
+      "candidate_intent_name": "close_account",
+      "canonical_cluster_id": "cluster-de04bcd8a7332e73",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster consistently represents customers who want to close, terminate, delete, or deactivate their bank account. This is a distinct high-impact account-changing goal with different authorization, safety, and handling requirements from generic informational policy or existing card actions. The single freeze-account provenance occurrence is an outlier and does not materially change the cluster theme. Whether SentinelVoice should provide guidance, escalate, or support a protected runtime action should be decided in Step 20.",
+      "human_theme": "Account closure and termination requests",
+      "member_count": 51,
+      "native_external_label_concentration": {
+        "counts": {
+          "freeze_account": 1,
+          "terminate_account": 49
+        },
+        "dominant": "terminate_account",
+        "dominant_proportion": 0.98,
+        "proportions": {
+          "freeze_account": 0.02,
+          "terminate_account": 0.98
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:a5591f0f17a5251fba929f7d8fae385581f37fee3634eafb2280d34a94c2d828",
+        "v2c5-discovery:c7a024be09ce02be3ebac34bea592f6705217730b6b084d74f4e52a2cf184166",
+        "v2c5-discovery:17014823223f91d7c38deeac332bf47a698ccf10b0b482a983914c992a9dbb9d",
+        "v2c5-discovery:32965323150e3d2ccc646b5a40185ce8415423a301bc7c910d2e8749771d4b03",
+        "v2c5-discovery:a0b865fdb34373e17d2d3aa1527f62b166d00aa7b1229cfa8cd0abb771419009"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 49,
+          "clinc150_oos": 1,
+          "sentinelvoice_v2c1_internal": 1
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 0.9607843137254902,
+        "proportions": {
+          "banking77": 0.9607843137254902,
+          "clinc150_oos": 0.0196078431372549,
+          "sentinelvoice_v2c1_internal": 0.0196078431372549
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:9d46097ef6f43264f557b224138081905dd3e5f830ba39b7499cce74ea7ea39a",
+        "v2c5-discovery:35b77cca93ee068c9e76e64e1227b8905513c15e3305f75cbac4d599c2e9aa7b",
+        "v2c5-discovery:40ab9da9fc63d87008ca7ec0dce172a77d9fc1abc8d9d29403f0dbc8c3ae35e3",
+        "v2c5-discovery:23306833ea1d5e46e8ffdf240f0c3a269f1f69557f5680bd1b1a26f186b89bee",
+        "v2c5-discovery:41a55952da1b4d98b280baabed4a08a526c6ad28ca75dc6d0b1dc58cbc1564bc"
+      ],
+      "candidate_intent_name": "transfer_pending",
+      "canonical_cluster_id": "cluster-21a4b755f7c96f2c",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster consistently represents customers asking why an existing transfer remains pending or when it will complete. This is a distinct transfer-state investigation goal rather than a generic request for transaction details. It also differs from failed or declined transfers, transfer cancellation, and transfer-fee questions already identified during taxonomy review. The exact runtime implementation may reuse transaction lookup and policy information, so runtime changes should be decided in Step 20 rather than assumed here.",
+      "human_theme": "Pending transfer investigation",
+      "member_count": 50,
+      "native_external_label_concentration": {
+        "counts": {
+          "pending_transfer": 50
+        },
+        "dominant": "pending_transfer",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "pending_transfer": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:621a13bbdb0e87c037d7104f7b1ec4f124dacbe6b860fc3d2d77a3adcd0327bb",
+        "v2c5-discovery:9a618eb5e19ad1e5b2ce9e6e1dfe44848febab9375af9cbb7ed9004dad9a02a3",
+        "v2c5-discovery:21bc1096e19791a945acf00227461a8fb86aafed82a9bb99058b48f81758af85",
+        "v2c5-discovery:771c5556655afc520515e6a3effdce9ecff9fbcc5b82f81809d2cb42f5fbb4e0",
+        "v2c5-discovery:53fafb49baeff5a456964ecbd36026ffe0c3db28106e64662125e7c214b11391"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 50
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:71a86ae2e9c3b849955aa9618ecf9775d40f5f7cc9df759a4c5c1640150ea5a0",
+        "v2c5-discovery:8c6267ed04e6afcdcadfb514242f6627fb45e8b6ee564c0296c6eb944b808585",
+        "v2c5-discovery:77fcfac5123c21150fa72085ed880abad2fc83f4da81dd3b516523f50ae55018",
+        "v2c5-discovery:751979a905eef4fb686a6c189ed15f4068e119e25c9f83dbf4f3115e1abd6ede",
+        "v2c5-discovery:a6f06c9968dee7fc189fb314581cf492c061f547941b68e542e81696e6ec3677"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-c29614d54555e30c",
+      "confidence": "HIGH",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster mixes two distinct customer goals. Some examples ask why an account is already frozen or blocked, which is an investigation or status question. Others explicitly ask SentinelVoice to freeze the bank account, which is a protected account-changing action with different authorization and confirmation requirements. These should not be collapsed into one intent, and freeze_card is not an appropriate mapping because the affected resource is the bank account rather than the card.",
+      "human_theme": "Frozen-account investigation and account-freeze requests",
+      "member_count": 46,
+      "native_external_label_concentration": {
+        "counts": {
+          "account_blocked": 22,
+          "freeze_account": 24
+        },
+        "dominant": "freeze_account",
+        "dominant_proportion": 0.5217391304347826,
+        "proportions": {
+          "account_blocked": 0.4782608695652174,
+          "freeze_account": 0.5217391304347826
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:43d86a9ca77007615030cffcb70b021393cac7d96c35a9a1abac4562870ebe92",
+        "v2c5-discovery:fbfdb1497f877a1b9273065352f97f32407108e640424fd88050b4f631c71eaf",
+        "v2c5-discovery:fd95a3fa346d5edf6fe8199779995e893c6d669d9cacc46354a43fa3b9e36384",
+        "v2c5-discovery:22ce235dffe39f038120b6d9a57c8599c10f5ed8f5e05db7ce60c2a5c92e1e59",
+        "v2c5-discovery:d5aba38406b936011cd801e8b51537c4a47411c09d9fa83cbb04cd6f4c9268fd"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 46
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:ef302a7fd48b97a33f1ba1c0afcd47239d22ee523a341ff2a48626ab66ff53df",
+        "v2c5-discovery:93b8944724473b39d62dfd20afa111b1afdf42ace1ac8d7ea53a5a1314cf8153",
+        "v2c5-discovery:38e997a62614dc6a02b858976da1e2300ecf008fa72daa6f4205c397703c5f63",
+        "v2c5-discovery:2e1e442cbb6e18ddc9606df7fa91b898c841ce305b106cc888ddc07871cd577a",
+        "v2c5-discovery:3d7ab925cf4f7149ba521ede1363a8eb5b9f8d5a674211a05b8c2d014a7b5207"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-d1430ed47f0bb39d",
+      "confidence": "HIGH",
+      "decision": "MAP_TO_EXISTING_INTENT",
+      "human_rationale": "The cluster consistently represents customers asking for a bank routing number. Routing-number information is informational bank reference data rather than a protected account action, so it can be handled through SentinelVoice's informational_policy intent without adding a new runtime tool. Examples referring to other named banks should not cause SentinelVoice to claim support for those institutions; the runtime should answer only for the synthetic bank it represents.",
+      "human_theme": "Bank routing-number lookup",
+      "member_count": 46,
+      "native_external_label_concentration": {
+        "counts": {
+          "routing": 46
+        },
+        "dominant": "routing",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "routing": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:6efee463025cfb0f9c2c5c2c6eb50c3d83e4ad1c880b17246d7cd656e86c6829",
+        "v2c5-discovery:8688f54714a0c430f76659061bff50ad30cc7e69ad662249fcfd50b8dc7f4a16",
+        "v2c5-discovery:aade1ca05948d2d5f16944bf6d57039ea5dba2f04913281df350af84bcd67355",
+        "v2c5-discovery:cecd07448caf83f111fe1528bb8b78f2ea0555bf2de14ef4fe7798bd23760025",
+        "v2c5-discovery:251b1160c718849bcf13acbb69a7435b4344b1aeb40d28fd984627a492627540"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 46
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": "informational_policy"
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:084b71531c5749696e3943e1ca25b8bcd5ae04a5b187b8e91cc7128fe34e459f",
+        "v2c5-discovery:2bd6bd405422e6456b4aa60626bf6862e75e2b3ec881b0499628790fdd005ac6",
+        "v2c5-discovery:1d9c971d45c9cfbbb369f88dd19e625d872645498f8f3ae5c856ba08776f60a1",
+        "v2c5-discovery:875a94480d2c871695f15f528bd8c77d259065f5327c9a8454acd6cb731675db",
+        "v2c5-discovery:c28bb426a577a5c75f306a810a25be8f06b9b1268d46e18891f172ab20a39840"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-51adab13fdd99d8e",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently represents customers asking how to redeem or use credit-card reward points, including using points for purchases or converting them to cash. SentinelVoice V1 does not include a rewards program, rewards balance, redemption workflow, or corresponding runtime capability in its frozen product scope. The goal is coherent but should remain unsupported rather than be mapped to informational_policy or introduced as a new intent.",
+      "human_theme": "Credit-card rewards redemption",
+      "member_count": 44,
+      "native_external_label_concentration": {
+        "counts": {
+          "redeem_rewards": 44
+        },
+        "dominant": "redeem_rewards",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "redeem_rewards": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:fe2e96d3c9dfb588d74f4fc62c714140885d5229401fddd612c33b888114f9e5",
+        "v2c5-discovery:64a4d9ac27e886fe33bc71b035fa90cb7afd414c2b2bd665d930c9a68f7aa694",
+        "v2c5-discovery:599776525a3f41ae8d04b08c33d84e60e6478e5db1ebf6ae18934b239840cc1d",
+        "v2c5-discovery:4300d393b0c109233e09bff7e392064080b7e6c70cb2fe422d54ad80de051636",
+        "v2c5-discovery:687e104de904d5d27da1aaf8a513e251c3c75b700669c923b3d9e81fb30e7ba7"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 44
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:de0137d078212704b1f24bee93f826bc79f018c23fb2b13492ed600865d11eff",
+        "v2c5-discovery:369a982aa84662432f18c5bf0fae12bbf380f4e7f794599638e7351e04e3794a",
+        "v2c5-discovery:8158f79dcef6bea732e2c5406cb288cb42c23d15c8ed6be57494e900c309b382",
+        "v2c5-discovery:3dc45fe277874c81381141e4ed151ac5ab2c0fa22524e6f7913740f6ee92a73d",
+        "v2c5-discovery:ac8a6152a99d01d1ebf9cc6ec9ac56df06f8eea4b3aa7da595c42663eaf0c955"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-a077797c96f814ce",
+      "confidence": "MEDIUM",
+      "decision": "NEEDS_SPLIT_REVIEW",
+      "human_rationale": "The cluster is dominated by generic questions about expected transfer duration, including international transfer timing, which can be handled through informational policy. However, some boundary examples describe a specific transfer that has already been delayed, remains pending, or has not been received. Those are customer-specific investigation goals and overlap with the separate transfer_pending candidate identified elsewhere. Because these behaviors should not be collapsed into one intent, the cluster should receive split review. Confidence is MEDIUM because the delayed-transfer examples are a minority concentrated near the cluster boundary.",
+      "human_theme": "Transfer timing guidance and delayed-transfer investigation",
+      "member_count": 43,
+      "native_external_label_concentration": {
+        "counts": {
+          "pending_transfer": 3,
+          "transfer_not_received_by_recipient": 2,
+          "transfer_timing": 38
+        },
+        "dominant": "transfer_timing",
+        "dominant_proportion": 0.8837209302325582,
+        "proportions": {
+          "pending_transfer": 0.06976744186046512,
+          "transfer_not_received_by_recipient": 0.046511627906976744,
+          "transfer_timing": 0.8837209302325582
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:e3af6b205773eb3fae87e38c355b636420a2c370b145ba8cf9adaa2efcae56a2",
+        "v2c5-discovery:3252a37ad395e930d4f243a56d911a3cbd6a98782ec3ca055692fdef8ac1f77f",
+        "v2c5-discovery:8859f31f6062cf0040ead3cb8517857216b443f7075252830f1bb7257b5aa827",
+        "v2c5-discovery:8e7ff455146b466c28cfa83cb54f51068add370d9c073243ba5cec0edf206f31",
+        "v2c5-discovery:bd3c62d8a810eba683aba4e0c0a063fd53875ffc97c42a5979c317c00e0228e2"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 43
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:7644857f818cc8fa6d38e8587dba7fa495d2baf87c1d8894c6bed58c367840f5",
+        "v2c5-discovery:3bda997d3dd5b1f43da72eae8d7177b967c588076aad86c94734af4d11f456c7",
+        "v2c5-discovery:0bc3da8f794cb634f09397ee5d70f5bce2b49557bc44c60668b2b1d32101a893",
+        "v2c5-discovery:4eceba6f2147d88e809615fdf3790e00eb9025f5fa4ff35b05605cf75caa9f3c",
+        "v2c5-discovery:ae27354f08c473fdafa96570807dc745d50caa0a8cf5ed381d620dc163215064"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-7c48d300b044ec98",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently represents customers asking for general advice on how to improve or build their credit score. This is not a customer-specific account lookup, but it also does not fit SentinelVoice's informational_policy intent, which is intended for the synthetic bank's policies, procedures, and supported product guidance. Generic credit-building advice is broader financial guidance outside the frozen V1 support scope, so this goal should remain unsupported.",
+      "human_theme": "Credit-score improvement guidance",
+      "member_count": 39,
+      "native_external_label_concentration": {
+        "counts": {
+          "improve_credit_score": 39
+        },
+        "dominant": "improve_credit_score",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "improve_credit_score": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:de59ce98966cc8ea97dad26cd2d5dd76c18956ab51dba21e67162ace37773aab",
+        "v2c5-discovery:179674c7b36baee1f615fb86ad44965fe4e76f7b406f043e36606fae1b1072b8",
+        "v2c5-discovery:02749d59fa30a7c975ad55142754511745ea2768ec56aa2c8a67936878a34ff9",
+        "v2c5-discovery:c584ee6b3740610694a0213dd3ce2bbfa890cf487efe56f79b56911669be08c1",
+        "v2c5-discovery:0f32b3f7a62fbb946f586e3f3130ae7c0e49bd60bdcf05867026fb735e7b9016"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "clinc150_oos": 39
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "clinc150_oos": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:cbaba73bdd32c99364712bfeaff2c1f889cc046301e31422aa120a5db24523b4",
+        "v2c5-discovery:66869a266ca46eb68d0239ddfacc4f2e7497890f2b2eb4b64b60538258c2f52f",
+        "v2c5-discovery:9ea93ea66a786a35bc2c83d91627c54228902adfe566e0b9da1035ca9dad472c",
+        "v2c5-discovery:5846e11182651a4d6085d2ce123fb4419576170c4fb6e6ab81befa96f47392aa",
+        "v2c5-discovery:5e17a43bb4efcb07361a6ae7073d81c533396dbf06906d8b90d4c999bb8cf013"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-d4216222f028d98e",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently represents customers asking whether they can top up an account using a cheque or how to perform a cheque-based top-up. SentinelVoice V1 does not support top-up functionality or related top-up workflows, so this goal should remain unsupported rather than be mapped to informational_policy. The single top-up-limits example is an outlier and does not materially change the cluster theme.",
+      "human_theme": "Cheque-based account top-up",
+      "member_count": 38,
+      "native_external_label_concentration": {
+        "counts": {
+          "top_up_by_cash_or_cheque": 37,
+          "top_up_limits": 1
+        },
+        "dominant": "top_up_by_cash_or_cheque",
+        "dominant_proportion": 0.9736842105263158,
+        "proportions": {
+          "top_up_by_cash_or_cheque": 0.9736842105263158,
+          "top_up_limits": 0.02631578947368421
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:60706d39e5f3574f26d27967d7e54308e98db656e9a64071ca54ec884217f2bf",
+        "v2c5-discovery:222a326cc06dc976f500b36a1050b69a51e9a9f84f56f431107315904d4c9204",
+        "v2c5-discovery:8d81550f6abe9f96e0bf3fbcdc348960350768fee7f12ec046b3d88c054164f0",
+        "v2c5-discovery:f1224e1d58fc774b568bb80a516f75fe6ee074429f573b465631f75f61b0ee9b",
+        "v2c5-discovery:d91a6bc7ca66142190f40f7185cd78ec519b84ba49cb47e055d93eb4b9144fae"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 38
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:ad62655695b758ac8ff07520a604399b31ad6ddd450bbd9f1ad901e5ded860d4",
+        "v2c5-discovery:1e806b4e708c26d89647de0107f452a44ff4d9028cf23ee93af89bc760488cdd",
+        "v2c5-discovery:524c321e93149df76d615eb4af27184bb6adc43b38c9ae641a533b43f4b3d2cc",
+        "v2c5-discovery:6ff7690ceff221b1a018c8329ee3e0a0ca400f814cbe05b7c485c4e349d57313",
+        "v2c5-discovery:56745d8a30ccd73a5f066ef35da5f3dfbad9eb596953e824cff6a72e59c1267b"
+      ],
+      "candidate_intent_name": "card_retained_by_atm",
+      "canonical_cluster_id": "cluster-7dab4f9ae124477e",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster consistently represents customers whose physical card has been retained by an ATM and who need guidance on recovery, reporting, security, or replacement. This is a distinct card-incident goal and should not be mapped directly to freeze_card because the customer is reporting the ATM-retention event rather than explicitly requesting a freeze. It also requires more specific handling than generic informational policy. The single damaged-card provenance occurrence reflects the same underlying ATM-retention incident and does not materially change the cluster theme. Exact runtime handling should be decided in Step 20.",
+      "human_theme": "ATM-retained card recovery",
+      "member_count": 37,
+      "native_external_label_concentration": {
+        "counts": {
+          "card_swallowed": 36,
+          "damaged_card": 1
+        },
+        "dominant": "card_swallowed",
+        "dominant_proportion": 0.972972972972973,
+        "proportions": {
+          "card_swallowed": 0.972972972972973,
+          "damaged_card": 0.02702702702702703
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:24cd8350541596dc2f07e0fed04c9174f75bacba4812b324324cd871625ace81",
+        "v2c5-discovery:66a0979873dcdcfd8d1b235b7b07b5e096f4005ead055cecf64068eeb9c0ee7f",
+        "v2c5-discovery:217c5f16f93824901db5c9810dae4510ee4912d0fc93fca51c2b040461952474",
+        "v2c5-discovery:e9e17fe4219b7ee5df7706f6ed70cd7ae68ecadac0cee95820eb0107d4e87ab1",
+        "v2c5-discovery:5e63647d2eca827d9a20c7efa4a119f7f103a229854ab69f3a7f1fb8757ee290"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 36,
+          "clinc150_oos": 1
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 0.972972972972973,
+        "proportions": {
+          "banking77": 0.972972972972973,
+          "clinc150_oos": 0.02702702702702703
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:02acf9ac09e0ddebdc6471b12a5f97fd9db03e980b551cc5c355dfd8a72633f4",
+        "v2c5-discovery:0495bced8247f12bb7520bcd7d93e869e1a773d5e1b45ef4a476f96db3de6f36",
+        "v2c5-discovery:10c4149c32c820f5b8b2a6002cbb18113850ccdb0d548761368eb7842ca2f36d",
+        "v2c5-discovery:11e2a74ecef54ab0da90d4f30704afcccaf6abf9126e5bab631928f3a5466232",
+        "v2c5-discovery:1867b9ee13c3161978246c5297b987864e5761f5c2875e64795760975f42da00"
+      ],
+      "candidate_intent_name": "account_blocked",
+      "canonical_cluster_id": "cluster-a37f29dd8989408e",
+      "confidence": "HIGH",
+      "decision": "CANDIDATE_NEW_INTENT",
+      "human_rationale": "The cluster consistently represents customers whose bank account is already blocked or locked and who want to confirm that state or understand why it happened. This is a distinct account-status investigation goal and should not be mapped to freeze_card, because the affected resource is the bank account and the customer is not requesting a new freeze action. It also requires more specific handling than generic informational policy. The single beneficiary-not-allowed provenance occurrence is an outlier and does not materially change the cluster theme. Exact runtime handling should be determined in Step 20.",
+      "human_theme": "Blocked account investigation",
+      "member_count": 30,
+      "native_external_label_concentration": {
+        "counts": {
+          "account_blocked": 29,
+          "beneficiary_not_allowed": 1
+        },
+        "dominant": "account_blocked",
+        "dominant_proportion": 0.9666666666666667,
+        "proportions": {
+          "account_blocked": 0.9666666666666667,
+          "beneficiary_not_allowed": 0.03333333333333333
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:b4eac9db570dbee12e67731635d1b9cc75c462902a81268eca7eb0524099d6bd",
+        "v2c5-discovery:f667815e65c4496615fa4fceed0a83bff77519d2af5bc47d0ec7d2c7d63976a1",
+        "v2c5-discovery:9bcfded84fed2ae28773de0d34ffe656af0d145674c46056b2fd18cbe5c278ab",
+        "v2c5-discovery:52e0b1183feec0e0a2251b6f12dae8c5cb5150802bbc2e5c933c113b83b28c80",
+        "v2c5-discovery:4c9a35a3ab30351d3fb63293af4f43052712afcd29419feabf8e8a3e164b2d38"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": null,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 1,
+          "clinc150_oos": 29
+        },
+        "dominant": "clinc150_oos",
+        "dominant_proportion": 0.9666666666666667,
+        "proportions": {
+          "banking77": 0.03333333333333333,
+          "clinc150_oos": 0.9666666666666667
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    },
+    {
+      "boundary_discovery_ids": [
+        "v2c5-discovery:0196269bdb63a08ba539681bc89a25a402c5679d4333f0001ddfe232d866c89e",
+        "v2c5-discovery:06d2d8b41e4725293b31737a5581d45b833c42b329ad63bebb2aeb848a44f688",
+        "v2c5-discovery:0e22bf124d2e742770406be35ee7322bcd57cd79eaade047685fc0773980c4d1",
+        "v2c5-discovery:214a7636eb18dbd47e0582b83b86c0d9d5808197b0beb29af1646bfc87a432af",
+        "v2c5-discovery:245d106b300359852d701f5c41396c0edd821be2a4a0ffdb739da44645c2b81b"
+      ],
+      "candidate_intent_name": null,
+      "canonical_cluster_id": "cluster-f49838599de29d0f",
+      "confidence": "HIGH",
+      "decision": "REMAIN_UNSUPPORTED",
+      "human_rationale": "The cluster consistently concerns using Apple Pay for account top-ups, including questions about whether Apple Pay top-up is supported and why an attempted Apple Pay top-up is failing. Although these contain capability and failure variants, separating them would not be operationally useful for the current SentinelVoice taxonomy because top-up functionality as a whole is outside the frozen V1 scope. SentinelVoice has no top-up or Apple Pay top-up capability, so this cluster should remain unsupported.",
+      "human_theme": "Apple Pay account top-up support and failures",
+      "member_count": 30,
+      "native_external_label_concentration": {
+        "counts": {
+          "apple_pay_or_google_pay": 30
+        },
+        "dominant": "apple_pay_or_google_pay",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "apple_pay_or_google_pay": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "representative_discovery_ids": [
+        "v2c5-discovery:b2ae1850439a0bc3f9876bb52bf57ff41de64a667c2f14c8aad86f6b165fac3d",
+        "v2c5-discovery:60fcfaf489e2bedae8c3ddaec0ef08c20d9f89e9bd97fcb2455c6b14e2a796e5",
+        "v2c5-discovery:f0b8f79e55bf20057e3c83c891cf3e77e0794895d8530208b30f55e2e02633c1",
+        "v2c5-discovery:e4de2f970865ba02524c7cd568f6f2179f851ab7276387a244018139e4affecc",
+        "v2c5-discovery:f6b998eb83adbb8ec435cec38aec5fc54a9d406959a3fcaf33924f6d9db70701"
+      ],
+      "review_status": "REVIEWED",
+      "runtime_change_required": false,
+      "source_dataset_concentration": {
+        "counts": {
+          "banking77": 30
+        },
+        "dominant": "banking77",
+        "dominant_proportion": 1.0,
+        "proportions": {
+          "banking77": 1.0
+        },
+        "unit": "provenance_occurrences"
+      },
+      "target_existing_intent": null
+    }
+  ],
+  "analysis_role": "human_taxonomy_adjudication_evidence_only",
+  "classifier_training_performed": false,
+  "cluster_count": 35,
+  "decision_counts": {
+    "CANDIDATE_NEW_INTENT": 9,
+    "INSUFFICIENT_EVIDENCE": 0,
+    "MAP_TO_EXISTING_INTENT": 4,
+    "MIXED_OR_INCOHERENT": 0,
+    "NEEDS_SPLIT_REVIEW": 9,
+    "REMAIN_UNSUPPORTED": 13
+  },
+  "external_labels_are_metadata_only": true,
+  "final_taxonomy_frozen": false,
+  "human_adjudication_completed": true,
+  "new_intents_created": false,
+  "phase": "V2-C5 Step 19",
+  "primary_config_id": "mcs30_ms10",
+  "protected_action_intents_inferred_automatically": false,
+  "reviewed_count": 35,
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c5-taxonomy-adjudication.v1",
+  "source_artifacts": {
+    "contract": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_contract.json",
+      "sha256": "acc48bace76a5ae93ff9a1818856e3b2dc0ad3585c80e8ba7a3f582208a71427"
+    },
+    "discovery_assignments": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_assignments.json",
+      "sha256": "aa91a38a3dde57747a8694c404ef00105dcdb0e4233c995749edc1d129596ac0"
+    },
+    "discovery_corpus": {
+      "path": "data/evals/v2/ml/v2c5_discovery_corpus.json",
+      "sha256": "0a873fe5797fdd93689e7d5054b029cd7b9068017b0ecff54af000641e282e01"
+    },
+    "discovery_report": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery_report.json",
+      "sha256": "ca007ab1ade5e07e377022a5add49c641b209ae2812c3d4217734c0aeaa7c3c1"
+    },
+    "step18_manifest": {
+      "path": "data/evals/v2/ml/v2c5_intent_discovery.manifest.json",
+      "sha256": "a0ea3f8353c12b341fbb4142b67dff507c227d94a55c73993f9fca9645162fb9"
+    },
+    "step18_script": {
+      "path": "scripts/run_v2c5_intent_discovery.py",
+      "sha256": "85700b8f54c3bf5c0e00780af8fcd88d9093d6c0a4b2b993a86b3d5acfac5ce3"
+    }
+  },
+  "step20_required": true,
+  "taxonomy_changed": false
+}

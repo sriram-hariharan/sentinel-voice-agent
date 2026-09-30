@@ -1,0 +1,414 @@
+{
+  "candidate_cluster_resolutions": [
+    {
+      "candidate_intent_name": "transfer_failed_or_declined",
+      "canonical_cluster_id": "cluster-3c52f1b1fc6eccb5",
+      "final_intent": "transfer_failed_or_declined",
+      "rationale": "Failed or declined transfers require a distinct classifier and evaluation distinction from pending transfers and generic transaction lookup.",
+      "resolution": "ACCEPT_NEW_INTENT"
+    },
+    {
+      "candidate_intent_name": "cancel_transfer",
+      "canonical_cluster_id": "cluster-9c182bcd6203a6a5",
+      "final_intent": "cancel_transfer",
+      "rationale": "Transfer cancellation is a coherent protected-write goal, but recognition creates no transfer-cancellation runtime tool.",
+      "resolution": "ACCEPT_NEW_INTENT"
+    },
+    {
+      "candidate_intent_name": "transfer_fee_charged",
+      "canonical_cluster_id": "cluster-9d9626407e037b50",
+      "final_intent": "transaction_details",
+      "rationale": "The customer is investigating a charge attached to a specific transfer. A separate classifier class adds little operational value; policy may supplement transaction lookup.",
+      "resolution": "MERGE_TO_EXISTING_INTENT"
+    },
+    {
+      "candidate_intent_name": "passcode_recovery",
+      "canonical_cluster_id": "cluster-cfbf7fb0669b0ecf",
+      "final_intent": "passcode_recovery",
+      "rationale": "Credential recovery is a distinct security-sensitive support goal that requires recovery guidance or escalation rather than credential disclosure.",
+      "resolution": "ACCEPT_NEW_INTENT"
+    },
+    {
+      "candidate_intent_name": "lost_or_stolen_phone",
+      "canonical_cluster_id": "cluster-f9a5115f146f8ccb",
+      "final_intent": "lost_or_stolen_phone",
+      "rationale": "A compromised phone or app session is a distinct security event and does not by itself imply a card-freeze request.",
+      "resolution": "ACCEPT_NEW_INTENT"
+    },
+    {
+      "candidate_intent_name": "close_account",
+      "canonical_cluster_id": "cluster-de04bcd8a7332e73",
+      "final_intent": "close_account",
+      "rationale": "Account closure is a distinct protected-write goal; Step 20 recognizes it without adding an account-closure runtime tool.",
+      "resolution": "ACCEPT_NEW_INTENT"
+    },
+    {
+      "candidate_intent_name": "transfer_pending",
+      "canonical_cluster_id": "cluster-21a4b755f7c96f2c",
+      "final_intent": "transfer_pending",
+      "rationale": "Investigation of an already pending transfer is distinct from failed transfers, cancellation, and generic timing guidance.",
+      "resolution": "ACCEPT_NEW_INTENT"
+    },
+    {
+      "candidate_intent_name": "card_retained_by_atm",
+      "canonical_cluster_id": "cluster-7dab4f9ae124477e",
+      "final_intent": "informational_policy",
+      "rationale": "ATM-retained-card incidents primarily require recovery and security guidance. freeze_card remains an explicit protected action and is never inferred from ATM retention alone.",
+      "resolution": "MERGE_TO_EXISTING_INTENT"
+    },
+    {
+      "candidate_intent_name": "account_blocked",
+      "canonical_cluster_id": "cluster-a37f29dd8989408e",
+      "final_intent": "account_blocked",
+      "rationale": "Investigation of an already blocked bank account is a private read and is distinct from freezing a card or requesting a new account freeze.",
+      "resolution": "ACCEPT_NEW_INTENT"
+    }
+  ],
+  "carry_forward_cluster_resolutions": [
+    {
+      "canonical_cluster_id": "cluster-3aa64426d2d2cbf1",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-3b55443356cf6fa9",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-51adab13fdd99d8e",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-55319f7d231f08e3",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-56d2ffbdbe650346",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-667773abc98dc995",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-7c48d300b044ec98",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-9bfbcb8e59c48e5c",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-b4254457ec8205db",
+      "final_intent": "informational_policy",
+      "resolution": "CARRY_FORWARD_EXISTING_INTENT",
+      "source_decision": "MAP_TO_EXISTING_INTENT"
+    },
+    {
+      "canonical_cluster_id": "cluster-b640b5ccfa12891b",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-ca2ca918e26510fc",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-cb42832dd44b8a70",
+      "final_intent": "transaction_details",
+      "resolution": "CARRY_FORWARD_EXISTING_INTENT",
+      "source_decision": "MAP_TO_EXISTING_INTENT"
+    },
+    {
+      "canonical_cluster_id": "cluster-d1430ed47f0bb39d",
+      "final_intent": "informational_policy",
+      "resolution": "CARRY_FORWARD_EXISTING_INTENT",
+      "source_decision": "MAP_TO_EXISTING_INTENT"
+    },
+    {
+      "canonical_cluster_id": "cluster-d4216222f028d98e",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-f12522f661dcaf5d",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-f49838599de29d0f",
+      "final_intent": "unsupported_or_uncertain",
+      "resolution": "REMAIN_UNSUPPORTED",
+      "source_decision": "REMAIN_UNSUPPORTED"
+    },
+    {
+      "canonical_cluster_id": "cluster-f82c44397767cd42",
+      "final_intent": "informational_policy",
+      "resolution": "CARRY_FORWARD_EXISTING_INTENT",
+      "source_decision": "MAP_TO_EXISTING_INTENT"
+    }
+  ],
+  "carry_forward_resolution_policy": {
+    "MAP_TO_EXISTING_INTENT": "Carry forward target_existing_intent exactly.",
+    "REMAIN_UNSUPPORTED": "Resolve to unsupported_or_uncertain.",
+    "individual_utterance_relabeling_performed": false
+  },
+  "classifier_training_performed": false,
+  "dataset_relabeling_performed": false,
+  "final_intent_count": 16,
+  "final_taxonomy_frozen": true,
+  "fresh_holdout_created": false,
+  "fresh_holdout_required": true,
+  "input_scope": {
+    "consumed_artifacts": [
+      "data/evals/v2/ml/v2c5_taxonomy_adjudication.json",
+      "data/evals/v2/ml/v2c5_taxonomy_adjudication.manifest.json"
+    ],
+    "prohibited_artifacts_consumed": []
+  },
+  "intent_label_order": [
+    "account_balance",
+    "account_blocked",
+    "cancel_transfer",
+    "card_status",
+    "close_account",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "lost_or_stolen_phone",
+    "passcode_recovery",
+    "recent_transactions",
+    "transaction_details",
+    "transfer_failed_or_declined",
+    "transfer_pending",
+    "unsupported_or_uncertain"
+  ],
+  "new_intent_count": 7,
+  "new_intents": [
+    "account_blocked",
+    "cancel_transfer",
+    "close_account",
+    "lost_or_stolen_phone",
+    "passcode_recovery",
+    "transfer_failed_or_declined",
+    "transfer_pending"
+  ],
+  "phase": "V2-C5 Step 20",
+  "prior_intent_count": 9,
+  "protected_write_intents": [
+    "cancel_transfer",
+    "close_account",
+    "create_dispute",
+    "freeze_card"
+  ],
+  "retained_intents": [
+    "account_balance",
+    "card_status",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "recent_transactions",
+    "transaction_details",
+    "unsupported_or_uncertain"
+  ],
+  "risk_by_intent": {
+    "account_balance": "PRIVATE_READ",
+    "account_blocked": "PRIVATE_READ",
+    "cancel_transfer": "PROTECTED_WRITE",
+    "card_status": "PRIVATE_READ",
+    "close_account": "PROTECTED_WRITE",
+    "create_dispute": "PROTECTED_WRITE",
+    "escalation": "ESCALATION_OR_UNCERTAIN",
+    "freeze_card": "PROTECTED_WRITE",
+    "informational_policy": "PUBLIC",
+    "lost_or_stolen_phone": "ESCALATION_OR_UNCERTAIN",
+    "passcode_recovery": "ESCALATION_OR_UNCERTAIN",
+    "recent_transactions": "PRIVATE_READ",
+    "transaction_details": "PRIVATE_READ",
+    "transfer_failed_or_declined": "PRIVATE_READ",
+    "transfer_pending": "PRIVATE_READ",
+    "unsupported_or_uncertain": "ESCALATION_OR_UNCERTAIN"
+  },
+  "risk_mapping_role": "classifier_and_evaluation_metadata_only",
+  "runtime_authority": false,
+  "runtime_behavior_changed": false,
+  "runtime_tools_changed": false,
+  "schema_version": "v2c5-taxonomy-freeze.v1",
+  "source_step19_adjudication": {
+    "path": "data/evals/v2/ml/v2c5_taxonomy_adjudication.json",
+    "sha256": "e63e6a9afc575c603587f2a2119badd597bebbed3e57febc8f5384c16ea99d5d"
+  },
+  "split_cluster_resolutions": [
+    {
+      "branches": [
+        {
+          "final_intent": "informational_policy",
+          "when": "informational, capability, or card-acquisition guidance"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "direct unsupported card acquisition, order, or management"
+        }
+      ],
+      "canonical_cluster_id": "cluster-25a4740ae330f948",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "theme": "Card acquisition and virtual/disposable card management"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "informational_policy",
+          "when": "PIN information or how-to guidance"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "direct PIN-changing operation"
+        }
+      ],
+      "canonical_cluster_id": "cluster-bab7911ea80f612b",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "theme": "PIN information and PIN change requests"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "informational_policy",
+          "when": "generic identity-verification guidance"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "customer-specific failed verification or recovery problem"
+        }
+      ],
+      "canonical_cluster_id": "cluster-e92864f71372fce3",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "safety_constraints": [
+        "Verification failure never becomes escalation unless the utterance requests human escalation."
+      ],
+      "theme": "Identity verification guidance and verification failures"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "informational_policy",
+          "when": "generic personal-details update guidance"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "direct personal-details update operation"
+        }
+      ],
+      "canonical_cluster_id": "cluster-3db20683a0becc1c",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "theme": "Personal-details change guidance and direct update requests"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "customer-specific credit-limit lookup"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "direct credit-limit change or increase"
+        }
+      ],
+      "canonical_cluster_id": "cluster-d8ae664886c213a2",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "safety_constraints": [
+        "No credit-account capability exists in the current V1 runtime."
+      ],
+      "theme": "Credit-limit lookup and credit-limit change requests"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "informational_policy",
+          "when": "generic money-transfer guidance"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "direct transfer execution"
+        }
+      ],
+      "canonical_cluster_id": "cluster-783d0d28bd4c4992",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "safety_constraints": [
+        "Direct transfer execution does not create or imply a transfer-money runtime tool."
+      ],
+      "theme": "Money transfer guidance and execution requests"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "informational_policy",
+          "when": "generic card-delivery timing guidance"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "customer-specific delayed or missing-card investigation"
+        }
+      ],
+      "canonical_cluster_id": "cluster-2b49d15c7f2e42b9",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "theme": "Card delivery estimates and delayed-card investigation"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "account_blocked",
+          "when": "already blocked or frozen bank-account investigation"
+        },
+        {
+          "final_intent": "unsupported_or_uncertain",
+          "when": "direct request to freeze or block the bank account"
+        }
+      ],
+      "canonical_cluster_id": "cluster-c29614d54555e30c",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "safety_constraints": [
+        "A bank-account freeze request never becomes freeze_card."
+      ],
+      "theme": "Frozen-account investigation and account-freeze requests"
+    },
+    {
+      "branches": [
+        {
+          "final_intent": "informational_policy",
+          "when": "generic transfer timing or how-long guidance"
+        },
+        {
+          "final_intent": "transfer_pending",
+          "when": "already delayed or pending transfer investigation"
+        }
+      ],
+      "canonical_cluster_id": "cluster-a077797c96f814ce",
+      "resolution": "BRANCH_FOR_STEP21_RELABELING",
+      "theme": "Transfer timing guidance and delayed-transfer investigation"
+    }
+  ],
+  "step21_required": true,
+  "taxonomy_version": "v2c5-taxonomy.v1"
+}

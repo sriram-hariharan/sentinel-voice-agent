@@ -1,0 +1,29 @@
+{
+  "classifier_training_performed": false,
+  "final_intent_count": 16,
+  "final_taxonomy_frozen": true,
+  "fresh_holdout_created": false,
+  "fresh_holdout_required": true,
+  "new_intent_count": 7,
+  "phase": "V2-C5 Step 20",
+  "runtime_behavior_changed": false,
+  "runtime_tools_changed": false,
+  "schema_version": "v2c5-taxonomy-freeze-manifest.v1",
+  "source_step19_adjudication": {
+    "path": "data/evals/v2/ml/v2c5_taxonomy_adjudication.json",
+    "sha256": "e63e6a9afc575c603587f2a2119badd597bebbed3e57febc8f5384c16ea99d5d"
+  },
+  "source_step19_manifest": {
+    "path": "data/evals/v2/ml/v2c5_taxonomy_adjudication.manifest.json",
+    "sha256": "443501b3cd6d0614a089b8acd2a420674ee43b4e5821db9fce4df6e7a2db379f"
+  },
+  "step20_script": {
+    "path": "scripts/freeze_v2c5_taxonomy.py",
+    "sha256": "03625ddc3a107b9946659af0a08dc120811a58413a7645b2c3507e4fa8afb8ce"
+  },
+  "step21_required": true,
+  "taxonomy_freeze": {
+    "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+    "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+  }
+}

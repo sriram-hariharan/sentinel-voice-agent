@@ -3895,6 +3895,45 @@ discovery evidence only: it changes no taxonomy, creates no intent, trains no
 classifier, changes no runtime behavior, does not freeze the final taxonomy,
 and leaves Step 20 required.
 
+### V2-C5 Step 20 expanded-taxonomy freeze
+
+Step 20 converts the completed Step 19 human evidence into a separate,
+versioned V2-C5 classifier taxonomy without modifying the historical V2-C1,
+V2-C3, or V2-C4 nine-intent contracts. The frozen label space contains the
+nine retained labels plus seven new labels: `account_blocked`,
+`cancel_transfer`, `close_account`, `lost_or_stolen_phone`,
+`passcode_recovery`, `transfer_failed_or_declined`, and `transfer_pending`.
+The final label order is lexicographically sorted and contains exactly 16
+unique intents.
+
+The other two Step 19 candidates are merged: `transfer_fee_charged` becomes
+`transaction_details`, while `card_retained_by_atm` becomes
+`informational_policy` unless an utterance independently contains explicit
+card-freeze semantics. All nine split-review clusters have explicit branch
+rules for Step 21 relabeling; Step 20 does not automatically relabel individual
+utterances.
+
+The new risk mapping is classifier/evaluation metadata, not runtime authority.
+No runtime tool, authorization rule, routing behavior, or protected execution
+path changes. In particular, recognizing `cancel_transfer` or `close_account`
+does not create a tool for either action. Authentication, authorization,
+ownership, confirmation, idempotency, and state transitions remain
+deterministic application responsibilities.
+
+The architecture choice is a separate V2-C5 taxonomy artifact. This freezes a
+reproducible expanded label space while preserving historical experiment
+provenance and explicit safety boundaries. Modifying `IntentLabel` globally,
+inferring labels directly from clusters, or adding tools immediately were
+rejected because those choices would rewrite old semantics, treat clustering
+as truth, or couple recognition to execution authority. The tradeoff is
+temporary duplication between the old V2 label contract and V2-C5. The design
+remains highly reversible: future taxonomy versions can be added without
+mutating old contracts until later model selection and runtime integration.
+
+Step 21 must build the expanded supervised dataset and a new, independently
+authored final holdout. The old V2-C4 holdout remains prohibited as V2-C5 final
+evidence.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

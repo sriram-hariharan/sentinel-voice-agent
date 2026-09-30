@@ -644,6 +644,75 @@ remain human discovery evidence only: `taxonomy_changed=false`,
 `runtime_behavior_changed=false`, `final_taxonomy_frozen=false`, and
 `step20_required=true`.
 
+## V2-C5 Step 20 expanded-taxonomy freeze
+
+Step 19 produced human discovery evidence only. Step 20 consumes only its
+hash-pinned adjudication and manifest and freezes a separate, versioned V2-C5
+classifier taxonomy. The historical V2-C1, V2-C3, and V2-C4 nine-intent
+contracts remain unchanged.
+
+The final taxonomy retains all nine historical labels and accepts exactly
+seven new labels:
+
+- `account_blocked`
+- `cancel_transfer`
+- `close_account`
+- `lost_or_stolen_phone`
+- `passcode_recovery`
+- `transfer_failed_or_declined`
+- `transfer_pending`
+
+The resulting classifier label space contains exactly 16 unique labels in
+lexicographic order. `transfer_fee_charged` merges into
+`transaction_details`. `card_retained_by_atm` merges into
+`informational_policy`; ATM retention alone never implies `freeze_card`, which
+still requires explicit current-action semantics.
+
+All nine `NEEDS_SPLIT_REVIEW` clusters receive explicit branch semantics for
+future Step 21 relabeling. These preserve the distinctions between guidance
+and unsupported direct operations, already-blocked accounts and new bank-
+account freeze requests, generic transfer timing and pending-transfer
+investigation, and verification guidance and failed verification. Step 20 does
+not automatically relabel individual utterances or build a dataset.
+
+The V2-C5 risk labels are classifier/evaluation metadata only. They do not
+authorize actions. The protected-write set is `cancel_transfer`,
+`close_account`, `create_dispute`, and `freeze_card`, but recognizing
+`cancel_transfer` or `close_account` adds no runtime tool. Runtime tools,
+authorization, conversation routing, confirmation, ownership, idempotency,
+protected execution, and state transitions remain unchanged.
+
+The standard-library-only freeze workflow is:
+
+```bash
+sentinelvoice_env/bin/python scripts/freeze_v2c5_taxonomy.py check
+sentinelvoice_env/bin/python scripts/freeze_v2c5_taxonomy.py export
+```
+
+`check` validates the exact Step 19 hashes, completed decision counts,
+candidate names, split-cluster IDs, all 35 cluster resolutions, final taxonomy,
+risk coverage, protected-write set, governance, and any existing Step 20
+outputs without writing. `export` performs the same validation before creating
+deterministic `v2c5_taxonomy_freeze.json` and
+`v2c5_taxonomy_freeze.manifest.json`. Neither command consumes a holdout, test
+set, CFPB data, model, embedding, clustering result, training artifact, or
+runtime artifact beyond the two frozen Step 19 evidence files.
+
+The architectural choice is a separate versioned V2-C5 taxonomy artifact. It
+solves the need for a reproducible expanded label space without rewriting the
+historical nine-intent experiments, and it keeps provenance, safety boundaries,
+and future dataset construction explicit. Modifying `IntentLabel` globally,
+inferring labels directly from clusters, and immediately adding runtime tools
+were rejected because they would mutate historical semantics, treat clustering
+as truth, or couple classifier recognition to execution authority. The
+tradeoff is temporary label-definition duplication. Reversibility remains high
+until later model selection and runtime integration; future taxonomy versions
+can be introduced without changing older contracts.
+
+Step 21 remains required to construct the expanded supervised dataset and a
+new, independently authored final holdout. The old V2-C4 holdout remains
+prohibited as final evidence for the changed label space.
+
 ## Reproduce V2-C1
 
 ```bash

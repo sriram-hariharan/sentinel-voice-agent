@@ -4141,14 +4141,21 @@ evaluation.
 
 ### V2-C5 Step 22B1 development-only runner
 
-`scripts/run_v2c5_model_selection.py` now implements the frozen experiment,
-but it has not been executed and no empirical result is claimed. `--preflight`
-validates the hash-pinned development, taxonomy, contract, and holdout-manifest
-governance inputs without model work or writes. `--prepare-folds` freezes the
-text-free five-fold `StratifiedGroupKFold` assignment before scoring;
-`--check-folds` validates it without writing. `--run` requires those existing
-folds and evaluates all 27 configurations sequentially, while
-`--check-results` validates the complete text-free result and selection.
+`scripts/run_v2c5_model_selection.py` completed the frozen development-only
+experiment. All 27 candidates were evaluated, 13 passed every mandatory gate,
+and the frozen selection rule chose BGE-small passage embeddings plus
+`LinearSVC(C=4.0, class_weight=None)`. The selected development candidate
+passed the protected-write false-positive, exact protected-write recall, and
+`unsupported_or_uncertain` recall gates. The result is development evidence,
+not final acceptance evidence.
+
+The runner's `--preflight` validates the hash-pinned development, taxonomy,
+contract, and holdout-manifest governance inputs without model work or writes.
+`--prepare-folds` freezes the text-free five-fold `StratifiedGroupKFold`
+assignment before scoring; `--check-folds` validates it without writing.
+`--run` requires those existing folds and evaluates all 27 configurations
+sequentially, while `--check-results` validates the complete text-free result
+and selection.
 
 Each TF-IDF representation is fitted independently on a fold's training text
 and only then transforms its validation text. The frozen pretrained BGE passage
@@ -4169,9 +4176,34 @@ sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --run
 sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --check-results
 ```
 
-Step 22B1 remains development-only. A gate-passing selected candidate would
-permit the separately governed Step 23 once-only evaluation; it would not by
-itself establish final acceptance or change runtime behavior.
+Step 22B1 remains development-only. Its selected candidate permits preparation
+of one full-development model, but does not itself establish final acceptance
+or change runtime behavior.
+
+### V2-C5 Step 22C selected-model preparation
+
+`scripts/prepare_v2c5_selected_model.py` prepares exactly the configuration
+already frozen by Step 22B1. `--preflight` validates the frozen result,
+selection, source hashes, all 8,198 development rows, and holdout-manifest
+governance without embedding, fitting, inference, or writes. `--fit` reuses the
+ignored Step 22 BGE cache only when its dataset, ordered IDs, ordered text
+hashes, representation, shape, normalization state, and bytes all validate;
+otherwise it creates the same development-only cache. It then fits one
+`LinearSVC(C=4.0, class_weight=None)` with every other frozen parameter on all
+8,198 rows. No cross-validation, candidate comparison, threshold tuning, or
+holdout inference occurs. `--check` validates the cache, trusted-local
+classifier, tracked text-free manifest, class labels, feature dimensions,
+hashes, and lineage without fitting, inference, or writes.
+
+The future local classifier is
+`data/evals/v2/ml/local/v2c5_selected_classifier.joblib`; it is trusted-local
+and runtime-ineligible. Its tracked metadata is
+`data/evals/v2/ml/v2c5_selected_model.manifest.json`. Fitting on all development
+rows maximizes the training signal for the already-selected configuration, but
+does not produce an unbiased metric of its own and may differ slightly from
+the five CV-fold models. The sealed final holdout remains unopened. Step 23
+alone owns its once-only evaluation, and runtime behavior and final acceptance
+remain unchanged until that separate evidence exists.
 
 ### Why this extension is useful
 

@@ -1023,10 +1023,14 @@ sealed final evidence.
 
 ## V2-C5 Step 22B1 development-only model-selection runner
 
-`scripts/run_v2c5_model_selection.py` implements the Step 22A contract without
-changing it. The runner exists but has not been executed: no fold, embedding,
-candidate-result, selection, or empirical-performance claim is recorded here.
-Its modes are:
+`scripts/run_v2c5_model_selection.py` implemented and completed the Step 22A
+development-only experiment without changing it. All 27 candidates completed,
+13 passed all three mandatory gates, and the frozen ordering selected
+`BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none`: BGE-small passage embeddings
+plus `LinearSVC(C=4.0, class_weight=None)`. That candidate passed the
+protected-write false-positive, exact protected-write recall, and
+`unsupported_or_uncertain` recall gates. These are development-only selection
+results, not final acceptance evidence. The runner's modes are:
 
 - `--preflight`: verify all frozen source hashes, the exact expanded taxonomy
   and development population, and the final-holdout manifest's frozen,
@@ -1064,10 +1068,50 @@ sentinelvoice_env/bin/python scripts/run_v2c5_model_selection.py --check-results
 ```
 
 All five modes reject the sealed V2-C5 final-holdout dataset as an input; only
-its frozen manifest may be read for governance. Step 22B1 does not tune
-thresholds, alter runtime behavior, or establish final acceptance. Step 23 is
-permitted only if all 27 candidates complete and the frozen development-only
-selection rule chooses a candidate that passes all three mandatory gates.
+its frozen manifest may be read for governance. Step 22B1 did not tune
+thresholds, alter runtime behavior, or establish final acceptance. The
+successful frozen selection permits full-development preparation before Step
+23, while the holdout remains sealed.
+
+## V2-C5 Step 22C selected-model preparation
+
+`scripts/prepare_v2c5_selected_model.py` fits no new choice: it validates and
+uses only the Step 22B1-selected BGE-small plus unweighted LinearSVC at
+`C=4.0`. `--preflight` validates the source hashes, successful selection,
+selected configuration, all 8,198 frozen development rows, and the final
+holdout manifest's governance without embedding, fitting, inference, or
+writes. `--fit` obtains the exact 384-dimensional, L2-normalized FastEmbed
+passage representation, fits one LinearSVC with every frozen parameter on all
+8,198 rows, and writes an ignored trusted-local classifier plus a tracked
+text-free manifest. It performs no CV, candidate comparison, threshold tuning,
+or holdout inference. `--check` validates the serialized classifier, manifest,
+cache bytes and lineage, source hashes, exact 16 labels, and feature dimensions
+without training, inference, or writes.
+
+The ignored cache is reused only when the exact development dataset, ordered
+example IDs, ordered text hashes, representation configuration, row count,
+384-dimensional shape, normalization state, and cache hashes remain valid; an
+absent cache may be created with those same development-only semantics, while
+a stale or incompatible cache is rejected. The generated classifier path is
+`local/v2c5_selected_classifier.joblib`, and its tracked metadata path is
+`v2c5_selected_model.manifest.json`. The classifier remains trusted-local,
+runtime-ineligible, and carries no raw development text.
+
+Refitting the already-selected configuration on all development data avoids
+choosing an arbitrary fold model and maximizes training signal. It was chosen
+over a non-predeclared ensemble, post-selection retuning, or any use of holdout
+data. The tradeoff is that this full-data fit has no unbiased performance
+metric of its own and may differ slightly from individual fold fits. The final
+holdout stays sealed; only Step 23 may perform its once-only evaluation. Step
+22C does not change runtime behavior or claim final acceptance.
+
+After the user has validated the implementation, the local workflow is:
+
+```bash
+sentinelvoice_env/bin/python scripts/prepare_v2c5_selected_model.py --preflight
+sentinelvoice_env/bin/python scripts/prepare_v2c5_selected_model.py --fit
+sentinelvoice_env/bin/python scripts/prepare_v2c5_selected_model.py --check
+```
 
 ## Reproduce V2-C1
 

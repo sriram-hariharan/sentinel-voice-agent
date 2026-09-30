@@ -1,0 +1,141 @@
+{
+  "class_labels": [
+    "account_balance",
+    "account_blocked",
+    "cancel_transfer",
+    "card_status",
+    "close_account",
+    "create_dispute",
+    "escalation",
+    "freeze_card",
+    "informational_policy",
+    "lost_or_stolen_phone",
+    "passcode_recovery",
+    "recent_transactions",
+    "transaction_details",
+    "transfer_failed_or_declined",
+    "transfer_pending",
+    "unsupported_or_uncertain"
+  ],
+  "classifier_config": {
+    "class": "LinearSVC",
+    "parameters": {
+      "C": 4.0,
+      "class_weight": null,
+      "dual": "auto",
+      "fit_intercept": true,
+      "intercept_scaling": 1.0,
+      "loss": "squared_hinge",
+      "max_iter": 2000,
+      "multi_class": "ovr",
+      "penalty": "l2",
+      "random_state": 20260930,
+      "tol": 0.0001,
+      "verbose": 0
+    }
+  },
+  "classifier_training_performed": true,
+  "development_dataset": {
+    "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+    "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+  },
+  "development_dataset_manifest": {
+    "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+    "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+  },
+  "development_record_count": 8198,
+  "embedding_cache_lineage": {
+    "cache_manifest_path": "data/evals/v2/ml/local/v2c5_model_selection_bge_cache.manifest.json",
+    "cache_manifest_sha256": "e477528604976c40558e53e2dfa8ba460889c4147098646cc69fef4d569f8086",
+    "cache_path": "data/evals/v2/ml/local/v2c5_model_selection_bge_cache.npz",
+    "cache_schema_version": "v2c5-model-selection-bge-cache.v1",
+    "cache_sha256": "8a96751e7fb5064244597711762ab5625ef5ff9867c7fc3a20f121eb33af9265",
+    "development_dataset_sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07",
+    "dimensions": 384,
+    "l2_normalized": true,
+    "ordered_example_ids_sha256": "62595e99df01335aeaec56b2816fdb5fb8b81c8c13b65e256086af9df1816434",
+    "ordered_text_sha256_sha256": "fb553d0a2b8c990d2b7714c06a72d7aae7e1d5674a856abc239a647b46225e91",
+    "representation_config_sha256": "f80437fb00028120f0aa98be4581f00e4b4a6996f7095d343907156330303f3e",
+    "row_count": 8198
+  },
+  "environment": {
+    "joblib": "1.6.0",
+    "numpy": "2.5.3",
+    "python": "3.14.3",
+    "scikit_learn": "1.9.1"
+  },
+  "final_holdout_accessed": false,
+  "final_holdout_evaluated": false,
+  "final_holdout_inference_performed": false,
+  "final_holdout_manifest": {
+    "path": "data/evals/v2/ml/v2c5_final_holdout.manifest.json",
+    "sha256": "4bf4839cb5da0073b98ac4811de2e84432b4d4d99e61dc5dd1d7798e014d343e"
+  },
+  "final_model_acceptance_claimed": false,
+  "fit_completed": true,
+  "intent_counts": {
+    "account_balance": 153,
+    "account_blocked": 52,
+    "cancel_transfer": 91,
+    "card_status": 57,
+    "close_account": 51,
+    "create_dispute": 57,
+    "escalation": 57,
+    "freeze_card": 57,
+    "informational_policy": 1745,
+    "lost_or_stolen_phone": 53,
+    "passcode_recovery": 69,
+    "recent_transactions": 153,
+    "transaction_details": 606,
+    "transfer_failed_or_declined": 173,
+    "transfer_pending": 55,
+    "unsupported_or_uncertain": 4769
+  },
+  "local_classifier_artifact": {
+    "path": "data/evals/v2/ml/local/v2c5_selected_classifier.joblib",
+    "runtime_eligible": false,
+    "schema_version": "v2c5-selected-classifier.v1",
+    "sha256": "c2c5ef7db1b0a0cfa8328da300f39669808f36ef6386c1f440c3e49f7c4fe6f7",
+    "size_bytes": 50095,
+    "trusted_local": true
+  },
+  "next_required": "v2c5_once_only_final_holdout_evaluation",
+  "phase": "V2-C5 Step 22C",
+  "preparation_script": {
+    "path": "scripts/prepare_v2c5_selected_model.py",
+    "sha256": "2aa47544adc5b1e30c56b7281dd76d90f8e66efd83c4d6ffd530100f3893613b"
+  },
+  "representation_config": {
+    "dimensions": 384,
+    "embedding_method": "passage_embed",
+    "fine_tuning": false,
+    "implementation": "FastEmbed",
+    "l2_normalized": true,
+    "model_identifier": "BAAI/bge-small-en-v1.5"
+  },
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c5-selected-model-manifest.v1",
+  "selected_candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+  "source_contract": {
+    "path": "data/evals/v2/ml/v2c5_model_selection_contract.json",
+    "sha256": "25cc90a5e8607a65158e43c45ea52636ade5d145182279952b35047b4077a918"
+  },
+  "source_model_selection_results": {
+    "path": "data/evals/v2/ml/v2c5_model_selection_results.json",
+    "sha256": "12686ff407c06e83e27d98f9b7a566f6fe0368c9c2828a5f9b54e9aed7e35ab4"
+  },
+  "source_model_selection_results_manifest": {
+    "path": "data/evals/v2/ml/v2c5_model_selection_results.manifest.json",
+    "sha256": "2c9b6b3344a4a7e30a4992ad687605c3708dd95d4ac15ff353fa5dc43504005e"
+  },
+  "step23_permitted": true,
+  "taxonomy": {
+    "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+    "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+  },
+  "taxonomy_manifest": {
+    "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+    "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+  },
+  "threshold_tuning_performed": false
+}

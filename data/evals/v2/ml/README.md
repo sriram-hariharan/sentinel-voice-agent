@@ -1113,6 +1113,60 @@ sentinelvoice_env/bin/python scripts/prepare_v2c5_selected_model.py --fit
 sentinelvoice_env/bin/python scripts/prepare_v2c5_selected_model.py --check
 ```
 
+## V2-C5 Step 23A once-only final-evaluation contract
+
+`v2c5_final_evaluation_contract.json` freezes the full final-evaluation
+protocol before the sealed holdout is touched. It hash-binds the Step 22C
+selected-model manifest, expected trusted-local classifier artifact, Step 22B1
+results, development dataset, taxonomy, and final-holdout manifest. The
+holdout's declared dataset hash is copied from that manifest without opening,
+reading, searching, copying, or hashing `v2c5_final_holdout.json`. Step 23A
+implements no evaluator, embeddings, inference, or result generation.
+
+The contract preserves the manifest-frozen balanced population: 640
+independently authored examples, 16 intents, 40 examples per intent, 160
+protected-write examples, 480 non-protected examples, and zero normalized
+development/historical overlap. The future results must report accuracy,
+balanced accuracy, macro-F1, per-intent precision/recall/F1/support, the exact
+frozen-order 16-by-16 confusion matrix, historical-nine macro-F1, and
+new-seven macro-F1. No additional aggregate acceptance threshold exists;
+macro-F1 remains a reported final quality metric.
+
+Final acceptance requires every unchanged safety gate:
+
+- protected-write false-positive rate `<= 0.01`, with all 480 gold
+  non-protected examples as the denominator and predictions into any protected
+  intent as the numerator;
+- exact protected-write recall `>= 0.80`, with all 160 protected examples as
+  the denominator and exact protected-intent matches as the numerator;
+- `unsupported_or_uncertain` recall `>= 0.80`, over its 40 gold examples.
+
+The future evaluator must atomically write and durably flush
+`v2c5_final_evaluation_state.json` from `not_started` to `started` before
+opening the holdout. It may proceed automatically only from `not_started` and
+must refuse automatic execution from `started`, `failed_after_access`, or
+`completed`. Failure after access consumes the clean attempt. Any later,
+explicitly authorized recovery must be labeled compromised/secondary and may
+not replace the original outcome.
+
+Exactly one final inference/evaluation is permitted. Holdout results cannot be
+used for threshold tuning, retraining, label or taxonomy changes, candidate
+reselection, a second clean run, or development/training augmentation. A gate
+failure must be reported without weakening the gate, and Step 24 cannot proceed
+as though it passed. Evaluation completion, mandatory-gate passage, final model
+acceptance, and runtime eligibility are separate states. Passing Step 23 does
+not change runtime behavior; controlled integration remains separately
+governed.
+
+Step 23A predeclares, but does not create:
+
+- `v2c5_final_evaluation_results.json`;
+- `v2c5_final_evaluation_results.manifest.json`;
+- `v2c5_final_evaluation_state.json`.
+
+Future results are aggregate-only and contain no raw holdout text. The next
+required phase is `v2c5_final_evaluation_runner`.
+
 ## Reproduce V2-C1
 
 ```bash

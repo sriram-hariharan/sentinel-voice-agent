@@ -1,0 +1,372 @@
+{
+  "architecture_decision": {
+    "alternatives_rejected": [
+      {
+        "alternative": "evaluate_one_cross_validation_fold_model",
+        "reason": "An arbitrary fold model omits development records and is not the classifier frozen by Step 22C."
+      },
+      {
+        "alternative": "ensemble_cross_validation_models",
+        "reason": "An ensemble was not selected or frozen by the development-only experiment."
+      },
+      {
+        "alternative": "retune_or_reselect_after_holdout_results",
+        "reason": "Post-holdout tuning or reselection would invalidate the final evidence."
+      },
+      {
+        "alternative": "repeat_evaluation_after_failure_analysis",
+        "reason": "A second clean claim after inspecting final failures would violate the once-only holdout boundary."
+      }
+    ],
+    "chosen": "one_uncompromised_evaluation_of_the_step22c_frozen_model",
+    "problem": "The selected development configuration has been fit once on all frozen development data but has no unbiased final evidence for the expanded taxonomy.",
+    "reversibility": "High before holdout access; after access begins, this experiment cannot regain once-only clean-holdout status.",
+    "tradeoffs": [
+      "The balanced synthetic holdout does not estimate production prevalence.",
+      "Forty examples per intent provide finite metric resolution.",
+      "A crash after access prevents an automatic replacement run from being treated as the same final experiment.",
+      "Passing final safety gates still does not grant runtime authority."
+    ]
+  },
+  "contract_status": {
+    "contract_frozen": true,
+    "final_holdout_accessed": false,
+    "final_holdout_evaluated": false,
+    "final_holdout_inference_performed": false,
+    "final_model_acceptance_claimed": false,
+    "model_retraining_performed": false,
+    "next_required": "v2c5_final_evaluation_runner",
+    "runtime_behavior_changed": false,
+    "threshold_tuning_performed": false
+  },
+  "contract_version": "v2c5-final-evaluation-contract.v1",
+  "decision_semantics": {
+    "final_evaluation_completed": {
+      "definition": "The single predeclared inference and metric computation finished successfully and durable results were written.",
+      "does_not_imply_safety_gates_passed": true
+    },
+    "final_model_acceptance_claimed": {
+      "allowed_only_if": [
+        "final_evaluation_completed",
+        "mandatory_safety_gates_passed",
+        "evaluation_state_completed",
+        "evaluation_not_compromised_or_secondary"
+      ],
+      "value_before_evaluation": false
+    },
+    "mandatory_safety_gates_passed": {
+      "definition": "Every one of the three frozen Step 22 safety thresholds passed on the once-only final holdout.",
+      "does_not_imply_runtime_eligibility": true
+    },
+    "runtime_eligibility": {
+      "changed_automatically_by_step23": false,
+      "runtime_behavior_changed_by_step23": false,
+      "value_after_gate_pass": false,
+      "value_before_evaluation": false
+    },
+    "step24_controlled_integration": {
+      "may_not_proceed_as_passed_after_any_mandatory_gate_failure": true,
+      "requires_separate_authorization_after_successful_step23": true
+    }
+  },
+  "evaluation_state_protocol": {
+    "automatic_evaluation_allowed_by_state": {
+      "completed": false,
+      "failed_after_access": false,
+      "not_started": true,
+      "started": false
+    },
+    "initial_state": "not_started",
+    "marker_durability_requirement": "atomically_write_and_fsync_before_holdout_open",
+    "rerun_refusal_states": [
+      "started",
+      "failed_after_access",
+      "completed"
+    ],
+    "required_pre_access_transition": {
+      "from": "not_started",
+      "must_be_durable_before": "opening_or_reading_the_final_holdout_dataset",
+      "to": "started"
+    },
+    "state_file": "data/evals/v2/ml/v2c5_final_evaluation_state.json",
+    "states": {
+      "completed": "The once-only evaluation and durable result writes completed.",
+      "failed_after_access": "The process failed after holdout access began; the original final attempt is compromised.",
+      "not_started": "No holdout access or inference has begun.",
+      "started": "The durable pre-access marker was written and the once-only attempt is consumed unless it completes."
+    },
+    "transitions": [
+      {
+        "from": "not_started",
+        "precondition": "durable_marker_written_before_holdout_access",
+        "to": "started"
+      },
+      {
+        "from": "started",
+        "precondition": "inference_metrics_and_outputs_completed",
+        "to": "completed"
+      },
+      {
+        "from": "started",
+        "precondition": "failure_after_holdout_access_began",
+        "to": "failed_after_access"
+      }
+    ],
+    "unexpected_started_state_recovery": "Refuse automatic evaluation. Any explicitly authorized recovery must be labeled compromised_or_secondary and cannot replace the original final claim."
+  },
+  "holdout": {
+    "authorship_method": "independently_authored_synthetic",
+    "class_balanced": true,
+    "evaluated_before_step23": false,
+    "examples_per_intent": 40,
+    "independent_from_development_examples": true,
+    "intent_count": 16,
+    "intent_counts": {
+      "account_balance": 40,
+      "account_blocked": 40,
+      "cancel_transfer": 40,
+      "card_status": 40,
+      "close_account": 40,
+      "create_dispute": 40,
+      "escalation": 40,
+      "freeze_card": 40,
+      "informational_policy": 40,
+      "lost_or_stolen_phone": 40,
+      "passcode_recovery": 40,
+      "recent_transactions": 40,
+      "transaction_details": 40,
+      "transfer_failed_or_declined": 40,
+      "transfer_pending": 40,
+      "unsupported_or_uncertain": 40
+    },
+    "non_protected_example_count": 480,
+    "normalized_overlap_counts": {
+      "all_historical_development_and_training_text_used_in_v2c5": 0,
+      "consumed_v2c3_challenge": 0,
+      "consumed_v2c3_external_lockbox": 0,
+      "preexisting_v2c5_model_selection_probe": 0,
+      "v2c5_expanded_development_dataset": 0
+    },
+    "protected_write_example_count": 160,
+    "total_example_count": 640
+  },
+  "holdout_isolation": {
+    "allowed_step23a_holdout_input": "data/evals/v2/ml/v2c5_final_holdout.manifest.json",
+    "dataset_hash_may_be_consumed_only_as_manifest_declaration": true,
+    "final_holdout_dataset_opened_or_hashed_by_step23a": false,
+    "prohibited_step23a_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "raw_holdout_text_present_in_contract": false
+  },
+  "metrics": {
+    "aggregate_acceptance_threshold": null,
+    "aggregate_metrics": [
+      "accuracy",
+      "balanced_accuracy",
+      "macro_f1"
+    ],
+    "confusion_matrix": {
+      "column_axis": "predicted_intent",
+      "dimensions": [
+        16,
+        16
+      ],
+      "label_order": [
+        "account_balance",
+        "account_blocked",
+        "cancel_transfer",
+        "card_status",
+        "close_account",
+        "create_dispute",
+        "escalation",
+        "freeze_card",
+        "informational_policy",
+        "lost_or_stolen_phone",
+        "passcode_recovery",
+        "recent_transactions",
+        "transaction_details",
+        "transfer_failed_or_declined",
+        "transfer_pending",
+        "unsupported_or_uncertain"
+      ],
+      "row_axis": "gold_intent"
+    },
+    "macro_f1_role": "reported_final_quality_metric_not_an_additional_gate",
+    "per_intent_metrics": [
+      "precision",
+      "recall",
+      "f1",
+      "support"
+    ],
+    "subset_macro_f1": {
+      "historical_nine_label_macro_f1": [
+        "account_balance",
+        "card_status",
+        "create_dispute",
+        "escalation",
+        "freeze_card",
+        "informational_policy",
+        "recent_transactions",
+        "transaction_details",
+        "unsupported_or_uncertain"
+      ],
+      "new_seven_intent_macro_f1": [
+        "account_blocked",
+        "cancel_transfer",
+        "close_account",
+        "lost_or_stolen_phone",
+        "passcode_recovery",
+        "transfer_failed_or_declined",
+        "transfer_pending"
+      ]
+    }
+  },
+  "model_under_test": {
+    "class_labels": [
+      "account_balance",
+      "account_blocked",
+      "cancel_transfer",
+      "card_status",
+      "close_account",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "lost_or_stolen_phone",
+      "passcode_recovery",
+      "recent_transactions",
+      "transaction_details",
+      "transfer_failed_or_declined",
+      "transfer_pending",
+      "unsupported_or_uncertain"
+    ],
+    "classifier": {
+      "class": "LinearSVC",
+      "parameters": {
+        "C": 4.0,
+        "class_weight": null,
+        "dual": "auto",
+        "fit_intercept": true,
+        "intercept_scaling": 1.0,
+        "loss": "squared_hinge",
+        "max_iter": 2000,
+        "multi_class": "ovr",
+        "penalty": "l2",
+        "random_state": 20260930,
+        "tol": 0.0001,
+        "verbose": 0
+      }
+    },
+    "selected_candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+    "selection_role": "derived_and_validated_from_frozen_selected_model_manifest_not_a_new_selection",
+    "representation": {
+      "dimensions": 384,
+      "embedding_method": "passage_embed",
+      "fine_tuning": false,
+      "implementation": "FastEmbed",
+      "l2_normalized": true,
+      "model_identifier": "BAAI/bge-small-en-v1.5"
+    }
+  },
+  "once_only_evaluation": {
+    "candidate_reselection_from_holdout_results": false,
+    "evaluation_attempt_count": 1,
+    "failed_gate_policy": {
+      "honest_failure_reporting_required": true,
+      "mandatory_gates_may_be_weakened": false,
+      "rerun_may_be_presented_as_same_final_experiment": false,
+      "step24_may_not_proceed_as_if_passed": true
+    },
+    "holdout_examples_may_be_added_to_development_or_training": false,
+    "label_or_taxonomy_change_from_holdout_results": false,
+    "model_retraining_from_holdout_results": false,
+    "second_clean_evaluation_after_failure_inspection": false,
+    "single_final_inference_and_evaluation": true,
+    "threshold_tuning_from_holdout_results": false
+  },
+  "phase": "V2-C5 Step 23A",
+  "planned_outputs": {
+    "generated_by_step23a": false,
+    "prediction_persistence": "aggregate_only",
+    "raw_holdout_text_permitted": false,
+    "results": "data/evals/v2/ml/v2c5_final_evaluation_results.json",
+    "results_manifest": "data/evals/v2/ml/v2c5_final_evaluation_results.manifest.json",
+    "state": "data/evals/v2/ml/v2c5_final_evaluation_state.json"
+  },
+  "safety_gates": {
+    "all_gates_mandatory_for_final_acceptance": true,
+    "gates": [
+      {
+        "comparison": "less_than_or_equal",
+        "denominator": "count(gold_intent not in protected_write_intents)",
+        "expected_denominator": 480,
+        "metric": "protected_write_false_positive_rate",
+        "numerator": "count(gold_intent not in protected_write_intents and predicted_intent in protected_write_intents)",
+        "threshold": 0.01
+      },
+      {
+        "comparison": "greater_than_or_equal",
+        "denominator": "count(gold_intent in protected_write_intents)",
+        "expected_denominator": 160,
+        "metric": "exact_protected_write_recall",
+        "numerator": "count(gold_intent in protected_write_intents and predicted_intent == gold_intent)",
+        "threshold": 0.8
+      },
+      {
+        "comparison": "greater_than_or_equal",
+        "denominator": "count(gold_intent == unsupported_or_uncertain)",
+        "expected_denominator": 40,
+        "metric": "unsupported_or_uncertain_recall",
+        "numerator": "count(gold_intent == unsupported_or_uncertain and predicted_intent == unsupported_or_uncertain)",
+        "threshold": 0.8
+      }
+    ],
+    "protected_write_intents": [
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card"
+    ],
+    "thresholds_match_step22": true
+  },
+  "schema_version": "v2c5-final-evaluation-contract.v1",
+  "source_artifacts": {
+    "development_dataset": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "final_holdout_dataset_declaration": {
+      "hash_source": "data/evals/v2/ml/v2c5_final_holdout.manifest.json",
+      "opened_or_hashed_by_step23a": false,
+      "path": "data/evals/v2/ml/v2c5_final_holdout.json",
+      "sha256": "bffe60f05c596fda0ec7e3b731b4de00d16729b5a11765861a0d49065c2bf71d"
+    },
+    "final_holdout_contract": {
+      "path": "data/evals/v2/ml/v2c5_final_holdout_contract.json",
+      "sha256": "ed3b65870304bd9d4d89f80bd720021d9c46908264506a29ca3a37b876803791"
+    },
+    "final_holdout_manifest": {
+      "path": "data/evals/v2/ml/v2c5_final_holdout.manifest.json",
+      "sha256": "4bf4839cb5da0073b98ac4811de2e84432b4d4d99e61dc5dd1d7798e014d343e"
+    },
+    "model_selection_results": {
+      "path": "data/evals/v2/ml/v2c5_model_selection_results.json",
+      "sha256": "12686ff407c06e83e27d98f9b7a566f6fe0368c9c2828a5f9b54e9aed7e35ab4"
+    },
+    "selected_classifier_artifact": {
+      "path": "data/evals/v2/ml/local/v2c5_selected_classifier.joblib",
+      "runtime_eligible": false,
+      "schema_version": "v2c5-selected-classifier.v1",
+      "sha256": "c2c5ef7db1b0a0cfa8328da300f39669808f36ef6386c1f440c3e49f7c4fe6f7",
+      "size_bytes": 50095,
+      "trusted_local": true
+    },
+    "selected_model_manifest": {
+      "path": "data/evals/v2/ml/v2c5_selected_model.manifest.json",
+      "sha256": "c72c9ecd80b3d0cdac6789a843ed96d1a0df7c8c0ddf64c82d521fc3a03520c7"
+    },
+    "taxonomy": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    }
+  }
+}

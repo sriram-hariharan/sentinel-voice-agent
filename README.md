@@ -4205,6 +4205,36 @@ the five CV-fold models. The sealed final holdout remains unopened. Step 23
 alone owns its once-only evaluation, and runtime behavior and final acceptance
 remain unchanged until that separate evidence exists.
 
+### V2-C5 Step 23A once-only final-evaluation contract
+
+`data/evals/v2/ml/v2c5_final_evaluation_contract.json` freezes the evaluation
+protocol before any final-holdout access or inference. It binds the exact Step
+22C selected-model manifest and trusted-local classifier hash, the frozen model
+selection result, development dataset, taxonomy, and final-holdout manifest.
+The holdout dataset hash is copied only from its manifest declaration; Step 23A
+does not open or hash `v2c5_final_holdout.json` and creates no evaluator or
+result artifacts.
+
+The future once-only evaluation reports accuracy, balanced accuracy, macro-F1,
+per-intent precision/recall/F1/support, the frozen-order 16-by-16 confusion
+matrix, historical-nine macro-F1, and new-seven macro-F1. Macro-F1 is reported
+quality evidence, not a newly invented acceptance threshold. Final acceptance
+requires all three unchanged Step 22 safety gates: protected-write false-positive
+rate `<= 0.01`, exact protected-write recall `>= 0.80`, and
+`unsupported_or_uncertain` recall `>= 0.80`.
+
+Before the future evaluator opens the holdout, it must durably transition
+`v2c5_final_evaluation_state.json` from `not_started` to `started`. Automatic
+evaluation is refused when the state is `started`, `failed_after_access`, or
+`completed`. A failure after access must be reported as the original attempt;
+any explicitly authorized recovery is compromised/secondary and cannot replace
+it with a second clean claim. Holdout results cannot drive threshold tuning,
+retraining, taxonomy changes, candidate reselection, or training-data
+augmentation. Evaluation completion, gate passage, final acceptance, and
+runtime eligibility remain distinct: even a passing Step 23 does not change
+runtime routing, and Step 24 requires separate controlled-integration
+authorization.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

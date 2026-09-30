@@ -1,0 +1,23 @@
+{
+  "evaluation_attempt_count": 0,
+  "failure": null,
+  "final_holdout_accessed": false,
+  "final_holdout_evaluated": false,
+  "final_holdout_inference_performed": false,
+  "phase": "V2-C5 Step 23B/C",
+  "results": null,
+  "schema_version": "v2c5-final-evaluation-state.v1",
+  "source_lineage": {
+    "classifier_artifact_sha256": "c2c5ef7db1b0a0cfa8328da300f39669808f36ef6386c1f440c3e49f7c4fe6f7",
+    "declared_final_holdout_dataset_sha256": "bffe60f05c596fda0ec7e3b731b4de00d16729b5a11765861a0d49065c2bf71d",
+    "development_dataset_sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07",
+    "final_evaluation_contract_sha256": "e9d4857e74cbf210906d83de4a7e8aee7b037d19ac0b068298171e6841571e1d",
+    "final_holdout_contract_sha256": "ed3b65870304bd9d4d89f80bd720021d9c46908264506a29ca3a37b876803791",
+    "final_holdout_manifest_sha256": "4bf4839cb5da0073b98ac4811de2e84432b4d4d99e61dc5dd1d7798e014d343e",
+    "model_selection_results_sha256": "12686ff407c06e83e27d98f9b7a566f6fe0368c9c2828a5f9b54e9aed7e35ab4",
+    "runner_sha256": "abcc53eab08e8621db17e6b99e35a0d64f4e924bc881f039ae48a722d7573ac8",
+    "selected_model_manifest_sha256": "c72c9ecd80b3d0cdac6789a843ed96d1a0df7c8c0ddf64c82d521fc3a03520c7",
+    "taxonomy_sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+  },
+  "state": "not_started"
+}

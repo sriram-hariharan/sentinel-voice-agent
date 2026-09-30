@@ -1167,6 +1167,62 @@ Step 23A predeclares, but does not create:
 Future results are aggregate-only and contain no raw holdout text. The next
 required phase is `v2c5_final_evaluation_runner`.
 
+## V2-C5 Step 23B final-evaluation runner
+
+`scripts/run_v2c5_final_evaluation.py` implements the Step 23A contract with
+four mutually exclusive modes:
+
+- `--preflight` validates every frozen source, the trusted-local classifier's
+  exact hash/configuration/16 classes/384-dimensional input, the holdout
+  manifest declaration, absent results, and absent or `not_started` state. It
+  performs no embeddings, inference, writes, or holdout-dataset access.
+- `--initialize-state` creates the deterministic, text-free
+  `v2c5_final_evaluation_state.json` in `not_started`, binding the Step 23A
+  contract, selected-model manifest, classifier artifact, declared holdout
+  dataset, holdout manifest, taxonomy, and evaluator hashes. It refuses every
+  existing or incompatible state and must be run and committed before Step
+  23C.
+- `--evaluate` is implemented but reserved for Step 23C. It has no force,
+  reset, or retry path.
+- `--check-results` requires `completed`, validates canonical result and
+  manifest bytes, hashes, lineage, metrics, safety counts/gates, decisions, and
+  governance without inference, writes, or reopening the holdout.
+
+The evaluator validates every precondition while the holdout remains sealed,
+then atomically writes, flushes, and directory-fsyncs the `started` transition
+before calling the holdout loader. It immediately verifies the declared
+dataset SHA, the exact 640/16/40-per-intent population, 160 protected and 480
+non-protected examples, unique IDs, taxonomy labels, and taxonomy-derived
+risks. It performs one non-persistent BGE-small passage-embedding pass,
+requires a `640 x 384` finite L2-normalized matrix, and invokes the frozen
+classifier's prediction method exactly once. It never fits, refits, performs
+CV, tunes thresholds, reselects a model, or caches final-holdout embeddings.
+
+Results are aggregate-only: the frozen metrics and safety gates, prediction
+count, and a SHA256 of the ordered `(example_id, gold_label, predicted_label)`
+sequence are stored, but no individual text or prediction rows are persisted.
+The results and manifest are durably written before state becomes `completed`.
+Any failure after `started` produces text-free `failed_after_access` metadata
+and consumes the attempt. Automatic evaluation is permitted only from
+`not_started`; every other state refuses execution.
+
+Step 23B does not run `--evaluate` and does not consume the final holdout. Its
+tests inject a synthetic 640-record holdout, fake normalized embeddings, and a
+synthetic classifier. The runner remains reversible before Step 23C; actual
+holdout observation is not reversible. This durable one-way state is necessary
+because routing predictions may affect protected banking actions and the final
+safety evidence must be auditable rather than silently repeatable.
+
+After implementation validation, prepare the frozen Step 23B state locally:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c5_final_evaluation.py --preflight
+sentinelvoice_env/bin/python scripts/run_v2c5_final_evaluation.py --initialize-state
+```
+
+Do not run `--evaluate` until the separately authorized Step 23C once-only
+evaluation. `--check-results` becomes applicable only after that evaluation.
+
 ## Reproduce V2-C1
 
 ```bash

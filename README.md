@@ -4235,6 +4235,28 @@ runtime eligibility remain distinct: even a passing Step 23 does not change
 runtime routing, and Step 24 requires separate controlled-integration
 authorization.
 
+### V2-C5 Step 23B final-evaluation runner
+
+`scripts/run_v2c5_final_evaluation.py` implements the frozen Step 23A protocol
+without consuming the final holdout. `--preflight` validates the contract,
+selected-model manifest, trusted-local classifier hash/configuration/classes,
+taxonomy, holdout manifest, state, and absence of result artifacts while
+leaving the holdout sealed. `--initialize-state` deterministically creates the
+tracked, text-free `not_started` state with exact contract, model, classifier,
+holdout-declaration, taxonomy, and evaluator hashes; that state must be frozen
+before Step 23C. `--check-results` later validates completed aggregate-only
+evidence without reopening the holdout.
+
+`--evaluate` is implemented for Step 23C but is not exercised in Step 23B. It
+durably writes `started` before its first holdout open, validates the declared
+dataset hash and balanced 640-record population, performs one uncached BGE
+embedding pass and one classifier prediction call, writes results and manifest
+durably, then records `completed`. Any post-start failure records
+`failed_after_access`; `started`, `completed`, and `failed_after_access` all
+refuse reruns. There is no force, reset, or retry option. Tests use only
+synthetic holdouts, fake embeddings, and synthetic classifier behavior, so
+Step 23B performs no real holdout access, embeddings, inference, or evaluation.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

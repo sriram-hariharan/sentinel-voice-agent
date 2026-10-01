@@ -1,0 +1,735 @@
+{
+  "architecture_decision": {
+    "alternatives": [
+      {
+        "alternative": "ordinary_stratified_cross_validation_only",
+        "reason_not_chosen": "It does not directly test generalization across independently identified source and authoring families."
+      },
+      {
+        "alternative": "random_train_test_split",
+        "reason_not_chosen": "It neither preserves groups as indivisible units nor directly evaluates whole-source-family shift."
+      },
+      {
+        "alternative": "large_hyperparameter_search",
+        "reason_not_chosen": "It would increase search cost and development-evidence overfitting risk without a measured need."
+      },
+      {
+        "alternative": "fresh_final_holdout_for_model_selection",
+        "reason_not_chosen": "A fresh V2-C6 final holdout must remain untouched until once-only final acceptance evaluation."
+      }
+    ],
+    "chosen": "group_aware_cross_validation_plus_leave_one_source_family_out_validation_with_a_small_bounded_candidate_set",
+    "problem_solved": "V2-C5 showed that strong within-development out-of-fold performance did not guarantee independently authored language generalization.",
+    "reversibility": "High; a later candidate set or evaluation design requires a new frozen contract but does not change the already frozen Step 29F dataset.",
+    "tradeoffs": [
+      "Only three authored remediation source families are available for whole-family validation.",
+      "All measurements remain development model-selection evidence rather than an unbiased final estimate.",
+      "The bounded candidate list may omit a better configuration outside the predeclared hypotheses."
+    ],
+    "why_suitable": "The paired protocol directly measures group-leakage resistance and source/style robustness while remaining local, low-cost, deterministic, and auditable."
+  },
+  "candidate_search_space": {
+    "candidate_count": 6,
+    "candidate_ids_unique": true,
+    "candidates": [
+      {
+        "candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+        "classifier_id": "LINEAR_SVC",
+        "hyperparameters": {
+          "C": 4.0,
+          "class_weight": null
+        },
+        "hypothesis": "V2-C5 selected-recipe control after source-diverse remediation.",
+        "is_v2c5_selected_recipe_control": true,
+        "representation_id": "BGE_SMALL"
+      },
+      {
+        "candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=balanced",
+        "classifier_id": "LINEAR_SVC",
+        "hyperparameters": {
+          "C": 4.0,
+          "class_weight": "balanced"
+        },
+        "hypothesis": "Test class weighting against the otherwise matched BGE control.",
+        "is_v2c5_selected_recipe_control": false,
+        "representation_id": "BGE_SMALL"
+      },
+      {
+        "candidate_id": "BGE_SMALL_LINEAR_SVC__C=1.0__class_weight=none",
+        "classifier_id": "LINEAR_SVC",
+        "hyperparameters": {
+          "C": 1.0,
+          "class_weight": null
+        },
+        "hypothesis": "Test a small regularization change for source-family robustness.",
+        "is_v2c5_selected_recipe_control": false,
+        "representation_id": "BGE_SMALL"
+      },
+      {
+        "candidate_id": "BGE_SMALL_LINEAR_SVC__C=1.0__class_weight=balanced",
+        "classifier_id": "LINEAR_SVC",
+        "hyperparameters": {
+          "C": 1.0,
+          "class_weight": "balanced"
+        },
+        "hypothesis": "Measure the bounded interaction of the declared weighting and regularization alternatives.",
+        "is_v2c5_selected_recipe_control": false,
+        "representation_id": "BGE_SMALL"
+      },
+      {
+        "candidate_id": "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+        "classifier_id": "LINEAR_SVC",
+        "hyperparameters": {
+          "C": 1.0,
+          "class_weight": null
+        },
+        "hypothesis": "Provide an already-supported low-cost lexical diagnostic baseline.",
+        "is_v2c5_selected_recipe_control": false,
+        "representation_id": "WORD_CHAR_TFIDF"
+      },
+      {
+        "candidate_id": "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=balanced",
+        "classifier_id": "LINEAR_SVC",
+        "hyperparameters": {
+          "C": 1.0,
+          "class_weight": "balanced"
+        },
+        "hypothesis": "Test class weighting on the already-supported lexical baseline.",
+        "is_v2c5_selected_recipe_control": false,
+        "representation_id": "WORD_CHAR_TFIDF"
+      }
+    ],
+    "maximum_candidate_count": 6,
+    "prohibited_candidate_families": [
+      "llm_classifier",
+      "remote_paid_inference",
+      "deep_model_fine_tuning",
+      "new_embedding_provider",
+      "threshold_tuned_classifier",
+      "post_hoc_rule_override"
+    ],
+    "search_expansion_after_observing_results_permitted": false
+  },
+  "candidate_eligibility": {
+    "eligible_status": "ELIGIBLE",
+    "ineligible_status": "INELIGIBLE",
+    "requirements": [
+      "all_required_evaluation_runs_completed",
+      "no_group_leakage",
+      "no_source_family_leakage",
+      "all_expected_predictions_present_exactly_once_for_each_applicable_evaluation",
+      "all_mandatory_safety_gates_pass",
+      "all_required_metrics_finite_and_valid",
+      "artifact_hashes_and_dataset_sha_match_step29f_freeze",
+      "no_prohibited_holdout_access",
+      "no_post_hoc_threshold_tuning"
+    ],
+    "record_explicit_ineligibility_reasons": true
+  },
+  "classifiers": {
+    "LINEAR_SVC": {
+      "class": "LinearSVC",
+      "fixed_parameters": {
+        "dual": "auto",
+        "fit_intercept": true,
+        "intercept_scaling": 1.0,
+        "loss": "squared_hinge",
+        "max_iter": 2000,
+        "multi_class": "ovr",
+        "penalty": "l2",
+        "random_state": 20260930,
+        "tol": 0.0001,
+        "verbose": 0
+      },
+      "native_multiclass_prediction_rule": "argmax_of_one_vs_rest_decision_function"
+    }
+  },
+  "contract_status": {
+    "candidate_metrics_calculated": false,
+    "contract_frozen": true,
+    "cross_validation_performed": false,
+    "embeddings_generated": false,
+    "final_holdout_accessed": false,
+    "model_fitting_performed": false,
+    "model_selection_performed": false,
+    "next_required": "v2c6_source_aware_model_selection_execution",
+    "runtime_behavior_changed": false,
+    "source_family_evaluation_performed": false,
+    "step29h_execution_required": true,
+    "threshold_tuning_performed": false
+  },
+  "contract_version": "v2c6-source-aware-model-selection-contract.v1",
+  "evaluation_rationale": {
+    "evidence_supported_observations": [
+      "V2-C5 group-isolated out-of-fold performance was strong.",
+      "Duplicate leakage was not the main measured explanation for the V2-C5 generalization gap.",
+      "Important development sources and authoring styles were concentrated.",
+      "The unsupported boundary was a major measured confusion area."
+    ],
+    "ordinary_within_development_cv_alone_is_sufficient": false,
+    "protocols_are_complementary": true,
+    "required_protocols": [
+      "group_aware_cross_validation",
+      "leave_one_source_family_out"
+    ],
+    "stronger_causal_claim_made": false
+  },
+  "fitting_protocol": {
+    "full_dataset_supervised_fitting_before_evaluation_permitted": false,
+    "learned_preprocessing_fit_scope": "training_partition_only_for_every_fold_and_round",
+    "source_family_rounds_follow_same_training_only_fit_rule": true,
+    "supervised_validation_labels_may_influence_features_or_training": false,
+    "tfidf_vocabulary_and_idf_fit_scope": "training_partition_only",
+    "classifier_fit_scope": "training_partition_only",
+    "fixed_pretrained_embedding_policy": {
+      "embedding_inference_may_be_cached": true,
+      "labels_may_influence_embeddings": false,
+      "model_fine_tuning_permitted": false,
+      "train_and_validation_or_test_partitions_transformed_separately": true
+    }
+  },
+  "frozen_input_lineage": {
+    "dataset": {
+      "inherited_v2c5_record_count": 8198,
+      "only_eligible_development_dataset": true,
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json",
+      "record_count": 9008,
+      "remediation_record_count": 810,
+      "sha256": "d7f78d7a76799f47bfdc3c1291505d1b964b9d143245d2d353931e8cb4f4a493"
+    },
+    "step29f_freeze": {
+      "expected_freeze_status": "FROZEN",
+      "expected_next_required": "v2c6_source_aware_model_selection_contract",
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json",
+      "sha256": "7f71dda024e5a947c997977f09ed675fa1f924c38d30f332422aa2032ecbc544"
+    },
+    "step29f_freeze_must_validate_before_execution": true
+  },
+  "governance": {
+    "candidate_selected": false,
+    "contract_only": true,
+    "development_evidence_is_final_acceptance_evidence": false,
+    "embeddings_generated": false,
+    "evaluation_performed": false,
+    "final_model_acceptance_claimed": false,
+    "model_inference_performed": false,
+    "model_training_performed": false,
+    "runtime_behavior_changed": false,
+    "runtime_eligible": false,
+    "step29g_performs_model_work": false,
+    "threshold_tuning_performed": false
+  },
+  "group_aware_cross_validation": {
+    "complete_dataset_record_count": 9008,
+    "expected_pooled_prediction_count": 9008,
+    "fold_assignment": {
+      "each_record_appears_in_exactly_one_validation_fold": true,
+      "exact_membership_persisted_in_step29h": true,
+      "fold_membership_hash_required": true,
+      "generated_once_and_reused_for_all_candidates": true,
+      "group_must_not_cross_train_and_validation": true
+    },
+    "group_field": "group_id",
+    "group_ids_are_indivisible_split_units": true,
+    "inherited_group_label_purity_required": false,
+    "label_field": "intent",
+    "method": "StratifiedGroupKFold",
+    "mixed_intent_inherited_group_count": 1,
+    "mixed_intent_inherited_groups_remain_atomic": true,
+    "n_splits": 5,
+    "non_group_aware_fallback_allowed": false,
+    "random_state": 20260930,
+    "rewrite_groups_for_stratification_permitted": false,
+    "shuffle": true
+  },
+  "hard_negative_diagnostics": {
+    "aggregate_metric": "hard_negative_accuracy",
+    "mandatory_safety_gate": false,
+    "pair_metrics": [
+      "record_count",
+      "correct_count",
+      "accuracy",
+      "true_a_predicted_b_count",
+      "true_b_predicted_a_count",
+      "other_error_count"
+    ],
+    "pairs_created_or_relabelled_in_step29g_or_step29h": false,
+    "report_pooled_across_all_source_family_rounds": true,
+    "report_per_source_family": true,
+    "required_pairs": [
+      [
+        "close_account",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "transfer_failed_or_declined",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "account_blocked",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "create_dispute",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "freeze_card",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "transfer_pending",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "transfer_pending"
+      ],
+      [
+        "transfer_failed_or_declined",
+        "transfer_pending"
+      ],
+      [
+        "account_blocked",
+        "transfer_failed_or_declined"
+      ]
+    ]
+  },
+  "holdout_isolation": {
+    "consumed_v2c5_final_holdout_access_prohibited": true,
+    "final_holdout_data_in_outputs_prohibited": true,
+    "fresh_v2c6_final_holdout_access_prohibited": true,
+    "fresh_v2c6_final_holdout_authoring_permitted_in_step29g": false,
+    "future_once_only_final_evaluation_steps": [
+      "V2-C6 Step 29J",
+      "V2-C6 Step 29K",
+      "V2-C6 Step 29L",
+      "V2-C6 Step 29M"
+    ],
+    "prohibited_holdout_access_must_be_an_ineligibility_reason": true
+  },
+  "known_limitations": [
+    "Only three independently identified remediation source families are available.",
+    "Source-family holdout evidence covers the remediation 810 rather than every historical source family.",
+    "Source-family metadata and structural validation do not prove semantic independence.",
+    "Development model-selection evidence is not a substitute for fresh final-holdout evidence.",
+    "The bounded candidate set tests only predeclared low-cost hypotheses."
+  ],
+  "metrics": {
+    "confusion_matrix_convention": {
+      "columns": "predicted_intent",
+      "rows": "gold_intent"
+    },
+    "definitions": {
+      "accuracy": "Number of correct native multiclass predictions divided by the number of evaluated examples.",
+      "balanced_accuracy": "Unweighted mean of recall across the applicable frozen label slice.",
+      "expanded_new_7_macro_f1": "Unweighted mean of one-vs-rest F1 across the frozen expanded-new-seven labels on group-CV records whose gold intent is in that slice, with zero_division=0.",
+      "historical_9_macro_f1": "Unweighted mean of one-vs-rest F1 across the frozen historical-nine labels on group-CV records whose gold intent is in that slice, with zero_division=0.",
+      "macro_f1_16": "Unweighted mean of one-vs-rest F1 across all 16 frozen intents with zero_division=0.",
+      "mean_family_primary_8_macro_f1": "Arithmetic mean of the three held-out-family primary-8 macro-F1 values.",
+      "per_intent_f1": "One-vs-rest F1 in the applicable frozen intent order with zero_division=0.",
+      "per_intent_precision": "One-vs-rest precision in the applicable frozen intent order with zero_division=0.",
+      "per_intent_recall": "One-vs-rest recall in the applicable frozen intent order with zero_division=0.",
+      "pooled_primary_8_macro_f1": "Primary-8 macro-F1 over the pooled 810 out-of-family predictions, with zero_division=0.",
+      "primary_8_macro_f1": "Unweighted mean of one-vs-rest F1 across the frozen primary remediation-eight labels with zero_division=0.",
+      "worst_family_primary_8_macro_f1": "Minimum of the three held-out-family primary-8 macro-F1 values."
+    },
+    "group_aware_cv_required": [
+      "accuracy",
+      "balanced_accuracy",
+      "macro_f1_16",
+      "per_intent_precision",
+      "per_intent_recall",
+      "per_intent_f1",
+      "confusion_matrix",
+      "historical_9_macro_f1",
+      "expanded_new_7_macro_f1",
+      "safety_metrics"
+    ],
+    "source_family_per_round_required": [
+      "primary_8_macro_f1",
+      "per_intent_precision",
+      "per_intent_recall",
+      "per_intent_f1",
+      "accuracy",
+      "balanced_accuracy",
+      "safety_metrics",
+      "supported_to_unsupported_rate",
+      "unsupported_to_supported_rate",
+      "hard_negative_boundary_diagnostics"
+    ],
+    "source_family_pooled_required": [
+      "pooled_primary_8_macro_f1",
+      "mean_family_primary_8_macro_f1",
+      "worst_family_primary_8_macro_f1",
+      "per_intent_pooled_precision",
+      "per_intent_pooled_recall",
+      "per_intent_pooled_f1",
+      "pooled_confusion_matrix",
+      "pooled_safety_metrics",
+      "pooled_supported_to_unsupported_rate",
+      "pooled_unsupported_to_supported_rate"
+    ]
+  },
+  "phase": "V2-C6 Step 29G",
+  "representations": {
+    "BGE_SMALL": {
+      "dimensions": 384,
+      "embedding_method": "passage_embed",
+      "fine_tuning": false,
+      "implementation": "FastEmbed",
+      "l2_normalized": true,
+      "model_identifier": "BAAI/bge-small-en-v1.5"
+    },
+    "CHAR_TFIDF": {
+      "class": "TfidfVectorizer",
+      "parameters": {
+        "analyzer": "char_wb",
+        "lowercase": true,
+        "min_df": 2,
+        "ngram_range": [
+          3,
+          5
+        ],
+        "sublinear_tf": true
+      }
+    },
+    "WORD_CHAR_TFIDF": {
+      "class": "FeatureUnion",
+      "exact_member_definitions_reused": true,
+      "members": [
+        "WORD_TFIDF",
+        "CHAR_TFIDF"
+      ]
+    },
+    "WORD_TFIDF": {
+      "class": "TfidfVectorizer",
+      "parameters": {
+        "analyzer": "word",
+        "lowercase": true,
+        "min_df": 2,
+        "ngram_range": [
+          1,
+          2
+        ],
+        "sublinear_tf": true
+      }
+    }
+  },
+  "reproducibility": {
+    "candidate_definitions_frozen": true,
+    "dataset_sha_frozen": true,
+    "embedding_normalization_frozen": true,
+    "fold_count_and_algorithm_frozen": true,
+    "group_field_frozen": true,
+    "library_level_deterministic_settings_frozen_where_practical": true,
+    "metric_definitions_frozen": true,
+    "random_seeds": {
+      "classifier_random_state": 20260930,
+      "group_cv_random_state": 20260930
+    },
+    "selection_order_frozen": true,
+    "source_family_ids_frozen": true,
+    "split_metadata_and_hashes_required_in_step29h": true,
+    "taxonomy_sha_frozen": true
+  },
+  "safety_gates": {
+    "application_scopes": [
+      "pooled_group_aware_cv_predictions",
+      "pooled_source_family_holdout_predictions",
+      "each_individual_source_family_holdout_round"
+    ],
+    "gates": [
+      {
+        "comparison": "greater_than_or_equal",
+        "definition": "Number of actually protected examples predicted as any protected intent divided by the number of actually protected examples.",
+        "denominator": "count(gold_intent in protected_intents)",
+        "metric": "protected_recall",
+        "numerator": "count(gold_intent in protected_intents and predicted_intent in protected_intents)",
+        "threshold": 0.8
+      },
+      {
+        "comparison": "less_than_or_equal",
+        "definition": "Number of actually non-protected examples predicted as any protected intent divided by the number of actually non-protected examples.",
+        "denominator": "count(gold_intent not in protected_intents)",
+        "metric": "protected_false_positive_rate",
+        "numerator": "count(gold_intent not in protected_intents and predicted_intent in protected_intents)",
+        "threshold": 0.01
+      },
+      {
+        "comparison": "greater_than_or_equal",
+        "definition": "Number of actual unsupported_or_uncertain examples predicted unsupported_or_uncertain divided by the number of actual unsupported_or_uncertain examples.",
+        "denominator": "count(gold_intent == unsupported_or_uncertain)",
+        "metric": "unsupported_recall",
+        "numerator": "count(gold_intent == unsupported_or_uncertain and predicted_intent == unsupported_or_uncertain)",
+        "threshold": 0.8
+      }
+    ],
+    "gates_mandatory_for_candidate_eligibility": true,
+    "protected_intents": [
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card"
+    ],
+    "thresholds_may_be_weakened_after_results": false
+  },
+  "schema_version": "v2c6-source-aware-model-selection-contract.v1",
+  "selection_rule": {
+    "complexity_order_low_to_high": [
+      "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+      "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=balanced",
+      "BGE_SMALL_LINEAR_SVC__C=1.0__class_weight=none",
+      "BGE_SMALL_LINEAR_SVC__C=1.0__class_weight=balanced",
+      "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+      "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=balanced"
+    ],
+    "if_no_candidate_is_eligible": {
+      "gates_weakened": false,
+      "result": "NO_ACCEPTABLE_CANDIDATE",
+      "selected_candidate": null,
+      "winner_forced": false
+    },
+    "numerical_tie_tolerance": {
+      "absolute": 1e-12,
+      "relative": 0.0,
+      "rule": "Treat numeric criteria as tied when absolute_difference is less than or equal to the absolute tolerance."
+    },
+    "ordered_lexicographic_criteria": [
+      {
+        "direction": "maximize",
+        "metric": "worst_family_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "mean_family_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_source_family_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_group_cv_macro_f1_16"
+      },
+      {
+        "direction": "minimize",
+        "metric": "pooled_source_family_supported_to_unsupported_rate"
+      },
+      {
+        "direction": "minimize",
+        "metric": "pooled_source_family_protected_false_positive_rate"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_source_family_protected_recall"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_source_family_unsupported_recall"
+      },
+      {
+        "direction": "prefer_lower_rank",
+        "metric": "candidate_complexity_rank"
+      },
+      {
+        "direction": "ascending_lexical",
+        "metric": "candidate_id"
+      }
+    ],
+    "selection_population": "eligible_candidates_only",
+    "single_weighted_aggregate_score_used": false,
+    "winner_interpretation": "Best eligible candidate under the frozen V2-C6 development evaluation contract; not production-ready and not finally accepted.",
+    "winner_postconditions": {
+      "fresh_untouched_v2c6_final_holdout_still_required": true,
+      "once_only_final_evaluation_required_under_steps_29j_through_29m": true,
+      "step29i_fit_required": true
+    }
+  },
+  "source_artifacts": {
+    "generalization_diagnosis_contract": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis_contract.json",
+      "sha256": "4276c28eff6158ee947ac26466c7b65ac8830718accba8252de606a49b0493a4"
+    },
+    "remediation_dataset_contract": {
+      "path": "data/evals/v2/ml/v2c6_remediation_dataset_contract.json",
+      "sha256": "2063e6ff0b27caaa4d7b6bbe12748e1e4a745bf446f4502589dbb36a966f9d4d"
+    },
+    "remediation_design_contract": {
+      "path": "data/evals/v2/ml/v2c6_remediation_design_contract.json",
+      "sha256": "ffa8ec7f20b99cc22da3473dd50d32c7aa611cf548ecb205d5c53b9e5409a442"
+    },
+    "step29f_freeze": {
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json",
+      "sha256": "7f71dda024e5a947c997977f09ed675fa1f924c38d30f332422aa2032ecbc544"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    }
+  },
+  "source_family_holdout": {
+    "combined_out_of_family_prediction_count": 810,
+    "each_remediation_record_predicted_without_its_source_family_in_training": true,
+    "expected_round_count": 3,
+    "held_out_family_completely_unseen_in_round_training": true,
+    "membership_persisted_in_step29h": true,
+    "membership_hash_required": true,
+    "per_family_composition": {
+      "supported_primary_intent_count": 7,
+      "supported_records_per_primary_intent": 30,
+      "total_record_count": 270,
+      "unsupported_or_uncertain_record_count": 60
+    },
+    "rounds": [
+      {
+        "held_out_source_family_id": "v2c6_sf1_definition_direct",
+        "round_id": "holdout_v2c6_sf1_definition_direct",
+        "test_count": 270,
+        "training_count": 8738,
+        "training_inherited_count": 8198,
+        "training_other_remediation_family_count": 540
+      },
+      {
+        "held_out_source_family_id": "v2c6_sf2_scenario_narrative",
+        "round_id": "holdout_v2c6_sf2_scenario_narrative",
+        "test_count": 270,
+        "training_count": 8738,
+        "training_inherited_count": 8198,
+        "training_other_remediation_family_count": 540
+      },
+      {
+        "held_out_source_family_id": "v2c6_sf3_boundary_conversational",
+        "round_id": "holdout_v2c6_sf3_boundary_conversational",
+        "test_count": 270,
+        "training_count": 8738,
+        "training_inherited_count": 8198,
+        "training_other_remediation_family_count": 540
+      }
+    ],
+    "source_families": [
+      "v2c6_sf1_definition_direct",
+      "v2c6_sf2_scenario_narrative",
+      "v2c6_sf3_boundary_conversational"
+    ],
+    "test_population": "all_remediation_records_from_exactly_one_held_out_source_family",
+    "threshold_tuning_from_rounds_permitted": false,
+    "training_population": "all_8198_inherited_records_plus_540_remediation_records_from_the_other_two_source_families"
+  },
+  "step29h_artifact_contract": {
+    "local_ignored_artifacts": [
+      {
+        "path": "data/evals/v2/ml/local/v2c6_source_aware_model_selection_bge_cache.npz",
+        "purpose": "reusable_hash_validated_fixed_pretrained_embeddings"
+      },
+      {
+        "path": "data/evals/v2/ml/local/v2c6_source_aware_model_selection_bge_cache.manifest.json",
+        "purpose": "cache_identity_row_order_and_hash_validation"
+      }
+    ],
+    "raw_utterance_text_in_result_summary_permitted": false,
+    "required_result_contents": [
+      "frozen_input_identities_and_hashes",
+      "candidate_definitions",
+      "exact_group_cv_fold_membership_and_hashes",
+      "exact_source_family_round_membership_and_hashes",
+      "per_candidate_group_cv_metrics",
+      "per_candidate_source_family_metrics",
+      "per_family_metrics",
+      "pooled_metrics",
+      "safety_gate_results",
+      "hard_negative_diagnostics",
+      "unsupported_boundary_diagnostics",
+      "candidate_eligibility_and_explicit_reasons",
+      "deterministic_ranking_inputs",
+      "selected_candidate_or_no_acceptable_candidate",
+      "governance_flags",
+      "known_limitations",
+      "next_required"
+    ],
+    "tracked_outputs": [
+      "data/evals/v2/ml/v2c6_source_aware_model_selection_results.json",
+      "data/evals/v2/ml/v2c6_source_aware_model_selection_results.manifest.json"
+    ]
+  },
+  "taxonomy": {
+    "expanded_new_7_intents": [
+      "account_blocked",
+      "cancel_transfer",
+      "close_account",
+      "lost_or_stolen_phone",
+      "passcode_recovery",
+      "transfer_failed_or_declined",
+      "transfer_pending"
+    ],
+    "historical_9_intents": [
+      "account_balance",
+      "card_status",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "recent_transactions",
+      "transaction_details",
+      "unsupported_or_uncertain"
+    ],
+    "intent_count": 16,
+    "intent_label_order": [
+      "account_balance",
+      "account_blocked",
+      "cancel_transfer",
+      "card_status",
+      "close_account",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "lost_or_stolen_phone",
+      "passcode_recovery",
+      "recent_transactions",
+      "transaction_details",
+      "transfer_failed_or_declined",
+      "transfer_pending",
+      "unsupported_or_uncertain"
+    ],
+    "primary_remediation_8_intents": [
+      "account_blocked",
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card",
+      "transfer_failed_or_declined",
+      "transfer_pending",
+      "unsupported_or_uncertain"
+    ],
+    "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8",
+    "version": "v2c5-taxonomy.v1"
+  },
+  "threshold_policy": {
+    "class_specific_threshold_tuning_permitted": false,
+    "native_multiclass_prediction_rule_required": true,
+    "post_result_rule_overrides_permitted": false,
+    "rejection_threshold_tuning_permitted": false,
+    "source_family_holdout_calibration_permitted": false,
+    "unsupported_fallback_threshold_tuning_permitted": false
+  },
+  "unsupported_boundary_diagnostics": {
+    "gates_created_post_hoc": false,
+    "report_per_source_family_and_pooled": true,
+    "supported_labels": "all_primary_remediation_8_intents_except_unsupported_or_uncertain",
+    "supported_to_unsupported_rate": {
+      "definition": "Among actual supported examples in the evaluated remediation slice, the fraction predicted unsupported_or_uncertain.",
+      "denominator": "count(gold_intent in supported_primary_remediation_intents)",
+      "numerator": "count(gold_intent in supported_primary_remediation_intents and predicted_intent == unsupported_or_uncertain)"
+    },
+    "unsupported_to_supported_rate": {
+      "definition": "Among actual unsupported_or_uncertain examples, the fraction predicted as any supported intent.",
+      "denominator": "count(gold_intent == unsupported_or_uncertain)",
+      "numerator": "count(gold_intent == unsupported_or_uncertain and predicted_intent != unsupported_or_uncertain)"
+    }
+  }
+}

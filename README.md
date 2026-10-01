@@ -4666,6 +4666,55 @@ final holdout remain mandatory. Step 29F performs no embeddings, training,
 inference, model selection, threshold tuning, final evaluation, or runtime
 change, and the consumed V2-C5 final holdout remains prohibited.
 
+### V2-C6 Step 29G source-aware model-selection contract
+
+`data/evals/v2/ml/v2c6_source_aware_model_selection_contract.json` freezes the
+development-only evaluation and selection design for Step 29H. Its sole input
+is the Step 29F frozen 9,008-record dataset (8,198 inherited plus 810
+remediation records). The contract combines deterministic five-fold
+`StratifiedGroupKFold`, with `group_id` kept indivisible, and exactly three
+leave-one-source-family-out rounds. Each source-family round trains on 8,738
+records and tests all 270 records from the unseen family. The two views are
+complementary: V2-C5 showed that strong group-isolated development OOF evidence
+did not by itself guarantee independently authored language generalization.
+
+The bounded six-candidate comparison reuses only established local components:
+the V2-C5 BGE-small/LinearSVC `C=4`, unweighted control; BGE-small variants at
+`C=1` and `C=4` with declared unweighted or balanced class weighting; and
+unweighted and balanced word-plus-character TF-IDF/LinearSVC baselines at
+`C=1`. Learned preprocessing and classifiers must be fit on each training
+partition only. Native multiclass predictions are required; threshold tuning,
+calibration on source-family holdouts, rejection rules, and post-result
+overrides are prohibited.
+
+Candidate eligibility requires the unchanged protected recall >= 0.80,
+protected false-positive rate <= 0.01, and unsupported recall >= 0.80 gates on
+pooled group-aware predictions, pooled source-family predictions, and every
+individual held-out family. If no candidate passes every gate, Step 29H must
+report `NO_ACCEPTABLE_CANDIDATE`. Among eligible candidates, selection is
+lexicographic and begins with worst-family primary-eight macro-F1, then mean
+and pooled source-family performance before pooled group-CV performance and
+the remaining frozen boundary, safety, complexity, and lexical tie-breaks.
+Worst-family priority favors robustness across authoring styles rather than a
+better average that conceals one weak family.
+
+The architecture decision is group-aware CV plus whole-source-family holdout
+validation with a small bounded candidate set. Ordinary or random validation
+does not directly test whole-family shift; a large search adds cost and
+development overfitting risk; and a fresh final holdout must remain untouched
+for final acceptance. The tradeoff is that only three authored families are
+available and this remains development model-selection evidence, not an
+unbiased final estimate. The decision is reversible only through a new frozen
+contract without changing the Step 29F dataset.
+
+Step 29G performs no embedding, fitting, inference, metric calculation,
+candidate selection, threshold tuning, final-holdout access, or runtime change,
+and claims no improvement. Step 29H,
+`v2c6_source_aware_model_selection_execution`, is next. Any winner means only
+the best eligible candidate under this frozen development contract; later fit
+and once-only evaluation against a fresh untouched V2-C6 final holdout remain
+mandatory.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

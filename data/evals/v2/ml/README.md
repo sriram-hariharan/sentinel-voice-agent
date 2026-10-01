@@ -1773,6 +1773,60 @@ selection, training, embedding generation, inference, threshold tuning,
 evaluation, or runtime change, and it cannot access the consumed V2-C5 final
 holdout.
 
+## V2-C6 Step 29G source-aware model-selection contract
+
+`v2c6_source_aware_model_selection_contract.json` freezes Step 29H before any
+model work. It pins the Step 29F freeze artifact and its exact 9,008-record
+dataset SHA, 8,198 + 810 lineage, frozen 16-label taxonomy, split seeds,
+candidate definitions, metric definitions, eligibility gates, deterministic
+selection order, required result artifacts, and failure behavior.
+
+The protocol requires both five-fold `StratifiedGroupKFold` over all records
+and three leave-one-source-family-out rounds over the remediation data. Every
+`group_id`, including the one inherited mixed-intent group, stays atomic; label
+purity is not required and groups may not be rewritten. Each family round
+trains on the 8,198 inherited records plus 540 remediation records from the
+other families and tests the 270 records from the completely unseen family.
+Exact fold and round memberships and hashes must be persisted by Step 29H.
+Ordinary within-development CV alone is insufficient because the measured
+V2-C5 evidence showed a substantial gap between strong group-isolated OOF and
+independently authored final language, while duplicate leakage was not the main
+measured explanation and source/style concentration and unsupported-boundary
+confusions remained important observations.
+
+The exact six candidates are BGE-small/LinearSVC with `C` in `{1, 4}` and
+class weighting in `{none, balanced}`, plus word-and-character TF-IDF/
+LinearSVC at `C=1` with each of those two weighting choices. The BGE-small,
+`C=4`, unweighted recipe is the explicit V2-C5 selected-recipe control. Every
+component already exists in the repository. TF-IDF vocabulary/IDF and every
+classifier are fit inside each training fold or round; fixed pretrained BGE
+inference cannot use validation labels. No threshold, fallback, calibration,
+or post-hoc rule tuning is permitted.
+
+Protected recall >= 0.80, protected false-positive rate <= 0.01, and
+unsupported recall >= 0.80 remain mandatory on pooled group CV, pooled
+source-family predictions, and each held-out family. Required diagnostics also
+cover supported/unsupported direction errors and the exact ten frozen hard-
+negative pairs, without adding post-hoc gates. Ineligible candidates retain
+explicit reasons. If none passes, the only valid result is
+`NO_ACCEPTABLE_CANDIDATE`; gates cannot be weakened and a winner cannot be
+forced.
+
+Eligible candidates are ranked lexicographically, beginning with worst-family
+primary-eight macro-F1, then mean-family and pooled source-family primary-eight
+macro-F1, pooled 16-label group-CV macro-F1, boundary and safety metrics, the
+frozen lower-cost complexity order, and candidate ID. Prioritizing the weakest
+family favors source/style robustness over a higher average that masks one
+poorly generalized family. This three-family development evidence is limited
+and cannot replace a fresh untouched final holdout.
+
+Step 29G creates only the contract and performs no embedding, fitting,
+inference, evaluation, candidate selection, threshold tuning, holdout access,
+or runtime change. Step 29H is exactly
+`v2c6_source_aware_model_selection_execution`; it must create the tracked
+text-free results and manifest declared by the contract. No candidate has yet
+won or demonstrated improvement.
+
 ## Reproduce V2-C1
 
 ```bash

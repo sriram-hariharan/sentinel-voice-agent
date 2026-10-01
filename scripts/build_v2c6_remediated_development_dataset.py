@@ -591,8 +591,8 @@ def validate_record_structure(
     frozen_ids = {
         str(record["example_id"]) for record in sources.development_examples
     }
-    family_descriptors: dict[str, tuple[str, str, str, str]] = {}
-    descriptor_to_family: dict[tuple[str, str, str, str], str] = {}
+    family_descriptors: dict[str, tuple[str, str, str]] = {}
+    descriptor_to_family: dict[tuple[str, str, str], str] = {}
     group_bindings: dict[str, tuple[str, str]] = {}
     validated: list[dict[str, Any]] = []
     allowed_pairs = {frozenset(pair) for pair in HARD_NEGATIVE_PAIRS}
@@ -655,7 +655,6 @@ def validate_record_structure(
         descriptor = (
             strings["source_family_independence_basis"],
             strings["source_revision"],
-            strings["authoring_batch_id"],
             strings["authoring_method"],
         )
         previous = family_descriptors.setdefault(family_id, descriptor)
@@ -872,6 +871,23 @@ def source_family_report(
     return result
 
 
+def authoring_batch_report(
+    records: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    counts_by_family: defaultdict[str, Counter[str]] = defaultdict(Counter)
+    for record in records:
+        counts_by_family[str(record["source_family_id"])][
+            str(record["authoring_batch_id"])
+        ] += 1
+    return {
+        family_id: {
+            "counts_by_authoring_batch_id": dict(sorted(batch_counts.items())),
+            "unique_authoring_batch_count": len(batch_counts),
+        }
+        for family_id, batch_counts in sorted(counts_by_family.items())
+    }
+
+
 def group_report(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     counts = Counter(str(record["group_id"]) for record in records)
     values = list(counts.values())
@@ -1073,10 +1089,12 @@ def validate_authoring_payload(
         subtype: subtype_counts.get(subtype, 0) for subtype in UNSUPPORTED_SUBTYPES
     }
     sources_report = source_family_report(approved)
+    authoring_batches = authoring_batch_report(records)
     duplicates = duplicate_report(approved, sources.development_examples)
     hard_negatives = hard_negative_report(approved)
     report: dict[str, Any] = {
         "approved_record_count": len(approved),
+        "authoring_batch_statistics_by_source_family": authoring_batches,
         "duplicate_validation": duplicates,
         "excluded_record_count": len(records) - len(approved),
         "group_statistics": group_report(approved),
@@ -1259,6 +1277,9 @@ def build_remediation_manifest(
             "path": display_path(paths.authoring_input, paths),
             "sha256": sha256_bytes(validation.input_bytes),
         },
+        "authoring_batch_statistics_by_source_family": authoring_batch_report(
+            records
+        ),
         "builder": {
             "path": display_path(paths.builder, paths),
             "sha256": sha256_file(paths.builder, paths, reader),
@@ -1309,6 +1330,9 @@ def build_combined_manifest(
 ) -> dict[str, Any]:
     records = combined_payload["examples"]
     return {
+        "authoring_batch_statistics_by_source_family": authoring_batch_report(
+            validation.approved_records
+        ),
         "builder": {
             "path": display_path(paths.builder, paths),
             "sha256": sha256_file(paths.builder, paths, reader),

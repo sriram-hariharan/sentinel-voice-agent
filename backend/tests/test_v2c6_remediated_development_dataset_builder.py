@@ -111,6 +111,20 @@ def complete_records() -> list[dict[str, Any]]:
     return records
 
 
+def records_sharing_one_family(
+    records: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    for record in records:
+        matches = [
+            candidate
+            for candidate in records
+            if candidate["source_family_id"] == record["source_family_id"]
+        ]
+        if len(matches) > 1:
+            return matches
+    raise AssertionError("synthetic fixture lacks a multi-record source family")
+
+
 def authoring_payload(records: list[dict[str, Any]]) -> dict[str, Any]:
     return {
         "phase": "V2-C6 Step 29E2",
@@ -421,6 +435,123 @@ def test_source_family_statistics(sources: builder.FrozenSources) -> None:
     )
 
 
+def test_source_family_accepts_multiple_authoring_batches(
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    family_records = records_sharing_one_family(records)
+    original_batch = str(family_records[0]["authoring_batch_id"])
+    second_batch = f"{original_batch}:second"
+    for record in family_records:
+        record["review_status"] = "unreviewed"
+    family_records[1]["authoring_batch_id"] = second_batch
+
+    result = validate(records, sources)
+    statistics = result.report[
+        "authoring_batch_statistics_by_source_family"
+    ][str(family_records[0]["source_family_id"])]
+
+    assert statistics["unique_authoring_batch_count"] == 2
+    assert statistics["counts_by_authoring_batch_id"] == {
+        original_batch: len(family_records) - 1,
+        second_batch: 1,
+    }
+
+
+@pytest.mark.parametrize(
+    ("field", "replacement"),
+    (
+        ("source_revision", "revision:changed"),
+        ("authoring_method", "controlled_llm_assisted"),
+        (
+            "source_family_independence_basis",
+            "independent alternate basis for the same family",
+        ),
+    ),
+)
+def test_family_level_metadata_must_remain_consistent_across_batches(
+    sources: builder.FrozenSources,
+    field: str,
+    replacement: str,
+) -> None:
+    records = complete_records()
+    family_records = records_sharing_one_family(records)
+    family_records[1]["authoring_batch_id"] = "batch:second"
+    family_records[1][field] = replacement
+
+    with pytest.raises(ValueError, match="source family metadata is inconsistent"):
+        validate(records, sources)
+
+
+@pytest.mark.parametrize("invalid_value", (None, ""))
+def test_authoring_batch_id_remains_required_and_nonempty(
+    sources: builder.FrozenSources,
+    invalid_value: str | None,
+) -> None:
+    records = complete_records()
+    if invalid_value is None:
+        del records[0]["authoring_batch_id"]
+    else:
+        records[0]["authoring_batch_id"] = invalid_value
+
+    with pytest.raises(
+        ValueError,
+        match="missing fields|authoring_batch_id must be a non-empty string",
+    ):
+        validate(records, sources)
+
+
+def test_one_batch_families_keep_existing_reporting(
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    statistics = validate(records, sources).report[
+        "authoring_batch_statistics_by_source_family"
+    ]
+
+    assert all(
+        value["unique_authoring_batch_count"] == 1
+        for value in statistics.values()
+    )
+    assert all(
+        sum(value["counts_by_authoring_batch_id"].values())
+        == sum(
+            record["source_family_id"] == family_id
+            for record in records
+        )
+        for family_id, value in statistics.items()
+    )
+
+
+def test_authoring_batch_statistics_are_in_both_manifests(
+    tmp_path: Path,
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    family_records = records_sharing_one_family(records)
+    family_records[1]["authoring_batch_id"] = "batch:second"
+    paths = temporary_paths(tmp_path)
+    validation = validate(records, sources, strict=True)
+
+    artifacts = builder.build_artifacts(sources, validation, paths)
+    expected = validation.report[
+        "authoring_batch_statistics_by_source_family"
+    ]
+
+    assert (
+        artifacts.remediation_manifest_payload[
+            "authoring_batch_statistics_by_source_family"
+        ]
+        == expected
+    )
+    assert (
+        artifacts.combined_manifest_payload[
+            "authoring_batch_statistics_by_source_family"
+        ]
+        == expected
+    )
+
+
 def test_identical_provenance_cannot_alias_multiple_family_ids(
     sources: builder.FrozenSources,
 ) -> None:
@@ -437,7 +568,6 @@ def test_identical_provenance_cannot_alias_multiple_family_ids(
             for field in (
                 "source_family_independence_basis",
                 "source_revision",
-                "authoring_batch_id",
                 "authoring_method",
             ):
                 record[field] = first[field]

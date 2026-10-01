@@ -4548,6 +4548,14 @@ unique groups, and unique normalized texts. The 90-per-supported-intent,
 coverage rather than silently becoming different thresholds; the three-family
 minimum is never relaxed.
 
+`source_family_id` identifies an independent provenance or authoring family;
+`authoring_batch_id` identifies an auditable batch within that family. One
+source family may contain multiple nonempty batch IDs. Family-level provenance
+(`source_revision`, `authoring_method`, and
+`source_family_independence_basis`) must remain consistent across those batches,
+and validation reports each family's unique batch count and record counts by
+batch ID without rewriting or inferring batch identity.
+
 Only `approved` records are included. `unreviewed`, `rejected`, and
 `needs_revision` records remain excluded and are counted. The builder enforces
 unique record IDs, nonempty groups, consistent source-family provenance, and

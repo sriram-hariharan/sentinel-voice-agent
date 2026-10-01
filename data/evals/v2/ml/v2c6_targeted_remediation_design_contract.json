@@ -1,0 +1,894 @@
+{
+  "architecture_decision": {
+    "alternatives_considered": [
+      {
+        "alternative": "add_more_generic_examples",
+        "decision": "rejected",
+        "reason": "Measured failures are concentrated at specific supported/unsupported and protected-action boundaries."
+      },
+      {
+        "alternative": "weaken_protected_false_positive_rate_gate",
+        "decision": "rejected",
+        "reason": "Changing the safety requirement after observing failures is prohibited."
+      },
+      {
+        "alternative": "tune_thresholds_on_step29h_source_family_errors",
+        "decision": "rejected",
+        "reason": "Those errors are consumed diagnostic evidence, so post-hoc threshold tuning would overfit them."
+      },
+      {
+        "alternative": "carry_balanced_class_weighting_forward",
+        "decision": "not_chosen_for_this_bounded_search",
+        "reason": "In the matched Step 29H comparisons, balanced weighting increased protected recall while also increasing protected false-positive rate and reducing unsupported recall; this is experiment-specific evidence, not a universal claim."
+      },
+      {
+        "alternative": "immediately_add_larger_or_new_embedding_model",
+        "decision": "not_chosen",
+        "reason": "Hybridization and hierarchical decomposition test the measured problem with less cost and complexity first."
+      },
+      {
+        "alternative": "immediately_proceed_to_step29i",
+        "decision": "rejected",
+        "reason": "No acceptable candidate exists."
+      }
+    ],
+    "chosen": "targeted_boundary_remediation_plus_bounded_candidate_expansion_plus_fresh_source_family_evaluation",
+    "problem_solved": "Step 29H failed safety generalization under previously unseen authoring styles, and Step 29H-B measured both data-boundary and representation/model evidence without proving a causal root cause.",
+    "reversibility": "High; freezing this development plan changes no runtime, final model, taxonomy, dataset, or final holdout.",
+    "tradeoffs": [
+      "Authoring and review are required for 1240 new development records.",
+      "The two fresh evaluation families become consumed development-selection evidence after one model-selection cycle.",
+      "The hybrid and hierarchical candidates add modest implementation complexity.",
+      "The bounded remediation has no guarantee of passing the frozen gates."
+    ],
+    "why_suitable_for_sentinelvoice": [
+      "safety_first",
+      "low_cost",
+      "bounded_scope",
+      "deterministic_evaluation",
+      "interpretable_classical_ml_routing",
+      "directly_tests_measured_failure_modes",
+      "avoids_infrastructure_expansion"
+    ]
+  },
+  "authoring_and_review_governance": {
+    "ai_assisted_review_may_be_used": true,
+    "ai_assisted_review_must_not_be_described_as_independent_human_review": true,
+    "allowed_review_methods": [
+      "human_review",
+      "ai_assisted_review"
+    ],
+    "auditable_review_decisions_required": true,
+    "auditable_reviewer_provenance_required": true,
+    "human_adjudication_mandatory_for": [
+      "rejected",
+      "needs_revision",
+      "reviewer_disagreement",
+      "low_confidence_review",
+      "unresolved_ambiguity",
+      "provenance_inconsistency",
+      "protected_write_ambiguity"
+    ],
+    "initial_authoring_may_use_classifier_predictions": false,
+    "model_in_the_loop_initial_authoring_permitted": false,
+    "provenance_may_be_inferred_from_wording": false,
+    "required_record_metadata": [
+      "record_id",
+      "text",
+      "intent",
+      "risk_level",
+      "group_id",
+      "source_family_id",
+      "source_family_independence_basis",
+      "source_revision",
+      "authoring_batch_id",
+      "authoring_method",
+      "boundary_target",
+      "is_hard_negative",
+      "review_status"
+    ],
+    "unsupported_additional_required_metadata": [
+      "unsupported_subtype"
+    ],
+    "reuse_step29d_step29e_governance_where_compatible": true,
+    "semantic_review_required": true
+  },
+  "candidate_search_space": {
+    "balanced_class_weighting_carried_forward": false,
+    "candidate_count": 4,
+    "candidates": [
+      {
+        "C": 4.0,
+        "candidate_id": "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+        "class_weight": null,
+        "classifier": "LinearSVC",
+        "representation": "BGE_SMALL",
+        "role": "semantic_control",
+        "winner_claimed": false
+      },
+      {
+        "C": 1.0,
+        "candidate_id": "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+        "class_weight": null,
+        "classifier": "LinearSVC",
+        "representation": "WORD_CHAR_TFIDF",
+        "role": "prior_safety_near_miss_control",
+        "winner_claimed": false
+      },
+      {
+        "C": 1.0,
+        "candidate_id": "HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+        "class_weight": null,
+        "classifier": "LinearSVC",
+        "representation": "HYBRID_BGE_TFIDF",
+        "role": "bounded_hybrid_representation_test",
+        "winner_claimed": false
+      },
+      {
+        "C": 1.0,
+        "candidate_id": "HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+        "class_weight": null,
+        "classifier": "two_stage_LinearSVC",
+        "representation": "WORD_CHAR_TFIDF",
+        "role": "supported_unsupported_boundary_decomposition_test",
+        "winner_claimed": false
+      }
+    ],
+    "exact_candidate_ids": [
+      "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+      "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+      "HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+      "HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none"
+    ],
+    "new_embedding_model_introduced": false,
+    "search_additional_c_values": false,
+    "search_expansion_after_results_permitted": false
+  },
+  "candidate_implementation_semantics": {
+    "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none": {
+      "continuity": "same_representation_and_model_behavior_as_existing_semantic_control",
+      "dimensions": 384,
+      "embedding_model": "BAAI/bge-small-en-v1.5",
+      "final_row_l2_normalized": true,
+      "fine_tuning": false
+    },
+    "HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none": {
+      "calibration_permitted": false,
+      "confidence_override_permitted": false,
+      "deterministic_inference": {
+        "otherwise": "use_stage_2_intent_prediction",
+        "when_stage_1_predicts_unsupported_or_uncertain": "final_prediction_is_unsupported_or_uncertain"
+      },
+      "preprocessing_convention": "reuse_frozen_step29g_WORD_CHAR_TFIDF_convention",
+      "protected_intent_rule_special_casing_permitted": false,
+      "stage_1": {
+        "C": 1.0,
+        "class_weight": null,
+        "classes": [
+          "unsupported_or_uncertain",
+          "supported"
+        ],
+        "classifier": "LinearSVC",
+        "representation": "WORD_CHAR_TFIDF"
+      },
+      "stage_2": {
+        "C": 1.0,
+        "class_weight": null,
+        "class_count": 15,
+        "classes": [
+          "account_balance",
+          "account_blocked",
+          "cancel_transfer",
+          "card_status",
+          "close_account",
+          "create_dispute",
+          "escalation",
+          "freeze_card",
+          "informational_policy",
+          "lost_or_stolen_phone",
+          "passcode_recovery",
+          "recent_transactions",
+          "transaction_details",
+          "transfer_failed_or_declined",
+          "transfer_pending"
+        ],
+        "classifier": "LinearSVC",
+        "excluded_intent": "unsupported_or_uncertain",
+        "representation": "WORD_CHAR_TFIDF"
+      },
+      "threshold_tuning_permitted": false
+    },
+    "HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none": {
+      "bge_block": {
+        "dimensions": 384,
+        "embedding_model": "BAAI/bge-small-en-v1.5",
+        "preprocessing_convention": "reuse_frozen_step29g_BGE_SMALL_convention"
+      },
+      "calibration_permitted": false,
+      "concatenation": "deterministic_sparse_hstack_of_word_char_tfidf_and_dense_bge_block_converted_to_sparse",
+      "final_combined_row_l2_normalization": true,
+      "learned_fusion_layer_permitted": false,
+      "new_embedding_model_introduced": false,
+      "scientific_python_dependencies": "existing_local_dependencies_only",
+      "tfidf_block": {
+        "members": [
+          "WORD_TFIDF",
+          "CHAR_TFIDF"
+        ],
+        "preprocessing_convention": "reuse_frozen_step29g_WORD_CHAR_TFIDF_convention"
+      },
+      "threshold_tuning_permitted": false
+    },
+    "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none": {
+      "continuity": "same_word_and_character_tfidf_family_as_existing_near_miss_control",
+      "members": [
+        "WORD_TFIDF",
+        "CHAR_TFIDF"
+      ],
+      "winner_claimed": false
+    },
+    "common": {
+      "calibration_permitted": false,
+      "class_weight": null,
+      "classifier_random_state": 20260930,
+      "post_hoc_rule_override_permitted": false,
+      "threshold_tuning_permitted": false
+    }
+  },
+  "candidate_eligibility": {
+    "eligible_candidates_only_may_be_ranked": true,
+    "requirements": [
+      "all_required_evaluation_runs_completed",
+      "all_expected_predictions_present_exactly_once",
+      "no_group_leakage",
+      "no_fresh_evaluation_training_leakage",
+      "all_mandatory_safety_gates_pass",
+      "all_required_metrics_finite_and_valid",
+      "all_source_hashes_and_lineage_valid",
+      "no_prohibited_holdout_access",
+      "no_post_hoc_threshold_tuning"
+    ]
+  },
+  "complexity_ordering": {
+    "interpretation": "final_tie_breaker_only_not_quality_ranking",
+    "simplest_to_more_complex": [
+      "WORD_CHAR_TFIDF_LINEAR_SVC",
+      "BGE_SMALL_LINEAR_SVC",
+      "HYBRID_BGE_TFIDF_LINEAR_SVC",
+      "HIERARCHICAL_TFIDF_LINEAR_SVC"
+    ]
+  },
+  "consumed_evidence_governance": {
+    "allowed_reuse": [
+      "diagnostic_regression_evidence",
+      "previously_observed_development_evidence"
+    ],
+    "permanently_consumed_for_development_selection_and_diagnosis": true,
+    "prohibited_descriptions": [
+      "fresh",
+      "unseen",
+      "independent_post_remediation_validation",
+      "clean_source_generalization_evidence"
+    ],
+    "source_families": [
+      "v2c6_sf1_definition_direct",
+      "v2c6_sf2_scenario_narrative",
+      "v2c6_sf3_boundary_conversational"
+    ],
+    "source_families_may_count_as_fresh_after_remediation": false
+  },
+  "contract_status": {
+    "contract_frozen": true,
+    "dataset_mutated": false,
+    "design_only": true,
+    "embeddings_generated": false,
+    "final_holdout_accessed": false,
+    "future_v2c6_final_holdout_created": false,
+    "model_fitting_performed": false,
+    "model_inference_performed": false,
+    "model_selection_performed": false,
+    "new_evaluation_records_authored": false,
+    "new_training_records_authored": false,
+    "next_required": "v2c6_targeted_remediation_and_fresh_source_authoring",
+    "remediation_executed": false,
+    "remediation_success_claimed": false,
+    "runtime_behavior_changed": false,
+    "step29i_authorized": false,
+    "taxonomy_mutated": false,
+    "threshold_tuning_performed": false
+  },
+  "contract_version": "v2c6-targeted-remediation-design-contract.v1",
+  "duplicate_and_leakage_controls": {
+    "embedding_based_near_duplicate_filtering_required": false,
+    "failure_behavior": "fail_closed",
+    "near_duplicate_semantic_review": "optional_later_action_requiring_separate_governance",
+    "normalization": {
+      "collapse_whitespace": true,
+      "lowercase": true,
+      "trim": true,
+      "unicode_normalization": "NFKC",
+      "version": "unicode-nfkc-lower-whitespace.v1"
+    },
+    "required_checks": [
+      "exact_duplicate_text",
+      "normalized_duplicate_text",
+      "record_id_collision",
+      "group_id_collision_where_prohibited",
+      "training_evaluation_exact_overlap",
+      "fresh_evaluation_historical_development_exact_overlap",
+      "fresh_evaluation_consumed_sf1_sf2_sf3_exact_overlap",
+      "cross_intent_exact_duplicate",
+      "source_family_provenance_consistency"
+    ]
+  },
+  "excluded_alternatives": {
+    "additional_c_values": true,
+    "balanced_class_weighting": true,
+    "cross_encoders": true,
+    "ensembles_beyond_frozen_hybrid": true,
+    "external_apis": true,
+    "large_embedding_models": true,
+    "llm_routing": true,
+    "neural_fine_tuning": true,
+    "thresholds_chosen_from_step29h_errors": true
+  },
+  "final_holdout_policy": {
+    "existing_final_holdout_access_permitted": false,
+    "final_holdout_created_by_this_step": false,
+    "future_final_holdout_required_after_development_selection": true,
+    "future_v2c6_final_holdout_access_permitted": false,
+    "future_v2c6_final_holdout_authoring_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "runtime_authorization_before_final_holdout_permitted": false
+  },
+  "fresh_evaluation_specification": {
+    "authoring_independence_requirements": {
+      "authored_separately_from_training_remediation": true,
+      "candidate_outputs_may_be_inspected_during_authoring": false,
+      "model_predictions_may_generate_or_select_examples": false,
+      "must_not_optimize_to_specific_candidate": true,
+      "must_not_paraphrase_training_examples": true,
+      "must_not_reuse_record_text": true,
+      "must_not_use_consumed_sf1_sf2_sf3_as_paraphrase_templates": true,
+      "separate_prompts_templates_and_processes_required": true,
+      "same_boundaries_may_be_covered_with_independent_wording": true
+    },
+    "data_role": "development_evaluation_only",
+    "excluded_from_candidate_fitting": true,
+    "family_count": 2,
+    "family_specifications": [
+      {
+        "authoring_focus": "realistic_case_and_problem_descriptions",
+        "intent_counts": {
+          "account_blocked": 40,
+          "cancel_transfer": 40,
+          "close_account": 40,
+          "create_dispute": 40,
+          "freeze_card": 40,
+          "transfer_failed_or_declined": 40,
+          "transfer_pending": 40,
+          "unsupported_or_uncertain": 40
+        },
+        "non_protected_record_count": 160,
+        "protected_record_count": 160,
+        "record_count": 320,
+        "source_family_id": "v2c6_r2_eval_sf1_independent_casework"
+      },
+      {
+        "authoring_focus": "natural_user_phrasing_corrections_indirect_requests_negation_ambiguity_and_conversation",
+        "intent_counts": {
+          "account_blocked": 40,
+          "cancel_transfer": 40,
+          "close_account": 40,
+          "create_dispute": 40,
+          "freeze_card": 40,
+          "transfer_failed_or_declined": 40,
+          "transfer_pending": 40,
+          "unsupported_or_uncertain": 40
+        },
+        "non_protected_record_count": 160,
+        "protected_record_count": 160,
+        "record_count": 320,
+        "source_family_id": "v2c6_r2_eval_sf2_independent_naturalistic"
+      }
+    ],
+    "intent_count": 8,
+    "per_family_record_count": 320,
+    "per_intent_per_family_count": 40,
+    "protected_false_positive_allowance_per_family": {
+      "formula": "floor(0.01 * non_protected_record_count)",
+      "maximum_passing_count": 1,
+      "non_protected_record_count": 160,
+      "threshold": 0.01
+    },
+    "record_count": 640,
+    "source_family_ids": [
+      "v2c6_r2_eval_sf1_independent_casework",
+      "v2c6_r2_eval_sf2_independent_naturalistic"
+    ]
+  },
+  "group_aware_cross_validation": {
+    "group_field": "group_id",
+    "group_id_is_atomic": true,
+    "method": "StratifiedGroupKFold",
+    "n_splits": 5,
+    "non_group_aware_fallback_allowed": false,
+    "random_state": 20260930,
+    "report_same_broad_metrics_as_step29g_step29h": true,
+    "shuffle": true,
+    "use_when_feasible_under_frozen_taxonomy_and_group_constraints": true
+  },
+  "known_limitations": [
+    "The 1240 planned records do not exist in this contract step.",
+    "Source-family metadata and review cannot prove complete semantic independence.",
+    "Two fresh evaluation families provide bounded development evidence, not final acceptance evidence.",
+    "The candidate set tests only four predeclared low-cost hypotheses.",
+    "Passing development gates would not remove the requirement for a fresh untouched final holdout.",
+    "No remediation outcome or causal root cause is established by this design contract."
+  ],
+  "measured_basis": {
+    "balanced_class_weighting_observation": {
+      "descriptive_only": true,
+      "generally_increased_protected_false_positive_rate": true,
+      "generally_increased_protected_recall": true,
+      "generally_reduced_unsupported_recall": true,
+      "universal_claim": false
+    },
+    "causal_root_cause_proven": false,
+    "important_hard_negative_boundaries": [
+      [
+        "transfer_pending",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "close_account",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "transfer_failed_or_declined",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "freeze_card",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "transfer_pending"
+      ]
+    ],
+    "protected_to_unsupported_recall_misses": {
+      "bidirectional_boundary_weakness_observed": true,
+      "description": "Protected intents were sometimes predicted as unsupported_or_uncertain."
+    },
+    "remediation_evidence_classification": {
+      "classification": "both",
+      "components": [
+        "targeted_data_boundary_evidence",
+        "representation_change_evidence"
+      ],
+      "remediation_selected_by_analysis": false
+    },
+    "unsupported_to_protected_false_positives": {
+      "observed_across_representation_families": [
+        "BGE",
+        "TFIDF"
+      ],
+      "observed_across_source_families": [
+        "v2c6_sf1_definition_direct",
+        "v2c6_sf2_scenario_narrative",
+        "v2c6_sf3_boundary_conversational"
+      ],
+      "pattern": "unsupported_or_uncertain_to_protected_action"
+    }
+  },
+  "metrics_and_comparability": {
+    "fresh_source_evaluation_primary_metric": "primary_8_macro_f1",
+    "group_cv_primary_metric": "macro_f1_16",
+    "macro_f1_populations_are_equivalent": false,
+    "unqualified_direct_subtraction_permitted": false
+  },
+  "motivation": {
+    "design_goal": "Freeze the smallest coherent remediation plan after measured safety-generalization failures.",
+    "step29h_b_classification": "both",
+    "step29h_b_execution_status": "COMPLETED",
+    "step29h_eligible_candidate_count": 0,
+    "step29h_selected_candidate": null,
+    "step29h_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+    "step29i_blocked": true
+  },
+  "next_required": "v2c6_targeted_remediation_and_fresh_source_authoring",
+  "old_source_family_diagnostic_protocol": {
+    "allowed_role": "consumed_diagnostic_regression_evidence_only",
+    "families": [
+      "v2c6_sf1_definition_direct",
+      "v2c6_sf2_scenario_narrative",
+      "v2c6_sf3_boundary_conversational"
+    ],
+    "may_claim_independent_validation": false,
+    "may_claim_remediation_generalization": false,
+    "may_count_as_fresh_evidence": false,
+    "may_replace_new_evaluation_family": false,
+    "optional_reporting_permitted": true
+  },
+  "phase": "V2-C6 Step 29H-C",
+  "prohibited_operations": [
+    "author_600_training_records",
+    "author_640_fresh_evaluation_records",
+    "embedding_generation",
+    "model_fitting",
+    "model_inference",
+    "model_selection",
+    "step29h_rerun",
+    "threshold_tuning",
+    "safety_gate_weakening",
+    "dataset_mutation",
+    "taxonomy_mutation",
+    "runtime_change",
+    "v2c5_final_holdout_access",
+    "future_v2c6_final_holdout_authoring",
+    "future_v2c6_final_holdout_access",
+    "step29i_authorization",
+    "remediation_success_claim"
+  ],
+  "remediation_components": [
+    "targeted_boundary_oriented_training_data",
+    "modest_representation_and_decision_architecture_candidate_expansion",
+    "new_independently_authored_source_generalization_evaluation_evidence"
+  ],
+  "safety_gates": {
+    "application_scopes": [
+      "pooled_group_aware_cv",
+      "v2c6_r2_eval_sf1_independent_casework",
+      "v2c6_r2_eval_sf2_independent_naturalistic",
+      "pooled_fresh_evaluation"
+    ],
+    "gates": [
+      {
+        "comparison": "greater_than_or_equal",
+        "metric": "protected_recall",
+        "threshold": 0.8
+      },
+      {
+        "comparison": "less_than_or_equal",
+        "metric": "protected_false_positive_rate",
+        "threshold": 0.01
+      },
+      {
+        "comparison": "greater_than_or_equal",
+        "metric": "unsupported_recall",
+        "threshold": 0.8
+      }
+    ],
+    "gates_mandatory_for_candidate_eligibility": true,
+    "old_consumed_source_families_are_mandatory_fresh_gates": false,
+    "protected_intents": [
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card"
+    ],
+    "thresholds_unchanged_from_step29g": true,
+    "thresholds_may_be_weakened_after_results": false
+  },
+  "schema_version": "v2c6-targeted-remediation-design-contract.v1",
+  "selection_rule": {
+    "if_no_candidate_is_eligible": {
+      "gates_weakened": false,
+      "selected_candidate": null,
+      "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "winner_forced": false
+    },
+    "ordered_lexicographic_criteria": [
+      {
+        "direction": "maximize",
+        "metric": "worst_fresh_family_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "mean_fresh_family_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_fresh_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_group_cv_macro_f1_16"
+      },
+      {
+        "direction": "minimize",
+        "metric": "pooled_fresh_protected_false_positive_rate"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_fresh_protected_recall"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_fresh_unsupported_recall"
+      },
+      {
+        "direction": "prefer_lower_rank",
+        "metric": "model_complexity_rank"
+      },
+      {
+        "direction": "ascending_lexical",
+        "metric": "candidate_id"
+      }
+    ],
+    "selection_population": "eligible_candidates_only",
+    "single_weighted_composite_score_used": false
+  },
+  "source_artifact_validation": {
+    "design_may_be_frozen_before_validation": false,
+    "hash_mismatch_behavior": "fail_closed",
+    "required_checks": [
+      "path_identity",
+      "sha256_identity",
+      "schema_version",
+      "step29h_b_execution_status",
+      "step29h_b_remediation_evidence_classification",
+      "step29h_b_remediation_not_selected",
+      "step29i_blocked",
+      "step29f_freeze_status"
+    ]
+  },
+  "source_artifacts": {
+    "step29d_remediation_dataset_contract": {
+      "path": "data/evals/v2/ml/v2c6_remediation_dataset_contract.json",
+      "schema_version": "v2c6-remediation-dataset-contract.v2",
+      "sha256": "2063e6ff0b27caaa4d7b6bbe12748e1e4a745bf446f4502589dbb36a966f9d4d"
+    },
+    "step29f_freeze": {
+      "expected_freeze_status": "FROZEN",
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json",
+      "schema_version": "v2c6-remediated-development-dataset-freeze.v1",
+      "sha256": "7f71dda024e5a947c997977f09ed675fa1f924c38d30f332422aa2032ecbc544"
+    },
+    "step29g_contract": {
+      "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_contract.json",
+      "schema_version": "v2c6-source-aware-model-selection-contract.v1",
+      "sha256": "de4566b7fdb097e78fcd23b8ffa4682c4757cc7c5901c3f9a49d7da28192b1ba"
+    },
+    "step29h_a_contract": {
+      "path": "data/evals/v2/ml/v2c6_post_selection_failure_analysis_contract.json",
+      "schema_version": "v2c6-post-selection-failure-analysis-contract.v1",
+      "sha256": "1cd4204593ca5cb51590ff8207d51134f75844ebbceb05afd2ae155298c09979"
+    },
+    "step29h_b_analysis": {
+      "expected_execution_status": "COMPLETED",
+      "expected_remediation_evidence_classification": "both",
+      "expected_remediation_selected": false,
+      "path": "data/evals/v2/ml/v2c6_post_selection_failure_analysis.json",
+      "schema_version": "v2c6-post-selection-failure-analysis.v1",
+      "sha256": "339d8ce2f3ce460e2ac9a702d915d7d54053c3e5ec9b23f269c5f46d48440ae7"
+    },
+    "step29h_b_manifest": {
+      "expected_execution_status": "COMPLETED",
+      "path": "data/evals/v2/ml/v2c6_post_selection_failure_analysis.manifest.json",
+      "schema_version": "v2c6-post-selection-failure-analysis-manifest.v1",
+      "sha256": "72f410abb8ef275b1353280a04b105719c66c2e5141e1ab95a767d6c1bb134ed"
+    },
+    "step29h_results": {
+      "expected_eligible_candidate_count": 0,
+      "expected_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_results.json",
+      "schema_version": "v2c6-source-aware-model-selection-results.v1",
+      "sha256": "babb19ccd5a84d9014273a044e25ef7448c09208aca0fded40f08755f2c2fd19"
+    }
+  },
+  "status": "FROZEN",
+  "step29i_policy": {
+    "authorization_condition": "a_future_remediated_model_selection_run_produces_an_acceptable_selected_candidate_under_the_frozen_gates",
+    "blocked": true,
+    "eligible_now": false,
+    "this_contract_authorizes_step29i": false
+  },
+  "targeted_intents": [
+    "account_blocked",
+    "cancel_transfer",
+    "close_account",
+    "create_dispute",
+    "freeze_card",
+    "transfer_failed_or_declined",
+    "transfer_pending",
+    "unsupported_or_uncertain"
+  ],
+  "training_and_evaluation_protocol": {
+    "fresh_evaluation_population": {
+      "record_count": 640,
+      "source_family_count": 2,
+      "training_use_permitted_before_candidate_evaluation": false
+    },
+    "fresh_source_evaluation": {
+      "candidate_fit_population": "entire_9608_record_training_and_model_development_population",
+      "each_candidate_fit_once_for_fresh_evaluation": true,
+      "evaluation_scopes": [
+        "v2c6_r2_eval_sf1_independent_casework",
+        "v2c6_r2_eval_sf2_independent_naturalistic",
+        "pooled_fresh_evaluation"
+      ],
+      "fresh_families_become_consumed_after_model_selection": true,
+      "fresh_records_excluded_from_fitting": true
+    },
+    "training_and_model_development_population": {
+      "existing_frozen_v2c6_development_record_count": 9008,
+      "new_targeted_training_record_count": 600,
+      "total_record_count": 9608
+    }
+  },
+  "training_remediation_specification": {
+    "authoring_goal": "decision_boundary_diversity_not_generic_paraphrase_volume",
+    "data_role": "development_and_training_only_not_clean_evaluation",
+    "family_count": 3,
+    "family_specifications": [
+      {
+        "authoring_focus": "minimal_boundary",
+        "intent_counts": {
+          "account_blocked": 20,
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20,
+          "transfer_failed_or_declined": 20,
+          "transfer_pending": 20,
+          "unsupported_or_uncertain": 60
+        },
+        "record_count": 200,
+        "source_family_id": "v2c6_r2_train_sf1_minimal_boundary"
+      },
+      {
+        "authoring_focus": "contextual_scenario",
+        "intent_counts": {
+          "account_blocked": 20,
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20,
+          "transfer_failed_or_declined": 20,
+          "transfer_pending": 20,
+          "unsupported_or_uncertain": 60
+        },
+        "record_count": 200,
+        "source_family_id": "v2c6_r2_train_sf2_contextual_scenario"
+      },
+      {
+        "authoring_focus": "conversational_correction",
+        "intent_counts": {
+          "account_blocked": 20,
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20,
+          "transfer_failed_or_declined": 20,
+          "transfer_pending": 20,
+          "unsupported_or_uncertain": 60
+        },
+        "record_count": 200,
+        "source_family_id": "v2c6_r2_train_sf3_conversational_correction"
+      }
+    ],
+    "hard_negative_boundaries": {
+      "all_step29d_pairs_must_be_covered": true,
+      "required_pairs": [
+        [
+          "close_account",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "transfer_failed_or_declined",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "account_blocked",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "cancel_transfer",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "create_dispute",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "freeze_card",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "transfer_pending",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "cancel_transfer",
+          "transfer_pending"
+        ],
+        [
+          "transfer_failed_or_declined",
+          "transfer_pending"
+        ],
+        [
+          "account_blocked",
+          "transfer_failed_or_declined"
+        ]
+      ],
+      "tier_1": [
+        [
+          "unsupported_or_uncertain",
+          "cancel_transfer"
+        ],
+        [
+          "unsupported_or_uncertain",
+          "close_account"
+        ],
+        [
+          "unsupported_or_uncertain",
+          "create_dispute"
+        ],
+        [
+          "unsupported_or_uncertain",
+          "freeze_card"
+        ],
+        [
+          "unsupported_or_uncertain",
+          "transfer_pending"
+        ],
+        [
+          "unsupported_or_uncertain",
+          "transfer_failed_or_declined"
+        ]
+      ],
+      "tier_2": [
+        [
+          "unsupported_or_uncertain",
+          "account_blocked"
+        ],
+        [
+          "cancel_transfer",
+          "transfer_pending"
+        ],
+        [
+          "transfer_failed_or_declined",
+          "transfer_pending"
+        ],
+        [
+          "account_blocked",
+          "transfer_failed_or_declined"
+        ]
+      ]
+    },
+    "independently_prompted_or_structured_families_required": true,
+    "intent_count": 8,
+    "per_family_record_count": 200,
+    "record_count": 600,
+    "source_family_ids": [
+      "v2c6_r2_train_sf1_minimal_boundary",
+      "v2c6_r2_train_sf2_contextual_scenario",
+      "v2c6_r2_train_sf3_conversational_correction"
+    ],
+    "unsupported_authoring": {
+      "avoid_obvious_keyword_shortcuts": true,
+      "required_case_types": [
+        "protected_action_mentioned_without_current_request",
+        "hypothetical_or_general_protected_action_question",
+        "insufficient_information_for_intent_classification",
+        "completed_or_historical_action_not_new_request",
+        "negation_cancellation_or_correction",
+        "adjacent_unsupported_banking_functionality",
+        "incomplete_or_ambiguous_action_language"
+      ],
+      "subtype_vocabulary": [
+        "truly_unsupported_banking_request",
+        "ambiguous_or_insufficient_information",
+        "adjacent_but_unsupported_intent",
+        "supported_intent_hard_negative",
+        "off_domain_or_noise"
+      ]
+    }
+  }
+}

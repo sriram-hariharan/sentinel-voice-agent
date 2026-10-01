@@ -2043,6 +2043,59 @@ validation on unseen sources. Future clean source-generalization evidence
 requires newly independently authored material or ultimately the untouched
 final holdout.
 
+## V2-C6 Step 29H-C targeted remediation design contract
+
+`v2c6_targeted_remediation_design_contract.json` hash-pins the completed Step
+29H-B analysis and manifest plus its Step 29H-A, Step 29G, Step 29H, Step 29D,
+and Step 29F lineage. It freezes a design only: no records are authored, no
+embeddings are generated, no model is fit or evaluated, no threshold is tuned,
+and no dataset, taxonomy, runtime, or final holdout changes.
+
+The contract responds to Step 29H-B's `both` classification without claiming a
+causal root cause. The measured basis includes unsupported-to-protected false
+positives across BGE and TF-IDF and all three consumed source families,
+protected-to-unsupported recall misses, six important hard-negative
+boundaries, and the experiment-specific balanced-weighting tradeoff. It
+freezes three linked components:
+
+- 600 targeted training records in three independent 200-record families;
+  each family has 20 records for each supported primary remediation intent and
+  60 `unsupported_or_uncertain` records.
+- Four unweighted candidates: BGE-small/LinearSVC `C=4`, word-plus-character
+  TF-IDF/LinearSVC `C=1`, a normalized BGE-plus-TF-IDF hybrid at `C=1`, and a
+  deterministic two-stage TF-IDF supported/unsupported hierarchy at `C=1`.
+- 640 separately authored development-evaluation records in two new 320-record
+  families, with exactly 40 records per primary remediation intent per family.
+
+Fresh evaluation authoring must be independent from training authoring, must
+not use predictions or candidate outputs, and must not paraphrase training or
+consumed SF1/SF2/SF3 records. The 640 evaluation records remain excluded from
+fitting. Deterministic exact and normalized duplicate, ID collision,
+training/evaluation overlap, historical-development overlap, consumed-family
+overlap, cross-intent duplicate, and provenance checks are mandatory. Review
+reuses Step 29D/29E governance: AI-assisted semantic review may be used but is
+not independent human review, and designated ambiguity, disagreement,
+rejection, revision, confidence, and provenance cases require human
+adjudication.
+
+The future 9,608-record development/training population retains five-fold
+`StratifiedGroupKFold` with atomic `group_id` and `random_state=20260930`.
+Each candidate is then fit on that full population and evaluated separately on
+both new families and their pooled 640 records. The unchanged protected recall
+>= 0.80, protected false-positive rate <= 0.01, and unsupported recall >= 0.80
+gates are mandatory for pooled group CV, each fresh family, and pooled fresh
+evaluation. With 160 non-protected records per family, the protected-FP gate
+permits at most `floor(0.01 * 160) = 1` protected false positive per family.
+
+Only eligible candidates may enter the frozen worst-fresh-family-first
+lexicographic selection. If none passes every gate, the required result is
+`NO_ACCEPTABLE_CANDIDATE`, with no forced winner or weakened gate. Old
+SF1/SF2/SF3 are permanently consumed and may appear only as diagnostic
+regression evidence, never fresh validation. Step 29I remains blocked and a
+future untouched final holdout remains mandatory. The exact next action is
+`v2c6_targeted_remediation_and_fresh_source_authoring`; it authors/builds 600
+training and 640 fresh evaluation records but does not run model selection.
+
 ## Reproduce V2-C1
 
 ```bash

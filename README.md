@@ -4884,6 +4884,44 @@ or ultimately the untouched final holdout. Step 29I remains blocked, and
 `next_required` remains `null` because Step 29H-A froze no post-analysis
 continuation; no next-step identifier is inferred here.
 
+### V2-C6 Step 29H-C targeted remediation design
+
+`data/evals/v2/ml/v2c6_targeted_remediation_design_contract.json` freezes the
+smallest bounded response to the completed Step 29H-B analysis. The evidence
+classification is `both`: measured targeted data-boundary evidence and
+representation/model evidence exist, without proving a causal root cause or
+selecting remediation. The chosen design combines targeted boundary training
+data, a four-candidate representation/decision-architecture comparison, and
+new independently authored source-generalization evaluation evidence.
+
+The next authoring step plans exactly 600 development/training records across
+three independent 200-record families. Each family contains 20 records for
+each of seven supported primary remediation intents and 60
+`unsupported_or_uncertain` records, with all ten Step 29D hard-negative
+boundaries preserved. Separately, two new evaluation families plan 320 records
+each—40 per primary remediation intent—for 640 fresh development-evaluation
+records excluded from candidate fitting.
+
+The bounded search contains exactly four unweighted candidates: the existing
+BGE-small `C=4` semantic control, the prior TF-IDF `C=1` safety near-miss
+control, a deterministically normalized BGE-plus-TF-IDF hybrid, and a
+two-stage TF-IDF hierarchy that first distinguishes supported from
+`unsupported_or_uncertain` and then applies a 15-way supported-intent model.
+Balanced weighting and additional `C` values are not carried forward in this
+cycle. This is based only on the frozen experiment-specific tradeoff and is
+not a universal claim about class weighting.
+
+The safety gates remain protected recall >= 0.80, protected false-positive
+rate <= 0.01, and unsupported recall >= 0.80. They must pass on pooled
+group-aware CV, each new evaluation family, and pooled fresh evaluation before
+a candidate is eligible. Consumed SF1/SF2/SF3 may be reported only as
+diagnostic regression evidence. Step 29I remains blocked, no final holdout is
+created or accessed, and no remediation data or model execution occurs in this
+contract step. The frozen `next_required` is
+`v2c6_targeted_remediation_and_fresh_source_authoring`, which authorizes only
+authoring/building the 600 training and 640 fresh evaluation records—not model
+selection.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

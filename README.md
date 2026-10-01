@@ -4496,11 +4496,13 @@ One semantic scenario maps to one `group_id`, and variants of that scenario
 must share it. Inclusion requires zero exact and NFKC/lowercase/trimmed/
 whitespace-collapsed duplicates against the existing development corpus and
 the new set, and zero normalized cross-intent conflicts. Step 29D authorizes no
-embedding-based near-duplicate threshold. All new records require auditable
-human review after deterministic schema and automated duplicate/boundary
-checks; only `approved` records may enter the remediated dataset. Initial
-authoring cannot use classifier predictions or iterate wording until the
-current model succeeds or fails.
+embedding-based near-duplicate threshold. The original Step 29D contract
+required auditable human review for every new record after deterministic schema
+and automated duplicate/boundary checks; only `approved` records could enter
+the remediated dataset. Initial authoring cannot use classifier predictions or
+iterate wording until the current model succeeds or fails. The later Step 29E2
+governance amendment below preserves this original requirement as history while
+correcting the review rule before dataset build and freeze.
 
 Before Step 29G, the future dataset must support both group-aware stratified CV
 and a source-family holdout without dropping a primary intent, with explicit
@@ -4511,10 +4513,12 @@ unchanged: protected-write FPR `<= 0.01`, exact protected-write recall
 `>= 0.80`, and unsupported recall `>= 0.80`; classifier output never authorizes
 a protected action.
 
-Step 29D freezes construction rules only. Authoring and review have not begun,
-no remediated dataset or future output has been created, and no model,
-embedding, evaluation, taxonomy, or runtime behavior changed. The next required
-phase is `v2c6_remediation_authoring_and_build`.
+At the original Step 29D freeze, construction rules alone were complete:
+authoring and review had not begun, no remediated dataset or future output had
+been created, and no model, embedding, evaluation, taxonomy, or runtime
+behavior had changed. Its then-current next phase was
+`v2c6_remediation_authoring_and_build`; the Step 29E2 amendment below records
+the later lifecycle state.
 
 ### V2-C6 Step 29E1 remediation builder preparation
 
@@ -4523,7 +4527,9 @@ contract-enforcing authoring validation and dataset construction separately
 from actual authoring. Following the Step 29D lineage, the local ignored input
 is `data/evals/v2/ml/local/v2c6_remediation_authoring_workfile.json`, with schema
 `v2c6-remediation-authoring-input.v1`, phase `V2-C6 Step 29E2`, and a `records`
-array. Step 29E1 does not create this input or any remediation records.
+array. The Step 29E2 governance amendment additionally requires a top-level
+`review_provenance` object. Step 29E1 does not create this input or any
+remediation records.
 
 The CLI exposes three mutually exclusive modes:
 
@@ -4531,10 +4537,10 @@ The CLI exposes three mutually exclusive modes:
   present, reports schema, review, provenance, source-family, volume,
   hard-negative, subtype, group, duplicate, and source-aware readiness without
   writing outputs;
-- `--build` requires all mandatory gates, includes only human-approved records,
-  refuses to overwrite outputs, and deterministically creates the reviewed
-  remediation artifact/manifest plus the combined development
-  artifact/manifest; and
+- `--build` requires all mandatory gates, includes only records semantically
+  approved by the explicitly recorded review process, refuses to overwrite
+  outputs, and deterministically creates the reviewed remediation
+  artifact/manifest plus the combined development artifact/manifest; and
 - `--check-results` recomputes and compares deterministic bytes, hashes,
   lineage, and governance without writing.
 
@@ -4585,15 +4591,46 @@ concatenation, direct generation into the final development artifact,
 classifier-directed authoring, and reviewer-memory-only provenance were
 rejected because they weaken reproducibility and invite leakage or overfitting.
 The tradeoffs are more code and metadata, potentially frequent rejection of
-authored records, and continued dependence on human judgment for semantic
+authored records, and continued dependence on reviewer judgment for semantic
 independence. The tooling is highly reversible because it affects development
 artifacts only.
 
-Step 29D is frozen; Step 29E1 has prepared builder/review machinery only. Step
-29E2 authoring/build has not executed, no 810-example corpus exists, and none of
-the four tracked output artifacts has been created by this step. Step 29F
-validation/freeze remains mandatory before a Step 29G source-aware
+At the end of Step 29E1, Step 29D was frozen and only builder/review machinery
+had been prepared: Step 29E2 authoring/build had not executed, no 810-example
+corpus existed, and none of the four tracked output artifacts had been created.
+Step 29F validation/freeze remains mandatory before a Step 29G source-aware
 model-selection contract.
+
+### V2-C6 Step 29E2 remediation-review governance amendment
+
+The original Step 29D contract required human review for every new example.
+During Step 29E2, 810 independently authored remediation records across three
+source families instead received a separate AI-assisted semantic review: 810
+were approved, zero rejected, and zero marked `needs_revision`. This was not
+human review and creates no claim of independent human annotation. Before any
+remediation artifact was built or frozen, the contract was amended to require
+semantic review with explicit reviewer provenance and to allow either
+`human_review` or `ai_assisted_review`. `approved` now means semantically
+approved by the recorded process; it does not imply human approval.
+
+Authoring input and future manifests must record review method and reviewer
+type, reviewed and per-status counts, human- versus AI-assisted reviewed
+counts, and required/completed human-adjudication counts. Human adjudication is
+mandatory for rejected or `needs_revision` records, reviewer disagreement,
+low-confidence review, unresolved taxonomy ambiguity, provenance inconsistency,
+or unresolved protected-write ambiguity. When none of those triggers occur,
+high-confidence AI-assisted approval may satisfy the review gate without a
+universal human-review gate. Deterministic checks still do not prove semantic
+correctness or semantic independence; reviewer provenance and semantic review
+remain required, and AI-reviewed/model-generated data carries additional
+independence limitations.
+
+This amendment occurred before the Step 29E dataset build and before the later
+Step 29F validation/freeze. The exact next requirement is
+`v2c6_remediation_build`; build does not include or rename Step 29F. The
+amendment preceded any final model evaluation, accessed no final holdout, and
+changes no example, label, taxonomy, volume, source-family requirement, safety
+gate, model behavior, runtime behavior, or fresh-final-holdout policy.
 
 ### Why this extension is useful
 

@@ -26,7 +26,7 @@ ML_DIRECTORY = REPOSITORY_ROOT / "data/evals/v2/ml"
 SCRIPT_RELATIVE_PATH = "scripts/build_v2c6_remediated_development_dataset.py"
 
 DATASET_CONTRACT_SHA256 = (
-    "2f251cb814f06058dd24a8b86b207fa85b14df98a5c17f2853bed50ffea40155"
+    "2063e6ff0b27caaa4d7b6bbe12748e1e4a745bf446f4502589dbb36a966f9d4d"
 )
 DESIGN_CONTRACT_SHA256 = (
     "ffa8ec7f20b99cc22da3473dd50d32c7aa611cf548ecb205d5c53b9e5409a442"
@@ -84,6 +84,34 @@ UNSUPPORTED_SUBTYPES = (
     "off_domain_or_noise",
 )
 REVIEW_STATUSES = ("unreviewed", "approved", "rejected", "needs_revision")
+REVIEW_METHODS = ("human_review", "ai_assisted_review")
+REVIEW_PROVENANCE_REQUIRED_FIELDS = (
+    "review_method",
+    "reviewer_type",
+    "review_record_count",
+    "approved_count",
+    "rejected_count",
+    "needs_revision_count",
+    "human_review_record_count",
+    "ai_assisted_review_record_count",
+    "human_adjudication_required_count",
+    "human_adjudication_completed_count",
+    "reviewer_disagreement_count",
+    "low_confidence_review_count",
+    "unresolved_taxonomy_ambiguity_count",
+    "provenance_inconsistency_count",
+    "unresolved_protected_write_ambiguity_count",
+)
+REVIEW_PROVENANCE_COUNT_FIELDS = REVIEW_PROVENANCE_REQUIRED_FIELDS[2:]
+HUMAN_ADJUDICATION_TRIGGER_COUNT_FIELDS = (
+    "rejected_count",
+    "needs_revision_count",
+    "reviewer_disagreement_count",
+    "low_confidence_review_count",
+    "unresolved_taxonomy_ambiguity_count",
+    "provenance_inconsistency_count",
+    "unresolved_protected_write_ambiguity_count",
+)
 APPROVED_AUTHORING_METHODS = (
     "human_authored",
     "controlled_llm_assisted",
@@ -310,6 +338,13 @@ def _require_nonempty_string(record: Mapping[str, Any], field: str) -> str:
     return value
 
 
+def _require_nonnegative_integer(record: Mapping[str, Any], field: str) -> int:
+    value = record.get(field)
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        raise ValueError(f"{field} must be a non-negative integer")
+    return value
+
+
 def _require_object_list(value: Any, label: str) -> list[dict[str, Any]]:
     if not isinstance(value, list) or any(not isinstance(item, dict) for item in value):
         raise TypeError(f"{label} must be a list of objects")
@@ -345,9 +380,9 @@ def source_path_items(
 
 def validate_dataset_contract(contract: Mapping[str, Any], paths: BuildPaths) -> None:
     if (
-        contract.get("schema_version") != "v2c6-remediation-dataset-contract.v1"
+        contract.get("schema_version") != "v2c6-remediation-dataset-contract.v2"
         or contract.get("contract_version")
-        != "v2c6-remediation-dataset-contract.v1"
+        != "v2c6-remediation-dataset-contract.v2"
         or contract.get("phase") != "V2-C6 Step 29D"
     ):
         raise ValueError("unexpected V2-C6 remediation dataset contract identity")
@@ -361,13 +396,43 @@ def validate_dataset_contract(contract: Mapping[str, Any], paths: BuildPaths) ->
         UNSUPPORTED_SUBTYPES
     ):
         raise ValueError("unsupported subtype set changed")
-    if tuple(contract.get("human_review_policy", {}).get(
-        "review_status_allowlist", []
-    )) != REVIEW_STATUSES:
+    review_policy = contract.get("semantic_review_policy", {})
+    if (
+        tuple(review_policy.get("review_status_allowlist", []))
+        != REVIEW_STATUSES
+    ):
         raise ValueError("review status allowlist changed")
-    if tuple(contract.get("authoring_method_policy", {}).get(
-        "allowed_methods", []
-    )) != APPROVED_AUTHORING_METHODS:
+    if tuple(review_policy.get("allowed_review_methods", [])) != REVIEW_METHODS:
+        raise ValueError("review method allowlist changed")
+    if (
+        tuple(review_policy.get("review_provenance_required_fields", []))
+        != REVIEW_PROVENANCE_REQUIRED_FIELDS
+    ):
+        raise ValueError("review provenance schema changed")
+    if review_policy.get("all_new_examples_require_semantic_review") is not True:
+        raise ValueError("semantic review requirement changed")
+    if review_policy.get("approved_status_implies_human_review") is not False:
+        raise ValueError("approved status incorrectly implies human review")
+    amendment = contract.get("review_governance_amendment", {})
+    if (
+        amendment.get("original_policy")
+        != "all_new_examples_require_human_review"
+        or amendment.get("ai_review_is_human_review") is not False
+        or amendment.get("independent_human_annotation_claimed") is not False
+        or amendment.get("amended_before_remediation_artifacts_frozen")
+        is not True
+        or amendment.get("final_model_evaluation_performed") is not False
+        or amendment.get("final_holdout_accessed") is not False
+    ):
+        raise ValueError("review governance amendment lineage changed")
+    if (
+        tuple(
+            contract.get("authoring_method_policy", {}).get(
+                "allowed_methods", []
+            )
+        )
+        != APPROVED_AUTHORING_METHODS
+    ):
         raise ValueError("authoring method allowlist changed")
     pairs = tuple(
         tuple(pair) for pair in contract.get("hard_negative_policy", {}).get(
@@ -381,17 +446,21 @@ def validate_dataset_contract(contract: Mapping[str, Any], paths: BuildPaths) ->
         raise ValueError("required remediation record schema changed")
     status = contract.get("contract_status", {})
     expected_status = {
-        "authoring_started": False,
+        "authoring_started": True,
         "contract_frozen": True,
         "development_dataset_frozen": False,
         "embeddings_generated": False,
-        "examples_authored": False,
-        "examples_reviewed": False,
+        "examples_authored": True,
+        "examples_reviewed": True,
+        "final_model_evaluation_performed": False,
+        "human_review_completed": False,
         "model_selection_performed": False,
         "model_training_performed": False,
-        "next_required": "v2c6_remediation_authoring_and_build",
+        "next_required": "v2c6_remediation_build",
         "remediation_dataset_built": False,
+        "review_governance_amended": True,
         "runtime_behavior_changed": False,
+        "semantic_review_completed": True,
         "v2c5_raw_final_holdout_accessed": False,
     }
     if status != expected_status:
@@ -581,6 +650,121 @@ def validate_authoring_input_identity(
     if payload.get("phase") != "V2-C6 Step 29E2":
         raise ValueError("unexpected remediation authoring phase")
     return _require_object_list(payload.get("records"), "authoring records")
+
+
+def validate_review_provenance(
+    payload: Mapping[str, Any],
+    records: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    source = payload.get("review_provenance")
+    if not isinstance(source, Mapping):
+        raise TypeError("review_provenance must be an object")
+    missing = [
+        field for field in REVIEW_PROVENANCE_REQUIRED_FIELDS if field not in source
+    ]
+    if missing:
+        raise ValueError(f"review provenance missing fields: {missing}")
+    review_method = _require_nonempty_string(source, "review_method")
+    reviewer_type = _require_nonempty_string(source, "reviewer_type")
+    if review_method not in REVIEW_METHODS:
+        raise ValueError(f"invalid review method: {review_method}")
+    counts = {
+        field: _require_nonnegative_integer(source, field)
+        for field in REVIEW_PROVENANCE_COUNT_FIELDS
+    }
+    status_counts = Counter(str(record["review_status"]) for record in records)
+    expected_status_counts = {
+        "approved_count": status_counts.get("approved", 0),
+        "rejected_count": status_counts.get("rejected", 0),
+        "needs_revision_count": status_counts.get("needs_revision", 0),
+    }
+    for field, expected in expected_status_counts.items():
+        if counts[field] != expected:
+            raise ValueError(f"review provenance {field} disagrees with records")
+    reviewed_count = sum(expected_status_counts.values())
+    if counts["review_record_count"] != reviewed_count:
+        raise ValueError("review provenance record count disagrees with records")
+    if any(
+        counts[field] > counts["review_record_count"]
+        for field in (
+            "human_review_record_count",
+            "ai_assisted_review_record_count",
+        )
+    ):
+        raise ValueError("reviewer-type count exceeds reviewed record count")
+    if (
+        review_method == "human_review"
+        and counts["human_review_record_count"] != reviewed_count
+    ):
+        raise ValueError("human review count disagrees with review method")
+    if (
+        review_method == "ai_assisted_review"
+        and counts["ai_assisted_review_record_count"] != reviewed_count
+    ):
+        raise ValueError("AI-assisted review count disagrees with review method")
+    status_trigger_count = (
+        counts["rejected_count"] + counts["needs_revision_count"]
+    )
+    other_trigger_counts = tuple(
+        counts[field]
+        for field in HUMAN_ADJUDICATION_TRIGGER_COUNT_FIELDS
+        if field not in {"rejected_count", "needs_revision_count"}
+    )
+    minimum_required = max(
+        status_trigger_count,
+        *other_trigger_counts,
+    )
+    if counts["human_adjudication_required_count"] < minimum_required:
+        raise ValueError("human adjudication count omits mandatory triggers")
+    maximum_required = sum(
+        counts[field] for field in HUMAN_ADJUDICATION_TRIGGER_COUNT_FIELDS
+    )
+    if counts["human_adjudication_required_count"] > maximum_required:
+        raise ValueError("human adjudication required without a mandatory trigger")
+    if (
+        counts["human_adjudication_completed_count"]
+        > counts["human_adjudication_required_count"]
+    ):
+        raise ValueError("completed human adjudication exceeds required count")
+    if (
+        counts["human_adjudication_completed_count"]
+        > counts["human_review_record_count"]
+    ):
+        raise ValueError("completed human adjudication exceeds human review count")
+    return {
+        "review_method": review_method,
+        "reviewer_type": reviewer_type,
+        **counts,
+    }
+
+
+def semantic_review_gate_report(
+    records: Sequence[Mapping[str, Any]],
+    review_status_counts: Mapping[str, int],
+    review_provenance: Mapping[str, Any],
+) -> dict[str, Any]:
+    all_records_reviewed = (
+        review_provenance["review_record_count"] == len(records)
+        and review_status_counts.get("unreviewed", 0) == 0
+    )
+    human_adjudication_complete = (
+        review_provenance["human_adjudication_completed_count"]
+        == review_provenance["human_adjudication_required_count"]
+    )
+    needs_revision_resolved = review_status_counts.get("needs_revision", 0) == 0
+    return {
+        "all_records_semantically_reviewed": all_records_reviewed,
+        "approved_status_implies_human_review": False,
+        "human_adjudication_complete": human_adjudication_complete,
+        "human_review_is_universal_build_gate": False,
+        "needs_revision_resolved": needs_revision_resolved,
+        "review_gates_passed": (
+            all_records_reviewed
+            and human_adjudication_complete
+            and needs_revision_resolved
+        ),
+        "semantic_review_required_for_all_records": True,
+    }
 
 
 def validate_record_structure(
@@ -851,7 +1035,9 @@ def source_family_report(
         }
         result[intent] = {
             "diversity_by_source_family": diversity_by_family,
-            "dominant_wording_review": "human_review_required_no_automatic_threshold",
+            "dominant_wording_review": (
+                "semantic_review_required_no_automatic_threshold"
+            ),
             "families_meeting_30_record_target": sum(
                 count >= 30 for count in family_counts.values()
             ),
@@ -893,7 +1079,7 @@ def group_report(records: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     values = list(counts.values())
     return {
         "group_semantic_independence_proven_automatically": False,
-        "human_review_still_required": True,
+        "semantic_review_still_required": True,
         "maximum_records_per_group": max(values, default=0),
         "mean_records_per_group": statistics.fmean(values) if values else 0.0,
         "multi_record_group_count": sum(value > 1 for value in values),
@@ -991,7 +1177,7 @@ def source_aware_readiness_report(
     approved_records: Sequence[Mapping[str, Any]],
     source_report: Mapping[str, Mapping[str, Any]],
     duplicates: Mapping[str, Any],
-    review_status_counts: Mapping[str, int],
+    review_governance: Mapping[str, Any],
 ) -> dict[str, Any]:
     family_to_intents: defaultdict[str, set[str]] = defaultdict(set)
     for record in approved_records:
@@ -1013,10 +1199,7 @@ def source_aware_readiness_report(
         source_report[intent]["source_family_minimum_met"]
         for intent in PRIMARY_INTENTS
     )
-    review_complete = (
-        review_status_counts.get("unreviewed", 0) == 0
-        and review_status_counts.get("needs_revision", 0) == 0
-    )
+    review_complete = bool(review_governance["review_gates_passed"])
     return {
         "duplicate_gates_passed": duplicates["duplicate_gates_passed"],
         "group_ids_do_not_cross_prohibited_split_boundaries": True,
@@ -1052,6 +1235,8 @@ def enforce_mandatory_gates(report: Mapping[str, Any]) -> None:
         failures.append("hard_negative_coverage")
     if not report["unsupported_subtype_coverage_complete"]:
         failures.append("unsupported_subtype_coverage")
+    if not report["review_governance"]["review_gates_passed"]:
+        failures.append("semantic_review_governance")
     if failures:
         raise ValueError("mandatory remediation gates failed: " + ", ".join(failures))
 
@@ -1080,6 +1265,12 @@ def validate_authoring_payload(
     review_summary = {
         status: review_counts.get(status, 0) for status in REVIEW_STATUSES
     }
+    review_provenance = validate_review_provenance(payload, records)
+    review_governance = semantic_review_gate_report(
+        records,
+        review_summary,
+        review_provenance,
+    )
     subtype_counts = Counter(
         str(record["unsupported_subtype"])
         for record in approved
@@ -1102,11 +1293,13 @@ def validate_authoring_payload(
         "included_record_count": len(approved),
         "input_record_count": len(records),
         "planning_volume": planning_volume_report(approved, sources_report),
+        "review_governance": review_governance,
+        "review_provenance": review_provenance,
         "review_status_counts": review_summary,
         "source_family_statistics": sources_report,
         "source_independence_limitation": (
             "Structural provenance checks cannot prove true semantic independence; "
-            "human review remains required."
+            "reviewer provenance and semantic review remain required."
         ),
         "unsupported_subtype_counts": subtype_summary,
         "unsupported_subtype_coverage_complete": all(
@@ -1114,7 +1307,7 @@ def validate_authoring_payload(
         ),
     }
     report["source_aware_readiness"] = source_aware_readiness_report(
-        approved, sources_report, duplicates, review_summary
+        approved, sources_report, duplicates, review_governance
     )
     report["mandatory_build_gates_passed"] = (
         duplicates["duplicate_gates_passed"]
@@ -1124,6 +1317,7 @@ def validate_authoring_payload(
         )
         and hard_negatives["all_required_pairs_complete"]
         and report["unsupported_subtype_coverage_complete"]
+        and review_governance["review_gates_passed"]
     )
     if enforce_build_requirements:
         enforce_mandatory_gates(report)
@@ -1211,12 +1405,14 @@ def build_remediation_payload(
         "governance": {
             **GOVERNANCE_FLAGS,
             "authoring_completed_by_builder": False,
-            "human_review_required": True,
+            "human_review_is_universal_build_gate": False,
             "only_approved_records_included": True,
+            "semantic_review_required": True,
         },
         "metadata_fields_are_classifier_features": False,
         "normalization_version": NORMALIZATION_VERSION,
         "phase": "V2-C6 Step 29E2",
+        "review_provenance": validation.report["review_provenance"],
         "schema_version": REMEDIATION_SCHEMA,
         "source_contract": {
             "path": sources.source_artifacts["dataset_contract"]["path"],
@@ -1245,11 +1441,16 @@ def build_combined_payload(
             **GOVERNANCE_FLAGS,
             "existing_v2c5_records_mutated": False,
             "future_final_holdout_eligible": False,
+            "human_review_is_universal_build_gate": False,
+            "semantic_review_required": True,
         },
         "metadata_fields_are_classifier_features": False,
         "normalization_version": NORMALIZATION_VERSION,
         "ordering": "frozen_v2c5_order_then_v2c6_record_id",
         "phase": "V2-C6 Step 29E2",
+        "remediation_review_provenance": validation.report[
+            "review_provenance"
+        ],
         "schema_version": COMBINED_DATASET_SCHEMA,
         "source_artifacts": {
             "approved_remediation_examples": {
@@ -1305,6 +1506,8 @@ def build_remediation_manifest(
             "sha256": sha256_bytes(remediation_bytes),
         },
         "review_status_summary": validation.report["review_status_counts"],
+        "review_governance": validation.report["review_governance"],
+        "review_provenance": validation.report["review_provenance"],
         "schema_version": REMEDIATION_MANIFEST_SCHEMA,
         "source_family_counts_per_intent": validation.report[
             "source_family_statistics"
@@ -1359,6 +1562,8 @@ def build_combined_manifest(
             "path": display_path(paths.remediation_output, paths),
             "sha256": sha256_bytes(remediation_bytes),
         },
+        "review_governance": validation.report["review_governance"],
+        "review_provenance": validation.report["review_provenance"],
         "schema_version": COMBINED_MANIFEST_SCHEMA,
         "source_aware_readiness": validation.report["source_aware_readiness"],
         "source_artifacts": {

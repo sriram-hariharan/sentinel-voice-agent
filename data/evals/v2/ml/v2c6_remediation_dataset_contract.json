@@ -96,20 +96,24 @@
     "semantic_scenarios_must_be_abstract_only": true
   },
   "contract_status": {
-    "authoring_started": false,
+    "authoring_started": true,
     "contract_frozen": true,
     "development_dataset_frozen": false,
     "embeddings_generated": false,
-    "examples_authored": false,
-    "examples_reviewed": false,
+    "examples_authored": true,
+    "examples_reviewed": true,
+    "final_model_evaluation_performed": false,
+    "human_review_completed": false,
     "model_selection_performed": false,
     "model_training_performed": false,
-    "next_required": "v2c6_remediation_authoring_and_build",
+    "next_required": "v2c6_remediation_build",
     "remediation_dataset_built": false,
+    "review_governance_amended": true,
     "runtime_behavior_changed": false,
+    "semantic_review_completed": true,
     "v2c5_raw_final_holdout_accessed": false
   },
-  "contract_version": "v2c6-remediation-dataset-contract.v1",
+  "contract_version": "v2c6-remediation-dataset-contract.v2",
   "data_quality_gates": {
     "all_required_metadata_present": true,
     "exact_protected_write_set_unchanged": true,
@@ -253,21 +257,75 @@
     ],
     "silently_add_or_remove_primary_intents": false
   },
-  "human_review_policy": {
-    "all_new_examples_require_human_review": true,
-    "auditable_review_decisions_required": true,
-    "mandatory_review_categories": [
-      "all_new_examples",
-      "protected_write_examples",
-      "hard_negatives",
-      "ambiguous_or_insufficient_information_unsupported_examples",
-      "examples_relabelled_during_adjudication"
+  "review_governance_amendment": {
+    "ai_review_is_human_review": false,
+    "amended_after_step29e2_review": true,
+    "amended_before_remediation_artifacts_frozen": true,
+    "executed_review_summary": {
+      "ai_assisted_review_record_count": 810,
+      "approved_count": 810,
+      "human_adjudication_completed_count": 0,
+      "human_adjudication_required_count": 0,
+      "human_review_record_count": 0,
+      "low_confidence_review_count": 0,
+      "needs_revision_count": 0,
+      "provenance_inconsistency_count": 0,
+      "rejected_count": 0,
+      "review_method": "ai_assisted_review",
+      "review_record_count": 810,
+      "reviewer_disagreement_count": 0,
+      "reviewer_type": "AI-assisted semantic reviewer",
+      "unresolved_protected_write_ambiguity_count": 0,
+      "unresolved_taxonomy_ambiguity_count": 0
+    },
+    "final_holdout_accessed": false,
+    "final_model_evaluation_performed": false,
+    "independent_human_annotation_claimed": false,
+    "original_policy": "all_new_examples_require_human_review",
+    "reason": "Step 29E2 used a separate AI-assisted semantic review rather than human review, so governance was amended honestly before build and freeze."
+  },
+  "semantic_review_policy": {
+    "all_new_examples_require_semantic_review": true,
+    "allowed_review_methods": [
+      "human_review",
+      "ai_assisted_review"
     ],
+    "approved_status_implies_human_review": false,
+    "auditable_review_decisions_required": true,
+    "auditable_reviewer_provenance_required": true,
+    "human_adjudication_triggers": [
+      "rejected",
+      "needs_revision",
+      "reviewer_disagreement",
+      "low_confidence_review",
+      "unresolved_taxonomy_ambiguity",
+      "provenance_inconsistency",
+      "unresolved_protected_write_ambiguity"
+    ],
+    "human_review_is_universal_build_gate": false,
     "only_status_eligible_for_inclusion": "approved",
+    "review_provenance_required_fields": [
+      "review_method",
+      "reviewer_type",
+      "review_record_count",
+      "approved_count",
+      "rejected_count",
+      "needs_revision_count",
+      "human_review_record_count",
+      "ai_assisted_review_record_count",
+      "human_adjudication_required_count",
+      "human_adjudication_completed_count",
+      "reviewer_disagreement_count",
+      "low_confidence_review_count",
+      "unresolved_taxonomy_ambiguity_count",
+      "provenance_inconsistency_count",
+      "unresolved_protected_write_ambiguity_count"
+    ],
     "review_stages": [
       "deterministic_schema_validation",
       "automated_duplicate_and_boundary_checks",
-      "human_review"
+      "semantic_review_with_explicit_reviewer_provenance",
+      "human_adjudication_when_triggered"
     ],
     "review_status_allowlist": [
       "unreviewed",
@@ -371,7 +429,7 @@
       "threshold": 0.8
     }
   },
-  "schema_version": "v2c6-remediation-dataset-contract.v1",
+  "schema_version": "v2c6-remediation-dataset-contract.v2",
   "source_artifacts": {
     "expanded_development_dataset_declaration": {
       "hash_source": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",

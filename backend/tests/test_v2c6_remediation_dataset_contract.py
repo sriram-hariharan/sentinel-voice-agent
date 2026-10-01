@@ -69,9 +69,9 @@ def sha256_file(path: Path) -> str:
 
 
 def test_schema_phase_and_contract_status(contract: dict[str, Any]) -> None:
-    assert contract["schema_version"] == "v2c6-remediation-dataset-contract.v1"
+    assert contract["schema_version"] == "v2c6-remediation-dataset-contract.v2"
     assert contract["contract_version"] == (
-        "v2c6-remediation-dataset-contract.v1"
+        "v2c6-remediation-dataset-contract.v2"
     )
     assert contract["phase"] == "V2-C6 Step 29D"
     assert contract["contract_status"]["contract_frozen"] is True
@@ -277,18 +277,25 @@ def test_blind_class_equalization_is_prohibited(
     ] is False
 
 
-def test_all_new_examples_require_human_review(
+def test_all_new_examples_require_semantic_review(
     contract: dict[str, Any],
 ) -> None:
-    review = contract["human_review_policy"]
+    review = contract["semantic_review_policy"]
 
-    assert review["all_new_examples_require_human_review"] is True
+    assert review["all_new_examples_require_semantic_review"] is True
     assert review["auditable_review_decisions_required"] is True
+    assert review["auditable_reviewer_provenance_required"] is True
+    assert review["approved_status_implies_human_review"] is False
+    assert review["human_review_is_universal_build_gate"] is False
+    assert review["allowed_review_methods"] == [
+        "human_review",
+        "ai_assisted_review",
+    ]
     assert review["only_status_eligible_for_inclusion"] == "approved"
 
 
 def test_review_state_allowlist(contract: dict[str, Any]) -> None:
-    assert contract["human_review_policy"]["review_status_allowlist"] == [
+    assert contract["semantic_review_policy"]["review_status_allowlist"] == [
         "unreviewed",
         "approved",
         "rejected",
@@ -296,19 +303,56 @@ def test_review_state_allowlist(contract: dict[str, Any]) -> None:
     ]
 
 
-def test_protected_and_hard_negative_review_is_mandatory(
+def test_human_adjudication_triggers_are_explicit(
     contract: dict[str, Any],
 ) -> None:
-    mandatory = set(
-        contract["human_review_policy"]["mandatory_review_categories"]
+    triggers = set(
+        contract["semantic_review_policy"]["human_adjudication_triggers"]
     )
 
-    assert {
-        "protected_write_examples",
-        "hard_negatives",
-        "ambiguous_or_insufficient_information_unsupported_examples",
-        "examples_relabelled_during_adjudication",
-    }.issubset(mandatory)
+    assert triggers == {
+        "rejected",
+        "needs_revision",
+        "reviewer_disagreement",
+        "low_confidence_review",
+        "unresolved_taxonomy_ambiguity",
+        "provenance_inconsistency",
+        "unresolved_protected_write_ambiguity",
+    }
+
+
+def test_review_governance_amendment_preserves_history(
+    contract: dict[str, Any],
+) -> None:
+    amendment = contract["review_governance_amendment"]
+    executed = amendment["executed_review_summary"]
+
+    assert amendment["original_policy"] == (
+        "all_new_examples_require_human_review"
+    )
+    assert amendment["amended_after_step29e2_review"] is True
+    assert amendment["amended_before_remediation_artifacts_frozen"] is True
+    assert amendment["ai_review_is_human_review"] is False
+    assert amendment["independent_human_annotation_claimed"] is False
+    assert amendment["final_model_evaluation_performed"] is False
+    assert amendment["final_holdout_accessed"] is False
+    assert executed == {
+        "ai_assisted_review_record_count": 810,
+        "approved_count": 810,
+        "human_adjudication_completed_count": 0,
+        "human_adjudication_required_count": 0,
+        "human_review_record_count": 0,
+        "low_confidence_review_count": 0,
+        "needs_revision_count": 0,
+        "provenance_inconsistency_count": 0,
+        "rejected_count": 0,
+        "review_method": "ai_assisted_review",
+        "review_record_count": 810,
+        "reviewer_disagreement_count": 0,
+        "reviewer_type": "AI-assisted semantic reviewer",
+        "unresolved_protected_write_ambiguity_count": 0,
+        "unresolved_taxonomy_ambiguity_count": 0,
+    }
 
 
 def test_model_in_the_loop_initial_authoring_is_prohibited(
@@ -412,9 +456,12 @@ def test_no_model_work_or_runtime_change(contract: dict[str, Any]) -> None:
     assert status["model_training_performed"] is False
     assert status["model_selection_performed"] is False
     assert status["runtime_behavior_changed"] is False
-    assert status["authoring_started"] is False
-    assert status["examples_authored"] is False
-    assert status["examples_reviewed"] is False
+    assert status["authoring_started"] is True
+    assert status["examples_authored"] is True
+    assert status["examples_reviewed"] is True
+    assert status["semantic_review_completed"] is True
+    assert status["human_review_completed"] is False
+    assert status["final_model_evaluation_performed"] is False
     assert status["remediation_dataset_built"] is False
     assert status["development_dataset_frozen"] is False
 
@@ -444,5 +491,5 @@ def test_future_output_paths_are_frozen_but_not_created(
 
 def test_next_required_is_exact(contract: dict[str, Any]) -> None:
     assert contract["contract_status"]["next_required"] == (
-        "v2c6_remediation_authoring_and_build"
+        "v2c6_remediation_build"
     )

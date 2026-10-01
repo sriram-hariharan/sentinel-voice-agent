@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import copy
+from collections import Counter
 from dataclasses import replace
 from pathlib import Path
 from typing import Any
@@ -125,10 +126,65 @@ def records_sharing_one_family(
     raise AssertionError("synthetic fixture lacks a multi-record source family")
 
 
-def authoring_payload(records: list[dict[str, Any]]) -> dict[str, Any]:
+def make_review_provenance(
+    records: list[dict[str, Any]],
+    *,
+    review_method: str = "human_review",
+    reviewer_type: str | None = None,
+    **overrides: Any,
+) -> dict[str, Any]:
+    status_counts = Counter(str(record["review_status"]) for record in records)
+    reviewed_count = sum(
+        status_counts.get(status, 0)
+        for status in ("approved", "rejected", "needs_revision")
+    )
+    human_adjudication_required = sum(
+        status_counts.get(status, 0)
+        for status in ("rejected", "needs_revision")
+    )
+    provenance: dict[str, Any] = {
+        "ai_assisted_review_record_count": (
+            reviewed_count if review_method == "ai_assisted_review" else 0
+        ),
+        "approved_count": status_counts.get("approved", 0),
+        "human_adjudication_completed_count": (
+            human_adjudication_required if review_method == "human_review" else 0
+        ),
+        "human_adjudication_required_count": human_adjudication_required,
+        "human_review_record_count": (
+            reviewed_count if review_method == "human_review" else 0
+        ),
+        "low_confidence_review_count": 0,
+        "needs_revision_count": status_counts.get("needs_revision", 0),
+        "provenance_inconsistency_count": 0,
+        "rejected_count": status_counts.get("rejected", 0),
+        "review_method": review_method,
+        "review_record_count": reviewed_count,
+        "reviewer_disagreement_count": 0,
+        "reviewer_type": reviewer_type or (
+            "Synthetic human reviewer"
+            if review_method == "human_review"
+            else "Synthetic AI-assisted semantic reviewer"
+        ),
+        "unresolved_protected_write_ambiguity_count": 0,
+        "unresolved_taxonomy_ambiguity_count": 0,
+    }
+    provenance.update(overrides)
+    return provenance
+
+
+def authoring_payload(
+    records: list[dict[str, Any]],
+    review_provenance: dict[str, Any] | None = None,
+) -> dict[str, Any]:
     return {
         "phase": "V2-C6 Step 29E2",
         "records": records,
+        "review_provenance": (
+            make_review_provenance(records)
+            if review_provenance is None
+            else review_provenance
+        ),
         "schema_version": builder.AUTHORING_INPUT_SCHEMA,
     }
 
@@ -194,9 +250,10 @@ def validate(
     records: list[dict[str, Any]],
     sources: builder.FrozenSources,
     *,
+    review_provenance: dict[str, Any] | None = None,
     strict: bool = False,
 ) -> builder.AuthoringValidation:
-    payload = authoring_payload(records)
+    payload = authoring_payload(records, review_provenance)
     return builder.validate_authoring_payload(
         payload,
         builder.stable_json_bytes(payload),
@@ -217,7 +274,7 @@ def write_authoring_input(
 
 def test_expected_contract_design_and_diagnosis_lineage() -> None:
     assert builder.DATASET_CONTRACT_SHA256 == (
-        "2f251cb814f06058dd24a8b86b207fa85b14df98a5c17f2853bed50ffea40155"
+        "2063e6ff0b27caaa4d7b6bbe12748e1e4a745bf446f4502589dbb36a966f9d4d"
     )
     assert builder.DESIGN_CONTRACT_SHA256 == (
         "ffa8ec7f20b99cc22da3473dd50d32c7aa611cf548ecb205d5c53b9e5409a442"
@@ -430,7 +487,7 @@ def test_source_family_statistics(sources: builder.FrozenSources) -> None:
     assert all(value["diversity_by_source_family"] for value in report.values())
     assert all(
         value["dominant_wording_review"]
-        == "human_review_required_no_automatic_threshold"
+        == "semantic_review_required_no_automatic_threshold"
         for value in report.values()
     )
 
@@ -594,6 +651,200 @@ def test_review_state_allowlist(sources: builder.FrozenSources) -> None:
 
     with pytest.raises(ValueError, match="invalid review status"):
         validate(records, sources)
+
+
+def test_review_provenance_is_required(
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    payload = authoring_payload(records)
+    del payload["review_provenance"]
+
+    with pytest.raises(TypeError, match="review_provenance must be an object"):
+        builder.validate_authoring_payload(
+            payload,
+            builder.stable_json_bytes(payload),
+            sources,
+            enforce_build_requirements=False,
+        )
+
+
+def test_reviewer_identity_provenance_is_required(
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    provenance = make_review_provenance(records)
+    del provenance["reviewer_type"]
+
+    with pytest.raises(ValueError, match="review provenance missing fields"):
+        validate(records, sources, review_provenance=provenance)
+
+
+def test_human_review_method_is_allowed(
+    sources: builder.FrozenSources,
+) -> None:
+    result = validate(complete_records(), sources, strict=True)
+
+    assert result.report["review_provenance"]["review_method"] == "human_review"
+    assert result.report["review_governance"]["review_gates_passed"] is True
+
+
+def test_ai_approved_high_confidence_records_satisfy_review_gate(
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    provenance = make_review_provenance(
+        records,
+        review_method="ai_assisted_review",
+    )
+
+    result = validate(
+        records,
+        sources,
+        review_provenance=provenance,
+        strict=True,
+    )
+
+    assert result.report["review_provenance"] == provenance
+    assert provenance["human_review_record_count"] == 0
+    assert provenance["ai_assisted_review_record_count"] == len(records)
+    assert result.report["review_governance"] == {
+        "all_records_semantically_reviewed": True,
+        "approved_status_implies_human_review": False,
+        "human_adjudication_complete": True,
+        "human_review_is_universal_build_gate": False,
+        "needs_revision_resolved": True,
+        "review_gates_passed": True,
+        "semantic_review_required_for_all_records": True,
+    }
+
+
+@pytest.mark.parametrize("review_status", ("rejected", "needs_revision"))
+def test_nonapproved_review_status_requires_human_adjudication(
+    sources: builder.FrozenSources,
+    review_status: str,
+) -> None:
+    records = complete_records()
+    records[0]["review_status"] = review_status
+    provenance = make_review_provenance(
+        records,
+        review_method="ai_assisted_review",
+    )
+
+    result = validate(records, sources, review_provenance=provenance)
+
+    assert provenance["human_adjudication_required_count"] == 1
+    assert result.report["review_governance"]["review_gates_passed"] is False
+    with pytest.raises(ValueError, match="semantic_review_governance"):
+        validate(
+            records,
+            sources,
+            review_provenance=provenance,
+            strict=True,
+        )
+
+
+@pytest.mark.parametrize(
+    "trigger_field",
+    ("low_confidence_review_count", "reviewer_disagreement_count"),
+)
+def test_low_confidence_or_disagreement_requires_human_adjudication(
+    sources: builder.FrozenSources,
+    trigger_field: str,
+) -> None:
+    records = complete_records()
+    provenance = make_review_provenance(
+        records,
+        review_method="ai_assisted_review",
+        human_adjudication_required_count=1,
+        **{trigger_field: 1},
+    )
+
+    result = validate(records, sources, review_provenance=provenance)
+
+    assert result.report["review_governance"]["review_gates_passed"] is False
+    with pytest.raises(ValueError, match="semantic_review_governance"):
+        validate(
+            records,
+            sources,
+            review_provenance=provenance,
+            strict=True,
+        )
+
+
+def test_each_nonapproved_status_requires_human_adjudication(
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    records[0]["review_status"] = "rejected"
+    records[1]["review_status"] = "needs_revision"
+    provenance = make_review_provenance(
+        records,
+        review_method="ai_assisted_review",
+        human_adjudication_required_count=1,
+    )
+
+    with pytest.raises(ValueError, match="omits mandatory triggers"):
+        validate(records, sources, review_provenance=provenance)
+
+
+def test_human_adjudication_requirement_must_have_a_trigger(
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    provenance = make_review_provenance(
+        records,
+        human_adjudication_required_count=1,
+    )
+
+    with pytest.raises(ValueError, match="without a mandatory trigger"):
+        validate(records, sources, review_provenance=provenance)
+
+
+def test_manifests_distinguish_ai_and_human_review_counts(
+    tmp_path: Path,
+    sources: builder.FrozenSources,
+) -> None:
+    records = complete_records()
+    provenance = make_review_provenance(
+        records,
+        review_method="ai_assisted_review",
+    )
+    validation = validate(
+        records,
+        sources,
+        review_provenance=provenance,
+        strict=True,
+    )
+
+    artifacts = builder.build_artifacts(
+        sources,
+        validation,
+        temporary_paths(tmp_path),
+    )
+
+    assert (
+        artifacts.remediation_manifest_payload["review_provenance"] == provenance
+    )
+    assert artifacts.combined_manifest_payload["review_provenance"] == provenance
+    assert artifacts.remediation_payload["review_provenance"] == provenance
+    assert provenance["human_review_record_count"] == 0
+    assert provenance["ai_assisted_review_record_count"] == len(records)
+
+
+def test_human_review_only_wording_is_removed(
+    sources: builder.FrozenSources,
+) -> None:
+    report = validate(complete_records(), sources).report
+    source = (ROOT / builder.SCRIPT_RELATIVE_PATH).read_text(encoding="utf-8")
+
+    assert "human_review_required_no_automatic_threshold" not in source
+    assert "human review remains required" not in source
+    assert all(
+        value["dominant_wording_review"]
+        == "semantic_review_required_no_automatic_threshold"
+        for value in report["source_family_statistics"].values()
+    )
 
 
 def test_only_approved_records_are_included(sources: builder.FrozenSources) -> None:
@@ -939,5 +1190,8 @@ def test_source_independence_limitation_is_explicit(
     report = validate(complete_records(), sources).report
 
     assert "cannot prove true semantic independence" in report[
+        "source_independence_limitation"
+    ]
+    assert "reviewer provenance and semantic review remain required" in report[
         "source_independence_limitation"
     ]

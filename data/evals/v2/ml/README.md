@@ -1573,14 +1573,16 @@ repeated n-gram concentration, and source concentration by intent/family;
 dominant wording from one family requires review rather than an arbitrary
 lexical cutoff.
 
-All new records undergo deterministic schema checks, automated duplicate and
-boundary checks, and human review. Review states are `unreviewed`, `approved`,
-`rejected`, and `needs_revision`; only `approved` records may be included.
-Protected-write records, hard negatives, ambiguous unsupported records, and
-any relabelled record are explicitly mandatory review categories. Human,
-controlled LLM-assisted, and materially independent deterministic scenario
-authoring are allowed, but no LLM output is auto-accepted. Current classifier
-predictions cannot steer initial authoring or iterative rewrites.
+The original Step 29D contract required all new records to undergo
+deterministic schema checks, automated duplicate and boundary checks, and human
+review. Review states were `unreviewed`, `approved`, `rejected`, and
+`needs_revision`; only `approved` records could be included. Protected-write
+records, hard negatives, ambiguous unsupported records, and relabelled records
+were mandatory review categories. Human, controlled LLM-assisted, and
+materially independent deterministic scenario authoring were allowed, but no
+LLM output was auto-accepted. Current classifier predictions could not steer
+initial authoring or iterative rewrites. The Step 29E2 amendment below records
+the later governance correction without rewriting this original history.
 
 The future dataset is the immutable V2-C5 expanded development corpus plus
 approved V2-C6 records with new IDs and preserved lineage. Before Step 29G it
@@ -1597,9 +1599,10 @@ The exact four future tracked outputs are
 `v2c6_remediated_development_dataset.manifest.json`; none exists as a result of
 Step 29D. An authoring workfile, if needed later, is local and ignored. The
 16-intent taxonomy, protected-write set, and minimum safety gates remain
-unchanged. Step 29D performs no authoring, build, embedding, model work,
-evaluation, or runtime change. Its exact next phase is
-`v2c6_remediation_authoring_and_build`.
+unchanged. Step 29D itself performed no authoring, build, embedding, model work,
+evaluation, or runtime change. At that original freeze, its exact next phase
+was `v2c6_remediation_authoring_and_build`; the Step 29E2 amendment below
+records the later lifecycle state.
 
 ## V2-C6 Step 29E1 remediation builder preparation
 
@@ -1608,10 +1611,11 @@ validation and construction machinery without authoring data. Following the
 Step 29D lineage, its future local input is the ignored file
 `local/v2c6_remediation_authoring_workfile.json`, encoded as a
 `v2c6-remediation-authoring-input.v1` object with phase `V2-C6 Step 29E2` and a
-`records` array. Every record must provide all Step 29D provenance, review,
-boundary, family, group, intent, risk, and authoring fields; unsupported records
-also require the frozen metadata-only subtype. Missing metadata is rejected,
-never inferred from wording.
+`records` array. The later Step 29E2 governance amendment also requires a
+top-level `review_provenance` object. Every record must provide all Step 29D
+provenance, review, boundary, family, group, intent, risk, and authoring fields;
+unsupported records also require the frozen metadata-only subtype. Missing
+metadata is rejected, never inferred from wording.
 
 The mutually exclusive CLI modes are:
 
@@ -1634,7 +1638,7 @@ independence bases, and consistent provenance descriptors. A group cannot cross
 an intent or source-family boundary. The builder reports record, unique-group,
 singleton-group, multi-record-group, and records-per-group statistics, but
 explicitly cannot prove that authors did not artificially split semantic
-scenarios; human review remains required.
+scenarios; reviewer provenance and semantic review remain required.
 
 Only `approved` records are copied into tracked outputs. Every other review
 state is excluded and counted, and unreviewed material is never promoted
@@ -1644,7 +1648,7 @@ largest share, unique groups, and unique normalized texts. The 90-per-supported
 intent, 30-per-family, 180-unsupported, and 810-total numbers are reported as
 Step 29D planning targets; the mandatory three-family minimum is separate and
 cannot be relaxed. Code validates provenance consistency and obvious family-ID
-aliasing, while the semantic independence claim remains a human-review matter.
+aliasing, while semantic independence remains unproven by structural checks.
 
 All five unsupported subtypes must occur among approved records, but their
 runtime label remains `unsupported_or_uncertain`. An approved hard-negative
@@ -1680,10 +1684,42 @@ isolates authoring from model feedback. Its tradeoffs are added code/metadata,
 strict rejection of deficient records, and the unavoidable inability of
 structural checks to prove semantic independence.
 
-Step 29D remains frozen. Step 29E1 prepares builder and review machinery only;
-Step 29E2 authoring/build has not run, no remediation examples are claimed, and
-no tracked remediation or remediated-development artifact exists from this
-step.
+At the end of Step 29E1, Step 29D remained frozen and only builder/review
+machinery had been prepared: Step 29E2 authoring/build had not run, no
+remediation examples were claimed, and no tracked remediation or
+remediated-development artifact existed from that step.
+
+## V2-C6 Step 29E2 remediation-review governance amendment
+
+Step 29E2 subsequently authored 810 records across three independent source
+families and ran deterministic duplicate, provenance, and boundary validation.
+A separate AI-assisted semantic review approved all 810 records, with zero
+rejected and zero `needs_revision`. That process was not human review and does
+not support any claim of independent human annotation. Before the remediation
+dataset or its artifacts were built or frozen, the Step 29D review governance
+was amended from universal human review to universal semantic review with
+explicit reviewer provenance.
+
+Allowed review methods are `human_review` and `ai_assisted_review`. `approved`
+means semantically approved by the recorded method and does not imply human
+approval. Authoring input and future artifacts/manifests record review method,
+reviewer type, reviewed and per-status counts, human- and AI-assisted-review
+counts, plus required and completed human-adjudication counts. Human
+adjudication is mandatory for rejected or `needs_revision` records, reviewer
+disagreement, low-confidence review, unresolved taxonomy ambiguity, provenance
+inconsistency, or unresolved protected-write ambiguity. With no such trigger,
+high-confidence AI-assisted approval can satisfy the review gate.
+
+AI review is not human review. Model-generated and AI-reviewed data retains
+additional independence limitations, and deterministic validation cannot prove
+semantic correctness or semantic independence. Reviewer provenance and
+semantic review therefore remain mandatory. This amendment occurred before the
+Step 29E dataset build and before the separate Step 29F validation/freeze. The
+exact next requirement is `v2c6_remediation_build`; build does not include or
+rename Step 29F. The amendment preceded any final model evaluation, accessed no
+final holdout, and changes no record, label, taxonomy, risk mapping, volume,
+source-family minimum, duplicate rule, hard-negative rule, safety gate, runtime
+behavior, or fresh-final-holdout requirement.
 
 ## Reproduce V2-C1
 

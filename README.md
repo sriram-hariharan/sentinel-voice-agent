@@ -4456,6 +4456,66 @@ examples, changes no dataset or taxonomy, trains/selects no model, generates no
 embeddings, and changes no runtime behavior. The next required phase is Step
 29D, `v2c6_remediation_dataset_contract`.
 
+### V2-C6 Step 29D remediation-dataset contract
+
+`data/evals/v2/ml/v2c6_remediation_dataset_contract.json` freezes a bounded,
+independently authored, metadata-rich remediation-data plan. It hash-pins the
+Step 29C design and the development-side diagnosis lineage, preserves the
+frozen 16-intent taxonomy, and creates no examples or datasets. The eight
+primary targets are `account_blocked`, `cancel_transfer`, `close_account`,
+`create_dispute`, `freeze_card`, `transfer_failed_or_declined`,
+`transfer_pending`, and `unsupported_or_uncertain`. Historical intents may
+receive limited boundary-balancing evidence only when a frozen hard-negative
+pair or source-aware balancing rule requires it.
+
+New records must be authored from semantic intent definitions and reviewed
+boundary specifications, never by paraphrasing or minimally editing development
+records or by copying, rewriting, translating, or stylistically varying the
+consumed V2-C5 final holdout. Each primary intent requires at least three
+explicit, materially independent source families. Different random seeds,
+shuffles, punctuation changes, superficial edits, paraphrases, and duplicate
+template expansion do not create independent families. Every record must carry
+auditable record, intent, risk, group, source-family identity and independence
+basis, source revision, authoring-batch, authoring-method, boundary,
+hard-negative, and review metadata. Unsupported
+records additionally require one of five metadata-only subtypes; the runtime
+label remains `unsupported_or_uncertain`.
+
+The bounded plan is at least 90 genuinely new records for each of the seven
+non-unsupported primary intents, with at least 30 from each of at least three
+source families, plus 180 targeted unsupported records across all five
+subtypes: approximately 810 new development examples. This is not blind class
+equalization and does not authorize thousands of generic synthetic examples.
+The ten frozen hard-negative pairs cover every supported primary target against
+unsupported plus `cancel_transfer`/`transfer_pending`,
+`transfer_failed_or_declined`/`transfer_pending`, and
+`account_blocked`/`transfer_failed_or_declined`. Both sides must be independently
+authored where appropriate; keyword swaps are not hard-negative evidence.
+
+One semantic scenario maps to one `group_id`, and variants of that scenario
+must share it. Inclusion requires zero exact and NFKC/lowercase/trimmed/
+whitespace-collapsed duplicates against the existing development corpus and
+the new set, and zero normalized cross-intent conflicts. Step 29D authorizes no
+embedding-based near-duplicate threshold. All new records require auditable
+human review after deterministic schema and automated duplicate/boundary
+checks; only `approved` records may enter the remediated dataset. Initial
+authoring cannot use classifier predictions or iterate wording until the
+current model succeeds or fails.
+
+Before Step 29G, the future dataset must support both group-aware stratified CV
+and a source-family holdout without dropping a primary intent, with explicit
+family IDs and per-intent source distributions. The resulting remediation data
+is development evidence only and can never become, or be copied into, the
+fresh V2-C6 final holdout governed later by Steps 29J/29K. Safety lineage is
+unchanged: protected-write FPR `<= 0.01`, exact protected-write recall
+`>= 0.80`, and unsupported recall `>= 0.80`; classifier output never authorizes
+a protected action.
+
+Step 29D freezes construction rules only. Authoring and review have not begun,
+no remediated dataset or future output has been created, and no model,
+embedding, evaluation, taxonomy, or runtime behavior changed. The next required
+phase is `v2c6_remediation_authoring_and_build`.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

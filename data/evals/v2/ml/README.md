@@ -1519,6 +1519,88 @@ evaluation, and 29N runtime/shadow integration only if every predeclared gate
 passes. The immediate next requirement is
 `v2c6_remediation_dataset_contract`.
 
+## V2-C6 Step 29D remediation-dataset contract
+
+`v2c6_remediation_dataset_contract.json` freezes the construction and review
+rules for a bounded, independently authored remediation dataset and hash-pins
+the Step 29C design plus its diagnosis and taxonomy lineage. It creates no raw
+examples. The primary intents are exactly `account_blocked`, `cancel_transfer`,
+`close_account`, `create_dispute`, `freeze_card`,
+`transfer_failed_or_declined`, `transfer_pending`, and
+`unsupported_or_uncertain`. Other historical intents may receive only limited
+boundary-balancing records required by a frozen hard-negative pair or
+source-aware balancing rule.
+
+Every primary intent requires at least three explicitly identified,
+materially independent source families. The same process with different random
+seeds, shuffled examples, paraphrases, punctuation changes, superficial edits,
+or duplicate template expansion does not satisfy independence. New evidence
+must originate from semantic definitions and reviewed boundary specifications,
+not from paraphrasing or minimally editing development records or from any copy,
+rewrite, translation, lexical substitution, or style variant of the consumed
+V2-C5 final holdout.
+
+Each future remediation record requires `record_id`, `text`, `intent`,
+`risk_level`, `group_id`, `source_family_id`,
+`source_family_independence_basis`, `source_revision`, `authoring_batch_id`,
+`authoring_method`, `boundary_target`,
+`is_hard_negative`, and `review_status`. Unsupported records additionally
+require `unsupported_subtype`: `truly_unsupported_banking_request`,
+`ambiguous_or_insufficient_information`, `adjacent_but_unsupported_intent`,
+`supported_intent_hard_negative`, or `off_domain_or_noise`. These subtypes are
+development/evaluation metadata only and do not create runtime intents.
+
+The planning target is 90 records for each of the seven non-unsupported primary
+intents, at least 30 per independent family across at least three families, plus
+180 targeted unsupported records spanning all five subtypes with meaningful
+supported-intent hard-negative coverage: approximately 810 records total. It
+is a bounded starting plan, not blind class equalization or permission for
+unbounded generic generation. Frozen hard-negative coverage includes each
+supported primary intent against unsupported and the three additional pairs
+`cancel_transfer`/`transfer_pending`,
+`transfer_failed_or_declined`/`transfer_pending`, and
+`account_blocked`/`transfer_failed_or_declined`. Both sides are independently
+authored where appropriate; one-keyword substitutions are prohibited.
+
+Each semantic scenario receives one auditable `group_id`; variants of a
+scenario share that group and cannot inflate independence. Mandatory checks
+require zero exact or normalized duplicates against the immutable V2-C5
+development corpus and the new examples, and zero normalized cross-intent
+conflicts. Normalization is Unicode NFKC, lowercase, trim, and collapsed
+whitespace. No embedding near-duplicate rule is authorized. Diversity reports
+cover normalized-text and group uniqueness, token diversity, inexpensive
+repeated n-gram concentration, and source concentration by intent/family;
+dominant wording from one family requires review rather than an arbitrary
+lexical cutoff.
+
+All new records undergo deterministic schema checks, automated duplicate and
+boundary checks, and human review. Review states are `unreviewed`, `approved`,
+`rejected`, and `needs_revision`; only `approved` records may be included.
+Protected-write records, hard negatives, ambiguous unsupported records, and
+any relabelled record are explicitly mandatory review categories. Human,
+controlled LLM-assisted, and materially independent deterministic scenario
+authoring are allowed, but no LLM output is auto-accepted. Current classifier
+predictions cannot steer initial authoring or iterative rewrites.
+
+The future dataset is the immutable V2-C5 expanded development corpus plus
+approved V2-C6 records with new IDs and preserved lineage. Before Step 29G it
+must support group-aware stratified CV and a feasible source-family holdout
+without dropping any primary intent, and report family distribution per intent.
+Remediation records are development data only: they cannot be a future final
+holdout or be copied into the separately authored holdout governed by Steps
+29J/29K.
+
+The exact four future tracked outputs are
+`v2c6_remediation_examples.json`,
+`v2c6_remediation_examples.manifest.json`,
+`v2c6_remediated_development_dataset.json`, and
+`v2c6_remediated_development_dataset.manifest.json`; none exists as a result of
+Step 29D. An authoring workfile, if needed later, is local and ignored. The
+16-intent taxonomy, protected-write set, and minimum safety gates remain
+unchanged. Step 29D performs no authoring, build, embedding, model work,
+evaluation, or runtime change. Its exact next phase is
+`v2c6_remediation_authoring_and_build`.
+
 ## Reproduce V2-C1
 
 ```bash

@@ -1,0 +1,493 @@
+{
+  "architecture_decision": {
+    "alternatives_rejected": [
+      {
+        "alternative": "generate_thousands_of_generic_synthetic_examples",
+        "reason": "Generic scaling can repeat source-style bias, inflate cost, and obscure whether boundary quality improved."
+      },
+      {
+        "alternative": "equalize_all_classes",
+        "reason": "Blind class equality is not necessarily realistic and would discard or add evidence without a boundary-specific justification."
+      },
+      {
+        "alternative": "immediately_swap_embedding_models",
+        "reason": "A model change would confound the data-first remediation experiment selected in Step 29C."
+      },
+      {
+        "alternative": "classifier_driven_adversarial_authoring",
+        "reason": "Using current predictions to steer initial authoring risks model-targeted overfitting."
+      },
+      {
+        "alternative": "reuse_failed_final_holdout_examples",
+        "reason": "The V2-C5 final holdout is consumed evidence; reuse or paraphrase would destroy clean future evaluation."
+      }
+    ],
+    "chosen": "bounded_independently_authored_metadata_rich_remediation_dataset_with_explicit_source_family_diversity_and_hard_negative_boundary_coverage",
+    "problem": "V2-C5 development evidence generalized poorly despite strong group-aware cross-validation.",
+    "reversibility": "High because Step 29D freezes dataset-construction rules only and creates no examples or datasets.",
+    "suitability": [
+      "addresses_measured_evidence_quality_risks_before_changing_models",
+      "keeps_project_cost_bounded",
+      "creates_auditable_source_independence",
+      "improves_safety_sensitive_intent_boundaries",
+      "enables_source_aware_development_evaluation",
+      "preserves_the_existing_16_intent_runtime_contract"
+    ],
+    "tradeoffs": [
+      "human_review_effort",
+      "metadata_complexity",
+      "independent_authoring_is_slower_than_paraphrasing",
+      "source_family_constraints_complicate_dataset_construction",
+      "810_new_records_may_still_not_be_sufficient"
+    ]
+  },
+  "authoring_method_policy": {
+    "allowed_methods": [
+      "human_authored",
+      "controlled_llm_assisted",
+      "deterministic_scenario_or_template_generation_when_semantic_independence_is_preserved"
+    ],
+    "initial_authoring_may_use_current_classifier_predictions": false,
+    "iterative_generation_until_current_classifier_is_right_or_wrong": false,
+    "later_model_based_hard_example_mining_requires_separate_frozen_contract": true,
+    "llm_assisted_examples_automatically_accepted": false,
+    "prompt_instructions_are_ground_truth": false,
+    "same_review_and_deduplication_pipeline_for_all_methods": true
+  },
+  "authoring_principle": {
+    "author_from": [
+      "semantic_intent_definitions",
+      "human_reviewed_boundary_specifications"
+    ],
+    "independent_authoring_required": true,
+    "prohibited_derivations": [
+      "paraphrase_of_existing_development_example",
+      "minimal_edit_of_existing_development_example",
+      "paraphrase_of_v2c5_final_holdout_example",
+      "rewrite_of_v2c5_final_holdout_example",
+      "translation_of_v2c5_final_holdout_example",
+      "lexical_substitution_of_v2c5_final_holdout_example",
+      "stylistic_variant_of_v2c5_final_holdout_example"
+    ],
+    "v2c5_final_holdout_may_be_used": false
+  },
+  "boundary_authoring_specification": {
+    "actual_authored_examples_present_in_contract": false,
+    "required_fields_per_primary_intent": [
+      "positive_intent_definition",
+      "explicit_exclusions",
+      "nearest_competing_intents",
+      "unsupported_boundary",
+      "ambiguous_cases",
+      "clarification_needed_cases",
+      "protected_action_implications",
+      "abstract_semantic_scenarios"
+    ],
+    "required_for_intents": [
+      "account_blocked",
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card",
+      "transfer_failed_or_declined",
+      "transfer_pending",
+      "unsupported_or_uncertain"
+    ],
+    "semantic_scenarios_must_be_abstract_only": true
+  },
+  "contract_status": {
+    "authoring_started": false,
+    "contract_frozen": true,
+    "development_dataset_frozen": false,
+    "embeddings_generated": false,
+    "examples_authored": false,
+    "examples_reviewed": false,
+    "model_selection_performed": false,
+    "model_training_performed": false,
+    "next_required": "v2c6_remediation_authoring_and_build",
+    "remediation_dataset_built": false,
+    "runtime_behavior_changed": false,
+    "v2c5_raw_final_holdout_accessed": false
+  },
+  "contract_version": "v2c6-remediation-dataset-contract.v1",
+  "data_quality_gates": {
+    "all_required_metadata_present": true,
+    "exact_protected_write_set_unchanged": true,
+    "hard_negative_pair_coverage_complete": true,
+    "minimum_source_families_per_primary_intent": 3,
+    "no_runtime_behavior_changes": true,
+    "no_v2c5_final_holdout_access": true,
+    "only_approved_records_included": true,
+    "only_frozen_16_intents": true,
+    "planned_additions_reconcile_by_intent_and_source_family": true,
+    "risk_mapping_valid": true,
+    "schema_valid": true,
+    "unsupported_subtype_coverage_reported": true,
+    "zero_exact_duplicates": true,
+    "zero_normalized_cross_intent_conflicts": true,
+    "zero_normalized_duplicates_against_frozen_development": true
+  },
+  "dataset_composition": {
+    "existing_v2c5_records_mutated_or_overwritten": false,
+    "future_remediated_development_dataset_components": [
+      "immutable_v2c5_expanded_development_dataset",
+      "approved_v2c6_remediation_examples"
+    ],
+    "lineage_preserved": true,
+    "new_records_require_distinct_v2c6_ids_and_metadata": true
+  },
+  "duplication_policy": {
+    "embedding_or_semantic_near_duplicate_threshold_authorized": false,
+    "normalization": {
+      "collapse_whitespace": true,
+      "lowercase": true,
+      "trim": true,
+      "unicode_normalization": "NFKC",
+      "version": "unicode-nfkc-lower-whitespace.v1"
+    },
+    "zero_exact_duplicates_against": [
+      "v2c5_expanded_development_dataset",
+      "new_v2c6_remediation_examples"
+    ],
+    "zero_normalized_cross_intent_conflicts": true,
+    "zero_normalized_duplicates_against": [
+      "v2c5_expanded_development_dataset",
+      "new_v2c6_remediation_examples"
+    ]
+  },
+  "final_holdout_separation": {
+    "future_final_holdout_authoring_steps": [
+      "V2-C6 Step 29J",
+      "V2-C6 Step 29K"
+    ],
+    "future_v2c6_final_holdout_must_be_independently_authored": true,
+    "remediation_data_role": "development_data_only",
+    "remediation_examples_may_be_copied_into_future_final_holdout": false,
+    "remediation_examples_may_be_future_final_holdout": false,
+    "v2c5_final_holdout_role": "consumed_historical_aggregate_evidence_only"
+  },
+  "future_outputs": {
+    "authoring_workfile": {
+      "create_in_step29d": false,
+      "path": "data/evals/v2/ml/local/v2c6_remediation_authoring_workfile.json",
+      "tracked": false
+    },
+    "tracked_outputs": [
+      {
+        "create_in_step29d": false,
+        "path": "data/evals/v2/ml/v2c6_remediation_examples.json"
+      },
+      {
+        "create_in_step29d": false,
+        "path": "data/evals/v2/ml/v2c6_remediation_examples.manifest.json"
+      },
+      {
+        "create_in_step29d": false,
+        "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json"
+      },
+      {
+        "create_in_step29d": false,
+        "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.manifest.json"
+      }
+    ]
+  },
+  "group_policy": {
+    "default": "one_semantic_scenario_one_group",
+    "group_id_required": true,
+    "paraphrases_may_receive_new_groups_to_inflate_independence": false,
+    "supports_future_stratified_group_k_fold": true,
+    "variants_of_same_semantic_scenario_share_group_id": true
+  },
+  "hard_negative_policy": {
+    "both_sides_independently_authored_where_appropriate": true,
+    "keyword_swap_construction_permitted": false,
+    "required_pairs": [
+      [
+        "close_account",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "transfer_failed_or_declined",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "account_blocked",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "create_dispute",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "freeze_card",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "transfer_pending",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "transfer_pending"
+      ],
+      [
+        "transfer_failed_or_declined",
+        "transfer_pending"
+      ],
+      [
+        "account_blocked",
+        "transfer_failed_or_declined"
+      ]
+    ]
+  },
+  "historical_intent_policy": {
+    "historical_intents_are_primary_remediation_targets": false,
+    "limited_boundary_balancing_examples_permitted": true,
+    "permitted_only_when_required_by": [
+      "frozen_hard_negative_pair",
+      "frozen_source_aware_balancing_rule"
+    ],
+    "silently_add_or_remove_primary_intents": false
+  },
+  "human_review_policy": {
+    "all_new_examples_require_human_review": true,
+    "auditable_review_decisions_required": true,
+    "mandatory_review_categories": [
+      "all_new_examples",
+      "protected_write_examples",
+      "hard_negatives",
+      "ambiguous_or_insufficient_information_unsupported_examples",
+      "examples_relabelled_during_adjudication"
+    ],
+    "only_status_eligible_for_inclusion": "approved",
+    "review_stages": [
+      "deterministic_schema_validation",
+      "automated_duplicate_and_boundary_checks",
+      "human_review"
+    ],
+    "review_status_allowlist": [
+      "unreviewed",
+      "approved",
+      "rejected",
+      "needs_revision"
+    ]
+  },
+  "lexical_and_template_diversity": {
+    "arbitrary_lexical_thresholds_frozen": false,
+    "report_per_intent_and_source_family": [
+      "unique_normalized_text_ratio",
+      "unique_group_ratio",
+      "token_diversity",
+      "repeated_ngram_concentration_where_cheap",
+      "source_family_concentration"
+    ],
+    "review_required_if_one_source_family_dominates_wording": true,
+    "template_inflation_prohibited": true
+  },
+  "phase": "V2-C6 Step 29D",
+  "planned_volume_policy": {
+    "blind_class_equalization_permitted": false,
+    "non_unsupported_primary_intents": {
+      "intent_count": 7,
+      "minimum_records_per_intent": 90,
+      "minimum_records_per_source_family": 30,
+      "minimum_source_families_per_intent": 3,
+      "planned_total": 630
+    },
+    "planned_new_remediation_total": 810,
+    "planning_target_only": true,
+    "thousands_of_generic_unsupported_records_permitted_without_evidence": false,
+    "unsupported_or_uncertain": {
+      "all_five_subtypes_must_be_represented": true,
+      "meaningful_supported_intent_hard_negative_representation_required": true,
+      "planned_total": 180
+    }
+  },
+  "primary_remediation_intents": [
+    "account_blocked",
+    "cancel_transfer",
+    "close_account",
+    "create_dispute",
+    "freeze_card",
+    "transfer_failed_or_declined",
+    "transfer_pending",
+    "unsupported_or_uncertain"
+  ],
+  "protected_write_policy": {
+    "classifier_labels_authorize_actions": false,
+    "intents": [
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card"
+    ],
+    "required_evidence_types": [
+      "clear_positive_requests",
+      "indirect_phrasing",
+      "context_dependent_phrasing",
+      "non_action_informational_mentions",
+      "adjacent_unsupported_requests",
+      "cancellation_or_correction_scenarios_where_relevant"
+    ],
+    "runtime_deterministic_authorization_and_confirmation_unchanged": true
+  },
+  "record_schema": {
+    "required_fields": [
+      "record_id",
+      "text",
+      "intent",
+      "risk_level",
+      "group_id",
+      "source_family_id",
+      "source_family_independence_basis",
+      "source_revision",
+      "authoring_batch_id",
+      "authoring_method",
+      "boundary_target",
+      "is_hard_negative",
+      "review_status"
+    ],
+    "unsupported_additional_required_fields": [
+      "unsupported_subtype"
+    ],
+    "wording_based_metadata_inference_permitted": false
+  },
+  "safety_lineage": {
+    "exact_protected_write_recall": {
+      "operator": ">=",
+      "threshold": 0.8
+    },
+    "protected_write_false_positive_rate": {
+      "operator": "<=",
+      "threshold": 0.01
+    },
+    "thresholds_changed_by_step29d": false,
+    "unsupported_or_uncertain_recall": {
+      "operator": ">=",
+      "threshold": 0.8
+    }
+  },
+  "schema_version": "v2c6-remediation-dataset-contract.v1",
+  "source_artifacts": {
+    "expanded_development_dataset_declaration": {
+      "hash_source": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "expanded_development_manifest": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+    },
+    "generalization_diagnosis": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis.json",
+      "sha256": "58177bd3aacf52bbff2268fd834e883457e8241f36e35f5e84943f196f688536"
+    },
+    "generalization_diagnosis_contract": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis_contract.json",
+      "sha256": "4276c28eff6158ee947ac26466c7b65ac8830718accba8252de606a49b0493a4"
+    },
+    "generalization_diagnosis_manifest": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis.manifest.json",
+      "sha256": "bb04f4bf82704331ab4cd0c1dc5ed3a9d87761a30013315e8c52055b3c550305"
+    },
+    "remediation_design_contract": {
+      "path": "data/evals/v2/ml/v2c6_remediation_design_contract.json",
+      "sha256": "ffa8ec7f20b99cc22da3473dd50d32c7aa611cf548ecb205d5c53b9e5409a442"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "source_aware_evaluation_readiness": {
+    "before_step": "V2-C6 Step 29G",
+    "group_ids_do_not_cross_prohibited_split_boundaries": true,
+    "group_aware_stratified_cv_supported": true,
+    "minimum_source_families_per_primary_intent": 3,
+    "source_family_distribution_reported_per_intent": true,
+    "source_family_holdout_evaluation_supported": true,
+    "source_family_holdout_feasible_without_dropping_any_primary_intent": true,
+    "source_family_ids_explicitly_encoded": true
+  },
+  "source_family_policy": {
+    "acceptable_independent_families": [
+      "separately_authored_human_batch",
+      "controlled_llm_batch_with_materially_distinct_instructions_or_process",
+      "independently_sourced_public_or_synthetic_benchmark_family_when_project_policy_allows",
+      "materially_distinct_rule_based_or_scenario_derived_family"
+    ],
+    "definition": "An explicitly identified provenance or authoring family with a materially independent process, not a superficial variant or random seed.",
+    "explicit_independence_metadata_required": true,
+    "explicit_source_family_id_required": true,
+    "minimum_independent_source_families_per_primary_intent": 3,
+    "not_independent_families": [
+      "different_random_seeds_with_same_prompt_or_process",
+      "shuffled_examples",
+      "paraphrases",
+      "punctuation_changes",
+      "superficial_style_edits",
+      "duplicate_template_expansion"
+    ]
+  },
+  "taxonomy": {
+    "intent_count": 16,
+    "intent_label_order": [
+      "account_balance",
+      "account_blocked",
+      "cancel_transfer",
+      "card_status",
+      "close_account",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "lost_or_stolen_phone",
+      "passcode_recovery",
+      "recent_transactions",
+      "transaction_details",
+      "transfer_failed_or_declined",
+      "transfer_pending",
+      "unsupported_or_uncertain"
+    ],
+    "risk_by_intent": {
+      "account_balance": "PRIVATE_READ",
+      "account_blocked": "PRIVATE_READ",
+      "cancel_transfer": "PROTECTED_WRITE",
+      "card_status": "PRIVATE_READ",
+      "close_account": "PROTECTED_WRITE",
+      "create_dispute": "PROTECTED_WRITE",
+      "escalation": "ESCALATION_OR_UNCERTAIN",
+      "freeze_card": "PROTECTED_WRITE",
+      "informational_policy": "PUBLIC",
+      "lost_or_stolen_phone": "ESCALATION_OR_UNCERTAIN",
+      "passcode_recovery": "ESCALATION_OR_UNCERTAIN",
+      "recent_transactions": "PRIVATE_READ",
+      "transaction_details": "PRIVATE_READ",
+      "transfer_failed_or_declined": "PRIVATE_READ",
+      "transfer_pending": "PRIVATE_READ",
+      "unsupported_or_uncertain": "ESCALATION_OR_UNCERTAIN"
+    },
+    "taxonomy_changed": false,
+    "taxonomy_source": "data/evals/v2/ml/v2c5_taxonomy_freeze.json"
+  },
+  "unsupported_subtypes": {
+    "categories": [
+      "truly_unsupported_banking_request",
+      "ambiguous_or_insufficient_information",
+      "adjacent_but_unsupported_intent",
+      "supported_intent_hard_negative",
+      "off_domain_or_noise"
+    ],
+    "metadata_only": true,
+    "runtime_intent": "unsupported_or_uncertain",
+    "runtime_intents_created": false
+  }
+}

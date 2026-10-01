@@ -1,0 +1,71 @@
+{
+  "candidate_count": 6,
+  "completed_candidate_count": 6,
+  "contract": {
+    "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_contract.json",
+    "schema_version": "v2c6-source-aware-model-selection-contract.v1",
+    "sha256": "de4566b7fdb097e78fcd23b8ffa4682c4757cc7c5901c3f9a49d7da28192b1ba"
+  },
+  "development_model_selection_performed": true,
+  "final_full_development_model_fitting_performed": false,
+  "final_holdout_accessed": false,
+  "final_holdout_evaluated": false,
+  "final_model_acceptance_claimed": false,
+  "frozen_inputs": {
+    "development_dataset": {
+      "inherited_v2c5_record_count": 8198,
+      "only_eligible_development_dataset": true,
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json",
+      "record_count": 9008,
+      "remediation_record_count": 810,
+      "sha256": "d7f78d7a76799f47bfdc3c1291505d1b964b9d143245d2d353931e8cb4f4a493"
+    },
+    "source_artifacts": {
+      "generalization_diagnosis_contract": {
+        "path": "data/evals/v2/ml/v2c6_generalization_diagnosis_contract.json",
+        "sha256": "4276c28eff6158ee947ac26466c7b65ac8830718accba8252de606a49b0493a4"
+      },
+      "remediation_dataset_contract": {
+        "path": "data/evals/v2/ml/v2c6_remediation_dataset_contract.json",
+        "sha256": "2063e6ff0b27caaa4d7b6bbe12748e1e4a745bf446f4502589dbb36a966f9d4d"
+      },
+      "remediation_design_contract": {
+        "path": "data/evals/v2/ml/v2c6_remediation_design_contract.json",
+        "sha256": "ffa8ec7f20b99cc22da3473dd50d32c7aa611cf548ecb205d5c53b9e5409a442"
+      },
+      "step29f_freeze": {
+        "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json",
+        "sha256": "7f71dda024e5a947c997977f09ed675fa1f924c38d30f332422aa2032ecbc544"
+      },
+      "taxonomy_freeze": {
+        "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+        "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+      }
+    },
+    "step29f_freeze": {
+      "expected_freeze_status": "FROZEN",
+      "expected_next_required": "v2c6_source_aware_model_selection_contract",
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json",
+      "sha256": "7f71dda024e5a947c997977f09ed675fa1f924c38d30f332422aa2032ecbc544"
+    }
+  },
+  "model_selection_performed": true,
+  "model_training_performed": false,
+  "next_required": null,
+  "phase": "V2-C6 Step 29H",
+  "results": {
+    "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_results.json",
+    "schema_version": "v2c6-source-aware-model-selection-results.v1",
+    "sha256": "babb19ccd5a84d9014273a044e25ef7448c09208aca0fded40f08755f2c2fd19"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_source_aware_model_selection.py",
+    "sha256": "06b681dbb3ac40335de5665535923477fba2fb5df33c69946c012340c748b3c6"
+  },
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c6-source-aware-model-selection-results-manifest.v1",
+  "selected_candidate_id": null,
+  "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+  "split_audit_sha256": "ecfcd0545afb0a41396507c05ce17540fe216f274d476bd3f594a698ac062bba",
+  "threshold_tuning_performed": false
+}

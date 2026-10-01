@@ -1820,12 +1820,119 @@ family favors source/style robustness over a higher average that masks one
 poorly generalized family. This three-family development evidence is limited
 and cannot replace a fresh untouched final holdout.
 
-Step 29G creates only the contract and performs no embedding, fitting,
+Step 29G created only the contract and performed no embedding, fitting,
 inference, evaluation, candidate selection, threshold tuning, holdout access,
-or runtime change. Step 29H is exactly
-`v2c6_source_aware_model_selection_execution`; it must create the tracked
-text-free results and manifest declared by the contract. No candidate has yet
-won or demonstrated improvement.
+or runtime change. It authorized Step 29H,
+`v2c6_source_aware_model_selection_execution`. Step 29H is now complete under
+that unchanged contract; no candidate was eligible or selected.
+
+## V2-C6 Step 29H deterministic source-aware execution
+
+`scripts/run_v2c6_source_aware_model_selection.py` implements the frozen Step
+29G contract without modifying its search space, metrics, gates, or ranking.
+It requires the exact Step 29G contract SHA, frozen Step 29F artifact, and
+9,008-record dataset SHA, plus the pinned manifest and taxonomy lineage. Every
+candidate representation, classifier, fixed parameter, `C`, and class weight
+is resolved from the contract; missing or inconsistent definitions fail
+closed.
+
+The read-only preflight command is:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c6_source_aware_model_selection.py --preflight
+```
+
+It deterministically generates the five `StratifiedGroupKFold` partitions and
+three 8,738/270 leave-one-family-out rounds once, proves their group/source
+isolation and complete 9,008/810 coverage, and builds a text-free audit with
+exact validation/test IDs and train/test membership hashes. It does not load a
+model, generate embeddings, fit a classifier, infer, select, or write files.
+
+The create-once execution command was:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c6_source_aware_model_selection.py --run
+```
+
+Execution uses the same split object for all six candidates. Because Step 29G
+requires train and validation/test BGE transforms to remain separate, the
+ignored `local/v2c6_source_aware_model_selection_bge_cache.npz` stores a
+distinct matrix for each partition side. Its companion manifest pins the
+dataset and contract SHAs, split-audit SHA, model and embedding mode, 384
+dimensions, L2 normalization, row memberships, and FastEmbed version. Those
+fixed pretrained matrices may be reused across the four BGE candidates; no
+development label influences them. The two lexical candidates construct a new
+word/character `FeatureUnion` inside every fold and round, fit vocabulary and
+IDF only on training text, and transform held-out text without fitting.
+
+The results preserve one text-free OOF prediction for all 9,008 records and one
+out-of-family prediction for all 810 remediation records for each candidate.
+They include the frozen group/source metrics, per-family and pooled safety
+checks, unsupported-direction rates, exact ten-pair hard-negative diagnostics,
+explicit eligibility reasons, ranking inputs, and deterministic selection.
+Infrastructure failures abort execution; a completed candidate that misses a
+safety gate remains visible but ineligible.
+
+All 15 required gate checks—three metrics across pooled group CV, pooled source
+holdout, and each of the three families—must pass. Selection then follows the
+frozen worst-family-first lexicographic order, exact complexity ranks, and
+candidate-ID tie-break. Zero eligible candidates produces
+`NO_ACCEPTABLE_CANDIDATE` with no forced winner. Because Step 29G freezes no
+failure-path `next_required`, that case records `next_required=null` and the
+contract ambiguity, and cannot authorize Step 29I.
+
+The tracked create-once outputs are
+`v2c6_source_aware_model_selection_results.json` and
+`v2c6_source_aware_model_selection_results.manifest.json`. They record
+`execution_status=COMPLETED`, `candidate_count=6`, six completed candidates,
+`eligible_candidate_count=0`, and
+`selection_status=NO_ACCEPTABLE_CANDIDATE`. The selected candidate is `null`,
+`winner_forced=false`, `gates_weakened=false`, and `next_required=null`.
+Because Step 29G declared no failure-path `next_required`, the result fails
+closed without inventing one and does not authorize Step 29I.
+
+The dominant measured mandatory-gate blocker was protected false-positive rate
+under source-family holdout. All six candidates failed the pooled
+source-family protected-FPR requirement of `<= 0.01`; several candidates also
+failed unsupported-recall requirements. These are observed associations, not
+an exact or exclusive root-cause claim.
+
+The strongest near-miss diagnostic was
+`WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`, which was still
+**ineligible**. Its pooled group-aware-CV macro-F1-16 was
+`0.8708666548598263`, with protected recall `0.875`, protected FPR
+`0.0077454718779790275`, and unsupported recall `0.9062436855930491`; it
+therefore passed all three pooled group-CV safety gates. On pooled unseen-family
+predictions, primary-eight macro-F1 was `0.8355663639651155`, protected recall
+was `0.8444444444444444`, protected FPR was `0.03333333333333333`, and
+unsupported recall was `0.85`. It failed the pooled protected-FPR gate, SF1
+protected recall at `0.7583333333333333`, and the protected-FPR gate in every
+individual family.
+
+This diagnostic shows the value of the source-aware design despite the absence
+of an acceptable model. Ordinary pooled group-aware CV would have made this
+candidate appear safety-compliant, while leave-one-family-out evaluation moved
+its measured protected FPR from approximately `0.00775` to `0.03333` and
+exposed unsafe source/style generalization. This remains development evidence
+only; the candidate is not a winner, selected, accepted, or production ready.
+
+Governance records `development_model_selection_performed=true` and
+`temporary_fold_and_round_classifier_fitting_performed=true`. Those temporary
+evaluation fits are distinct from the blocked Step 29I full-development fit.
+The result also records
+`final_full_development_model_fitting_performed=false`,
+`full_development_fitted_classifier_persisted=false`,
+`final_holdout_accessed=false`, `final_holdout_evaluated=false`,
+`threshold_tuning_performed=false`, `runtime_behavior_changed=false`,
+`final_model_acceptance_claimed=false`, and `production_ready_claimed=false`.
+
+The Step 29F dataset freeze and Step 29G selection contract remain unchanged.
+No fresh V2-C6 final holdout has been authored or accessed, no runtime
+classifier change is authorized, and Step 29I is blocked. Any further
+remediation requires a separately defined next step and contract rather than
+post-hoc weakening of gates or alteration of these candidate results. The
+create-once Step 29H result must not be rerun and presented as a new clean
+evaluation.
 
 ## Reproduce V2-C1
 

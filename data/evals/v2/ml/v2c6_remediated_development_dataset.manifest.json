@@ -1,0 +1,760 @@
+{
+  "authoring_batch_statistics_by_source_family": {
+    "v2c6_sf1_definition_direct": {
+      "counts_by_authoring_batch_id": {
+        "v2c6_sf1_account_blocked": 30,
+        "v2c6_sf1_cancel_transfer": 30,
+        "v2c6_sf1_close_account": 30,
+        "v2c6_sf1_create_dispute": 30,
+        "v2c6_sf1_freeze_card": 30,
+        "v2c6_sf1_transfer_failed_or_declined": 30,
+        "v2c6_sf1_transfer_pending": 30,
+        "v2c6_sf1_unsupported_adjacent_but_unsupported_intent": 12,
+        "v2c6_sf1_unsupported_ambiguous_or_insufficient_information": 12,
+        "v2c6_sf1_unsupported_off_domain_or_noise": 12,
+        "v2c6_sf1_unsupported_supported_intent_hard_negative": 12,
+        "v2c6_sf1_unsupported_truly_unsupported_banking_request": 12
+      },
+      "unique_authoring_batch_count": 12
+    },
+    "v2c6_sf2_scenario_narrative": {
+      "counts_by_authoring_batch_id": {
+        "v2c6_sf2_scenario_narrative_batch": 270
+      },
+      "unique_authoring_batch_count": 1
+    },
+    "v2c6_sf3_boundary_conversational": {
+      "counts_by_authoring_batch_id": {
+        "v2c6_sf3_boundary_conversational_batch": 270
+      },
+      "unique_authoring_batch_count": 1
+    }
+  },
+  "builder": {
+    "path": "scripts/build_v2c6_remediated_development_dataset.py",
+    "sha256": "371cb8ba03a55c5d9f8e278e3b3f6934dfc9f727ed090483e88332a5f4164a1d",
+    "version": "v2c6-remediated-development-dataset-builder.v1"
+  },
+  "counts": {
+    "new_record_count": 810,
+    "old_record_count": 8198,
+    "per_intent": {
+      "account_balance": 153,
+      "account_blocked": 142,
+      "cancel_transfer": 181,
+      "card_status": 57,
+      "close_account": 141,
+      "create_dispute": 147,
+      "escalation": 57,
+      "freeze_card": 147,
+      "informational_policy": 1745,
+      "lost_or_stolen_phone": 53,
+      "passcode_recovery": 69,
+      "recent_transactions": 153,
+      "transaction_details": 606,
+      "transfer_failed_or_declined": 263,
+      "transfer_pending": 145,
+      "unsupported_or_uncertain": 4949
+    },
+    "per_risk": {
+      "ESCALATION_OR_UNCERTAIN": 5128,
+      "PRIVATE_READ": 1519,
+      "PROTECTED_WRITE": 616,
+      "PUBLIC": 1745
+    },
+    "total_combined_count": 9008
+  },
+  "duplicate_gates": {
+    "cross_intent_normalized_conflict_count": 0,
+    "cross_intent_normalized_conflicts": [],
+    "duplicate_gates_passed": true,
+    "exact_development_overlap_count": 0,
+    "exact_development_overlaps": [],
+    "exact_within_new_cluster_count": 0,
+    "exact_within_new_clusters": [],
+    "normalization_version": "unicode-nfkc-lower-whitespace.v1",
+    "normalized_development_overlap_count": 0,
+    "normalized_development_overlaps": [],
+    "normalized_within_new_cluster_count": 0,
+    "normalized_within_new_clusters": [],
+    "raw_text_persisted_in_diagnostics": false,
+    "semantic_or_embedding_similarity_used": false
+  },
+  "governance": {
+    "embeddings_generated": false,
+    "model_inference_performed": false,
+    "model_selection_performed": false,
+    "model_training_performed": false,
+    "runtime_behavior_changed": false,
+    "threshold_tuning_performed": false,
+    "v2c5_raw_final_holdout_accessed": false
+  },
+  "group_statistics": {
+    "group_semantic_independence_proven_automatically": false,
+    "maximum_records_per_group": 6,
+    "mean_records_per_group": 1.0386256197394212,
+    "multi_record_group_count": 74,
+    "record_count": 9008,
+    "semantic_review_still_required": true,
+    "singleton_group_count": 8599,
+    "unique_group_count": 8673
+  },
+  "next_required": "v2c6_remediated_development_dataset_validation_and_freeze",
+  "phase": "V2-C6 Step 29E2",
+  "remediated_development_dataset": {
+    "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json",
+    "schema_version": "v2c6-remediated-development-dataset.v1",
+    "sha256": "d7f78d7a76799f47bfdc3c1291505d1b964b9d143245d2d353931e8cb4f4a493"
+  },
+  "remediation_examples": {
+    "path": "data/evals/v2/ml/v2c6_remediation_examples.json",
+    "sha256": "2e9ab5d3903c6c5fd5a21a1586d4e65e4be78e3ce0d00a8409fad9d90b068a54"
+  },
+  "review_governance": {
+    "all_records_semantically_reviewed": true,
+    "approved_status_implies_human_review": false,
+    "human_adjudication_complete": true,
+    "human_review_is_universal_build_gate": false,
+    "needs_revision_resolved": true,
+    "review_gates_passed": true,
+    "semantic_review_required_for_all_records": true
+  },
+  "review_provenance": {
+    "ai_assisted_review_record_count": 810,
+    "approved_count": 810,
+    "human_adjudication_completed_count": 0,
+    "human_adjudication_required_count": 0,
+    "human_review_record_count": 0,
+    "low_confidence_review_count": 0,
+    "needs_revision_count": 0,
+    "provenance_inconsistency_count": 0,
+    "rejected_count": 0,
+    "review_method": "ai_assisted_review",
+    "review_record_count": 810,
+    "reviewer_disagreement_count": 0,
+    "reviewer_type": "AI-assisted semantic reviewer",
+    "unresolved_protected_write_ambiguity_count": 0,
+    "unresolved_taxonomy_ambiguity_count": 0
+  },
+  "schema_version": "v2c6-remediated-development-dataset-manifest.v1",
+  "source_artifacts": {
+    "frozen_v2c5_development": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "step29d_contract": {
+      "path": "data/evals/v2/ml/v2c6_remediation_dataset_contract.json",
+      "sha256": "2063e6ff0b27caaa4d7b6bbe12748e1e4a745bf446f4502589dbb36a966f9d4d"
+    },
+    "taxonomy": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    }
+  },
+  "source_aware_readiness": {
+    "duplicate_gates_passed": true,
+    "group_aware_cv_ready": true,
+    "group_ids_do_not_cross_prohibited_split_boundaries": true,
+    "minimum_three_source_families_every_primary_intent": true,
+    "only_approved_records_included": true,
+    "review_gates_passed": true,
+    "source_family_distribution_per_intent": {
+      "account_blocked": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.2962962962962963,
+              "top_bigram_share": 0.05555555555555555,
+              "total_bigram_count": 324,
+              "unique_bigram_count": 260
+            },
+            "record_count": 30,
+            "token_diversity": 0.3954802259887006,
+            "total_token_count": 354,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 140
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.2708333333333333,
+              "top_bigram_share": 0.020833333333333332,
+              "total_bigram_count": 576,
+              "unique_bigram_count": 477
+            },
+            "record_count": 30,
+            "token_diversity": 0.39933993399339934,
+            "total_token_count": 606,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 242
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.24278846153846154,
+              "top_bigram_share": 0.026442307692307692,
+              "total_bigram_count": 416,
+              "unique_bigram_count": 353
+            },
+            "record_count": 30,
+            "token_diversity": 0.4013452914798206,
+            "total_token_count": 446,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 179
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.44984802431610943,
+            "top_bigram_share": 0.026595744680851064,
+            "total_bigram_count": 1316,
+            "unique_bigram_count": 899
+          },
+          "record_count": 90,
+          "token_diversity": 0.2453769559032717,
+          "total_token_count": 1406,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 345
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 30,
+          "v2c6_sf2_scenario_narrative": 30,
+          "v2c6_sf3_boundary_conversational": 30
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 90,
+        "unique_group_count": 90,
+        "unique_normalized_text_count": 90,
+        "unique_source_family_count": 3
+      },
+      "cancel_transfer": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.25773195876288657,
+              "top_bigram_share": 0.041237113402061855,
+              "total_bigram_count": 291,
+              "unique_bigram_count": 241
+            },
+            "record_count": 30,
+            "token_diversity": 0.4517133956386293,
+            "total_token_count": 321,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 145
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.26693227091633465,
+              "top_bigram_share": 0.017928286852589643,
+              "total_bigram_count": 502,
+              "unique_bigram_count": 416
+            },
+            "record_count": 30,
+            "token_diversity": 0.4342105263157895,
+            "total_token_count": 532,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 231
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.2695417789757412,
+              "top_bigram_share": 0.02425876010781671,
+              "total_bigram_count": 371,
+              "unique_bigram_count": 305
+            },
+            "record_count": 30,
+            "token_diversity": 0.428927680798005,
+            "total_token_count": 401,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 172
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.4639175257731959,
+            "top_bigram_share": 0.02577319587628866,
+            "total_bigram_count": 1164,
+            "unique_bigram_count": 782
+          },
+          "record_count": 90,
+          "token_diversity": 0.2719298245614035,
+          "total_token_count": 1254,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 341
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 30,
+          "v2c6_sf2_scenario_narrative": 30,
+          "v2c6_sf3_boundary_conversational": 30
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 90,
+        "unique_group_count": 90,
+        "unique_normalized_text_count": 90,
+        "unique_source_family_count": 3
+      },
+      "close_account": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.3142857142857143,
+              "top_bigram_share": 0.02857142857142857,
+              "total_bigram_count": 280,
+              "unique_bigram_count": 223
+            },
+            "record_count": 30,
+            "token_diversity": 0.42258064516129035,
+            "total_token_count": 310,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 131
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.2959830866807611,
+              "top_bigram_share": 0.021141649048625793,
+              "total_bigram_count": 473,
+              "unique_bigram_count": 378
+            },
+            "record_count": 30,
+            "token_diversity": 0.38767395626242546,
+            "total_token_count": 503,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 195
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.24930747922437674,
+              "top_bigram_share": 0.038781163434903045,
+              "total_bigram_count": 361,
+              "unique_bigram_count": 300
+            },
+            "record_count": 30,
+            "token_diversity": 0.4143222506393862,
+            "total_token_count": 391,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 162
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.45511669658886894,
+            "top_bigram_share": 0.027827648114901255,
+            "total_bigram_count": 1114,
+            "unique_bigram_count": 746
+          },
+          "record_count": 90,
+          "token_diversity": 0.25332225913621265,
+          "total_token_count": 1204,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 305
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 30,
+          "v2c6_sf2_scenario_narrative": 30,
+          "v2c6_sf3_boundary_conversational": 30
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 90,
+        "unique_group_count": 90,
+        "unique_normalized_text_count": 90,
+        "unique_source_family_count": 3
+      },
+      "create_dispute": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.3153409090909091,
+              "top_bigram_share": 0.04261363636363636,
+              "total_bigram_count": 352,
+              "unique_bigram_count": 274
+            },
+            "record_count": 30,
+            "token_diversity": 0.4162303664921466,
+            "total_token_count": 382,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 159
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.268,
+              "top_bigram_share": 0.032,
+              "total_bigram_count": 500,
+              "unique_bigram_count": 402
+            },
+            "record_count": 30,
+            "token_diversity": 0.42641509433962266,
+            "total_token_count": 530,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 226
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.3239795918367347,
+              "top_bigram_share": 0.03571428571428571,
+              "total_bigram_count": 392,
+              "unique_bigram_count": 304
+            },
+            "record_count": 30,
+            "token_diversity": 0.3862559241706161,
+            "total_token_count": 422,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 163
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.4533762057877814,
+            "top_bigram_share": 0.03617363344051447,
+            "total_bigram_count": 1244,
+            "unique_bigram_count": 822
+          },
+          "record_count": 90,
+          "token_diversity": 0.2616191904047976,
+          "total_token_count": 1334,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 349
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 30,
+          "v2c6_sf2_scenario_narrative": 30,
+          "v2c6_sf3_boundary_conversational": 30
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 90,
+        "unique_group_count": 90,
+        "unique_normalized_text_count": 90,
+        "unique_source_family_count": 3
+      },
+      "freeze_card": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.24749163879598662,
+              "top_bigram_share": 0.03678929765886288,
+              "total_bigram_count": 299,
+              "unique_bigram_count": 250
+            },
+            "record_count": 30,
+            "token_diversity": 0.46200607902735563,
+            "total_token_count": 329,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 152
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.2956521739130435,
+              "top_bigram_share": 0.03695652173913044,
+              "total_bigram_count": 460,
+              "unique_bigram_count": 370
+            },
+            "record_count": 30,
+            "token_diversity": 0.3979591836734694,
+            "total_token_count": 490,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 195
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.281767955801105,
+              "top_bigram_share": 0.055248618784530384,
+              "total_bigram_count": 362,
+              "unique_bigram_count": 292
+            },
+            "record_count": 30,
+            "token_diversity": 0.39540816326530615,
+            "total_token_count": 392,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 155
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.487957181088314,
+            "top_bigram_share": 0.04103479036574487,
+            "total_bigram_count": 1121,
+            "unique_bigram_count": 734
+          },
+          "record_count": 90,
+          "token_diversity": 0.2551610239471511,
+          "total_token_count": 1211,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 309
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 30,
+          "v2c6_sf2_scenario_narrative": 30,
+          "v2c6_sf3_boundary_conversational": 30
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 90,
+        "unique_group_count": 90,
+        "unique_normalized_text_count": 90,
+        "unique_source_family_count": 3
+      },
+      "transfer_failed_or_declined": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.19727891156462585,
+              "top_bigram_share": 0.034013605442176874,
+              "total_bigram_count": 294,
+              "unique_bigram_count": 257
+            },
+            "record_count": 30,
+            "token_diversity": 0.46296296296296297,
+            "total_token_count": 324,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 150
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.293598233995585,
+              "top_bigram_share": 0.02207505518763797,
+              "total_bigram_count": 453,
+              "unique_bigram_count": 365
+            },
+            "record_count": 30,
+            "token_diversity": 0.422360248447205,
+            "total_token_count": 483,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 204
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.2722063037249284,
+              "top_bigram_share": 0.025787965616045846,
+              "total_bigram_count": 349,
+              "unique_bigram_count": 289
+            },
+            "record_count": 30,
+            "token_diversity": 0.42480211081794195,
+            "total_token_count": 379,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 161
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.45255474452554745,
+            "top_bigram_share": 0.024635036496350366,
+            "total_bigram_count": 1096,
+            "unique_bigram_count": 745
+          },
+          "record_count": 90,
+          "token_diversity": 0.2563237774030354,
+          "total_token_count": 1186,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 304
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 30,
+          "v2c6_sf2_scenario_narrative": 30,
+          "v2c6_sf3_boundary_conversational": 30
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 90,
+        "unique_group_count": 90,
+        "unique_normalized_text_count": 90,
+        "unique_source_family_count": 3
+      },
+      "transfer_pending": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.2822085889570552,
+              "top_bigram_share": 0.027607361963190184,
+              "total_bigram_count": 326,
+              "unique_bigram_count": 269
+            },
+            "record_count": 30,
+            "token_diversity": 0.41292134831460675,
+            "total_token_count": 356,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 147
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.21428571428571427,
+              "top_bigram_share": 0.01904761904761905,
+              "total_bigram_count": 420,
+              "unique_bigram_count": 363
+            },
+            "record_count": 30,
+            "token_diversity": 0.42444444444444446,
+            "total_token_count": 450,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 191
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.24929178470254956,
+              "top_bigram_share": 0.028328611898016998,
+              "total_bigram_count": 353,
+              "unique_bigram_count": 299
+            },
+            "record_count": 30,
+            "token_diversity": 0.4073107049608355,
+            "total_token_count": 383,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 156
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.48771610555050043,
+            "top_bigram_share": 0.02456778889899909,
+            "total_bigram_count": 1099,
+            "unique_bigram_count": 739
+          },
+          "record_count": 90,
+          "token_diversity": 0.23717409587888982,
+          "total_token_count": 1189,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 282
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 30,
+          "v2c6_sf2_scenario_narrative": 30,
+          "v2c6_sf3_boundary_conversational": 30
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 90,
+        "unique_group_count": 90,
+        "unique_normalized_text_count": 90,
+        "unique_source_family_count": 3
+      },
+      "unsupported_or_uncertain": {
+        "diversity_by_source_family": {
+          "v2c6_sf1_definition_direct": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.12556053811659193,
+              "top_bigram_share": 0.008968609865470852,
+              "total_bigram_count": 446,
+              "unique_bigram_count": 413
+            },
+            "record_count": 60,
+            "token_diversity": 0.5276679841897233,
+            "total_token_count": 506,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 267
+          },
+          "v2c6_sf2_scenario_narrative": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.22012578616352202,
+              "top_bigram_share": 0.021383647798742137,
+              "total_bigram_count": 795,
+              "unique_bigram_count": 675
+            },
+            "record_count": 60,
+            "token_diversity": 0.4444444444444444,
+            "total_token_count": 855,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 380
+          },
+          "v2c6_sf3_boundary_conversational": {
+            "bigram_concentration": {
+              "repeated_occurrence_share": 0.20209580838323354,
+              "top_bigram_share": 0.017964071856287425,
+              "total_bigram_count": 668,
+              "unique_bigram_count": 580
+            },
+            "record_count": 60,
+            "token_diversity": 0.4368131868131868,
+            "total_token_count": 728,
+            "unique_group_ratio": 1.0,
+            "unique_normalized_text_ratio": 1.0,
+            "unique_token_count": 318
+          }
+        },
+        "dominant_wording_review": "semantic_review_required_no_automatic_threshold",
+        "families_meeting_30_record_target": 3,
+        "intent_diversity": {
+          "bigram_concentration": {
+            "repeated_occurrence_share": 0.35515976951283396,
+            "top_bigram_share": 0.012572027239392353,
+            "total_bigram_count": 1909,
+            "unique_bigram_count": 1455
+          },
+          "record_count": 180,
+          "token_diversity": 0.2857826711345141,
+          "total_token_count": 2089,
+          "unique_group_ratio": 1.0,
+          "unique_normalized_text_ratio": 1.0,
+          "unique_token_count": 597
+        },
+        "largest_source_family_share": 0.3333333333333333,
+        "per_family_30_record_target_met": true,
+        "records_by_source_family": {
+          "v2c6_sf1_definition_direct": 60,
+          "v2c6_sf2_scenario_narrative": 60,
+          "v2c6_sf3_boundary_conversational": 60
+        },
+        "source_family_minimum_met": true,
+        "total_new_records": 180,
+        "unique_group_count": 180,
+        "unique_normalized_text_count": 180,
+        "unique_source_family_count": 3
+      }
+    },
+    "source_family_independence_semantically_proven": false,
+    "step29g_ready": true,
+    "whole_family_holdout_candidate_count": 3,
+    "whole_family_holdout_feasible_without_dropping_primary_intent": true
+  }
+}

@@ -1,0 +1,509 @@
+{
+  "architecture_decision": {
+    "alternatives_rejected_for_step29c": [
+      {
+        "alternative": "immediately_switch_embedding_model",
+        "reason": "Changing representations before data and evaluation remediation would confound the experiment and is not supported as a proven V2-C5 root cause."
+      },
+      {
+        "alternative": "tune_linearsvc_or_class_weights",
+        "reason": "Step 29C does not select hyperparameters, and tuning against consumed final evidence would risk leakage."
+      },
+      {
+        "alternative": "weaken_unsupported_handling_or_safety_gates",
+        "reason": "The failed V2-C5 candidate does not justify weakening unsupported handling or any mandatory safety threshold."
+      },
+      {
+        "alternative": "inspect_or_reuse_v2c5_final_holdout",
+        "reason": "The V2-C5 final holdout is consumed historical evidence and cannot support clean future evaluation if inspected or reused."
+      },
+      {
+        "alternative": "collapse_or_revise_taxonomy_immediately",
+        "reason": "Step 29B observational evidence does not establish taxonomy ambiguity requiring a taxonomy change."
+      }
+    ],
+    "chosen": "data_first_remediation_with_independent_source_diversity_hard_negative_boundaries_and_source_aware_development_evaluation",
+    "problem": "V2-C5 achieved high group-aware development OOF performance but generalized poorly to an independently authored final evaluation and failed protected-action safety gates.",
+    "reversibility": "Highly reversible because Step 29C freezes experiment design only and changes no data, model, taxonomy, thresholds, or runtime behavior.",
+    "suitability": [
+      "Step 29B measured negligible ordinary duplicate leakage.",
+      "Step 29B measured source and authoring concentration.",
+      "Step 29B measured supported-versus-unsupported errors in existing development OOF evidence.",
+      "Several expanded intents have narrow development provenance.",
+      "Evidence quality can be improved before changing model families."
+    ],
+    "tradeoffs": [
+      "Independent authoring requires additional human effort.",
+      "Source-aware splits reduce effective training data during development evaluation.",
+      "Hard-negative authoring requires human boundary review.",
+      "Explicit source-family metadata increases dataset complexity.",
+      "Data-first remediation does not guarantee that a future model will pass."
+    ]
+  },
+  "boundary_specification_requirement": {
+    "required_before_hard_negative_authoring": true,
+    "required_fields_per_primary_intent": [
+      "positive_intent_definition",
+      "explicit_exclusions",
+      "nearest_competing_intents",
+      "ambiguous_cases",
+      "required_clarifying_cases",
+      "unsupported_boundary",
+      "protected_action_implications"
+    ],
+    "step29c_rewrites_taxonomy_definitions": false
+  },
+  "class_balance_policy": {
+    "all_16_classes_forced_to_equal_size": false,
+    "destructive_large_scale_removal_authorized": false,
+    "downsampling_authorized_by_step29c": false,
+    "downsampling_requires_separate_frozen_and_evaluated_design": true,
+    "goals": [
+      "reduce_extreme_unsupported_or_uncertain_dominance",
+      "increase_representation_of_narrow_and_expanded_intents",
+      "preserve_realistic_unsupported_diversity",
+      "avoid_discarding_valuable_unsupported_examples_without_evidence"
+    ],
+    "preferred_methods": [
+      "targeted_additions_to_minority_and_expanded_intents",
+      "controlled_sampling_or_weighting_in_future_model_selection",
+      "source_aware_development_evaluation"
+    ]
+  },
+  "contract_status": {
+    "contract_frozen": true,
+    "development_dataset_changed": false,
+    "embeddings_generated": false,
+    "model_selection_performed": false,
+    "model_training_performed": false,
+    "new_examples_authored": false,
+    "new_v2c6_final_holdout_created": false,
+    "next_required": "v2c6_remediation_dataset_contract",
+    "remediation_started": false,
+    "runtime_behavior_changed": false,
+    "taxonomy_changed": false,
+    "v2c5_raw_final_holdout_accessed": false
+  },
+  "contract_version": "v2c6-remediation-design-contract.v1",
+  "data_quality_gates": {
+    "accuracy_or_f1_targets_frozen_by_step29c": false,
+    "class_counts_reported": true,
+    "exact_duplicate_conflict_count_maximum": 0,
+    "explicit_group_id_required": true,
+    "explicit_source_family_metadata_required": true,
+    "normalized_cross_intent_duplicate_conflict_count_maximum": 0,
+    "primary_intent_minimum_source_family_requirement_enforced": true,
+    "protected_write_counts_reported": true,
+    "runtime_changes_permitted": false,
+    "source_concentration_reported": true,
+    "source_family_coverage_reported_per_intent": true,
+    "unsupported_subtype_coverage_reported_if_adopted": true,
+    "v2c5_final_holdout_access_or_reuse_permitted": false
+  },
+  "evidence_base": {
+    "class_imbalance": {
+      "causality_claimed": false,
+      "development_record_count": 8198,
+      "unsupported_or_uncertain_count": 4769,
+      "unsupported_or_uncertain_share": 0.5817272505489144
+    },
+    "development_to_final_generalization_gap": {
+      "causality_inferred_from_final_examples": false,
+      "development_pooled_oof_macro_f1": 0.8850476526181243,
+      "final_macro_f1": 0.5632279946795209,
+      "final_new_seven_intent_macro_f1": 0.45253940739110227,
+      "gap_stated_by_step29c_specification": 0.3218196579386034,
+      "step29b_serialized_gap": 0.32181965793860345
+    },
+    "duplicate_and_group_structure": {
+      "cross_intent_exact_duplicate_conflict_cluster_count": 0,
+      "cross_intent_normalized_duplicate_conflict_cluster_count": 0,
+      "exact_duplicate_record_count": 0,
+      "normalized_duplicate_rate": 0.00024396194193705782,
+      "normalized_duplicate_record_count": 2,
+      "ordinary_duplicate_leakage_is_main_remediation_target": false,
+      "raw_record_count": 8198,
+      "singleton_group_count": 7789,
+      "singleton_group_share": 0.9905888337784561,
+      "unique_group_count": 7863
+    },
+    "evidence_interpretation": {
+      "exact_root_cause_proven": false,
+      "measured_risks": [
+        "large_development_to_final_generalization_gap",
+        "strong_development_class_imbalance",
+        "source_and_authoring_concentration",
+        "supported_versus_unsupported_boundary_errors"
+      ],
+      "ordinary_duplicate_leakage": "negligible_and_not_the_primary_remediation_target"
+    },
+    "source_and_authoring_concentration": {
+      "causality_claimed": false,
+      "interpretation": "Measured source concentration is a development-diversity and evaluation-independence risk, not proof of the V2-C5 final failure mechanism.",
+      "largest_source_revision_share_by_primary_intent": {
+        "account_blocked": 0.9807692307692307,
+        "cancel_transfer": 1.0,
+        "close_account": 0.9607843137254902,
+        "create_dispute": 1.0,
+        "freeze_card": 1.0,
+        "transfer_failed_or_declined": 1.0,
+        "transfer_pending": 1.0,
+        "unsupported_or_uncertain": 0.5925770601803313
+      },
+      "primary_intents_with_source_split_train_only": [
+        "cancel_transfer",
+        "close_account",
+        "transfer_failed_or_declined",
+        "transfer_pending"
+      ]
+    },
+    "unsupported_boundary": {
+      "development_oof_non_unsupported_gold_count": 3429,
+      "development_oof_non_unsupported_to_unsupported_count": 450,
+      "development_oof_non_unsupported_to_unsupported_rate": 0.13123359580052493,
+      "protected_write_gold_count": 256,
+      "protected_write_to_unsupported_count": 29,
+      "target_intent_to_unsupported": {
+        "account_blocked": {
+          "count": 7,
+          "rate": 0.1346153846153846,
+          "support": 52
+        },
+        "cancel_transfer": {
+          "count": 7,
+          "rate": 0.07692307692307693,
+          "support": 91
+        },
+        "close_account": {
+          "count": 10,
+          "rate": 0.19607843137254902,
+          "support": 51
+        },
+        "create_dispute": {
+          "count": 6,
+          "rate": 0.10526315789473684,
+          "support": 57
+        },
+        "freeze_card": {
+          "count": 6,
+          "rate": 0.10526315789473684,
+          "support": 57
+        },
+        "transfer_failed_or_declined": {
+          "count": 30,
+          "rate": 0.17341040462427745,
+          "support": 173
+        },
+        "transfer_pending": {
+          "count": 5,
+          "rate": 0.09090909090909091,
+          "support": 55
+        }
+      }
+    }
+  },
+  "fresh_v2c6_final_holdout_policy": {
+    "authoring_process": "new_independent_authoring_session_and_process",
+    "consumed_v2c5_final_holdout_examples_reused": false,
+    "isolated_from_remediation_development_data": true,
+    "must_be_frozen_before_final_model_selection_decisions_depending_on_evaluation": true,
+    "new_evaluation_contract_required": true,
+    "paraphrases_of_v2c5_final_holdout_permitted": false,
+    "required": true,
+    "same_or_stronger_governance_than_v2c5": true,
+    "usage": "once_only_final_evaluation",
+    "v2c5_holdout_role": "consumed_historical_aggregate_evidence_only"
+  },
+  "future_phases": [
+    {
+      "name": "freeze_independent_authoring_and_remediation_dataset_contract",
+      "step": "29D"
+    },
+    {
+      "name": "author_and_build_diversified_remediation_data",
+      "step": "29E"
+    },
+    {
+      "name": "validate_and_freeze_remediated_development_dataset",
+      "step": "29F"
+    },
+    {
+      "name": "freeze_source_aware_model_selection_contract",
+      "step": "29G"
+    },
+    {
+      "name": "run_development_model_selection_with_group_cv_and_source_holdout",
+      "step": "29H"
+    },
+    {
+      "name": "fit_selected_model_on_allowed_development_data",
+      "step": "29I"
+    },
+    {
+      "name": "freeze_fresh_v2c6_final_holdout_contract",
+      "step": "29J"
+    },
+    {
+      "name": "independently_author_and_freeze_fresh_v2c6_final_holdout",
+      "step": "29K"
+    },
+    {
+      "name": "freeze_final_evaluation_contract",
+      "step": "29L"
+    },
+    {
+      "name": "perform_once_only_final_evaluation",
+      "step": "29M"
+    },
+    {
+      "condition": "all_predeclared_final_safety_and_acceptance_gates_pass",
+      "name": "runtime_or_shadow_integration",
+      "step": "29N"
+    }
+  ],
+  "hard_negative_design": {
+    "authoring_method": "independently_authored_from_human_reviewed_semantic_boundary_specifications",
+    "minimal_edits_of_existing_examples_permitted": false,
+    "required_pairs": [
+      [
+        "close_account",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "transfer_failed_or_declined",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "account_blocked",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "create_dispute",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "freeze_card",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "transfer_pending",
+        "unsupported_or_uncertain"
+      ],
+      [
+        "cancel_transfer",
+        "transfer_pending"
+      ],
+      [
+        "transfer_failed_or_declined",
+        "transfer_pending"
+      ],
+      [
+        "account_blocked",
+        "transfer_failed_or_declined"
+      ]
+    ]
+  },
+  "input_policy": {
+    "consumed_v2c5_final_holdout": {
+      "path": "data/evals/v2/ml/v2c5_final_holdout.json",
+      "status": "explicitly_prohibited_raw_input"
+    },
+    "individual_v2c5_final_holdout_examples_permitted": false,
+    "step29c_uses_aggregate_and_development_side_evidence_only": true
+  },
+  "model_policy": {
+    "bge_small_linearsvc_family_eligible_as_baseline": true,
+    "bge_small_proven_to_have_caused_v2c5_failure": false,
+    "future_alternative_comparison_permitted_only_under_separate_contract": true,
+    "initial_comparison_scope": "narrow_enough_to_measure_data_and_evaluation_remediation_effects",
+    "model_or_hyperparameter_selected_by_step29c": false,
+    "switch_model_now": false
+  },
+  "new_data_policy": {
+    "cross_intent_duplicate_conflicts_permitted": false,
+    "exact_and_normalized_duplicate_checks_required": true,
+    "independent_authoring_required": true,
+    "provenance_may_be_inferred_from_wording": false,
+    "required_metadata": [
+      "source_family_id",
+      "source_revision",
+      "intent",
+      "risk",
+      "authoring_batch",
+      "group_id"
+    ],
+    "source_family_and_group_policy": "Every source_family_id must be explicit. Each example requires a unique group_id unless multiple examples intentionally belong to one frozen group; any shared grouping must be explicit and auditable.",
+    "texts_that_may_not_be_paraphrased": [
+      "v2c5_final_holdout_examples",
+      "v2c5_development_examples",
+      "existing_hard_negatives"
+    ]
+  },
+  "phase": "V2-C6 Step 29C",
+  "primary_remediation_intents": [
+    "account_blocked",
+    "cancel_transfer",
+    "close_account",
+    "create_dispute",
+    "freeze_card",
+    "transfer_failed_or_declined",
+    "transfer_pending",
+    "unsupported_or_uncertain"
+  ],
+  "protected_write_policy": {
+    "classifier_authorizes_protected_actions": false,
+    "intents": [
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card"
+    ],
+    "remediation_requirements": [
+      "multiple_independent_source_families",
+      "explicit_supported_versus_unsupported_hard_negatives",
+      "explicit_protected_intent_boundary_examples",
+      "sufficient_source_holdout_coverage"
+    ],
+    "runtime_authorization_and_confirmation_remain_deterministic": true
+  },
+  "remediation_priorities": [
+    {
+      "id": "improve_source_and_authoring_diversity",
+      "ordinal": 1,
+      "scope": "underrepresented_and_source_concentrated_intents"
+    },
+    {
+      "id": "improve_supported_versus_unsupported_boundaries",
+      "ordinal": 2,
+      "scope": "independently_authored_hard_negatives"
+    },
+    {
+      "id": "introduce_source_aware_development_evaluation",
+      "ordinal": 3,
+      "scope": "source_independent_evidence_complementing_group_aware_cv"
+    },
+    {
+      "id": "improve_measured_intent_boundaries",
+      "ordinal": 4,
+      "scope": "specific_development_oof_confusions"
+    },
+    {
+      "id": "reconsider_representation_or_classifier_family_only_if_still_warranted",
+      "ordinal": 5,
+      "scope": "only_after_data_and_evaluation_remediation"
+    }
+  ],
+  "safety_policy": {
+    "gates_may_be_strengthened_by_future_contract": true,
+    "minimum_gates": {
+      "exact_protected_write_recall": {
+        "operator": ">=",
+        "threshold": 0.8
+      },
+      "protected_write_false_positive_rate": {
+        "operator": "<=",
+        "threshold": 0.01
+      },
+      "unsupported_or_uncertain_recall": {
+        "operator": ">=",
+        "threshold": 0.8
+      }
+    },
+    "source_holdout_safety_gates_may_be_added": true,
+    "thresholds_weakened": false
+  },
+  "schema_version": "v2c6-remediation-design-contract.v1",
+  "source_artifacts": {
+    "expanded_development_dataset_declaration": {
+      "hash_source": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "expanded_development_manifest": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+    },
+    "final_evaluation_results": {
+      "access_scope": "contract_permitted_aggregate_context_only",
+      "path": "data/evals/v2/ml/v2c5_final_evaluation_results.json",
+      "sha256": "e3104ce8c7893dc111989f804fd05a82dc63cf2e3a22483374962f87337aa4b4"
+    },
+    "generalization_diagnosis": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis.json",
+      "schema_version": "v2c6-generalization-diagnosis.v1",
+      "sha256": "58177bd3aacf52bbff2268fd834e883457e8241f36e35f5e84943f196f688536"
+    },
+    "generalization_diagnosis_contract": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis_contract.json",
+      "sha256": "4276c28eff6158ee947ac26466c7b65ac8830718accba8252de606a49b0493a4"
+    },
+    "generalization_diagnosis_manifest": {
+      "path": "data/evals/v2/ml/v2c6_generalization_diagnosis.manifest.json",
+      "sha256": "bb04f4bf82704331ab4cd0c1dc5ed3a9d87761a30013315e8c52055b3c550305"
+    },
+    "model_selection_results": {
+      "access_scope": "existing_aggregate_oof_evidence_only",
+      "path": "data/evals/v2/ml/v2c5_model_selection_results.json",
+      "sha256": "12686ff407c06e83e27d98f9b7a566f6fe0368c9c2828a5f9b54e9aed7e35ab4"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "source_aware_development_evaluation": {
+    "group_aware_stratified_cv": {
+      "group_field": "group_id",
+      "required": true
+    },
+    "insufficient_source_family_policy": "remediation_builder_must_improve_source_diversity_before_source_holdout_evaluation",
+    "source_holdout": {
+      "development_evidence_reusable_according_to_future_contract": true,
+      "hold_out_entire_source_or_authoring_families_where_possible": true,
+      "is_final_v2c6_holdout": false,
+      "required": true
+    },
+    "views_are_complementary": true
+  },
+  "source_diversity_policy": {
+    "additional_historical_intents_may_receive_independent_boundary_balancing_examples": true,
+    "independent_source_family_definition": "An explicitly identified authoring or source-provenance family whose identity is recorded rather than inferred from wording.",
+    "minimum_independent_source_families_per_primary_intent": 3,
+    "primary_intent_single_source_revision_share_must_be_less_than": 1.0,
+    "required_reported_measures": [
+      "raw_example_count",
+      "unique_group_count",
+      "unique_source_family_count",
+      "source_family_concentration"
+    ],
+    "row_count_alone_is_sufficient_diversity_evidence": false,
+    "unmet_minimum_policy": "builder_must_fail_or_explicitly_report_unmet_coverage"
+  },
+  "taxonomy_policy": {
+    "current_runtime_intent_count": 16,
+    "revision_prioritized_by_step29c": false,
+    "revision_requires_later_human_reviewed_evidence_of_taxonomy_ambiguity": true
+  },
+  "unsupported_class_redesign": {
+    "conceptual_buckets": [
+      "truly_unsupported_banking_requests",
+      "ambiguous_or_insufficient_information_requests",
+      "adjacent_but_unsupported_intents",
+      "supported_intent_hard_negatives",
+      "off_domain_or_noise"
+    ],
+    "goal": "Make unsupported evidence auditable rather than treating it as one undifferentiated source pool.",
+    "label_deleted": false,
+    "runtime_taxonomy_changed": false,
+    "unsupported_subtype_metadata_allowed": true,
+    "unsupported_subtype_role": "development_and_evaluation_metadata_only_unless_a_future_taxonomy_contract_changes_it"
+  }
+}

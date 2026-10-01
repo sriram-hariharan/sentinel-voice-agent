@@ -1385,8 +1385,8 @@ The CLI has exactly three modes:
   development and taxonomy counts, selected candidate, folds, aggregate final
   context, and output availability. It writes nothing.
 - `--run` deterministically prepares
-  `v2c6_generalization_diagnosis.json` and its manifest during future local
-  execution. It refuses to overwrite either output.
+  `v2c6_generalization_diagnosis.json` and its manifest. The completed local
+  execution froze both artifacts, and the mode refuses to overwrite them.
 - `--check-results` requires both artifacts and validates canonical
   serialization, deterministic recomputation, result and runner hashes, source
   lineage, counts, selected candidate, governance, and
@@ -1424,12 +1424,100 @@ risk. Development statistics cannot fully characterize final-distribution
 shift, lexical/group associations do not prove causality, and absent provenance
 can limit authoring-family findings.
 
-No diagnosis result is claimed until the user runs `--run` and validates it
-locally. Step 29C is the separately governed remediation-design phase based on
-measured Step 29B evidence. A future V2-C6 final evaluation must first freeze a
-new evaluation contract and a fresh independently authored holdout; no consumed
-V2-C5 final example may be reused. Runtime integration remains blocked until a
-future candidate passes predeclared safety gates.
+The completed diagnosis recorded a development-to-final macro-F1 gap of about
+`0.32182`, `4,769 / 8,198` development records labeled
+`unsupported_or_uncertain`, narrow source-revision coverage for several
+expanded and protected intents, 450 non-unsupported OOF records predicted as
+unsupported, and 29 protected-write OOF records predicted as unsupported. It
+also recorded 7,863 unique groups, about 99% singleton groups, zero exact
+duplicate records, and only two normalized duplicate records. These findings
+support data/evaluation remediation but do not prove an exact root cause;
+ordinary duplicate leakage is not the primary remediation target.
+
+## V2-C6 Step 29C remediation-design contract
+
+`v2c6_remediation_design_contract.json` hash-pins the completed Step 29B
+diagnosis and manifest, Step 29A contract, expanded-development declaration and
+manifest, model-selection aggregate evidence, aggregate final context, and the
+frozen taxonomy. The consumed `v2c5_final_holdout.json` remains an explicitly
+prohibited raw input and historical aggregate evidence only.
+
+The frozen remediation order is:
+
+1. improve independent source/authoring diversity for underrepresented and
+   source-concentrated intents;
+2. improve supported-versus-unsupported boundaries with independently authored
+   hard negatives;
+3. add source-family holdout development evaluation alongside group-aware CV;
+4. improve specific intent boundaries already visible in development OOF
+   evidence; and
+5. reconsider representation/classifier families only after data and
+   evaluation remediation, if evidence still warrants it.
+
+The architecture choice is data-first remediation with independent source
+diversity, boundary hard negatives, and source-aware development evaluation.
+Step 29B provides stronger measured support for improving data and evaluation
+evidence than for immediately changing models or taxonomy. Switching embedding
+families, tuning LinearSVC/class weights, weakening unsupported handling,
+inspecting the consumed holdout, or collapsing taxonomy is therefore deferred
+or rejected for Step 29C. The tradeoffs are added authoring/review effort,
+reduced training evidence during source holdout, and more metadata complexity,
+with no guarantee of future acceptance. The design is highly reversible
+because it changes no model, data, taxonomy, thresholds, or runtime behavior.
+
+The primary targets are `account_blocked`, `cancel_transfer`, `close_account`,
+`create_dispute`, `freeze_card`, `transfer_failed_or_declined`,
+`transfer_pending`, and `unsupported_or_uncertain`. Future remediation data
+must carry explicit `source_family_id`, source revision, intended intent, risk,
+authoring batch, and `group_id`. Each primary intent requires at least three
+independent source families; the future builder must fail or explicitly report
+unmet coverage. No primary intent may remain wholly dependent on one source
+revision, and raw example count is not a substitute for unique group and source
+coverage.
+
+New examples must be genuinely independently authored from human-reviewed
+boundary specifications. They may not paraphrase V2-C5 development examples,
+existing hard negatives, or consumed V2-C5 final examples. Exact and NFKC
+normalized duplicate checks are mandatory, with zero exact or normalized
+cross-intent conflicts. Required hard-negative boundaries include every primary
+supported intent against `unsupported_or_uncertain`, plus
+`cancel_transfer`/`transfer_pending`,
+`transfer_failed_or_declined`/`transfer_pending`, and
+`account_blocked`/`transfer_failed_or_declined`.
+
+`unsupported_or_uncertain` is retained. A future builder may attach
+`unsupported_subtype` development/evaluation metadata for truly unsupported
+banking requests, ambiguous or insufficient-information requests, adjacent
+unsupported intents, supported-intent hard negatives, and off-domain/noise.
+This metadata does not change the 16-intent runtime taxonomy.
+
+Future model selection must preserve group-aware stratified CV and add a
+complementary development holdout of entire source/authoring families where
+possible. If primary intents lack enough families, source diversity must be
+improved first. Source-holdout evidence remains reusable development evidence
+and must never be represented as the final V2-C6 holdout.
+
+A fresh V2-C6 final holdout requires a new independent authoring session,
+isolation from remediation data, freezing before final model-selection
+decisions that depend on evaluation, and once-only evaluation under the same or
+stronger governance. No V2-C5 final example or paraphrase may be reused.
+
+Safety thresholds remain at least as strict as V2-C5: protected-write FPR
+`<= 0.01`, exact protected-write recall `>= 0.80`, and
+`unsupported_or_uncertain` recall `>= 0.80`. The protected-write intents remain
+`cancel_transfer`, `close_account`, `create_dispute`, and `freeze_card`; the
+classifier still cannot authorize protected actions.
+
+Step 29C changes experiment design only. It authors no examples, changes no
+development data or taxonomy, generates no embeddings, performs no training or
+model selection, and changes no runtime behavior. The staged continuation is
+29D dataset-contract freeze, 29E diversified-data authoring/build, 29F dataset
+validation/freeze, 29G source-aware selection-contract freeze, 29H development
+selection, 29I selected-model fit, 29J fresh-holdout contract, 29K independent
+holdout authoring/freeze, 29L final-evaluation contract, 29M once-only final
+evaluation, and 29N runtime/shadow integration only if every predeclared gate
+passes. The immediate next requirement is
+`v2c6_remediation_dataset_contract`.
 
 ## Reproduce V2-C1
 

@@ -4359,13 +4359,13 @@ explicitly guarded, prohibited path.
 The runner supports exactly `--preflight`, `--run`, and `--check-results`.
 Preflight validates frozen hashes, lineage, record and intent counts, the
 selected candidate, the completed aggregate final context, and output
-availability without writing. A future local `--run` computes the nine frozen
-diagnostic sections: source composition, group structure, duplicate structure,
-lexical diversity, class imbalance, existing OOF behavior and fold variance,
-explicit provenance concentration, focus-intent boundaries, and
+availability without writing. The completed local `--run` generated and froze
+the nine diagnostic sections: source composition, group structure, duplicate
+structure, lexical diversity, class imbalance, existing OOF behavior and fold
+variance, explicit provenance concentration, focus-intent boundaries, and
 evidence-independence proxies. `--check-results` deterministically recomputes
-and validates the result/manifest serialization, hashes, lineage, counts,
-governance, and next-step marker without writing.
+and validates the committed result/manifest serialization, hashes, lineage,
+counts, governance, and next-step marker without writing.
 
 Step 29B performs no training, fitting, prediction, embeddings, model
 selection, threshold tuning, evaluation, label or taxonomy change, data
@@ -4373,9 +4373,12 @@ generation, remediation, or runtime change. Missing provenance metadata is
 reported as unavailable rather than inferred from wording. Observations must
 reference computed metrics, hypotheses remain explicitly unproven, supported
 diagnoses require measurable evidence and limitations, and causal claims
-remain empty under this observational design. No diagnosis result or root-cause
-conclusion is claimed until the user generates and validates the artifacts
-locally.
+remain empty under this observational design. The completed diagnosis found a
+large development-to-final macro-F1 gap, strong class imbalance, narrow source
+revision coverage for several important intents, and supported-to-unsupported
+OOF errors. It found zero exact duplicate records and only two normalized
+duplicate records, so ordinary duplicate leakage is not the primary
+remediation target. These observations do not prove an exact root cause.
 
 The architecture choice is deterministic statistical diagnosis over already
 frozen development and OOF evidence. It directly measures group dependence,
@@ -4394,6 +4397,64 @@ Step 29C is a separately governed remediation design based on measured Step
 contract and a fresh independently authored holdout; the consumed V2-C5
 holdout cannot be reused. Runtime integration stays blocked until a future
 candidate passes its predeclared safety gates.
+
+### V2-C6 Step 29C remediation-design contract
+
+`data/evals/v2/ml/v2c6_remediation_design_contract.json` freezes a data-first
+remediation experiment design based on the completed Step 29B evidence. It
+prioritizes independent source and authoring diversity, independently authored
+supported-versus-unsupported hard negatives, complementary source-family
+holdout evaluation, and specific measured intent boundaries. Only after those
+data and evaluation changes may a future contract reconsider representation or
+classifier families. Step 29C selects no model or hyperparameter and does not
+prioritize taxonomy revision without later human-reviewed evidence.
+
+This architecture is suitable because Step 29B measured source concentration
+and unsupported-boundary errors while finding negligible ordinary duplication.
+Immediately switching embeddings, tuning LinearSVC or class weights, weakening
+unsupported handling, inspecting the consumed holdout, or collapsing the
+taxonomy would either confound the data experiment, risk leakage, weaken
+safety, or act without supporting evidence. The tradeoffs are greater
+independent-authoring and human-review effort, smaller effective training sets
+during source holdout, and more metadata complexity; none guarantees a future
+model will pass. The design remains highly reversible because it changes only
+the experiment contract.
+
+The primary remediation intents are `account_blocked`, `cancel_transfer`,
+`close_account`, `create_dispute`, `freeze_card`,
+`transfer_failed_or_declined`, `transfer_pending`, and
+`unsupported_or_uncertain`. Future remediation evidence must use explicit
+source-family, source-revision, intent, risk, authoring-batch, and independent
+group metadata. Each primary intent targets at least three independent source
+families; raw row count alone is not diversity evidence. Exact and normalized
+duplicate checks remain mandatory, cross-intent duplicate conflicts are
+prohibited, and examples may not paraphrase V2-C5 development data, existing
+hard negatives, or the consumed V2-C5 final holdout.
+
+The unsupported label remains one of the frozen 16 runtime intents. A future
+builder may add `unsupported_subtype` as development/evaluation metadata for
+truly unsupported banking requests, ambiguous requests, adjacent unsupported
+intents, supported-intent hard negatives, and off-domain/noise, but that
+metadata has no runtime taxonomy authority. Human-readable boundary
+specifications are required before hard-negative authoring, including explicit
+exclusions, competitors, ambiguous and clarifying cases, unsupported
+boundaries, and protected-action implications.
+
+Future development evaluation must retain group-aware stratified CV and add a
+complementary holdout of entire source/authoring families where possible. This
+source holdout remains reusable development evidence and cannot become the
+final V2-C6 holdout. A completely fresh, independently authored, isolated
+V2-C6 final holdout and new evaluation contract remain mandatory for once-only
+final evaluation; no V2-C5 final example or paraphrase may be reused.
+
+The V2-C5 minimum safety gates remain unchanged or may be strengthened:
+protected-write false-positive rate `<= 0.01`, exact protected-write recall
+`>= 0.80`, and `unsupported_or_uncertain` recall `>= 0.80`. Protected-action
+authorization and confirmation remain deterministic runtime responsibilities;
+the classifier does not authorize protected actions. Step 29C authors no
+examples, changes no dataset or taxonomy, trains/selects no model, generates no
+embeddings, and changes no runtime behavior. The next required phase is Step
+29D, `v2c6_remediation_dataset_contract`.
 
 ### Why this extension is useful
 

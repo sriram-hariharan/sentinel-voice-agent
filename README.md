@@ -4922,6 +4922,26 @@ contract step. The frozen `next_required` is
 authoring/building the 600 training and 640 fresh evaluation records—not model
 selection.
 
+### V2-C6 targeted remediation and fresh-source authoring workflow
+
+The post-Step-29H-C authoring/build workflow is implemented in
+`scripts/build_v2c6_targeted_remediation_and_fresh_source_data.py`. It prepares
+ignored local templates with 600 empty targeted-training slots across three
+source families and 640 empty fresh-evaluation slots across two independent
+source families. The builder creates slots only; it does not generate,
+rewrite, fix, or paraphrase example text.
+
+The workflow enforces the frozen hard-negative allocation, provenance and
+review governance, required human adjudication, exact and normalized
+duplicate checks, historical-development leakage checks, ID/group isolation,
+and create-once tracked outputs. Fresh evaluation is explicitly excluded from
+candidate fitting and from the 9,608-record development/training dataset.
+
+This implementation is prepared but has not been executed: no examples have
+been authored, no authoring workfiles or datasets have been built, no models
+have run, and no final holdout was created or accessed. Step 29I remains
+blocked.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

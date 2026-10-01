@@ -2096,6 +2096,35 @@ future untouched final holdout remains mandatory. The exact next action is
 `v2c6_targeted_remediation_and_fresh_source_authoring`; it authors/builds 600
 training and 640 fresh evaluation records but does not run model selection.
 
+## V2-C6 targeted remediation and fresh-source authoring workflow
+
+Step 29H-C remains the frozen design. Its authorized next-phase workflow is
+now implemented by
+`scripts/build_v2c6_targeted_remediation_and_fresh_source_data.py`, with four
+explicit modes: `--preflight`, `--prepare-authoring-workfiles`, `--build`, and
+`--check-results`.
+
+Preparation creates only ignored local templates:
+
+- `local/v2c6_r2_targeted_training_authoring.json` contains 600 empty text
+  slots across the three frozen targeted-training source families.
+- `local/v2c6_r2_fresh_source_evaluation_authoring.json` contains 640 empty
+  text slots across the two frozen, independently authored evaluation source
+  families.
+
+The builder never authors or rewrites text. Before tracked artifacts may be
+built, it requires approved review records, resolves every mandatory human
+adjudication trigger, rejects prediction-informed metadata, and applies exact
+and normalized duplicate, historical overlap, consumed-family overlap,
+cross-intent, provenance, record-ID, and group-ID checks. Fresh evaluation is
+not training data, is excluded from candidate fitting, and cannot enter the
+9,608-record combined development/training dataset. Tracked datasets and
+their deterministic manifests are create-once.
+
+The workflow has not been run. No examples have been authored, no local
+templates or tracked datasets have been built, no model work has occurred,
+and no final holdout has been created or accessed. Step 29I remains blocked.
+
 ## Reproduce V2-C1
 
 ```bash

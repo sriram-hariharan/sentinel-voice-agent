@@ -1721,6 +1721,58 @@ final holdout, and changes no record, label, taxonomy, risk mapping, volume,
 source-family minimum, duplicate rule, hard-negative rule, safety gate, runtime
 behavior, or fresh-final-holdout requirement.
 
+## V2-C6 Step 29F remediated-development validation and freeze
+
+`scripts/validate_and_freeze_v2c6_remediated_development_dataset.py` provides
+the deterministic governance boundary between Step 29E data construction and
+Step 29G model-selection contracting. It validates the exact 9,008-record
+development artifact as 8,198 unchanged inherited V2-C5 records plus 810
+approved remediation records. Dataset and subset hashes must reconcile with
+the committed Step 29E manifests and their pinned contract, taxonomy, builder,
+and inherited-development lineage.
+
+Validation independently checks the frozen 16-intent taxonomy and risk mapping,
+the exact protected-write set, unique record IDs, preserved inherited group
+membership, isolated remediation groups, zero new exact or normalized overlap
+with inherited development data, zero within-remediation duplicates or cross-
+intent normalized conflicts, all ten hard-negative pairs, five balanced
+unsupported subtypes, and exact remediation volumes. It also reconciles
+AI-assisted review provenance and zero incomplete human adjudications without
+claiming universal human review. All three source families, their per-intent
+coverage, family-level provenance, and every authoring batch remain auditable;
+whole-family holdout and group-aware CV must remain feasible.
+
+Group isolation does not imply label purity. Frozen V2-C5 history contains a
+small number of shared group IDs spanning multiple intent labels; Step 29F
+accepts those groups only when the inherited 8,198-record prefix remains exact.
+Future group-aware splitting must keep every shared group ID in one indivisible
+split unit regardless of its labels. By contrast, each of the 810 new
+remediation group IDs must be nonempty, unique, exactly preserved in the
+combined dataset, and disjoint from every inherited group ID.
+
+The CLI is deliberately explicit:
+
+```bash
+sentinelvoice_env/bin/python scripts/validate_and_freeze_v2c6_remediated_development_dataset.py --check
+sentinelvoice_env/bin/python scripts/validate_and_freeze_v2c6_remediated_development_dataset.py --freeze
+```
+
+`--check` never writes. `--freeze` validates first and then create-once writes
+`v2c6_remediated_development_dataset.freeze.json`; it never overwrites an
+existing freeze. The text-free freeze records dataset/taxonomy hashes, counts,
+source-family and batch summaries, review provenance, duplicate and boundary
+evidence, parent lineage, limitations, and
+`next_required=v2c6_source_aware_model_selection_contract`. No freeze is
+claimed until the explicit write command succeeds.
+
+AI-assisted semantic review is not independent human annotation, and
+structural provenance checks do not prove semantic independence. Independent
+generalization must be measured later with source-aware development evaluation
+and ultimately a fresh untouched final holdout. Step 29F performs no model
+selection, training, embedding generation, inference, threshold tuning,
+evaluation, or runtime change, and it cannot access the consumed V2-C5 final
+holdout.
+
 ## Reproduce V2-C1
 
 ```bash

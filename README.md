@@ -4632,6 +4632,40 @@ amendment preceded any final model evaluation, accessed no final holdout, and
 changes no example, label, taxonomy, volume, source-family requirement, safety
 gate, model behavior, runtime behavior, or fresh-final-holdout policy.
 
+### V2-C6 Step 29F remediated-development validation and freeze
+
+`scripts/validate_and_freeze_v2c6_remediated_development_dataset.py` validates
+the exact 9,008-record Step 29E development artifact before any V2-C6 model
+selection. It reconciles the 8,198 inherited V2-C5 development records and 810
+approved remediation records with their committed manifests, frozen 16-intent
+taxonomy and risk mapping, hashes, IDs, groups, duplicate gates, hard-negative
+coverage, unsupported subtypes, review provenance, three source families, and
+auditable authoring batches. It also confirms that whole-source-family holdout
+and group-aware development evaluation remain feasible.
+
+Group isolation and group label purity are distinct. The inherited 8,198-record
+prefix must preserve its frozen historical group membership exactly, including
+the small number of groups that span multiple intent labels. Group-aware
+evaluation treats each shared `group_id` as one indivisible split unit, so
+historical label purity is not required. The 810 new remediation records retain
+the stronger rule: every group ID is nonempty, unique, preserved exactly, and
+disjoint from all inherited group IDs.
+
+The read-only `--check` mode validates without writing. The explicit
+`--freeze` mode creates, without overwriting,
+`data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json`. That
+artifact hash-pins the dataset and parent lineage, records counts and governance
+summaries without raw utterance text, and sets
+`next_required=v2c6_source_aware_model_selection_contract` for Step 29G. The
+freeze artifact is not claimed to exist until that command succeeds.
+
+AI-assisted semantic review remains explicitly distinct from independent human
+annotation. Structural provenance does not prove semantic independence, so
+later source-aware development evaluation and ultimately a fresh untouched
+final holdout remain mandatory. Step 29F performs no embeddings, training,
+inference, model selection, threshold tuning, final evaluation, or runtime
+change, and the consumed V2-C5 final holdout remains prohibited.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

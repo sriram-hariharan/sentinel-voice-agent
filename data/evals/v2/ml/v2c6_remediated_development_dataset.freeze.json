@@ -1,0 +1,392 @@
+{
+  "freeze_status": "FROZEN",
+  "frozen_dataset_path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json",
+  "frozen_dataset_record_count": 9008,
+  "frozen_dataset_sha256": "d7f78d7a76799f47bfdc3c1291505d1b964b9d143245d2d353931e8cb4f4a493",
+  "governance": {
+    "approved_status_implies_human_review": false,
+    "development_dataset_frozen": true,
+    "embeddings_generated": false,
+    "final_evaluation_performed": false,
+    "human_review_is_universal_build_gate": false,
+    "independent_human_annotation_claimed": false,
+    "model_inference_performed": false,
+    "model_selection_performed": false,
+    "model_training_performed": false,
+    "runtime_behavior_changed": false,
+    "semantic_review_completed": true,
+    "threshold_tuning_performed": false,
+    "v2c5_raw_final_holdout_accessed": false
+  },
+  "group_and_source_aware_readiness": {
+    "duplicate_gates_passed": true,
+    "group_aware_cv_ready": true,
+    "group_ids_do_not_cross_prohibited_split_boundaries": true,
+    "minimum_three_source_families_every_primary_intent": true,
+    "only_approved_records_included": true,
+    "review_gates_passed": true,
+    "source_family_independence_semantically_proven": false,
+    "step29g_ready": true,
+    "whole_family_holdout_candidate_count": 3,
+    "whole_family_holdout_feasible_without_dropping_primary_intent": true
+  },
+  "hard_negative_coverage": {
+    "all_required_pairs_complete": true,
+    "pair_count": 10,
+    "pairs": [
+      {
+        "approved_count": 15,
+        "coverage_complete": true,
+        "side_a": "close_account",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "unsupported_or_uncertain",
+        "side_b_count": 6,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 15,
+        "coverage_complete": true,
+        "side_a": "transfer_failed_or_declined",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "unsupported_or_uncertain",
+        "side_b_count": 6,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 15,
+        "coverage_complete": true,
+        "side_a": "account_blocked",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "unsupported_or_uncertain",
+        "side_b_count": 6,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 15,
+        "coverage_complete": true,
+        "side_a": "cancel_transfer",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "unsupported_or_uncertain",
+        "side_b_count": 6,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 12,
+        "coverage_complete": true,
+        "side_a": "create_dispute",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "unsupported_or_uncertain",
+        "side_b_count": 3,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 12,
+        "coverage_complete": true,
+        "side_a": "freeze_card",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "unsupported_or_uncertain",
+        "side_b_count": 3,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 15,
+        "coverage_complete": true,
+        "side_a": "transfer_pending",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "unsupported_or_uncertain",
+        "side_b_count": 6,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 18,
+        "coverage_complete": true,
+        "side_a": "cancel_transfer",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "transfer_pending",
+        "side_b_count": 9,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 18,
+        "coverage_complete": true,
+        "side_a": "transfer_failed_or_declined",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "transfer_pending",
+        "side_b_count": 9,
+        "side_b_source_family_count": 3
+      },
+      {
+        "approved_count": 18,
+        "coverage_complete": true,
+        "side_a": "account_blocked",
+        "side_a_count": 9,
+        "side_a_source_family_count": 3,
+        "side_b": "transfer_failed_or_declined",
+        "side_b_count": 9,
+        "side_b_source_family_count": 3
+      }
+    ]
+  },
+  "inherited_v2c5_record_count": 8198,
+  "intent_counts": {
+    "account_balance": 153,
+    "account_blocked": 142,
+    "cancel_transfer": 181,
+    "card_status": 57,
+    "close_account": 141,
+    "create_dispute": 147,
+    "escalation": 57,
+    "freeze_card": 147,
+    "informational_policy": 1745,
+    "lost_or_stolen_phone": 53,
+    "passcode_recovery": 69,
+    "recent_transactions": 153,
+    "transaction_details": 606,
+    "transfer_failed_or_declined": 263,
+    "transfer_pending": 145,
+    "unsupported_or_uncertain": 4949
+  },
+  "known_limitations": [
+    "AI-assisted semantic review is not independent human annotation.",
+    "Structural provenance checks do not prove semantic independence.",
+    "Group-aware evaluation treats group IDs as indivisible split units; inherited historical group IDs are not required to be label-pure.",
+    "Independent generalization must be measured later using source-aware development evaluation and ultimately a fresh untouched final holdout."
+  ],
+  "next_required": "v2c6_source_aware_model_selection_contract",
+  "parent_artifact_lineage": {
+    "combined_manifest": {
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.manifest.json",
+      "sha256": "e06bbeb944a19a1ac67eb1960d58f1e40f6f8b09e4642eb17a822f26510fc260"
+    },
+    "contract": {
+      "path": "data/evals/v2/ml/v2c6_remediation_dataset_contract.json",
+      "sha256": "2063e6ff0b27caaa4d7b6bbe12748e1e4a745bf446f4502589dbb36a966f9d4d"
+    },
+    "dataset": {
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json",
+      "sha256": "d7f78d7a76799f47bfdc3c1291505d1b964b9d143245d2d353931e8cb4f4a493"
+    },
+    "inherited_dataset": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.json",
+      "sha256": "dce97c0a3bfcdf0dee93d784ded24d3568f7df8f513871995428ff35d030bb07"
+    },
+    "inherited_manifest": {
+      "path": "data/evals/v2/ml/v2c5_expanded_development_dataset.manifest.json",
+      "sha256": "89fea89d793cf5e027b059c331533ec45c6d59fabbd49e9245e0d055ae946a16"
+    },
+    "remediation_examples": {
+      "path": "data/evals/v2/ml/v2c6_remediation_examples.json",
+      "sha256": "2e9ab5d3903c6c5fd5a21a1586d4e65e4be78e3ce0d00a8409fad9d90b068a54"
+    },
+    "remediation_manifest": {
+      "path": "data/evals/v2/ml/v2c6_remediation_examples.manifest.json",
+      "sha256": "8f17cf48ba16d49ea7b3964cb1a1972876a4b2a87bc481bf9b86fac3f6aae71a"
+    },
+    "step29e_builder": {
+      "path": "scripts/build_v2c6_remediated_development_dataset.py",
+      "sha256": "371cb8ba03a55c5d9f8e278e3b3f6934dfc9f727ed090483e88332a5f4164a1d"
+    },
+    "taxonomy": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "phase": "V2-C6 Step 29F",
+  "protected_write_intents": [
+    "cancel_transfer",
+    "close_account",
+    "create_dispute",
+    "freeze_card"
+  ],
+  "remediation_authoring_batch_counts": {
+    "v2c6_sf1_definition_direct": {
+      "counts_by_authoring_batch_id": {
+        "v2c6_sf1_account_blocked": 30,
+        "v2c6_sf1_cancel_transfer": 30,
+        "v2c6_sf1_close_account": 30,
+        "v2c6_sf1_create_dispute": 30,
+        "v2c6_sf1_freeze_card": 30,
+        "v2c6_sf1_transfer_failed_or_declined": 30,
+        "v2c6_sf1_transfer_pending": 30,
+        "v2c6_sf1_unsupported_adjacent_but_unsupported_intent": 12,
+        "v2c6_sf1_unsupported_ambiguous_or_insufficient_information": 12,
+        "v2c6_sf1_unsupported_off_domain_or_noise": 12,
+        "v2c6_sf1_unsupported_supported_intent_hard_negative": 12,
+        "v2c6_sf1_unsupported_truly_unsupported_banking_request": 12
+      },
+      "unique_authoring_batch_count": 12
+    },
+    "v2c6_sf2_scenario_narrative": {
+      "counts_by_authoring_batch_id": {
+        "v2c6_sf2_scenario_narrative_batch": 270
+      },
+      "unique_authoring_batch_count": 1
+    },
+    "v2c6_sf3_boundary_conversational": {
+      "counts_by_authoring_batch_id": {
+        "v2c6_sf3_boundary_conversational_batch": 270
+      },
+      "unique_authoring_batch_count": 1
+    }
+  },
+  "remediation_intent_counts": {
+    "account_blocked": 90,
+    "cancel_transfer": 90,
+    "close_account": 90,
+    "create_dispute": 90,
+    "freeze_card": 90,
+    "transfer_failed_or_declined": 90,
+    "transfer_pending": 90,
+    "unsupported_or_uncertain": 180
+  },
+  "remediation_record_count": 810,
+  "remediation_source_family_counts": {
+    "v2c6_sf1_definition_direct": 270,
+    "v2c6_sf2_scenario_narrative": 270,
+    "v2c6_sf3_boundary_conversational": 270
+  },
+  "remediation_source_family_counts_by_intent": {
+    "account_blocked": {
+      "v2c6_sf1_definition_direct": 30,
+      "v2c6_sf2_scenario_narrative": 30,
+      "v2c6_sf3_boundary_conversational": 30
+    },
+    "cancel_transfer": {
+      "v2c6_sf1_definition_direct": 30,
+      "v2c6_sf2_scenario_narrative": 30,
+      "v2c6_sf3_boundary_conversational": 30
+    },
+    "close_account": {
+      "v2c6_sf1_definition_direct": 30,
+      "v2c6_sf2_scenario_narrative": 30,
+      "v2c6_sf3_boundary_conversational": 30
+    },
+    "create_dispute": {
+      "v2c6_sf1_definition_direct": 30,
+      "v2c6_sf2_scenario_narrative": 30,
+      "v2c6_sf3_boundary_conversational": 30
+    },
+    "freeze_card": {
+      "v2c6_sf1_definition_direct": 30,
+      "v2c6_sf2_scenario_narrative": 30,
+      "v2c6_sf3_boundary_conversational": 30
+    },
+    "transfer_failed_or_declined": {
+      "v2c6_sf1_definition_direct": 30,
+      "v2c6_sf2_scenario_narrative": 30,
+      "v2c6_sf3_boundary_conversational": 30
+    },
+    "transfer_pending": {
+      "v2c6_sf1_definition_direct": 30,
+      "v2c6_sf2_scenario_narrative": 30,
+      "v2c6_sf3_boundary_conversational": 30
+    },
+    "unsupported_or_uncertain": {
+      "v2c6_sf1_definition_direct": 60,
+      "v2c6_sf2_scenario_narrative": 60,
+      "v2c6_sf3_boundary_conversational": 60
+    }
+  },
+  "review_provenance_summary": {
+    "ai_assisted_review_record_count": 810,
+    "approved_count": 810,
+    "human_adjudication_completed_count": 0,
+    "human_adjudication_required_count": 0,
+    "human_review_record_count": 0,
+    "low_confidence_review_count": 0,
+    "needs_revision_count": 0,
+    "provenance_inconsistency_count": 0,
+    "rejected_count": 0,
+    "review_method": "ai_assisted_review",
+    "review_record_count": 810,
+    "reviewer_disagreement_count": 0,
+    "reviewer_type": "AI-assisted semantic reviewer",
+    "unresolved_protected_write_ambiguity_count": 0,
+    "unresolved_taxonomy_ambiguity_count": 0
+  },
+  "risk_level_counts": {
+    "ESCALATION_OR_UNCERTAIN": 5128,
+    "PRIVATE_READ": 1519,
+    "PROTECTED_WRITE": 616,
+    "PUBLIC": 1745
+  },
+  "schema_version": "v2c6-remediated-development-dataset-freeze.v1",
+  "structural_grouping_evidence": {
+    "group_aware_cv_ready": true,
+    "group_aware_split_unit": "group_id",
+    "group_ids_are_indivisible_split_units": true,
+    "inherited_cross_intent_group_count": 1,
+    "inherited_group_label_purity_required": false,
+    "inherited_group_membership_preserved": true,
+    "inherited_multi_record_group_count": 74,
+    "inherited_unique_group_count": 7863,
+    "remediation_group_collision_with_inherited_count": 0,
+    "remediation_group_ids_preserved": true,
+    "remediation_group_ids_unique": true,
+    "remediation_unique_group_count": 810
+  },
+  "taxonomy": {
+    "intent_count": 16,
+    "intent_label_order": [
+      "account_balance",
+      "account_blocked",
+      "cancel_transfer",
+      "card_status",
+      "close_account",
+      "create_dispute",
+      "escalation",
+      "freeze_card",
+      "informational_policy",
+      "lost_or_stolen_phone",
+      "passcode_recovery",
+      "recent_transactions",
+      "transaction_details",
+      "transfer_failed_or_declined",
+      "transfer_pending",
+      "unsupported_or_uncertain"
+    ],
+    "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+    "risk_mapping_sha256": "d0fe9fa6a0613b55bd7aebec1db4bc400d3ed9abb2e3df0ac067fa500cd247b1",
+    "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8",
+    "version": "v2c5-taxonomy.v1"
+  },
+  "unsupported_subtype_counts": {
+    "adjacent_but_unsupported_intent": 36,
+    "ambiguous_or_insufficient_information": 36,
+    "off_domain_or_noise": 36,
+    "supported_intent_hard_negative": 36,
+    "truly_unsupported_banking_request": 36
+  },
+  "validation_script": {
+    "path": "scripts/validate_and_freeze_v2c6_remediated_development_dataset.py",
+    "sha256": "4d1b9be2f783eaef9c2af897f79ce085e73a4ae9d1af6ce4c7c583273e45b41f"
+  },
+  "validation_summary": {
+    "duplicate_validation": {
+      "cross_intent_normalized_conflict_count": 0,
+      "duplicate_gates_passed": true,
+      "exact_development_overlap_count": 0,
+      "exact_within_new_cluster_count": 0,
+      "normalization_version": "unicode-nfkc-lower-whitespace.v1",
+      "normalized_development_overlap_count": 0,
+      "normalized_within_new_cluster_count": 0,
+      "raw_text_persisted_in_diagnostics": false,
+      "semantic_or_embedding_similarity_used": false
+    },
+    "hashes_and_manifests_reconciled": true,
+    "validation_gates_passed": true
+  }
+}

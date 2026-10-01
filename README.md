@@ -4516,6 +4516,77 @@ no remediated dataset or future output has been created, and no model,
 embedding, evaluation, taxonomy, or runtime behavior changed. The next required
 phase is `v2c6_remediation_authoring_and_build`.
 
+### V2-C6 Step 29E1 remediation builder preparation
+
+`scripts/build_v2c6_remediated_development_dataset.py` prepares deterministic,
+contract-enforcing authoring validation and dataset construction separately
+from actual authoring. Following the Step 29D lineage, the local ignored input
+is `data/evals/v2/ml/local/v2c6_remediation_authoring_workfile.json`, with schema
+`v2c6-remediation-authoring-input.v1`, phase `V2-C6 Step 29E2`, and a `records`
+array. Step 29E1 does not create this input or any remediation records.
+
+The CLI exposes three mutually exclusive modes:
+
+- `--preflight` validates frozen hashes and, when the local authoring input is
+  present, reports schema, review, provenance, source-family, volume,
+  hard-negative, subtype, group, duplicate, and source-aware readiness without
+  writing outputs;
+- `--build` requires all mandatory gates, includes only human-approved records,
+  refuses to overwrite outputs, and deterministically creates the reviewed
+  remediation artifact/manifest plus the combined development
+  artifact/manifest; and
+- `--check-results` recomputes and compares deterministic bytes, hashes,
+  lineage, and governance without writing.
+
+The builder requires the Step 29D metadata exactly and does not infer missing
+provenance. It validates the frozen risk mapping, exact primary and protected
+sets, explicit independent-family metadata, at least three source families for
+every primary intent, the five unsupported subtypes, and both sides of all ten
+frozen hard-negative pairs. It reports per-intent family counts, concentration,
+unique groups, and unique normalized texts. The 90-per-supported-intent,
+30-per-family, 180-unsupported, and 810-total targets remain explicit planning
+coverage rather than silently becoming different thresholds; the three-family
+minimum is never relaxed.
+
+Only `approved` records are included. `unreviewed`, `rejected`, and
+`needs_revision` records remain excluded and are counted. The builder enforces
+unique record IDs, nonempty groups, consistent source-family provenance, and
+groups that do not cross intent/source-family boundaries. It reports singleton
+and multi-record group statistics while explicitly acknowledging that code
+cannot prove semantic independence or detect artificial scenario splitting.
+
+Duplicate checks use only exact hashes and Unicode NFKC, lowercase, trimmed,
+collapsed-whitespace hashes. Approved remediation records must not duplicate
+one another or the frozen V2-C5 development corpus, and normalized cross-intent
+conflicts are prohibited. Diagnostics contain IDs, hashes, intents, groups, and
+source-family IDs rather than raw duplicate text; no embedding or semantic
+similarity is used.
+
+The deterministic combined ordering preserves every frozen V2-C5 record in its
+existing order and appends approved V2-C6 records sorted by `record_id`. The
+builder never mutates the frozen source objects. Every file read passes through
+an explicit guard prohibiting
+`data/evals/v2/ml/v2c5_final_holdout.json`; the builder contains no model fit,
+prediction, embedding, threshold-tuning, selection, or evaluation path.
+
+The architecture choice is a deterministic contract-enforcing builder isolated
+from authoring. It prevents a manually or LLM-assisted corpus from silently
+violating lineage, review, duplication, family, group, risk, or boundary rules
+and prepares source-aware development evaluation at low runtime cost. Manual
+concatenation, direct generation into the final development artifact,
+classifier-directed authoring, and reviewer-memory-only provenance were
+rejected because they weaken reproducibility and invite leakage or overfitting.
+The tradeoffs are more code and metadata, potentially frequent rejection of
+authored records, and continued dependence on human judgment for semantic
+independence. The tooling is highly reversible because it affects development
+artifacts only.
+
+Step 29D is frozen; Step 29E1 has prepared builder/review machinery only. Step
+29E2 authoring/build has not executed, no 810-example corpus exists, and none of
+the four tracked output artifacts has been created by this step. Step 29F
+validation/freeze remains mandatory before a Step 29G source-aware
+model-selection contract.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

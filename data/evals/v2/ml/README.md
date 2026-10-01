@@ -1601,6 +1601,90 @@ unchanged. Step 29D performs no authoring, build, embedding, model work,
 evaluation, or runtime change. Its exact next phase is
 `v2c6_remediation_authoring_and_build`.
 
+## V2-C6 Step 29E1 remediation builder preparation
+
+`scripts/build_v2c6_remediated_development_dataset.py` implements deterministic
+validation and construction machinery without authoring data. Following the
+Step 29D lineage, its future local input is the ignored file
+`local/v2c6_remediation_authoring_workfile.json`, encoded as a
+`v2c6-remediation-authoring-input.v1` object with phase `V2-C6 Step 29E2` and a
+`records` array. Every record must provide all Step 29D provenance, review,
+boundary, family, group, intent, risk, and authoring fields; unsupported records
+also require the frozen metadata-only subtype. Missing metadata is rejected,
+never inferred from wording.
+
+The mutually exclusive CLI modes are:
+
+```bash
+sentinelvoice_env/bin/python scripts/build_v2c6_remediated_development_dataset.py --preflight
+sentinelvoice_env/bin/python scripts/build_v2c6_remediated_development_dataset.py --build
+sentinelvoice_env/bin/python scripts/build_v2c6_remediated_development_dataset.py --check-results
+```
+
+`--preflight` is read-only and tolerates an absent local input; when one exists,
+it performs structural validation and reports mandatory-gate and planning-target
+coverage. `--build` requires all mandatory gates and create-once output paths.
+`--check-results` is read-only and compares the existing four outputs with a
+fresh deterministic reconstruction. None of these modes performs model work.
+
+Structural checks enforce unique non-colliding record IDs, nonempty groups,
+the exact eight primary intents and four protected intents, frozen risk values,
+the exact review and authoring-method allowlists, explicit source-family
+independence bases, and consistent provenance descriptors. A group cannot cross
+an intent or source-family boundary. The builder reports record, unique-group,
+singleton-group, multi-record-group, and records-per-group statistics, but
+explicitly cannot prove that authors did not artificially split semantic
+scenarios; human review remains required.
+
+Only `approved` records are copied into tracked outputs. Every other review
+state is excluded and counted, and unreviewed material is never promoted
+implicitly. Each primary intent must have at least three explicit source
+families before build. Per intent it reports total records, family counts and
+largest share, unique groups, and unique normalized texts. The 90-per-supported
+intent, 30-per-family, 180-unsupported, and 810-total numbers are reported as
+Step 29D planning targets; the mandatory three-family minimum is separate and
+cannot be relaxed. Code validates provenance consistency and obvious family-ID
+aliasing, while the semantic independence claim remains a human-review matter.
+
+All five unsupported subtypes must occur among approved records, but their
+runtime label remains `unsupported_or_uncertain`. An approved hard-negative
+record names its opposing intent through `boundary_target`; only the exact ten
+Step 29D pairs are accepted. Reports include each side's approved count and
+source-family count, and build requires both sides of every pair.
+
+Approved remediation text is checked against itself and the frozen V2-C5
+expanded development corpus for exact and NFKC/lowercase/trimmed/
+whitespace-collapsed duplicates. Normalized cross-intent conflicts are also
+rejected. Diagnostics retain hashes and record/example IDs plus intent, group,
+and family metadata, not raw offending text. Embedding or semantic-neighbor
+checks are deliberately absent.
+
+The future reviewed artifact contains approved V2-C6 records sorted by
+`record_id`. The combined dataset is the immutable 8,198-record V2-C5 expanded
+development sequence followed by those sorted V2-C6 records; no frozen record
+or source object is modified. Manifests bind the Step 29D/29C/29B lineage,
+authoring-input hash, builder, taxonomy, frozen development data, output hashes,
+counts, review status, subtype and hard-negative coverage, duplicate gates,
+group statistics, and source-aware readiness. Readiness covers three-family
+coverage, whole-family holdout feasibility without losing a primary label,
+group-aware CV, duplicate gates, and completed review. The next phase after an
+eventual build is still Step 29F validation/freeze, not Step 29G directly.
+
+All reads use an explicit guard that rejects
+`v2c5_final_holdout.json`. The implementation contains no classifier loading,
+fit, prediction, embeddings, threshold tuning, selection, or final evaluation.
+This deterministic builder is preferable to manual concatenation, direct
+generation into the development artifact, model-directed authoring, or
+reviewer-memory-only provenance because it is reproducible, auditable, and
+isolates authoring from model feedback. Its tradeoffs are added code/metadata,
+strict rejection of deficient records, and the unavoidable inability of
+structural checks to prove semantic independence.
+
+Step 29D remains frozen. Step 29E1 prepares builder and review machinery only;
+Step 29E2 authoring/build has not run, no remediation examples are claimed, and
+no tracked remediation or remediated-development artifact exists from this
+step.
+
 ## Reproduce V2-C1
 
 ```bash

@@ -4849,6 +4849,41 @@ because this contract performs no analysis execution, embedding, fitting,
 inference, candidate search, dataset or taxonomy mutation, threshold change,
 runtime change, or remediation implementation.
 
+### V2-C6 Step 29H-B failure-analysis runner
+
+Step 29H-B completed successfully under the frozen Step 29H-A contract. The
+text-free tracked result and manifest record `execution_status=COMPLETED`, all
+six candidates, 54,048 group-CV predictions, and 4,860 source-family
+predictions, with zero missing or duplicate predictions. The execution reused
+stored development predictions only; it performed no model fitting, inference,
+embedding generation, threshold tuning, dataset or taxonomy mutation, runtime
+change, or final-holdout access. No optional local raw-text review was
+performed.
+
+The dominant measured protected false-positive pattern was
+`unsupported_or_uncertain` predicted as a protected action. It appeared for
+both BGE and TF-IDF candidates and across SF1/SF2/SF3. The reverse boundary was
+also weak: protected intents were sometimes predicted as
+`unsupported_or_uncertain`. Important hard-negative weaknesses included
+`transfer_pending`, `cancel_transfer`, `close_account`,
+`transfer_failed_or_declined`, and `freeze_card` against
+`unsupported_or_uncertain`, plus `cancel_transfer` against `transfer_pending`.
+These are descriptive observations, not causal findings.
+
+Within this frozen experiment, balanced class weighting generally increased
+protected recall while also increasing protected false-positive rate and
+reducing unsupported recall. This is an experiment-specific observation, not
+a universal effect. The analysis classified remediation evidence as `both`:
+targeted data-boundary evidence and representation/model evidence. It did not
+select or implement remediation.
+
+SF1/SF2/SF3 are now consumed diagnostic development evidence and cannot be
+described later as fresh unseen-source validation. Future clean
+source-generalization evidence requires newly independently authored material
+or ultimately the untouched final holdout. Step 29I remains blocked, and
+`next_required` remains `null` because Step 29H-A froze no post-analysis
+continuation; no next-step identifier is inferred here.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

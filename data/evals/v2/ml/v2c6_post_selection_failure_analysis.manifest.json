@@ -1,0 +1,72 @@
+{
+  "analysis_contract": {
+    "path": "data/evals/v2/ml/v2c6_post_selection_failure_analysis_contract.json",
+    "schema_version": "v2c6-post-selection-failure-analysis-contract.v1",
+    "sha256": "1cd4204593ca5cb51590ff8207d51134f75844ebbceb05afd2ae155298c09979"
+  },
+  "candidate_count": 6,
+  "dataset_mutated": false,
+  "diagnostic_source_family_evidence_consumed": true,
+  "embeddings_generated": false,
+  "execution_status": "COMPLETED",
+  "failure_analysis_performed": true,
+  "final_holdout_accessed": false,
+  "group_cv_prediction_count_total": 54048,
+  "hard_negative_pair_count": 10,
+  "model_fitting_performed": false,
+  "model_inference_performed": false,
+  "model_training_performed": false,
+  "next_required": null,
+  "phase": "V2-C6 Step 29H-B",
+  "remediation_selected": false,
+  "result": {
+    "path": "data/evals/v2/ml/v2c6_post_selection_failure_analysis.json",
+    "schema_version": "v2c6-post-selection-failure-analysis.v1",
+    "sha256": "339d8ce2f3ce460e2ac9a702d915d7d54053c3e5ec9b23f269c5f46d48440ae7"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_post_selection_failure_analysis.py",
+    "sha256": "25cf668bcd9daae1f9211e57f7d76aef178895b828742b5e80549b0eda3ce46e"
+  },
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c6-post-selection-failure-analysis-manifest.v1",
+  "source_artifacts": {
+    "development_dataset": {
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json",
+      "record_count": 9008,
+      "sha256": "d7f78d7a76799f47bfdc3c1291505d1b964b9d143245d2d353931e8cb4f4a493"
+    },
+    "step29f_freeze": {
+      "expected_freeze_status": "FROZEN",
+      "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json",
+      "sha256": "7f71dda024e5a947c997977f09ed675fa1f924c38d30f332422aa2032ecbc544"
+    },
+    "step29g_contract": {
+      "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_contract.json",
+      "schema_version": "v2c6-source-aware-model-selection-contract.v1",
+      "sha256": "de4566b7fdb097e78fcd23b8ffa4682c4757cc7c5901c3f9a49d7da28192b1ba"
+    },
+    "step29h_results": {
+      "expected_candidate_count": 6,
+      "expected_eligible_candidate_count": 0,
+      "expected_execution_status": "COMPLETED",
+      "expected_selected_candidate": null,
+      "expected_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_results.json",
+      "schema_version": "v2c6-source-aware-model-selection-results.v1",
+      "sha256": "babb19ccd5a84d9014273a044e25ef7448c09208aca0fded40f08755f2c2fd19"
+    },
+    "step29h_results_manifest": {
+      "expected_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_results.manifest.json",
+      "schema_version": "v2c6-source-aware-model-selection-results-manifest.v1",
+      "sha256": "3f85ccd8fb66fdbb012a9fae7972b54ac59554e79f3d05ba0ffa9e216e560492"
+    }
+  },
+  "source_family_count": 3,
+  "source_family_prediction_count_total": 4860,
+  "step29i_authorized": false,
+  "taxonomy_mutated": false,
+  "threshold_tuning_performed": false,
+  "tracked_raw_text_persisted": false
+}

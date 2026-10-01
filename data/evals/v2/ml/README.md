@@ -1989,6 +1989,60 @@ execution, embeddings, fitting, inference, search, reranking, selection,
 dataset or taxonomy mutation, threshold change, runtime change, or remediation
 implementation. No remediation success or causal root cause is claimed.
 
+## V2-C6 Step 29H-B deterministic failure-analysis execution
+
+Step 29H-B has executed successfully under the frozen Step 29H-A read-only
+procedure. The create-once tracked result and manifest report
+`execution_status=COMPLETED`, all six candidates analyzed, 54,048 group-CV
+predictions analyzed, and 4,860 source-family predictions analyzed. Coverage
+validation found zero missing and zero duplicate predictions.
+
+The implementation remains available through:
+
+```bash
+sentinelvoice_env/bin/python scripts/run_v2c6_post_selection_failure_analysis.py --preflight
+sentinelvoice_env/bin/python scripts/run_v2c6_post_selection_failure_analysis.py --run
+sentinelvoice_env/bin/python scripts/run_v2c6_post_selection_failure_analysis.py --write-local-review
+```
+
+The analysis found that the dominant protected false-positive pattern was
+gold `unsupported_or_uncertain` predicted as a protected action. This pattern
+occurred across both BGE and TF-IDF candidates and across SF1, SF2, and SF3.
+The boundary was bidirectionally weak: protected intents were also sometimes
+predicted as `unsupported_or_uncertain`. Important measured hard-negative
+weaknesses included:
+
+- `transfer_pending` vs `unsupported_or_uncertain`
+- `cancel_transfer` vs `unsupported_or_uncertain`
+- `close_account` vs `unsupported_or_uncertain`
+- `transfer_failed_or_declined` vs `unsupported_or_uncertain`
+- `freeze_card` vs `unsupported_or_uncertain`
+- `cancel_transfer` vs `transfer_pending`
+
+These findings describe the frozen experiment and do not establish causality.
+Within its three matched comparisons, balanced class weighting generally
+increased protected recall while also increasing protected false-positive rate
+and reducing unsupported recall. That is an experiment-specific observation,
+not a universal class-weighting claim.
+
+The tracked artifact classified remediation evidence as `both`, citing
+targeted data-boundary evidence and representation/model evidence. This
+classification is diagnostic only: remediation has not been selected or
+implemented, Step 29I remains blocked, and `next_required` remains `null`
+because Step 29H-A did not freeze a post-analysis continuation. No next-step
+identifier is inferred.
+
+The completed analysis performed no model fitting, inference, embedding
+generation, threshold tuning, dataset mutation, taxonomy mutation, runtime
+change, or final-holdout access. The tracked artifacts contain no raw text, and
+the optional ignored local raw-text review was not performed.
+
+SF1/SF2/SF3 are now consumed diagnostic development evidence. They may support
+later regression or diagnostic comparisons but cannot be called fresh
+validation on unseen sources. Future clean source-generalization evidence
+requires newly independently authored material or ultimately the untouched
+final holdout.
+
 ## Reproduce V2-C1
 
 ```bash

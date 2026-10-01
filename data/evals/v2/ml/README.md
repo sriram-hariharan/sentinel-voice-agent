@@ -1934,6 +1934,61 @@ post-hoc weakening of gates or alteration of these candidate results. The
 create-once Step 29H result must not be rerun and presented as a new clean
 evaluation.
 
+## V2-C6 Step 29H-A post-selection failure-analysis contract
+
+`v2c6_post_selection_failure_analysis_contract.json` hash-pins the completed
+Step 29H results and manifest, the Step 29G contract, the Step 29F freeze, and
+the frozen 9,008-record development dataset. It requires the exact completed
+`NO_ACCEPTABLE_CANDIDATE` state with all six candidates and zero eligible
+candidates. Step 29I remains blocked, and
+`next_required=v2c6_post_selection_failure_analysis_execution` authorizes only
+read-only analysis of existing prediction evidence.
+
+The execution must analyze all six candidates rather than only the unweighted
+TF-IDF near-miss. For protected false positives it reports every actual
+non-protected to predicted-protected pair for pooled group CV, pooled
+source-family predictions, and SF1/SF2/SF3. The passing integer allowance is
+derived as `floor(non_protected_denominator * 1 / 100)` from the unchanged
+`<= 0.01` gate, and excess counts are measured above that allowance. Pair
+recurrence is reported descriptively across candidates, representation
+families, source families, and evaluation views without a new threshold.
+
+Unsupported analysis separates unsupported-to-protected errors from
+unsupported-to-other-supported errors. Protected false-negative analysis
+counts only protected-to-non-protected predictions as aggregate protected
+recall misses; a protected-to-different-protected prediction remains an exact
+intent error but not a protected-recall failure. The contract also requires
+per-family safety/boundary summaries, qualified group-CV versus source-family
+deltas, three matched class-weight comparisons, two BGE regularization
+comparisons, and the exact ten Step 29D hard-negative pairs aggregated across
+candidates and families.
+
+Tracked analysis outputs may contain record IDs and label/provenance metadata
+but no utterance text. Optional detailed review may use ignored
+`local/v2c6_post_selection_error_review.csv`, sourced only from the frozen
+development dataset. That review is separate from tracked aggregates, accesses
+no final holdout, and makes the inspected records remediation-informed
+development evidence rather than untouched validation.
+
+The three Step 29H source-family rounds are already consumed development
+model-selection evidence. Inspecting their errors additionally consumes them
+as diagnostic evidence. After remediation, SF1/SF2/SF3 may support regression
+diagnostics or describe previously observed behavior, but they cannot be
+presented as a fresh independent source-generalization estimate. Future clean
+evidence requires a new independently authored source family or source-family
+evaluation set, or ultimately the fresh untouched final holdout; this step
+creates none of them.
+
+The chosen architecture is evidence-first failure analysis before further
+data or model changes. It prevents blind remediation while reusing predictions
+already generated under the frozen contract. Immediately adding examples or
+model families, weakening gates, or tuning thresholds would be post-hoc before
+the observed boundaries are characterized. The tradeoff is consumed diagnostic
+evidence; reversibility remains high because the contract performs no analysis
+execution, embeddings, fitting, inference, search, reranking, selection,
+dataset or taxonomy mutation, threshold change, runtime change, or remediation
+implementation. No remediation success or causal root cause is claimed.
+
 ## Reproduce V2-C1
 
 ```bash

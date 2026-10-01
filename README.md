@@ -4806,6 +4806,49 @@ defined next step and contract; the frozen gates and observed candidate results
 must not be altered post hoc. The create-once Step 29H evaluation must not be
 rerun as though it were a new clean result.
 
+### V2-C6 Step 29H-A post-selection failure-analysis contract
+
+`data/evals/v2/ml/v2c6_post_selection_failure_analysis_contract.json` freezes
+an evidence-first, read-only analysis of the existing Step 29H development
+predictions before any further data or model change. Step 29H closed with
+`NO_ACCEPTABLE_CANDIDATE`, and Step 29I remains blocked. The exact next action
+is `v2c6_post_selection_failure_analysis_execution`; this contract does not
+invent a full-development fit or choose remediation.
+
+Protected false-positive analysis is primary because every candidate failed
+the pooled unseen-source-family `<= 0.01` gate. The future execution must derive
+the maximum passing integer FP count from each non-protected denominator,
+enumerate gold-non-protected to predicted-protected pairs for pooled group CV,
+pooled source-family evidence, and each family, and report cross-candidate and
+cross-family recurrence without inventing a “systematic” threshold. It must
+also separate unsupported-to-protected from unsupported-to-other-supported
+errors and distinguish protected-to-non-protected recall misses from
+protected-to-different-protected exact-intent errors.
+
+The frozen analysis covers all six candidates, all three source families, the
+ten existing hard-negative pairs, group-CV versus source-shift safety deltas,
+matched class-weight comparisons, and BGE `C=4` versus `C=1` comparisons. The
+tracked outputs must remain text-free. An optional ignored local CSV may join
+record IDs to text from the frozen development dataset only; any such reviewed
+examples become diagnostic or remediation-informed development evidence.
+
+SF1, SF2, and SF3 were already consumed for Step 29H development selection and
+become additionally consumed diagnostic evidence when inspected. They may be
+reused only as previously observed development or regression evidence, never
+as fresh post-remediation source-generalization evidence. A future clean claim
+requires newly authored independent source-family material or ultimately a
+fresh untouched final holdout; none is authored or accessed here.
+
+The architecture decision is failure analysis before blind remediation. It
+uses already-generated predictions to identify measured safety boundaries
+without another model-selection cycle. Immediately adding examples, adding
+model families, weakening gates, or tuning thresholds would be post-hoc before
+the failure structure is understood. The tradeoff is diagnostic consumption
+of the existing family evidence; the decision remains highly reversible
+because this contract performs no analysis execution, embedding, fitting,
+inference, candidate search, dataset or taxonomy mutation, threshold change,
+runtime change, or remediation implementation.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

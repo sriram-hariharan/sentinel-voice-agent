@@ -1,0 +1,424 @@
+{
+  "analysis_dimensions": {
+    "cross_candidate_overlap": {
+      "failure_record_key": [
+        "evaluation_scope",
+        "source_family_id",
+        "record_id_or_example_id",
+        "failure_type"
+      ],
+      "important_failure_types": [
+        "protected_false_positive",
+        "unsupported_miss",
+        "protected_recall_miss",
+        "hard_negative_directional_confusion"
+      ],
+      "required_overlap_views": [
+        "intersection_shared_by_all_four_candidates",
+        "intersection_shared_by_bge_tfidf_and_hybrid",
+        "failures_unique_to_each_candidate",
+        "pairwise_intersection_count",
+        "pairwise_union_count",
+        "pairwise_jaccard"
+      ],
+      "selection_or_ranking_permitted": false,
+      "zero_union_jaccard_value": null
+    },
+    "fresh_family_consistency": {
+      "family_quality_ranking_permitted": false,
+      "required_comparisons": [
+        "protected_false_positive_patterns",
+        "unsupported_misses",
+        "protected_recall_misses",
+        "hard_negative_directional_confusion"
+      ],
+      "source_family_ids": [
+        "v2c6_r2_eval_sf1_independent_casework",
+        "v2c6_r2_eval_sf2_independent_naturalistic"
+      ]
+    },
+    "group_cv_vs_fresh_evaluation": {
+      "causal_or_source_quality_claims_permitted": false,
+      "comparisons_limited_to_persisted_prediction_evidence": true,
+      "required_questions": [
+        "whether_protected_false_positive_weakness_appears_in_both_grouped_cv_and_fresh_evidence",
+        "whether_unsupported_recall_deterioration_is_disproportionately_fresh_source_specific"
+      ],
+      "required_views": [
+        "counts",
+        "rates_with_explicit_denominators",
+        "directional_confusions",
+        "scope_deltas_where_populations_are_comparable"
+      ]
+    },
+    "hard_negative_boundaries": {
+      "analysis_requires_persisted_prediction_and_boundary_metadata_join": true,
+      "combined_accuracy_alone_is_sufficient": false,
+      "directional_fields": [
+        "true_a_predicted_b_count",
+        "true_b_predicted_a_count",
+        "other_error_count"
+      ],
+      "required_pairs": [
+        [
+          "close_account",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "transfer_failed_or_declined",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "account_blocked",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "cancel_transfer",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "create_dispute",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "freeze_card",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "transfer_pending",
+          "unsupported_or_uncertain"
+        ],
+        [
+          "cancel_transfer",
+          "transfer_pending"
+        ],
+        [
+          "transfer_failed_or_declined",
+          "transfer_pending"
+        ],
+        [
+          "account_blocked",
+          "transfer_failed_or_declined"
+        ]
+      ],
+      "required_scopes_where_metadata_is_available": [
+        "pooled_group_aware_cv",
+        "v2c6_r2_eval_sf1_independent_casework",
+        "v2c6_r2_eval_sf2_independent_naturalistic",
+        "pooled_fresh_evaluation"
+      ]
+    },
+    "hierarchical_architecture_diagnosis": {
+      "architecture_configuration_persisted": true,
+      "exact_stage_1_error_attribution_available": false,
+      "final_predictions_may_be_described": true,
+      "model_reconstruction_permitted": false,
+      "model_rerun_permitted": false,
+      "required_limitation_statement": "Stage-level predictions were not persisted, so exact Stage-1 error attribution is unavailable.",
+      "stage_level_predictions_persisted": false
+    },
+    "protected_false_positives": {
+      "confusion_definition": "gold intent is non-protected and predicted intent is protected",
+      "protected_intents": [
+        "cancel_transfer",
+        "close_account",
+        "create_dispute",
+        "freeze_card"
+      ],
+      "required_breakdowns": [
+        "candidate_id",
+        "true_intent",
+        "predicted_protected_intent",
+        "true_intent_by_predicted_protected_intent_matrix",
+        "evaluation_scope",
+        "source_family_id"
+      ],
+      "required_scopes": [
+        "pooled_group_aware_cv",
+        "v2c6_r2_eval_sf1_independent_casework",
+        "v2c6_r2_eval_sf2_independent_naturalistic",
+        "pooled_fresh_evaluation"
+      ]
+    },
+    "protected_recall_misses": {
+      "confusion_definition": "gold intent is protected and predicted intent is non-protected",
+      "must_be_reported_separately_from_protected_false_positives": true,
+      "required_breakdowns": [
+        "candidate_id",
+        "true_protected_intent",
+        "predicted_intent",
+        "evaluation_scope",
+        "source_family_id"
+      ]
+    },
+    "unsupported_misses": {
+      "protected_destination_definition": "predicted intent is one of the four protected intents",
+      "required_breakdowns": [
+        "candidate_id",
+        "predicted_intent",
+        "protected_vs_non_protected_destination",
+        "evaluation_scope",
+        "source_family_id"
+      ],
+      "required_scopes": [
+        "pooled_group_aware_cv",
+        "v2c6_r2_eval_sf1_independent_casework",
+        "v2c6_r2_eval_sf2_independent_naturalistic",
+        "pooled_fresh_evaluation"
+      ],
+      "summary_fields": [
+        "unsupported_gold_count",
+        "unsupported_miss_count",
+        "unsupported_miss_rate",
+        "counts_by_predicted_intent",
+        "protected_destination_count",
+        "non_protected_destination_count"
+      ],
+      "unsupported_intent": "unsupported_or_uncertain"
+    }
+  },
+  "analysis_questions": [
+    "Which true non-protected intents account for protected false positives for each candidate and scope?",
+    "Which protected intents are predicted for those false positives?",
+    "Where do unsupported_or_uncertain misses go, separated into protected and non-protected destinations?",
+    "Which true protected intents are missed as non-protected predictions, separately from protected false positives?",
+    "Which directional confusions occur on each of the ten frozen hard-negative boundaries?",
+    "Which important failures are shared by all four candidates, shared by BGE, TF-IDF, and Hybrid, pairwise shared, or unique?",
+    "Are protected false positives, unsupported misses, protected recall misses, and hard-negative confusions consistent across the two consumed fresh families?",
+    "Does protected false-positive weakness appear in both grouped CV and fresh evidence?",
+    "Is unsupported-recall deterioration disproportionately specific to the consumed fresh-source evidence?",
+    "What can and cannot be stated about the hierarchical architecture without persisted stage-level predictions?",
+    "Which non-causal evidence classifications are supported by the persisted development predictions?"
+  ],
+  "candidate_coverage": {
+    "all_candidates_are_diagnostic_inputs": true,
+    "candidate_count": 4,
+    "candidate_ids": [
+      "BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none",
+      "WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+      "HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+      "HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none"
+    ],
+    "candidate_selection_permitted": false,
+    "winner_may_be_declared": false
+  },
+  "consumed_evidence_governance": {
+    "fresh_evaluation_already_consumed_by_model_selection": true,
+    "fresh_evaluation_record_count": 640,
+    "fresh_evaluation_source_family_ids": [
+      "v2c6_r2_eval_sf1_independent_casework",
+      "v2c6_r2_eval_sf2_independent_naturalistic"
+    ],
+    "inspection_further_consumes_as_diagnostic_evidence": true,
+    "may_be_called_fresh_or_untouched_after_analysis": false,
+    "permitted_future_description": "consumed_development_diagnostic_evidence",
+    "source_family_quality_judgment_permitted": false
+  },
+  "continuation_policy": {
+    "analysis_execution_authorized_by_this_contract": true,
+    "post_analysis_next_required": null,
+    "remediation_choice_pre_authorized": false,
+    "separate_frozen_continuation_design_required": true,
+    "step29i_authorized": false
+  },
+  "contract_status": {
+    "candidate_selected": false,
+    "contract_frozen": true,
+    "dataset_mutated": false,
+    "embeddings_generated": false,
+    "failure_analysis_executed": false,
+    "final_holdout_accessed": false,
+    "final_holdout_created": false,
+    "final_model_acceptance_claimed": false,
+    "model_fitting_performed": false,
+    "model_inference_performed": false,
+    "next_required": null,
+    "remediation_chosen": false,
+    "runtime_behavior_changed": false,
+    "step29i_authorized": false,
+    "threshold_tuning_performed": false
+  },
+  "contract_version": "v2c6-targeted-remediation-failure-analysis-contract.v1",
+  "evidence_classification": {
+    "allow_multiple_categories": true,
+    "allowed_categories": [
+      "development_distribution_boundary_weakness",
+      "fresh_source_generalization_weakness",
+      "architecture_specific_weakness",
+      "cross_architecture_shared_weakness",
+      "insufficient_evidence"
+    ],
+    "causal_claims_permitted_without_deterministic_proof": false,
+    "classification_is_candidate_selection": false,
+    "classification_is_remediation_selection": false,
+    "each_category_requires_cited_persisted_evidence": true
+  },
+  "execution_artifact_contract": {
+    "local_error_review_csv": {
+      "authorized": false,
+      "reason": "The frozen first execution should prefer deterministic text-free JSON from persisted predictions."
+    },
+    "raw_utterance_text_permitted_in_tracked_outputs": false,
+    "tracked_outputs": [
+      {
+        "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis.json",
+        "schema_version": "v2c6-targeted-remediation-failure-analysis.v1"
+      },
+      {
+        "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis.manifest.json",
+        "schema_version": "v2c6-targeted-remediation-failure-analysis-manifest.v1"
+      }
+    ]
+  },
+  "input_policy": {
+    "dataset_join_fields": {
+      "development": "example_id",
+      "fresh_evaluation": "record_id"
+    },
+    "development_evidence_only": true,
+    "final_holdout_inputs": [
+      {
+        "path": "data/evals/v2/ml/v2c5_final_holdout.json",
+        "status": "explicitly_prohibited_raw_input"
+      },
+      {
+        "path": "any_future_v2c6_final_holdout",
+        "status": "not_created_and_prohibited_for_this_analysis"
+      }
+    ],
+    "model_outputs_must_come_only_from_persisted_results": true,
+    "persisted_prediction_source": "data/evals/v2/ml/v2c6_targeted_remediation_model_selection_results.json",
+    "read_only_dataset_joins_permitted": true,
+    "text_inspection": {
+      "limited_to_prediction_linked_frozen_development_or_fresh_records": true,
+      "permitted": true,
+      "tracked_raw_text_output_permitted": false
+    }
+  },
+  "known_limitations": [
+    "This is observational analysis of consumed development evidence and does not establish causal root causes.",
+    "The two fresh source families are already consumed development-evaluation evidence and cannot become untouched evidence again.",
+    "Stage-level hierarchical predictions were not persisted, so exact Stage-1 error attribution is unavailable.",
+    "Hard-negative analysis is limited to prediction records that can be joined to frozen boundary metadata.",
+    "Cross-candidate overlap does not imply independent replication because candidates share development data and components.",
+    "No analysis result can authorize Step 29I or final-model acceptance without a separately frozen continuation contract."
+  ],
+  "motivation": {
+    "causal_root_cause_proven": false,
+    "goal": "Freeze a read-only descriptive failure analysis before any post-result remediation decision.",
+    "input_state": {
+      "candidate_count": 4,
+      "eligible_candidate_count": 0,
+      "execution_status": "COMPLETED",
+      "gates_weakened": false,
+      "next_required": null,
+      "selected_candidate": null,
+      "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "step29i_authorized": false,
+      "winner_forced": false
+    },
+    "remediation_already_chosen": false,
+    "step29i_blocked": true
+  },
+  "next_required": null,
+  "phase": "V2-C6 post-targeted-remediation failure-analysis contract",
+  "prohibited_operations": [
+    "model_training",
+    "model_refitting",
+    "embedding_generation",
+    "classifier_inference",
+    "threshold_tuning",
+    "candidate_definition_change",
+    "candidate_selection",
+    "candidate_ranking",
+    "safety_gate_change",
+    "safety_gate_weakening",
+    "training_example_addition",
+    "dataset_mutation",
+    "label_mutation",
+    "taxonomy_mutation",
+    "runtime_change",
+    "v2c5_final_holdout_access",
+    "future_final_holdout_creation",
+    "final_model_acceptance_claim",
+    "step29i_authorization",
+    "remediation_selection",
+    "remediation_implementation"
+  ],
+  "schema_version": "v2c6-targeted-remediation-failure-analysis-contract.v1",
+  "source_artifact_validation": {
+    "analysis_may_begin_before_validation": false,
+    "hash_mismatch_behavior": "fail_closed",
+    "required_checks": [
+      "path_identity",
+      "sha256_identity",
+      "schema_version",
+      "execution_status_completed",
+      "exact_four_candidate_ids",
+      "selection_status_no_acceptable_candidate",
+      "eligible_candidate_count_zero",
+      "selected_candidate_null",
+      "winner_not_forced",
+      "gates_not_weakened",
+      "step29i_not_authorized",
+      "next_required_null",
+      "development_and_fresh_dataset_identity",
+      "prediction_coverage_identity"
+    ]
+  },
+  "source_artifacts": {
+    "fresh_evaluation_dataset": {
+      "path": "data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.json",
+      "record_count": 640,
+      "schema_version": "v2c6-fresh-source-evaluation-dataset.v1",
+      "sha256": "df3c1eef7e262260754a1a10908b540d479fe7dc3d6f228d1a9ba432ae9f1a6e"
+    },
+    "fresh_evaluation_manifest": {
+      "path": "data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.manifest.json",
+      "schema_version": "v2c6-fresh-source-evaluation-dataset-manifest.v1",
+      "sha256": "5e2ad040155fcc05f37854d1dd10960b7dab5a840f4c42a34075f4c86c6f77da"
+    },
+    "targeted_development_dataset": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.json",
+      "record_count": 9608,
+      "schema_version": "v2c6-targeted-remediated-development-dataset.v1",
+      "sha256": "133456aa10552058fe67ed2eed37acbe583e31331656174cd2e018430cca799d"
+    },
+    "targeted_development_manifest": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.manifest.json",
+      "schema_version": "v2c6-targeted-remediated-development-dataset-manifest.v1",
+      "sha256": "d30ead62c1370e4f50760d6a159f38d0a6118c9cdce2542f97a09086e49d3c58"
+    },
+    "targeted_remediation_design_contract": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_design_contract.json",
+      "schema_version": "v2c6-targeted-remediation-design-contract.v1",
+      "sha256": "339bd20f4bb94e73a42bd297c053aef8deaf55ee42a3b2145b8792172e7d5e91"
+    },
+    "targeted_remediation_model_selection_results": {
+      "expected_candidate_count": 4,
+      "expected_eligible_candidate_count": 0,
+      "expected_execution_status": "COMPLETED",
+      "expected_gates_weakened": false,
+      "expected_next_required": null,
+      "expected_selected_candidate": null,
+      "expected_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "expected_step29i_authorized": false,
+      "expected_winner_forced": false,
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_model_selection_results.json",
+      "schema_version": "v2c6-targeted-remediation-model-selection-results.v1",
+      "sha256": "81fc64cd3476cd4eb2c6dc1e7b555803692f4800d48a61665fa9fd7768c9f145"
+    },
+    "targeted_remediation_model_selection_results_manifest": {
+      "expected_candidate_count": 4,
+      "expected_eligible_candidate_count": 0,
+      "expected_next_required": null,
+      "expected_selected_candidate": null,
+      "expected_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "expected_step29i_authorized": false,
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_model_selection_results.manifest.json",
+      "schema_version": "v2c6-targeted-remediation-model-selection-results-manifest.v1",
+      "sha256": "5922497a5a05e44833c525de1fc4386b9bff763db4bb2185577e8a6496f15abb"
+    }
+  },
+  "status": "FROZEN"
+}

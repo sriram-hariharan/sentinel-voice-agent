@@ -5012,8 +5012,31 @@ evaluated, no final-model acceptance was claimed, and runtime behavior did not
 change. The 640 fresh examples are now consumed development-evaluation
 evidence and must not later be described as untouched or fresh. No post-result
 remediation, threshold tuning, or model modification has occurred. Step 29I
-remains blocked, and no continuation is authorized because no frozen
-continuation contract exists and `next_required` is `null`.
+remains blocked. The result itself authorized no continuation and recorded
+`next_required=null`; the separate read-only contract below does not choose a
+remedy or authorize Step 29I.
+
+### V2-C6 targeted-remediation failure-analysis contract
+
+`data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis_contract.json`
+now freezes the next permitted activity: a read-only descriptive analysis of
+the persisted predictions from the completed four-candidate experiment. The
+failed result and its `NO_ACCEPTABLE_CANDIDATE` state are hash-pinned inputs;
+the contract cannot select a candidate or modify the frozen gates.
+
+The future analysis must cover protected false positives, unsupported misses,
+protected recall misses, directional errors on all ten targeted hard-negative
+boundaries, cross-candidate overlap, consistency across the two consumed fresh
+families, grouped-CV versus fresh error structure, and the limits of diagnosing
+the hierarchy without persisted stage-level predictions. It may produce
+multiple non-causal evidence classifications, but it cannot choose or implement
+remediation.
+
+The analysis has not been executed and no findings have been produced. No
+model, embedding, inference, threshold, dataset, taxonomy, final holdout, or
+runtime operation is authorized. The 640 fresh examples remain consumed
+development evidence. Step 29I remains blocked, `next_required` remains
+`null`, and any post-analysis continuation requires a separate frozen design.
 
 ### Why this extension is useful
 

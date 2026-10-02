@@ -2229,9 +2229,43 @@ untouched or fresh evidence. Historical Step 29H results remain historical and
 unchanged.
 
 No post-result remediation, threshold tuning, or model modification has
-occurred. Step 29I remains blocked. No next activity is authorized because no
-frozen post-result continuation contract exists and `next_required` is `null`;
-this documentation does not invent one.
+occurred. Step 29I remains blocked. The result itself authorized no next
+activity and recorded `next_required=null`; the separate read-only contract
+below authorizes analysis only and does not choose a remedy.
+
+## V2-C6 targeted-remediation failure-analysis contract
+
+`v2c6_targeted_remediation_failure_analysis_contract.json` freezes a new
+read-only diagnostic step over the already-persisted grouped-CV and fresh
+predictions in `v2c6_targeted_remediation_model_selection_results.json`. It
+hash-pins the result, manifest, Step 29H-C design, 9,608-record development
+dataset, and 640-record consumed fresh evaluation dataset. The prerequisite
+state remains exactly four completed candidates, zero eligible candidates,
+`NO_ACCEPTABLE_CANDIDATE`, no selected candidate, no forced winner, unchanged
+gates, no Step 29I authorization, and `next_required=null`.
+
+The contract requires deterministic, directional analysis of protected false
+positives, unsupported misses, protected recall misses, all ten targeted
+hard-negative boundaries, cross-candidate error overlap, both consumed fresh
+families, and grouped-CV versus fresh error structure. It records that
+stage-level hierarchical predictions were not persisted, so exact Stage-1
+attribution is unavailable and the model must not be reconstructed or rerun.
+Allowed evidence classifications are descriptive and non-causal; multiple
+categories may be reported when directly supported.
+
+Future tracked outputs are reserved as
+`v2c6_targeted_remediation_failure_analysis.json` and
+`v2c6_targeted_remediation_failure_analysis.manifest.json`, with raw utterance
+text prohibited. The contract permits only read-only joins to prediction-linked
+frozen development evidence. It prohibits model fitting, embeddings, inference,
+threshold tuning, candidate or gate changes, new examples, final-holdout access,
+candidate selection, remediation implementation, runtime changes, and Step 29I
+authorization.
+
+The failure analysis has not been executed, no findings or remediation choice
+exist, and the 640 fresh records remain consumed development-diagnostic
+evidence. `next_required` is `null`; a separately frozen continuation design is
+required after analysis. Step 29I remains blocked.
 
 ## Reproduce V2-C1
 

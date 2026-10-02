@@ -2078,7 +2078,7 @@ not independent human review, and designated ambiguity, disagreement,
 rejection, revision, confidence, and provenance cases require human
 adjudication.
 
-The future 9,608-record development/training population retains five-fold
+The now-built 9,608-record development/training population retains five-fold
 `StratifiedGroupKFold` with atomic `group_id` and `random_state=20260930`.
 Each candidate is then fit on that full population and evaluated separately on
 both new families and their pooled 640 records. The unchanged protected recall
@@ -2092,38 +2092,92 @@ lexicographic selection. If none passes every gate, the required result is
 `NO_ACCEPTABLE_CANDIDATE`, with no forced winner or weakened gate. Old
 SF1/SF2/SF3 are permanently consumed and may appear only as diagnostic
 regression evidence, never fresh validation. Step 29I remains blocked and a
-future untouched final holdout remains mandatory. The exact next action is
-`v2c6_targeted_remediation_and_fresh_source_authoring`; it authors/builds 600
-training and 640 fresh evaluation records but does not run model selection.
+future untouched final holdout remains mandatory. The contract's exact next
+action, `v2c6_targeted_remediation_and_fresh_source_authoring`, authorized the
+now-completed authoring/build of 600 training and 640 fresh evaluation records;
+it did not run model selection.
 
 ## V2-C6 targeted remediation and fresh-source authoring workflow
 
-Step 29H-C remains the frozen design. Its authorized next-phase workflow is
-now implemented by
-`scripts/build_v2c6_targeted_remediation_and_fresh_source_data.py`, with four
-explicit modes: `--preflight`, `--prepare-authoring-workfiles`, `--build`, and
-`--check-results`.
+Step 29H-C remains the frozen design. Its authorized authoring, review, and
+dataset-construction workflow has now completed through
+`scripts/build_v2c6_targeted_remediation_and_fresh_source_data.py`.
 
-Preparation creates only ignored local templates:
+The targeted-training addendum contains 600 populated and approved records,
+with 200 records in each frozen family:
 
-- `local/v2c6_r2_targeted_training_authoring.json` contains 600 empty text
-  slots across the three frozen targeted-training source families.
-- `local/v2c6_r2_fresh_source_evaluation_authoring.json` contains 640 empty
-  text slots across the two frozen, independently authored evaluation source
-  families.
+- `v2c6_r2_train_sf1_minimal_boundary`
+- `v2c6_r2_train_sf2_contextual_scenario`
+- `v2c6_r2_train_sf3_conversational_correction`
 
-The builder never authors or rewrites text. Before tracked artifacts may be
-built, it requires approved review records, resolves every mandatory human
-adjudication trigger, rejects prediction-informed metadata, and applies exact
-and normalized duplicate, historical overlap, consumed-family overlap,
-cross-intent, provenance, record-ID, and group-ID checks. Fresh evaluation is
-not training data, is excluded from candidate fitting, and cannot enter the
-9,608-record combined development/training dataset. Tracked datasets and
-their deterministic manifests are create-once.
+Each family follows the contract's allocation across the eight primary
+intents. Three mandatory human adjudications were completed, with zero
+unresolved adjudications. Record
+`v2c6_r2_train_sf1_minimal_boundary_0121` was the sole exact historical-text
+collision identified during preflight; its text was replaced and semantically
+re-reviewed. The 600-record addendum combined with the previous 9,008 records
+produces the frozen 9,608-record development/training dataset.
 
-The workflow has not been run. No examples have been authored, no local
-templates or tracked datasets have been built, no model work has occurred,
-and no final holdout has been created or accessed. Step 29I remains blocked.
+The separately built fresh source-evaluation dataset contains 640 populated
+and approved records, with 320 records in each independent family:
+
+- `v2c6_r2_eval_sf1_independent_casework`
+- `v2c6_r2_eval_sf2_independent_naturalistic`
+
+Each family contains 40 records per intent, including 160 protected and 160
+non-protected records. All 640 records are excluded from fitting and no human
+adjudication remains unresolved. The consumed diagnostic SF1/SF2/SF3 records
+were not reused as fresh evidence.
+
+Final deterministic preflight found zero collisions in every frozen category:
+
+- targeted training against historical development, exact and normalized;
+- fresh evaluation against historical development, exact and normalized;
+- targeted training against fresh evaluation, exact and normalized;
+- fresh evaluation against consumed diagnostic evidence, exact and
+  normalized;
+- within targeted training and within fresh evaluation, exact and normalized;
+- cross-intent normalized duplicates; and
+- record-ID and group-ID cross-role collisions.
+
+These results cover deterministic exact and normalized-text checks only. No
+embeddings or semantic-similarity analysis was performed, so no broader
+semantic-independence claim is made.
+
+The six create-once outputs and their SHA-256 hashes are:
+
+- `v2c6_targeted_remediation_training_examples.json`:
+  `6c8322ea1c09f026ede7a2808a7bc3ce01ae2b3f4b10b5885a352ff5c9df5ad6`
+- `v2c6_targeted_remediation_training_examples.manifest.json`:
+  `1a25653ee79008d5a7daee4f4c2dfb3f28e19b353777329e4199d388d0ed85d9`
+- `v2c6_targeted_remediated_development_dataset.json`:
+  `133456aa10552058fe67ed2eed37acbe583e31331656174cd2e018430cca799d`
+- `v2c6_targeted_remediated_development_dataset.manifest.json`:
+  `d30ead62c1370e4f50760d6a159f38d0a6118c9cdce2542f97a09086e49d3c58`
+- `v2c6_fresh_source_evaluation_dataset.json`:
+  `df3c1eef7e262260754a1a10908b540d479fe7dc3d6f228d1a9ba432ae9f1a6e`
+- `v2c6_fresh_source_evaluation_dataset.manifest.json`:
+  `5e2ad040155fcc05f37854d1dd10960b7dab5a840f4c42a34075f4c86c6f77da`
+
+Observed execution status was `ready_for_build=true` at preflight,
+`files_written=true` at build with output counts 600, 9,608, and 640, and
+`results_valid=true` at result checking. Focused builder tests reported 35 passed; all
+`backend/tests/test_v2c6_*.py` tests reported 453 passed; separate Ruff checks
+for the builder and tests passed; and `git diff --check` passed.
+
+No candidate was trained or evaluated in this cycle. No embeddings, model
+fit, inference, threshold tuning, final-holdout access, dataset-policy change,
+taxonomy change, or runtime change occurred. Step 29I remains blocked. After
+the data-phase commit, the only authorized technical activity is the frozen
+four-candidate experiment:
+
+- `BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none`
+- `WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+- `HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+- `HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+
+Candidate definitions, safety gates, the selection rule, taxonomy, dataset
+protocol, and runtime authority are unchanged.
 
 ## Reproduce V2-C1
 

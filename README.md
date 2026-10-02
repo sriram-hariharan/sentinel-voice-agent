@@ -4894,13 +4894,13 @@ selecting remediation. The chosen design combines targeted boundary training
 data, a four-candidate representation/decision-architecture comparison, and
 new independently authored source-generalization evaluation evidence.
 
-The next authoring step plans exactly 600 development/training records across
-three independent 200-record families. Each family contains 20 records for
-each of seven supported primary remediation intents and 60
-`unsupported_or_uncertain` records, with all ten Step 29D hard-negative
-boundaries preserved. Separately, two new evaluation families plan 320 records
-each—40 per primary remediation intent—for 640 fresh development-evaluation
-records excluded from candidate fitting.
+The downstream authoring/build phase has now produced exactly 600
+development/training records across three independent 200-record families.
+Each family contains 20 records for each of seven supported primary
+remediation intents and 60 `unsupported_or_uncertain` records, with all ten
+Step 29D hard-negative boundaries preserved. Separately, two new evaluation
+families contain 320 records each—40 per primary remediation intent—for 640
+fresh development-evaluation records excluded from candidate fitting.
 
 The bounded search contains exactly four unweighted candidates: the existing
 BGE-small `C=4` semantic control, the prior TF-IDF `C=1` safety near-miss
@@ -4917,30 +4917,68 @@ group-aware CV, each new evaluation family, and pooled fresh evaluation before
 a candidate is eligible. Consumed SF1/SF2/SF3 may be reported only as
 diagnostic regression evidence. Step 29I remains blocked, no final holdout is
 created or accessed, and no remediation data or model execution occurs in this
-contract step. The frozen `next_required` is
-`v2c6_targeted_remediation_and_fresh_source_authoring`, which authorizes only
-authoring/building the 600 training and 640 fresh evaluation records—not model
-selection.
+contract step. The frozen `next_required` was
+`v2c6_targeted_remediation_and_fresh_source_authoring`, which authorized the
+now-completed authoring/build of the 600 training and 640 fresh evaluation
+records—not model selection.
 
 ### V2-C6 targeted remediation and fresh-source authoring workflow
 
-The post-Step-29H-C authoring/build workflow is implemented in
-`scripts/build_v2c6_targeted_remediation_and_fresh_source_data.py`. It prepares
-ignored local templates with 600 empty targeted-training slots across three
-source families and 640 empty fresh-evaluation slots across two independent
-source families. The builder creates slots only; it does not generate,
-rewrite, fix, or paraphrase example text.
+The frozen post-Step-29H-C workflow has completed authoring, review, and
+deterministic dataset construction. The targeted-training addendum contains
+600 approved records—200 in each of
+`v2c6_r2_train_sf1_minimal_boundary`,
+`v2c6_r2_train_sf2_contextual_scenario`, and
+`v2c6_r2_train_sf3_conversational_correction`—covering the eight primary
+intents under the contract. Three required human adjudications were completed
+and none remains unresolved. The previous 9,008-record development population
+plus this 600-record addendum yields a 9,608-record combined
+development/training dataset.
 
-The workflow enforces the frozen hard-negative allocation, provenance and
-review governance, required human adjudication, exact and normalized
-duplicate checks, historical-development leakage checks, ID/group isolation,
-and create-once tracked outputs. Fresh evaluation is explicitly excluded from
-candidate fitting and from the 9,608-record development/training dataset.
+The fresh source-evaluation dataset contains 640 approved records—320 in each
+of `v2c6_r2_eval_sf1_independent_casework` and
+`v2c6_r2_eval_sf2_independent_naturalistic`, with 40 records per intent and
+160 protected plus 160 non-protected records in each family. It is excluded
+from fitting. Consumed diagnostic SF1/SF2/SF3 were not reused as fresh
+evidence. One exact historical collision,
+`v2c6_r2_train_sf1_minimal_boundary_0121`, was remediated and semantically
+re-reviewed before construction.
 
-This implementation is prepared but has not been executed: no examples have
-been authored, no authoring workfiles or datasets have been built, no models
-have run, and no final holdout was created or accessed. Step 29I remains
-blocked.
+Final deterministic preflight reported zero exact or normalized collisions
+within targeted training, within fresh evaluation, between training and fresh
+evaluation, between either new population and historical development, or
+between fresh evaluation and the consumed diagnostic families. It also found
+zero cross-intent normalized duplicates and zero record-ID or group-ID
+cross-role collisions. These checks establish only deterministic exact and
+normalized-text isolation; no embedding or semantic-similarity claim is made.
+
+The completed workflow produced these create-once datasets and manifests:
+
+- `data/evals/v2/ml/v2c6_targeted_remediation_training_examples.json`
+- `data/evals/v2/ml/v2c6_targeted_remediation_training_examples.manifest.json`
+- `data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.json`
+- `data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.manifest.json`
+- `data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.json`
+- `data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.manifest.json`
+
+Preflight reported `ready_for_build=true`; build reported
+`files_written=true` with counts 600, 9,608, and 640; and result checking
+reported `results_valid=true`. Detailed hashes and validation evidence are recorded in
+`data/evals/v2/ml/README.md`.
+
+No candidate was trained or evaluated in this cycle. No embeddings, model
+fit, inference, threshold tuning, final-holdout access, taxonomy change, or
+runtime change occurred. Step 29I remains blocked. After the data-phase commit,
+the next authorized technical activity is only the frozen four-candidate
+experiment:
+
+- `BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none`
+- `WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+- `HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+- `HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+
+The candidates, gates, selection rule, taxonomy, dataset protocol, and runtime
+authority are unchanged.
 
 ### Why this extension is useful
 

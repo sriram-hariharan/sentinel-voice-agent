@@ -1,0 +1,937 @@
+{
+  "artifact": {
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_training_examples.json",
+    "schema_version": "v2c6-targeted-remediation-training-examples.v1",
+    "sha256": "6c8322ea1c09f026ede7a2808a7bc3ce01ae2b3f4b10b5885a352ff5c9df5ad6"
+  },
+  "boundary_coverage": {
+    "all_families_cover_all_pairs": true,
+    "by_source_family": {
+      "v2c6_r2_train_sf1_minimal_boundary": {
+        "all_ten_pairs_covered_on_both_sides": true,
+        "maximum_tier_2_pair_count": 16,
+        "minimum_tier_1_pair_count": 24,
+        "pair_count": 10,
+        "pairs": [
+          {
+            "count": 29,
+            "pair": [
+              "close_account",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 24,
+            "pair": [
+              "transfer_failed_or_declined",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 13,
+            "pair": [
+              "account_blocked",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 7,
+            "side_b_count": 6
+          },
+          {
+            "count": 24,
+            "pair": [
+              "cancel_transfer",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 29,
+            "pair": [
+              "create_dispute",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 29,
+            "pair": [
+              "freeze_card",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 24,
+            "pair": [
+              "transfer_pending",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 8,
+            "pair": [
+              "cancel_transfer",
+              "transfer_pending"
+            ],
+            "side_a_count": 5,
+            "side_b_count": 3
+          },
+          {
+            "count": 4,
+            "pair": [
+              "transfer_failed_or_declined",
+              "transfer_pending"
+            ],
+            "side_a_count": 2,
+            "side_b_count": 2
+          },
+          {
+            "count": 16,
+            "pair": [
+              "account_blocked",
+              "transfer_failed_or_declined"
+            ],
+            "side_a_count": 13,
+            "side_b_count": 3
+          }
+        ],
+        "tier_1_allocation_greater_than_tier_2": true
+      },
+      "v2c6_r2_train_sf2_contextual_scenario": {
+        "all_ten_pairs_covered_on_both_sides": true,
+        "maximum_tier_2_pair_count": 16,
+        "minimum_tier_1_pair_count": 24,
+        "pair_count": 10,
+        "pairs": [
+          {
+            "count": 29,
+            "pair": [
+              "close_account",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 24,
+            "pair": [
+              "transfer_failed_or_declined",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 13,
+            "pair": [
+              "account_blocked",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 7,
+            "side_b_count": 6
+          },
+          {
+            "count": 24,
+            "pair": [
+              "cancel_transfer",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 29,
+            "pair": [
+              "create_dispute",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 29,
+            "pair": [
+              "freeze_card",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 24,
+            "pair": [
+              "transfer_pending",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 8,
+            "pair": [
+              "cancel_transfer",
+              "transfer_pending"
+            ],
+            "side_a_count": 5,
+            "side_b_count": 3
+          },
+          {
+            "count": 4,
+            "pair": [
+              "transfer_failed_or_declined",
+              "transfer_pending"
+            ],
+            "side_a_count": 2,
+            "side_b_count": 2
+          },
+          {
+            "count": 16,
+            "pair": [
+              "account_blocked",
+              "transfer_failed_or_declined"
+            ],
+            "side_a_count": 13,
+            "side_b_count": 3
+          }
+        ],
+        "tier_1_allocation_greater_than_tier_2": true
+      },
+      "v2c6_r2_train_sf3_conversational_correction": {
+        "all_ten_pairs_covered_on_both_sides": true,
+        "maximum_tier_2_pair_count": 16,
+        "minimum_tier_1_pair_count": 24,
+        "pair_count": 10,
+        "pairs": [
+          {
+            "count": 29,
+            "pair": [
+              "close_account",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 24,
+            "pair": [
+              "transfer_failed_or_declined",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 13,
+            "pair": [
+              "account_blocked",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 7,
+            "side_b_count": 6
+          },
+          {
+            "count": 24,
+            "pair": [
+              "cancel_transfer",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 29,
+            "pair": [
+              "create_dispute",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 29,
+            "pair": [
+              "freeze_card",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 20,
+            "side_b_count": 9
+          },
+          {
+            "count": 24,
+            "pair": [
+              "transfer_pending",
+              "unsupported_or_uncertain"
+            ],
+            "side_a_count": 15,
+            "side_b_count": 9
+          },
+          {
+            "count": 8,
+            "pair": [
+              "cancel_transfer",
+              "transfer_pending"
+            ],
+            "side_a_count": 5,
+            "side_b_count": 3
+          },
+          {
+            "count": 4,
+            "pair": [
+              "transfer_failed_or_declined",
+              "transfer_pending"
+            ],
+            "side_a_count": 2,
+            "side_b_count": 2
+          },
+          {
+            "count": 16,
+            "pair": [
+              "account_blocked",
+              "transfer_failed_or_declined"
+            ],
+            "side_a_count": 13,
+            "side_b_count": 3
+          }
+        ],
+        "tier_1_allocation_greater_than_tier_2": true
+      }
+    },
+    "required_pair_count": 10
+  },
+  "builder": {
+    "path": "scripts/build_v2c6_targeted_remediation_and_fresh_source_data.py",
+    "sha256": "3b3c2007126388c8ccd91656aace24c663a672ce42c7c1bcb94b3162ec5a4b2b",
+    "version": "v2c6-targeted-remediation-fresh-source-builder.v1"
+  },
+  "contract": {
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_design_contract.json",
+    "sha256": "339bd20f4bb94e73a42bd297c053aef8deaf55ee42a3b2145b8792172e7d5e91"
+  },
+  "counts": {
+    "by_intent": {
+      "account_blocked": 60,
+      "cancel_transfer": 60,
+      "close_account": 60,
+      "create_dispute": 60,
+      "freeze_card": 60,
+      "transfer_failed_or_declined": 60,
+      "transfer_pending": 60,
+      "unsupported_or_uncertain": 180
+    },
+    "by_risk": {
+      "ESCALATION_OR_UNCERTAIN": 180,
+      "PRIVATE_READ": 180,
+      "PROTECTED_WRITE": 240
+    },
+    "by_source_family": {
+      "v2c6_r2_train_sf1_minimal_boundary": 200,
+      "v2c6_r2_train_sf2_contextual_scenario": 200,
+      "v2c6_r2_train_sf3_conversational_correction": 200
+    },
+    "record_count": 600
+  },
+  "freeze": {
+    "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.freeze.json",
+    "sha256": "7f71dda024e5a947c997977f09ed675fa1f924c38d30f332422aa2032ecbc544"
+  },
+  "frozen_development": {
+    "path": "data/evals/v2/ml/v2c6_remediated_development_dataset.json",
+    "sha256": "d7f78d7a76799f47bfdc3c1291505d1b964b9d143245d2d353931e8cb4f4a493"
+  },
+  "governance": {
+    "builder_generated_example_text": false,
+    "dataset_mutated_before_build": false,
+    "embeddings_generated": false,
+    "final_holdout_accessed": false,
+    "model_fitting_performed": false,
+    "model_inference_performed": false,
+    "model_selection_performed": false,
+    "runtime_behavior_changed": false,
+    "step29i_authorized": false,
+    "taxonomy_mutated": false,
+    "threshold_tuning_performed": false
+  },
+  "input_workfiles": {
+    "fresh_evaluation": {
+      "path": "data/evals/v2/ml/local/v2c6_r2_fresh_source_evaluation_authoring.json",
+      "sha256": "e06fd189cfa88c8fac915cc81f4094a8c71044ae54ec396412639440b8088c72"
+    },
+    "targeted_training": {
+      "path": "data/evals/v2/ml/local/v2c6_r2_targeted_training_authoring.json",
+      "sha256": "ebd5e554028b4502e8ae5d38468849c89a17ab8b7c55ae2366c8d939ae0bf69d"
+    }
+  },
+  "phase": "V2-C6 targeted remediation and fresh-source authoring",
+  "schema_version": "v2c6-targeted-remediation-training-examples-manifest.v1",
+  "validation": {
+    "boundary_coverage": {
+      "evaluation": {
+        "all_families_cover_all_pairs": true,
+        "by_source_family": {
+          "v2c6_r2_eval_sf1_independent_casework": {
+            "all_ten_pairs_covered_on_both_sides": true,
+            "maximum_tier_2_pair_count": 35,
+            "minimum_tier_1_pair_count": 36,
+            "pair_count": 10,
+            "pairs": [
+              {
+                "count": 46,
+                "pair": [
+                  "close_account",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 40,
+                "side_b_count": 6
+              },
+              {
+                "count": 36,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 6
+              },
+              {
+                "count": 14,
+                "pair": [
+                  "account_blocked",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 10,
+                "side_b_count": 4
+              },
+              {
+                "count": 36,
+                "pair": [
+                  "cancel_transfer",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 6
+              },
+              {
+                "count": 46,
+                "pair": [
+                  "create_dispute",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 40,
+                "side_b_count": 6
+              },
+              {
+                "count": 46,
+                "pair": [
+                  "freeze_card",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 40,
+                "side_b_count": 6
+              },
+              {
+                "count": 36,
+                "pair": [
+                  "transfer_pending",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 6
+              },
+              {
+                "count": 15,
+                "pair": [
+                  "cancel_transfer",
+                  "transfer_pending"
+                ],
+                "side_a_count": 10,
+                "side_b_count": 5
+              },
+              {
+                "count": 10,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "transfer_pending"
+                ],
+                "side_a_count": 5,
+                "side_b_count": 5
+              },
+              {
+                "count": 35,
+                "pair": [
+                  "account_blocked",
+                  "transfer_failed_or_declined"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 5
+              }
+            ],
+            "tier_1_allocation_greater_than_tier_2": true
+          },
+          "v2c6_r2_eval_sf2_independent_naturalistic": {
+            "all_ten_pairs_covered_on_both_sides": true,
+            "maximum_tier_2_pair_count": 35,
+            "minimum_tier_1_pair_count": 36,
+            "pair_count": 10,
+            "pairs": [
+              {
+                "count": 46,
+                "pair": [
+                  "close_account",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 40,
+                "side_b_count": 6
+              },
+              {
+                "count": 36,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 6
+              },
+              {
+                "count": 14,
+                "pair": [
+                  "account_blocked",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 10,
+                "side_b_count": 4
+              },
+              {
+                "count": 36,
+                "pair": [
+                  "cancel_transfer",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 6
+              },
+              {
+                "count": 46,
+                "pair": [
+                  "create_dispute",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 40,
+                "side_b_count": 6
+              },
+              {
+                "count": 46,
+                "pair": [
+                  "freeze_card",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 40,
+                "side_b_count": 6
+              },
+              {
+                "count": 36,
+                "pair": [
+                  "transfer_pending",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 6
+              },
+              {
+                "count": 15,
+                "pair": [
+                  "cancel_transfer",
+                  "transfer_pending"
+                ],
+                "side_a_count": 10,
+                "side_b_count": 5
+              },
+              {
+                "count": 10,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "transfer_pending"
+                ],
+                "side_a_count": 5,
+                "side_b_count": 5
+              },
+              {
+                "count": 35,
+                "pair": [
+                  "account_blocked",
+                  "transfer_failed_or_declined"
+                ],
+                "side_a_count": 30,
+                "side_b_count": 5
+              }
+            ],
+            "tier_1_allocation_greater_than_tier_2": true
+          }
+        },
+        "required_pair_count": 10
+      },
+      "training": {
+        "all_families_cover_all_pairs": true,
+        "by_source_family": {
+          "v2c6_r2_train_sf1_minimal_boundary": {
+            "all_ten_pairs_covered_on_both_sides": true,
+            "maximum_tier_2_pair_count": 16,
+            "minimum_tier_1_pair_count": 24,
+            "pair_count": 10,
+            "pairs": [
+              {
+                "count": 29,
+                "pair": [
+                  "close_account",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 13,
+                "pair": [
+                  "account_blocked",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 7,
+                "side_b_count": 6
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "cancel_transfer",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 29,
+                "pair": [
+                  "create_dispute",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 29,
+                "pair": [
+                  "freeze_card",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "transfer_pending",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 8,
+                "pair": [
+                  "cancel_transfer",
+                  "transfer_pending"
+                ],
+                "side_a_count": 5,
+                "side_b_count": 3
+              },
+              {
+                "count": 4,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "transfer_pending"
+                ],
+                "side_a_count": 2,
+                "side_b_count": 2
+              },
+              {
+                "count": 16,
+                "pair": [
+                  "account_blocked",
+                  "transfer_failed_or_declined"
+                ],
+                "side_a_count": 13,
+                "side_b_count": 3
+              }
+            ],
+            "tier_1_allocation_greater_than_tier_2": true
+          },
+          "v2c6_r2_train_sf2_contextual_scenario": {
+            "all_ten_pairs_covered_on_both_sides": true,
+            "maximum_tier_2_pair_count": 16,
+            "minimum_tier_1_pair_count": 24,
+            "pair_count": 10,
+            "pairs": [
+              {
+                "count": 29,
+                "pair": [
+                  "close_account",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 13,
+                "pair": [
+                  "account_blocked",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 7,
+                "side_b_count": 6
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "cancel_transfer",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 29,
+                "pair": [
+                  "create_dispute",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 29,
+                "pair": [
+                  "freeze_card",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "transfer_pending",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 8,
+                "pair": [
+                  "cancel_transfer",
+                  "transfer_pending"
+                ],
+                "side_a_count": 5,
+                "side_b_count": 3
+              },
+              {
+                "count": 4,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "transfer_pending"
+                ],
+                "side_a_count": 2,
+                "side_b_count": 2
+              },
+              {
+                "count": 16,
+                "pair": [
+                  "account_blocked",
+                  "transfer_failed_or_declined"
+                ],
+                "side_a_count": 13,
+                "side_b_count": 3
+              }
+            ],
+            "tier_1_allocation_greater_than_tier_2": true
+          },
+          "v2c6_r2_train_sf3_conversational_correction": {
+            "all_ten_pairs_covered_on_both_sides": true,
+            "maximum_tier_2_pair_count": 16,
+            "minimum_tier_1_pair_count": 24,
+            "pair_count": 10,
+            "pairs": [
+              {
+                "count": 29,
+                "pair": [
+                  "close_account",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 13,
+                "pair": [
+                  "account_blocked",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 7,
+                "side_b_count": 6
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "cancel_transfer",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 29,
+                "pair": [
+                  "create_dispute",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 29,
+                "pair": [
+                  "freeze_card",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 20,
+                "side_b_count": 9
+              },
+              {
+                "count": 24,
+                "pair": [
+                  "transfer_pending",
+                  "unsupported_or_uncertain"
+                ],
+                "side_a_count": 15,
+                "side_b_count": 9
+              },
+              {
+                "count": 8,
+                "pair": [
+                  "cancel_transfer",
+                  "transfer_pending"
+                ],
+                "side_a_count": 5,
+                "side_b_count": 3
+              },
+              {
+                "count": 4,
+                "pair": [
+                  "transfer_failed_or_declined",
+                  "transfer_pending"
+                ],
+                "side_a_count": 2,
+                "side_b_count": 2
+              },
+              {
+                "count": 16,
+                "pair": [
+                  "account_blocked",
+                  "transfer_failed_or_declined"
+                ],
+                "side_a_count": 13,
+                "side_b_count": 3
+              }
+            ],
+            "tier_1_allocation_greater_than_tier_2": true
+          }
+        },
+        "required_pair_count": 10
+      }
+    },
+    "duplicate_and_leakage": {
+      "all_duplicate_and_leakage_checks_passed": true,
+      "cross_intent_normalized_duplicate_count": 0,
+      "embedding_or_semantic_similarity_used": false,
+      "evaluation_consumed_exact_overlap_count": 0,
+      "evaluation_consumed_normalized_overlap_count": 0,
+      "evaluation_historical_exact_overlap_count": 0,
+      "evaluation_historical_normalized_overlap_count": 0,
+      "evaluation_within_exact_duplicate_count": 0,
+      "evaluation_within_normalized_duplicate_count": 0,
+      "normalization_version": "unicode-nfkc-lower-whitespace.v1",
+      "raw_text_persisted_in_report": false,
+      "training_evaluation_exact_overlap_count": 0,
+      "training_evaluation_normalized_overlap_count": 0,
+      "training_historical_exact_overlap_count": 0,
+      "training_historical_normalized_overlap_count": 0,
+      "training_within_exact_duplicate_count": 0,
+      "training_within_normalized_duplicate_count": 0
+    },
+    "identity_and_group_isolation": {
+      "cross_role_group_collision_count": 0,
+      "cross_role_record_id_collision_count": 0,
+      "historical_group_collision_count": 0,
+      "historical_record_id_collision_count": 0,
+      "new_group_ids_unique": true,
+      "new_record_ids_unique": true
+    },
+    "review": {
+      "evaluation": {
+        "ai_assisted_review_is_human_review": false,
+        "approved_count": 640,
+        "human_adjudication_completed_count": 0,
+        "human_adjudication_required_count": 0,
+        "record_count": 640,
+        "review_methods": {
+          "ai_assisted_review": 640
+        },
+        "unresolved_human_adjudication_count": 0
+      },
+      "training": {
+        "ai_assisted_review_is_human_review": false,
+        "approved_count": 600,
+        "human_adjudication_completed_count": 3,
+        "human_adjudication_required_count": 3,
+        "record_count": 600,
+        "review_methods": {
+          "ai_assisted_review": 600
+        },
+        "unresolved_human_adjudication_count": 0
+      }
+    }
+  }
+}

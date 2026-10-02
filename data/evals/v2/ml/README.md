@@ -2179,6 +2179,31 @@ four-candidate experiment:
 Candidate definitions, safety gates, the selection rule, taxonomy, dataset
 protocol, and runtime authority are unchanged.
 
+The development-only execution machinery is now prepared in
+`scripts/run_v2c6_targeted_remediation_model_selection.py`. It validates the
+Step 29H-C contract and both frozen datasets, reuses one deterministic set of
+five `StratifiedGroupKFold` partitions for all four candidates, and keeps all
+640 fresh records outside representation and classifier fitting. Each
+candidate is fit once on all 9,608 development records for fresh evaluation;
+that same fitted candidate produces both 320-record family prediction sets and
+the pooled 640-record metrics. The hybrid uses deterministic sparse
+TF-IDF/BGE concatenation with row L2 normalization, and the hierarchy uses the
+frozen unsupported-versus-supported stage followed by the 15-way supported
+stage without thresholds or overrides.
+
+Create-once outputs are reserved at
+`v2c6_targeted_remediation_model_selection_results.json` and
+`v2c6_targeted_remediation_model_selection_results.manifest.json`. Reusable BGE
+embeddings, if generated during local execution, are isolated to the ignored
+experiment-specific cache
+`local/v2c6_targeted_remediation_model_selection_bge_cache.npz` and its
+manifest. The historical Step 29H results and cache remain untouched.
+
+This runner has not been executed. No result artifact or candidate outcome
+exists, and the fresh 640 have not yet been evaluated by a model. Runner
+preparation performed no embeddings, fitting, inference, threshold tuning,
+final-holdout access, or runtime change. Step 29I remains blocked.
+
 ## Reproduce V2-C1
 
 ```bash

@@ -4980,6 +4980,20 @@ experiment:
 The candidates, gates, selection rule, taxonomy, dataset protocol, and runtime
 authority are unchanged.
 
+The next development-only runner is now implemented at
+`scripts/run_v2c6_targeted_remediation_model_selection.py`. It is prepared to
+execute the frozen four-candidate experiment with shared five-fold group-aware
+CV over the 9,608 development records, followed by one full-development fit per
+candidate and separate reporting for both fresh families and their pooled 640
+records. Fresh evaluation remains excluded from every representation and model
+fit. The runner uses new create-once result paths and an experiment-specific
+local BGE cache; it does not overwrite the consumed Step 29H artifacts.
+
+The runner has not been executed. No candidate result exists, the fresh 640
+have not been used for model evaluation, and no embeddings, classifier fits,
+inference, threshold tuning, final-holdout access, or runtime change occurred
+while preparing it. Step 29I remains blocked.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

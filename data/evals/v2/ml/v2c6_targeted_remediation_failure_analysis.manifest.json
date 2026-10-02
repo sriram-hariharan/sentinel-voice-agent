@@ -1,0 +1,56 @@
+{
+  "analysis_contract": {
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis_contract.json",
+    "schema_version": "v2c6-targeted-remediation-failure-analysis-contract.v1",
+    "sha256": "d9cb3fa6fcc6cdbb248ea7221bf0e74029b91dd7a7d74e411a9c2c8d8f0cf652"
+  },
+  "analysis_result": {
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis.json",
+    "schema_version": "v2c6-targeted-remediation-failure-analysis.v1",
+    "sha256": "047151b85e84cf4a8704ca95af445b40e066a93ebb1f487125cff9a08ca1760d"
+  },
+  "candidate_count": 4,
+  "candidate_selected": false,
+  "embeddings_generated": false,
+  "execution_status": "COMPLETED",
+  "failure_analysis_executed": true,
+  "final_holdout_accessed": false,
+  "inference_performed": false,
+  "models_run": false,
+  "next_required": null,
+  "phase": "V2-C6 targeted-remediation failure analysis",
+  "runner": {
+    "path": "scripts/run_v2c6_targeted_remediation_failure_analysis.py",
+    "sha256": "796d2338d323ba3755142a986c762a7f3e290f2f4e12bb133f40bd7a5448ab13"
+  },
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c6-targeted-remediation-failure-analysis-manifest.v1",
+  "source_result": {
+    "expected_candidate_count": 4,
+    "expected_eligible_candidate_count": 0,
+    "expected_execution_status": "COMPLETED",
+    "expected_gates_weakened": false,
+    "expected_next_required": null,
+    "expected_selected_candidate": null,
+    "expected_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+    "expected_step29i_authorized": false,
+    "expected_winner_forced": false,
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_model_selection_results.json",
+    "schema_version": "v2c6-targeted-remediation-model-selection-results.v1",
+    "sha256": "81fc64cd3476cd4eb2c6dc1e7b555803692f4800d48a61665fa9fd7768c9f145"
+  },
+  "source_result_manifest": {
+    "expected_candidate_count": 4,
+    "expected_eligible_candidate_count": 0,
+    "expected_next_required": null,
+    "expected_selected_candidate": null,
+    "expected_selection_status": "NO_ACCEPTABLE_CANDIDATE",
+    "expected_step29i_authorized": false,
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_model_selection_results.manifest.json",
+    "schema_version": "v2c6-targeted-remediation-model-selection-results-manifest.v1",
+    "sha256": "5922497a5a05e44833c525de1fc4386b9bff763db4bb2185577e8a6496f15abb"
+  },
+  "step29i_authorized": false,
+  "threshold_tuning_performed": false,
+  "training_data_modified": false
+}

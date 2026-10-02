@@ -2233,9 +2233,9 @@ occurred. Step 29I remains blocked. The result itself authorized no next
 activity and recorded `next_required=null`; the separate read-only contract
 below authorizes analysis only and does not choose a remedy.
 
-## V2-C6 targeted-remediation failure-analysis contract
+## V2-C6 targeted-remediation failure analysis
 
-`v2c6_targeted_remediation_failure_analysis_contract.json` freezes a new
+`v2c6_targeted_remediation_failure_analysis_contract.json` froze the
 read-only diagnostic step over the already-persisted grouped-CV and fresh
 predictions in `v2c6_targeted_remediation_model_selection_results.json`. It
 hash-pins the result, manifest, Step 29H-C design, 9,608-record development
@@ -2253,7 +2253,7 @@ attribution is unavailable and the model must not be reconstructed or rerun.
 Allowed evidence classifications are descriptive and non-causal; multiple
 categories may be reported when directly supported.
 
-Future tracked outputs are reserved as
+The completed create-once outputs are
 `v2c6_targeted_remediation_failure_analysis.json` and
 `v2c6_targeted_remediation_failure_analysis.manifest.json`, with raw utterance
 text prohibited. The contract permits only read-only joins to prediction-linked
@@ -2266,14 +2266,39 @@ authorization.
 frozen read-only workflow with mutually exclusive `--preflight` and `--run`
 modes. It consumes only the completed experiment's persisted predictions and
 frozen metadata joins. It cannot train or refit a model, generate embeddings,
-run inference, or tune thresholds; execution will create the two reserved
-text-free artifacts once and refuses overwrite.
+run inference, or tune thresholds; execution created the two reserved text-free
+artifacts without overwriting an existing artifact.
 
-The failure analysis has not been executed, no findings or remediation choice
-exist, and the 640 fresh records are already consumed
-development-diagnostic evidence. The final holdout remains untouched.
-`next_required` is `null`; a separately frozen continuation/remediation design
-is required after analysis. Step 29I remains blocked.
+The analysis completed with phase
+`V2-C6 targeted-remediation failure analysis`, `execution_status=COMPLETED`,
+and `failure_analysis_executed=true`. All four candidates exhibited protected
+false positives in both grouped CV and fresh evaluation. Pooled fresh
+unsupported recall ranged from 0.5125 to 0.6625, substantially below the
+approximately 0.8682 to 0.9021 grouped-CV range, and the same degradation was
+present across both consumed fresh families. Most pooled-fresh protected false
+positives for every candidate originated from true
+`unsupported_or_uncertain` records. Protected recall remained comparatively
+strong at 0.9125 to 0.95625; the dominant measured problem is over-routing
+unsupported or uncertain requests into supported, including protected,
+intents. These are descriptive observations, not causal root-cause findings.
+
+The hierarchical candidate did not eliminate the weakness. Exact Stage-1
+attribution is unavailable because stage-level predictions were not persisted.
+The result records the non-causal classifications
+`development_distribution_boundary_weakness`,
+`fresh_source_generalization_weakness`, `architecture_specific_weakness`, and
+`cross_architecture_shared_weakness`.
+
+Execution governance records `models_run=false`,
+`embeddings_generated=false`, no fitting, training, inference, or threshold
+tuning, no candidate selection or ranking, no remediation selection, and no
+final-holdout access. Hybrid and every other candidate remain unselected.
+Step 29I remains blocked and unauthorized, runtime behavior remains unchanged,
+and `next_required=null`. The 640 fresh records are consumed
+diagnostic/development evidence and cannot be reused or represented as
+untouched evaluation evidence. No remediation has been frozen or authorized;
+a separately frozen remediation-design contract is required before any new
+data, model, or gate experiment.
 
 ## Reproduce V2-C1
 

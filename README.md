@@ -5016,15 +5016,15 @@ remains blocked. The result itself authorized no continuation and recorded
 `next_required=null`; the separate read-only contract below does not choose a
 remedy or authorize Step 29I.
 
-### V2-C6 targeted-remediation failure-analysis contract
+### V2-C6 targeted-remediation failure analysis
 
 `data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis_contract.json`
-now freezes the next permitted activity: a read-only descriptive analysis of
+froze the permitted activity: a read-only descriptive analysis of
 the persisted predictions from the completed four-candidate experiment. The
 failed result and its `NO_ACCEPTABLE_CANDIDATE` state are hash-pinned inputs;
 the contract cannot select a candidate or modify the frozen gates.
 
-The future analysis must cover protected false positives, unsupported misses,
+The completed analysis covers protected false positives, unsupported misses,
 protected recall misses, directional errors on all ten targeted hard-negative
 boundaries, cross-candidate overlap, consistency across the two consumed fresh
 families, grouped-CV versus fresh error structure, and the limits of diagnosing
@@ -5036,14 +5036,39 @@ remediation.
 frozen read-only workflow with mutually exclusive `--preflight` and `--run`
 modes. It reads only the completed experiment's persisted predictions and
 frozen metadata joins; it has no training, refitting, embedding, inference, or
-threshold-tuning path. Execution will create the contract-reserved text-free
-result and manifest once and will refuse to overwrite either artifact.
+threshold-tuning path. It created the contract-reserved text-free result and
+manifest without overwriting an existing artifact.
 
-The analysis has not been executed and no findings have been produced. The 640
-fresh examples are already consumed diagnostic/development evidence, while the
-final holdout remains untouched. No remediation has been chosen. Step 29I
-remains blocked, `next_required` remains `null`, and any post-analysis
-continuation requires a separate frozen continuation/remediation design.
+The failure analysis completed with phase
+`V2-C6 targeted-remediation failure analysis`, `execution_status=COMPLETED`,
+and `failure_analysis_executed=true`. It observed protected false-positive
+weakness in both grouped CV and fresh evaluation for all four candidates.
+Unsupported recall was substantially lower on the two fresh families: pooled
+fresh recall ranged from 0.5125 to 0.6625, versus approximately 0.8682 to
+0.9021 in grouped CV. Most pooled-fresh protected false positives originated
+from true `unsupported_or_uncertain` records. Protected recall remained
+comparatively strong at 0.9125 to 0.95625, so the dominant measured problem is
+over-routing unsupported or uncertain requests into supported, including
+protected, intents. These observations are descriptive and do not establish a
+causal root cause.
+
+The hierarchical candidate did not eliminate the measured weakness.
+Stage-level predictions were not persisted, so exact Stage-1 attribution is
+unavailable. The non-causal evidence classifications are
+`development_distribution_boundary_weakness`,
+`fresh_source_generalization_weakness`, `architecture_specific_weakness`, and
+`cross_architecture_shared_weakness`.
+
+Analysis governance records `models_run=false`, `embeddings_generated=false`,
+no model fitting, training, or inference, no threshold tuning, no candidate
+selection or ranking, no remediation selection, and no final-holdout access.
+Neither Hybrid nor any other candidate was selected. Step 29I remains blocked
+and unauthorized, runtime behavior remains unchanged, and
+`next_required=null`. The 640 fresh records are consumed diagnostic/development
+evidence and cannot be reused or represented as untouched evaluation evidence.
+No remediation has been frozen or authorized; a separately frozen
+remediation-design contract is required before any new data, model, or gate
+experiment.
 
 ### Why this extension is useful
 

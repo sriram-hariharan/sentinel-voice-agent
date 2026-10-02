@@ -2262,10 +2262,18 @@ threshold tuning, candidate or gate changes, new examples, final-holdout access,
 candidate selection, remediation implementation, runtime changes, and Step 29I
 authorization.
 
+`scripts/run_v2c6_targeted_remediation_failure_analysis.py` now implements the
+frozen read-only workflow with mutually exclusive `--preflight` and `--run`
+modes. It consumes only the completed experiment's persisted predictions and
+frozen metadata joins. It cannot train or refit a model, generate embeddings,
+run inference, or tune thresholds; execution will create the two reserved
+text-free artifacts once and refuses overwrite.
+
 The failure analysis has not been executed, no findings or remediation choice
-exist, and the 640 fresh records remain consumed development-diagnostic
-evidence. `next_required` is `null`; a separately frozen continuation design is
-required after analysis. Step 29I remains blocked.
+exist, and the 640 fresh records are already consumed
+development-diagnostic evidence. The final holdout remains untouched.
+`next_required` is `null`; a separately frozen continuation/remediation design
+is required after analysis. Step 29I remains blocked.
 
 ## Reproduce V2-C1
 

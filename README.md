@@ -5032,11 +5032,18 @@ the hierarchy without persisted stage-level predictions. It may produce
 multiple non-causal evidence classifications, but it cannot choose or implement
 remediation.
 
-The analysis has not been executed and no findings have been produced. No
-model, embedding, inference, threshold, dataset, taxonomy, final holdout, or
-runtime operation is authorized. The 640 fresh examples remain consumed
-development evidence. Step 29I remains blocked, `next_required` remains
-`null`, and any post-analysis continuation requires a separate frozen design.
+`scripts/run_v2c6_targeted_remediation_failure_analysis.py` now implements the
+frozen read-only workflow with mutually exclusive `--preflight` and `--run`
+modes. It reads only the completed experiment's persisted predictions and
+frozen metadata joins; it has no training, refitting, embedding, inference, or
+threshold-tuning path. Execution will create the contract-reserved text-free
+result and manifest once and will refuse to overwrite either artifact.
+
+The analysis has not been executed and no findings have been produced. The 640
+fresh examples are already consumed diagnostic/development evidence, while the
+final holdout remains untouched. No remediation has been chosen. Step 29I
+remains blocked, `next_required` remains `null`, and any post-analysis
+continuation requires a separate frozen continuation/remediation design.
 
 ### Why this extension is useful
 

@@ -2165,44 +2165,73 @@ Observed execution status was `ready_for_build=true` at preflight,
 `backend/tests/test_v2c6_*.py` tests reported 453 passed; separate Ruff checks
 for the builder and tests passed; and `git diff --check` passed.
 
-No candidate was trained or evaluated in this cycle. No embeddings, model
-fit, inference, threshold tuning, final-holdout access, dataset-policy change,
-taxonomy change, or runtime change occurred. Step 29I remains blocked. After
-the data-phase commit, the only authorized technical activity is the frozen
-four-candidate experiment:
+The dataset-construction cycle itself performed no candidate evaluation,
+embedding generation, model fitting, inference, or threshold tuning. After the
+data-phase commit, it authorized only the frozen four-candidate development
+experiment. Candidate definitions, safety gates, the selection rule, taxonomy,
+dataset protocol, and runtime authority remained unchanged.
 
-- `BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none`
-- `WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
-- `HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
-- `HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+The development-only execution machinery in
+`scripts/run_v2c6_targeted_remediation_model_selection.py` has now completed
+the frozen experiment. It reused one deterministic set of five
+`StratifiedGroupKFold` partitions for all four candidates. Each candidate was
+then fit once on all 9,608 development records and used without a family-level
+refit to produce both 320-record fresh-family prediction sets and the pooled
+640-record metrics. The fresh records were excluded from representation and
+classifier fitting and were not used for threshold tuning.
 
-Candidate definitions, safety gates, the selection rule, taxonomy, dataset
-protocol, and runtime authority are unchanged.
+The execution status is `COMPLETED`; all four candidate executions completed,
+but none was eligible. The deterministic outcome is:
 
-The development-only execution machinery is now prepared in
-`scripts/run_v2c6_targeted_remediation_model_selection.py`. It validates the
-Step 29H-C contract and both frozen datasets, reuses one deterministic set of
-five `StratifiedGroupKFold` partitions for all four candidates, and keeps all
-640 fresh records outside representation and classifier fitting. Each
-candidate is fit once on all 9,608 development records for fresh evaluation;
-that same fitted candidate produces both 320-record family prediction sets and
-the pooled 640-record metrics. The hybrid uses deterministic sparse
-TF-IDF/BGE concatenation with row L2 normalization, and the hierarchy uses the
-frozen unsupported-versus-supported stage followed by the 15-way supported
-stage without thresholds or overrides.
+- `selection_status = NO_ACCEPTABLE_CANDIDATE`
+- `selected_candidate = null`
+- `winner_forced = false`
+- `gates_weakened = false`
+- `step29i_authorized = false`
+- `next_required = null`
 
-Create-once outputs are reserved at
+Aggregate candidate results are:
+
+| Candidate | Pooled fresh primary-8 macro F1 | Pooled group-CV macro F1-16 | Pooled fresh protected FPR | Pooled fresh protected recall | Pooled fresh unsupported recall | Eligible |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none` | 0.8454459835298751 | 0.8792458237805437 | 0.059375 | 0.9125 | 0.6375 | no |
+| `WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none` | 0.8365655768896487 | 0.8654374384371238 | 0.06875 | 0.940625 | 0.6625 | no |
+| `HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none` | 0.8626982912616474 | 0.8952700882334053 | 0.059375 | 0.95625 | 0.6625 | no |
+| `HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none` | 0.8103099681529785 | 0.8567438107400511 | 0.0875 | 0.9125 | 0.5125 | no |
+
+Every candidate failed protected false-positive rate on pooled group-aware CV,
+both individual fresh families, and pooled fresh evaluation. Every candidate
+failed unsupported recall on both individual fresh families and pooled fresh
+evaluation. Pooled fresh protected recall exceeded its 0.80 threshold for all
+four candidates. The hybrid recorded the highest pooled fresh primary-8 macro
+F1 and pooled fresh protected recall in this experiment, but it is not a
+winner, selected candidate, acceptable candidate, or final model. The frozen
+gates are unchanged and are not reinterpreted.
+
+The create-once results are
 `v2c6_targeted_remediation_model_selection_results.json` and
-`v2c6_targeted_remediation_model_selection_results.manifest.json`. Reusable BGE
-embeddings, if generated during local execution, are isolated to the ignored
-experiment-specific cache
-`local/v2c6_targeted_remediation_model_selection_bge_cache.npz` and its
-manifest. The historical Step 29H results and cache remain untouched.
+`v2c6_targeted_remediation_model_selection_results.manifest.json`. Their audit
+identities are:
 
-This runner has not been executed. No result artifact or candidate outcome
-exists, and the fresh 640 have not yet been evaluated by a model. Runner
-preparation performed no embeddings, fitting, inference, threshold tuning,
-final-holdout access, or runtime change. Step 29I remains blocked.
+- results SHA-256:
+  `81fc64cd3476cd4eb2c6dc1e7b555803692f4800d48a61665fa9fd7768c9f145`
+- runner SHA-256:
+  `043e00d5cab470359b2ad5e4f78492a715bfb9ed6e83e766fcd08e6c923af6b0`
+- split-audit SHA-256:
+  `a25276d7ead685e32ea728d6c8a8065ea43a8a04b4b40a854b831691df556668`
+
+Governance remains fail closed: the 640 fresh records were not used for
+fitting or threshold tuning; no fitted classifier was persisted; the final
+holdout was neither accessed nor evaluated; no final-model acceptance was
+claimed; and runtime behavior did not change. The 640 records are now consumed
+development-evaluation evidence and must not subsequently be represented as
+untouched or fresh evidence. Historical Step 29H results remain historical and
+unchanged.
+
+No post-result remediation, threshold tuning, or model modification has
+occurred. Step 29I remains blocked. No next activity is authorized because no
+frozen post-result continuation contract exists and `next_required` is `null`;
+this documentation does not invent one.
 
 ## Reproduce V2-C1
 

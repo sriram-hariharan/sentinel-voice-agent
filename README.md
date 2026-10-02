@@ -4966,33 +4966,54 @@ Preflight reported `ready_for_build=true`; build reported
 reported `results_valid=true`. Detailed hashes and validation evidence are recorded in
 `data/evals/v2/ml/README.md`.
 
-No candidate was trained or evaluated in this cycle. No embeddings, model
-fit, inference, threshold tuning, final-holdout access, taxonomy change, or
-runtime change occurred. Step 29I remains blocked. After the data-phase commit,
-the next authorized technical activity is only the frozen four-candidate
-experiment:
+The dataset-construction cycle itself performed no candidate evaluation,
+embedding generation, model fitting, inference, or threshold tuning. After the
+data-phase commit, it authorized only the frozen four-candidate development
+experiment; the candidates, gates, selection rule, taxonomy, dataset protocol,
+and runtime authority remained unchanged.
 
-- `BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none`
-- `WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
-- `HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
-- `HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none`
+The development-only runner at
+`scripts/run_v2c6_targeted_remediation_model_selection.py` has now completed
+that experiment. All four candidates received shared five-fold group-aware CV
+over the 9,608 development records, followed by one full-development candidate
+fit and separate reporting for both fresh families and their pooled 640
+records. Fresh evaluation remained excluded from representation and classifier
+fitting and was not used for threshold tuning.
 
-The candidates, gates, selection rule, taxonomy, dataset protocol, and runtime
-authority are unchanged.
+Execution status is `COMPLETED`, but zero candidates were eligible. Selection
+closed with `selection_status=NO_ACCEPTABLE_CANDIDATE`,
+`selected_candidate=null`, `winner_forced=false`, `gates_weakened=false`,
+`step29i_authorized=false`, and `next_required=null`.
 
-The next development-only runner is now implemented at
-`scripts/run_v2c6_targeted_remediation_model_selection.py`. It is prepared to
-execute the frozen four-candidate experiment with shared five-fold group-aware
-CV over the 9,608 development records, followed by one full-development fit per
-candidate and separate reporting for both fresh families and their pooled 640
-records. Fresh evaluation remains excluded from every representation and model
-fit. The runner uses new create-once result paths and an experiment-specific
-local BGE cache; it does not overwrite the consumed Step 29H artifacts.
+| Candidate | Pooled fresh primary-8 macro F1 | Pooled group-CV macro F1-16 | Pooled fresh protected FPR | Pooled fresh protected recall | Pooled fresh unsupported recall | Eligible |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `BGE_SMALL_LINEAR_SVC__C=4.0__class_weight=none` | 0.8454459835298751 | 0.8792458237805437 | 0.059375 | 0.9125 | 0.6375 | no |
+| `WORD_CHAR_TFIDF_LINEAR_SVC__C=1.0__class_weight=none` | 0.8365655768896487 | 0.8654374384371238 | 0.06875 | 0.940625 | 0.6625 | no |
+| `HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none` | 0.8626982912616474 | 0.8952700882334053 | 0.059375 | 0.95625 | 0.6625 | no |
+| `HIERARCHICAL_TFIDF_LINEAR_SVC__C=1.0__class_weight=none` | 0.8103099681529785 | 0.8567438107400511 | 0.0875 | 0.9125 | 0.5125 | no |
 
-The runner has not been executed. No candidate result exists, the fresh 640
-have not been used for model evaluation, and no embeddings, classifier fits,
-inference, threshold tuning, final-holdout access, or runtime change occurred
-while preparing it. Step 29I remains blocked.
+Every candidate failed the protected false-positive-rate gate on pooled
+group-aware CV, both individual fresh families, and pooled fresh evaluation.
+Every candidate also failed unsupported recall on both individual fresh
+families and pooled fresh evaluation. Pooled fresh protected recall exceeded
+0.80 for all four. The hybrid reported the highest pooled fresh primary-8
+macro F1 and protected recall, but it is not a winner, selected candidate,
+acceptable candidate, or final model.
+
+The results artifact SHA-256 is
+`81fc64cd3476cd4eb2c6dc1e7b555803692f4800d48a61665fa9fd7768c9f145`;
+the runner SHA-256 is
+`043e00d5cab470359b2ad5e4f78492a715bfb9ed6e83e766fcd08e6c923af6b0`;
+and the split-audit SHA-256 is
+`a25276d7ead685e32ea728d6c8a8065ea43a8a04b4b40a854b831691df556668`.
+
+No fitted classifier was persisted, no final holdout was accessed or
+evaluated, no final-model acceptance was claimed, and runtime behavior did not
+change. The 640 fresh examples are now consumed development-evaluation
+evidence and must not later be described as untouched or fresh. No post-result
+remediation, threshold tuning, or model modification has occurred. Step 29I
+remains blocked, and no continuation is authorized because no frozen
+continuation contract exists and `next_required` is `null`.
 
 ### Why this extension is useful
 

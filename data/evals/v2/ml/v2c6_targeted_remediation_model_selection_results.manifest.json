@@ -1,0 +1,55 @@
+{
+  "candidate_count": 4,
+  "completed_candidate_count": 4,
+  "contract": {
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_design_contract.json",
+    "schema_version": "v2c6-targeted-remediation-design-contract.v1",
+    "sha256": "339bd20f4bb94e73a42bd297c053aef8deaf55ee42a3b2145b8792172e7d5e91"
+  },
+  "final_holdout_accessed": false,
+  "final_holdout_evaluated": false,
+  "final_model_acceptance_claimed": false,
+  "fresh_evaluation_used_for_fitting": false,
+  "fresh_evaluation_used_for_threshold_tuning": false,
+  "frozen_inputs": {
+    "development_dataset": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.json",
+      "record_count": 9608,
+      "schema_version": "v2c6-targeted-remediated-development-dataset.v1",
+      "sha256": "133456aa10552058fe67ed2eed37acbe583e31331656174cd2e018430cca799d"
+    },
+    "fresh_evaluation_dataset": {
+      "excluded_from_fitting": true,
+      "path": "data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.json",
+      "record_count": 640,
+      "schema_version": "v2c6-fresh-source-evaluation-dataset.v1",
+      "sha256": "df3c1eef7e262260754a1a10908b540d479fe7dc3d6f228d1a9ba432ae9f1a6e"
+    },
+    "step29g_convention_source": {
+      "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_contract.json",
+      "schema_version": "v2c6-source-aware-model-selection-contract.v1",
+      "sha256": "de4566b7fdb097e78fcd23b8ffa4682c4757cc7c5901c3f9a49d7da28192b1ba"
+    }
+  },
+  "gates_weakened": false,
+  "model_selection_performed": true,
+  "next_required": null,
+  "persisted_fitted_classifier": false,
+  "phase": "V2-C6 targeted-remediation development model selection",
+  "results": {
+    "path": "data/evals/v2/ml/v2c6_targeted_remediation_model_selection_results.json",
+    "schema_version": "v2c6-targeted-remediation-model-selection-results.v1",
+    "sha256": "81fc64cd3476cd4eb2c6dc1e7b555803692f4800d48a61665fa9fd7768c9f145"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_targeted_remediation_model_selection.py",
+    "sha256": "043e00d5cab470359b2ad5e4f78492a715bfb9ed6e83e766fcd08e6c923af6b0"
+  },
+  "runtime_behavior_changed": false,
+  "schema_version": "v2c6-targeted-remediation-model-selection-results-manifest.v1",
+  "selected_candidate_id": null,
+  "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+  "split_audit_sha256": "a25276d7ead685e32ea728d6c8a8065ea43a8a04b4b40a854b831691df556668",
+  "step29i_authorized": false,
+  "winner_forced": false
+}

@@ -5066,9 +5066,52 @@ Neither Hybrid nor any other candidate was selected. Step 29I remains blocked
 and unauthorized, runtime behavior remains unchanged, and
 `next_required=null`. The 640 fresh records are consumed diagnostic/development
 evidence and cannot be reused or represented as untouched evaluation evidence.
-No remediation has been frozen or authorized; a separately frozen
-remediation-design contract is required before any new data, model, or gate
-experiment.
+At analysis completion no remediation had been frozen or authorized; the
+separate design below now freezes the bounded next cycle before any new data,
+model, or gate experiment.
+
+### V2-C6 protected-intent safety-gate remediation design
+
+`data/evals/v2/ml/v2c6_protected_intent_gate_remediation_design_contract.json`
+now freezes that separate design. The completed failure analysis remains the
+non-causal evidence basis: it measured unsupported-to-protected over-routing,
+but it did not establish a causal root cause or select a model or remedy.
+
+The deliberately narrow experiment compares exactly `HYBRID_CONTROL_R3`
+against `HYBRID_PROTECTED_VERIFIER_R3`. Both use the same Hybrid primary router
+and the same planned 10,088-record expanded development set. The gated variant
+adds four independent word+character TF-IDF `LinearSVC` verifiers, one for each
+protected intent. A verifier runs only after its protected intent is predicted;
+acceptance preserves that prediction and rejection routes to
+`unsupported_or_uncertain`. This gate affects routing only and confers no
+authorization or tool-execution permission.
+
+The design requires a new 480-record training addendum across three materially
+different 160-record source families. Each verifier receives only its 60 new
+positive examples and 60 targeted unsupported hard negatives. The consumed R2
+fresh evidence cannot be reused as untouched evidence, so evaluation requires
+two new independently authored R3 families of 320 records each, with 40 records
+per primary intent and explicit protected-boundary metadata for the 40
+unsupported records in each family.
+
+Safety gates remain unchanged: protected recall at least 0.80, protected
+false-positive rate at most 0.01, and unsupported recall at least 0.80 on
+pooled grouped CV, each new R3 family, and pooled R3 evaluation. Only eligible
+candidates may enter the frozen lexicographic selection rule.
+
+The cycle has an explicit stop rule. If neither candidate passes every gate in
+every required scope, no automatic R4 classifier/data cycle, new
+representation, new remediation dataset, or gate weakening is permitted; the
+required continuation becomes a separately frozen
+`routing_architecture_fallback_decision`. If a candidate is eligible, the next
+required activity is the separately frozen
+`v2c6_candidate_freeze_before_final_holdout`, not automatic Step 29I or holdout
+access.
+
+This contract step authored no data and ran no model, embedding, fitting,
+inference, threshold tuning, or experiment. Step 29I remains blocked and the
+raw final holdout remains untouched. The immediate frozen continuation is
+`v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`.
 
 ### Why this extension is useful
 

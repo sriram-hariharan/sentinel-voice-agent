@@ -1,0 +1,577 @@
+{
+  "architecture_decision": {
+    "authorization_semantics": {
+      "application_controls": [
+        "authentication",
+        "ownership",
+        "explicit_confirmation",
+        "idempotency",
+        "protected_tool_execution"
+      ],
+      "verifier_is_authorization": false,
+      "verifier_only_changes_routing": true
+    },
+    "generic_supported_vs_unsupported_gate_permitted": false,
+    "generic_supported_vs_unsupported_gate_prior_result": "tested_and_did_not_eliminate_measured_weakness",
+    "primary_router": {
+      "C": 1.0,
+      "candidate_id": "HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+      "class_weight": null,
+      "classifier": "LinearSVC",
+      "representation": "HYBRID_BGE_TFIDF"
+    },
+    "protected_intents": [
+      "cancel_transfer",
+      "close_account",
+      "create_dispute",
+      "freeze_card"
+    ],
+    "routing_rule": {
+      "non_protected_primary_prediction": "return_primary_prediction_unchanged",
+      "protected_primary_prediction": "invoke_verifier_dedicated_to_predicted_protected_intent",
+      "verifier_accept": "preserve_primary_protected_prediction",
+      "verifier_reject": "return_unsupported_or_uncertain"
+    }
+  },
+  "candidate_search_space": {
+    "additional_candidates_permitted": false,
+    "candidate_count": 2,
+    "candidates": [
+      {
+        "candidate_id": "HYBRID_CONTROL_R3",
+        "complexity_rank": 1,
+        "primary_router": "HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+        "primary_training_dataset_record_count": 10088,
+        "protected_intent_verifiers": false,
+        "role": "identical_data_control"
+      },
+      {
+        "candidate_id": "HYBRID_PROTECTED_VERIFIER_R3",
+        "complexity_rank": 2,
+        "primary_router": "HYBRID_BGE_TFIDF_LINEAR_SVC__C=1.0__class_weight=none",
+        "primary_training_dataset_record_count": 10088,
+        "protected_intent_verifiers": true,
+        "role": "protected_intent_verifier_intervention"
+      }
+    ],
+    "exact_candidate_ids": [
+      "HYBRID_CONTROL_R3",
+      "HYBRID_PROTECTED_VERIFIER_R3"
+    ],
+    "prohibited_expansion": [
+      "bge_verifier_variants",
+      "class_weight_variants",
+      "additional_C_values",
+      "threshold_variants",
+      "calibration_variants",
+      "llm_routing",
+      "additional_architectures",
+      "new_model_families"
+    ]
+  },
+  "consumed_evidence_governance": {
+    "consumed_r2_fresh_evaluation_record_count": 640,
+    "consumed_r2_fresh_source_family_ids": [
+      "v2c6_r2_eval_sf1_independent_casework",
+      "v2c6_r2_eval_sf2_independent_naturalistic"
+    ],
+    "may_be_reused_as_untouched_evaluation_evidence": false,
+    "permitted_role": "consumed_diagnostic_development_evidence_only"
+  },
+  "contract_status": {
+    "candidate_selected": false,
+    "contract_frozen": true,
+    "data_authored": false,
+    "dataset_mutated": false,
+    "embeddings_generated": false,
+    "final_holdout_accessed": false,
+    "final_model_acceptance_claimed": false,
+    "model_fitting_performed": false,
+    "model_inference_performed": false,
+    "model_training_performed": false,
+    "remediation_design_frozen": true,
+    "remediation_executed": false,
+    "runtime_behavior_changed": false,
+    "step29i_authorized": false,
+    "threshold_tuning_performed": false
+  },
+  "contract_version": "v2c6-protected-intent-gate-remediation-design-contract.v1",
+  "duplicate_and_overlap_controls": {
+    "embedding_similarity_required": false,
+    "failure_behavior": "fail_closed",
+    "historical_overlap_checks": [
+      "all_historical_development_text",
+      "all_consumed_fresh_and_source_evaluation_text",
+      "raw_final_holdout_via_existing_prohibition_mechanism_only"
+    ],
+    "normalization": "unicode-nfkc-lower-whitespace.v1",
+    "required_zero_counts": [
+      "exact_duplicate",
+      "normalized_duplicate",
+      "cross_intent_normalized_collision",
+      "historical_development_normalized_overlap",
+      "consumed_evaluation_normalized_overlap",
+      "final_holdout_normalized_overlap"
+    ],
+    "raw_final_holdout_direct_access_permitted": false
+  },
+  "evaluation_protocol": {
+    "fresh_evaluation": {
+      "control_candidate_fit": {
+        "fit_count": 1,
+        "primary_router_fit_population": "all_10088_expanded_development_records"
+      },
+      "gated_candidate_fit": {
+        "fit_count": 1,
+        "primary_router_fit_population": "all_10088_expanded_development_records",
+        "verifier_fit_population": "all_120_relevant_r3_addendum_records_per_verifier"
+      },
+      "evaluation_scopes": [
+        "v2c6_r3_eval_sf1_independent_casework",
+        "v2c6_r3_eval_sf2_independent_naturalistic",
+        "pooled_r3_fresh_evaluation"
+      ],
+      "no_refit_between_source_families": true,
+      "same_fitted_candidate_used_for_both_families": true
+    },
+    "grouped_development_cv": {
+      "fold_count": 5,
+      "group_field": "group_id",
+      "group_id_is_atomic": true,
+      "method": "StratifiedGroupKFold",
+      "n_splits": 5,
+      "primary_router_fit_rule": "fit_only_on_fold_development_training_partition",
+      "random_state": 20260930,
+      "same_folds_for_both_candidates": true,
+      "shuffle": true,
+      "verifier_fit_rule": "use_only_relevant_r3_verifier_examples_in_fold_training_partition",
+      "fold_test_records_in_primary_or_verifier_fitting_permitted": false,
+      "verifier_fold_test_leakage_permitted": false,
+      "verifier_runs_after_primary_prediction": true
+    }
+  },
+  "expanded_development_dataset": {
+    "both_candidates_use_identical_primary_training_dataset": true,
+    "existing_frozen_record_count": 9608,
+    "expected_expanded_record_count": 10088,
+    "new_r3_targeted_record_count": 480,
+    "purpose": "isolate_verifier_architecture_from_addendum_effect"
+  },
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "final_model_acceptance_claim_permitted": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "fresh_evaluation_specification": {
+    "authoring_independence": {
+      "candidate_modification_from_evaluation_permitted": false,
+      "consult_other_r3_fresh_family_wording": false,
+      "copy_or_paraphrase_consumed_r2_fresh_records": false,
+      "copy_r3_training_families": false,
+      "independently_authored": true,
+      "representation_or_vocabulary_fitting_permitted": false,
+      "threshold_or_calibration_selection_permitted": false,
+      "training_use_permitted": false
+    },
+    "family_count": 2,
+    "family_specifications": [
+      {
+        "intent_counts": {
+          "account_blocked": 40,
+          "cancel_transfer": 40,
+          "close_account": 40,
+          "create_dispute": 40,
+          "freeze_card": 40,
+          "transfer_failed_or_declined": 40,
+          "transfer_pending": 40,
+          "unsupported_or_uncertain": 40
+        },
+        "non_protected_record_count": 160,
+        "protected_record_count": 160,
+        "record_count": 320,
+        "source_family_id": "v2c6_r3_eval_sf1_independent_casework",
+        "unsupported_boundary_target_counts": {
+          "cancel_transfer": 10,
+          "close_account": 10,
+          "create_dispute": 10,
+          "freeze_card": 10
+        }
+      },
+      {
+        "intent_counts": {
+          "account_blocked": 40,
+          "cancel_transfer": 40,
+          "close_account": 40,
+          "create_dispute": 40,
+          "freeze_card": 40,
+          "transfer_failed_or_declined": 40,
+          "transfer_pending": 40,
+          "unsupported_or_uncertain": 40
+        },
+        "non_protected_record_count": 160,
+        "protected_record_count": 160,
+        "record_count": 320,
+        "source_family_id": "v2c6_r3_eval_sf2_independent_naturalistic",
+        "unsupported_boundary_target_counts": {
+          "cancel_transfer": 10,
+          "close_account": 10,
+          "create_dispute": 10,
+          "freeze_card": 10
+        }
+      }
+    ],
+    "intent_count": 8,
+    "per_family_record_count": 320,
+    "per_intent_per_family_count": 40,
+    "record_count": 640,
+    "source_family_ids": [
+      "v2c6_r3_eval_sf1_independent_casework",
+      "v2c6_r3_eval_sf2_independent_naturalistic"
+    ]
+  },
+  "gate_specific_diagnostics": {
+    "alter_mandatory_safety_gates": false,
+    "required_metrics": [
+      "primary_protected_predictions_presented_to_verifier",
+      "verifier_accept_count",
+      "verifier_reject_to_unsupported_count",
+      "per_protected_intent_verifier_recall",
+      "protected_false_positives_prevented_by_verifier",
+      "true_protected_requests_rejected_by_verifier",
+      "final_protected_false_positive_rate",
+      "final_protected_recall",
+      "final_unsupported_recall"
+    ]
+  },
+  "known_limitations": [
+    "The failure analysis is descriptive and establishes no causal root cause.",
+    "The R3 training and fresh evaluation records do not exist in this contract step.",
+    "The verifier intervention changes routing only and provides no authorization.",
+    "Passing development gates would not constitute final-model acceptance.",
+    "The raw final holdout remains prohibited until a separately governed final-validation preparation step."
+  ],
+  "measured_basis": {
+    "causal_root_cause_proven": false,
+    "exact_hierarchical_stage_1_attribution_available": false,
+    "generic_hierarchical_candidate_eliminated_weakness": false,
+    "protected_false_positive_weakness_observed_in_grouped_cv_and_fresh": true,
+    "protected_recall_comparatively_strong": true,
+    "remediation_selected_by_analysis": false,
+    "unsupported_recall_degraded_on_independent_fresh_evidence": true,
+    "unsupported_to_protected_is_majority_fresh_protected_false_positive_origin": true
+  },
+  "next_required": "v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring",
+  "phase": "V2-C6 protected-intent safety-gate remediation design",
+  "prohibited_operations": [
+    "r3_data_authoring_in_this_contract_step",
+    "model_fitting",
+    "model_training",
+    "model_inference",
+    "embedding_generation",
+    "threshold_tuning",
+    "calibration",
+    "candidate_expansion",
+    "generic_supported_vs_unsupported_gate",
+    "safety_gate_weakening",
+    "runtime_change",
+    "candidate_selection",
+    "final_model_acceptance_claim",
+    "v2c5_final_holdout_access",
+    "step29i_authorization"
+  ],
+  "repository_baseline": {
+    "branch": "v2/ml-routing-evaluation",
+    "head": "9923061",
+    "head_subject": "Record V2-C6 targeted remediation failure analysis"
+  },
+  "safety_gates": {
+    "application_scopes": [
+      "pooled_group_aware_cv",
+      "v2c6_r3_eval_sf1_independent_casework",
+      "v2c6_r3_eval_sf2_independent_naturalistic",
+      "pooled_r3_fresh_evaluation"
+    ],
+    "fresh_family_protected_false_positive_allowance": {
+      "maximum_passing_count": 1,
+      "non_protected_gold_count": 160,
+      "threshold": 0.01
+    },
+    "gates": [
+      {
+        "comparison": "greater_than_or_equal",
+        "metric": "protected_recall",
+        "threshold": 0.8
+      },
+      {
+        "comparison": "less_than_or_equal",
+        "metric": "protected_false_positive_rate",
+        "threshold": 0.01
+      },
+      {
+        "comparison": "greater_than_or_equal",
+        "metric": "unsupported_recall",
+        "threshold": 0.8
+      }
+    ],
+    "mandatory_for_candidate_eligibility": true,
+    "must_pass_every_gate_on_every_scope": true,
+    "thresholds_may_be_weakened": false,
+    "thresholds_unchanged": true
+  },
+  "schema_version": "v2c6-protected-intent-gate-remediation-design-contract.v1",
+  "selection_rule": {
+    "complexity_order": [
+      "HYBRID_CONTROL_R3",
+      "HYBRID_PROTECTED_VERIFIER_R3"
+    ],
+    "eligible_candidates_only": true,
+    "if_no_candidate_is_eligible": {
+      "gates_weakened": false,
+      "selected_candidate": null,
+      "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+      "winner_forced": false
+    },
+    "ordered_lexicographic_criteria": [
+      {
+        "direction": "maximize",
+        "metric": "worst_fresh_family_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_fresh_primary_8_macro_f1"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_group_cv_macro_f1_16"
+      },
+      {
+        "direction": "minimize",
+        "metric": "pooled_fresh_protected_false_positive_rate"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_fresh_protected_recall"
+      },
+      {
+        "direction": "maximize",
+        "metric": "pooled_fresh_unsupported_recall"
+      },
+      {
+        "direction": "prefer_lower_rank",
+        "metric": "model_complexity_rank"
+      },
+      {
+        "direction": "ascending_lexical",
+        "metric": "candidate_id"
+      }
+    ],
+    "single_weighted_score_used": false
+  },
+  "source_artifact_validation": {
+    "design_may_be_frozen_before_validation": false,
+    "hash_mismatch_behavior": "fail_closed",
+    "required_checks": [
+      "path_identity",
+      "sha256_identity",
+      "schema_version",
+      "analysis_execution_status_completed",
+      "analysis_failure_analysis_executed_true",
+      "analysis_no_candidate_selected",
+      "analysis_no_remediation_selected",
+      "analysis_step29i_blocked",
+      "analysis_next_required_null",
+      "final_holdout_not_accessed"
+    ]
+  },
+  "source_artifacts": {
+    "consumed_r2_fresh_dataset": {
+      "path": "data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.json",
+      "record_count": 640,
+      "schema_version": "v2c6-fresh-source-evaluation-dataset.v1",
+      "sha256": "df3c1eef7e262260754a1a10908b540d479fe7dc3d6f228d1a9ba432ae9f1a6e"
+    },
+    "existing_development_dataset": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.json",
+      "record_count": 9608,
+      "schema_version": "v2c6-targeted-remediated-development-dataset.v1",
+      "sha256": "133456aa10552058fe67ed2eed37acbe583e31331656174cd2e018430cca799d"
+    },
+    "failure_analysis_contract": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis_contract.json",
+      "schema_version": "v2c6-targeted-remediation-failure-analysis-contract.v1",
+      "sha256": "d9cb3fa6fcc6cdbb248ea7221bf0e74029b91dd7a7d74e411a9c2c8d8f0cf652"
+    },
+    "failure_analysis_manifest": {
+      "expected_execution_status": "COMPLETED",
+      "expected_failure_analysis_executed": true,
+      "expected_final_holdout_accessed": false,
+      "expected_next_required": null,
+      "expected_step29i_authorized": false,
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis.manifest.json",
+      "schema_version": "v2c6-targeted-remediation-failure-analysis-manifest.v1",
+      "sha256": "e514b744690733f223332c36a34c7a12bdf988d4442770e49dc49ddc108d5d6a"
+    },
+    "failure_analysis_result": {
+      "expected_candidate_selected": false,
+      "expected_execution_status": "COMPLETED",
+      "expected_failure_analysis_executed": true,
+      "expected_final_holdout_accessed": false,
+      "expected_next_required": null,
+      "expected_remediation_selected": false,
+      "expected_step29i_authorized": false,
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis.json",
+      "schema_version": "v2c6-targeted-remediation-failure-analysis.v1",
+      "sha256": "047151b85e84cf4a8704ca95af445b40e066a93ebb1f487125cff9a08ca1760d"
+    },
+    "prior_targeted_remediation_design_contract": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_design_contract.json",
+      "schema_version": "v2c6-targeted-remediation-design-contract.v1",
+      "sha256": "339bd20f4bb94e73a42bd297c053aef8deaf55ee42a3b2145b8792172e7d5e91"
+    }
+  },
+  "status": "FROZEN",
+  "stop_rule": {
+    "automatic_r4_classifier_or_data_cycle_authorized": false,
+    "failure_continuation": {
+      "action": "freeze_separate_product_level_fallback_decision",
+      "candidate_expansion_permitted": false,
+      "data_authoring_permitted": false,
+      "gates_may_be_weakened": false,
+      "next_required": "routing_architecture_fallback_decision",
+      "representation_or_model_family_addition_permitted": false,
+      "trigger": "neither_candidate_passes_all_mandatory_gates_on_all_required_scopes"
+    },
+    "fallback_examples_for_future_consideration_only": [
+      "require_clarification_for_protected_or_uncertain_routing",
+      "llm_structured_verification_under_separate_governance"
+    ],
+    "fallback_implemented_by_this_contract": false,
+    "success_continuation": {
+      "final_holdout_access_authorized": false,
+      "next_required": "v2c6_candidate_freeze_before_final_holdout",
+      "step29i_automatically_authorized": false,
+      "trigger": "at_least_one_candidate_passes_all_mandatory_gates_on_all_required_scopes"
+    }
+  },
+  "targeted_training_addendum": {
+    "authoring_goal": "protected_intent_explicitness_boundary_evidence_not_consumed_example_paraphrase",
+    "boundary_metadata_field": "target_protected_intent",
+    "family_count": 3,
+    "family_specifications": [
+      {
+        "authoring_style": "minimal_explicitness",
+        "positive_intent_counts": {
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20
+        },
+        "positive_record_count": 80,
+        "record_count": 160,
+        "source_family_id": "v2c6_r3_train_sf1_minimal_explicitness",
+        "unsupported_target_counts": {
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20
+        },
+        "unsupported_record_count": 80
+      },
+      {
+        "authoring_style": "contextual_boundary",
+        "positive_intent_counts": {
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20
+        },
+        "positive_record_count": 80,
+        "record_count": 160,
+        "source_family_id": "v2c6_r3_train_sf2_contextual_boundary",
+        "unsupported_target_counts": {
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20
+        },
+        "unsupported_record_count": 80
+      },
+      {
+        "authoring_style": "conversational_ambiguity",
+        "positive_intent_counts": {
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20
+        },
+        "positive_record_count": 80,
+        "record_count": 160,
+        "source_family_id": "v2c6_r3_train_sf3_conversational_ambiguity",
+        "unsupported_target_counts": {
+          "cancel_transfer": 20,
+          "close_account": 20,
+          "create_dispute": 20,
+          "freeze_card": 20
+        },
+        "unsupported_record_count": 80
+      }
+    ],
+    "negative_definition": "unsupported_or_uncertain_examples_lexically_or_semantically_resembling_the_target_protected_action_without_sufficient_evidence_of_a_current_execution_request",
+    "positive_definition": "explicit_current_request_to_execute_the_dedicated_protected_action",
+    "consumed_examples_may_be_paraphrase_sources": false,
+    "record_count": 480,
+    "source_family_ids": [
+      "v2c6_r3_train_sf1_minimal_explicitness",
+      "v2c6_r3_train_sf2_contextual_boundary",
+      "v2c6_r3_train_sf3_conversational_ambiguity"
+    ],
+    "source_families_must_differ_materially": true
+  },
+  "verifier_architecture": {
+    "additional_embeddings": false,
+    "C": 1.0,
+    "calibration": false,
+    "class_weight": null,
+    "classifier": "LinearSVC",
+    "confidence_override": false,
+    "independent_binary_verifier_count": 4,
+    "llm_verifier": false,
+    "negative_class": "targeted_unsupported_or_uncertain_hard_negatives_for_protected_intent",
+    "positive_class": "dedicated_protected_intent",
+    "representation": "WORD_CHAR_TFIDF",
+    "representation_convention": "existing_frozen_word_char_tfidf_convention",
+    "threshold_tuning": false,
+    "training_source": "r3_targeted_training_addendum_only",
+    "historical_development_records_permitted_in_verifier_fitting": false,
+    "verifiers": [
+      {
+        "negative_record_count": 60,
+        "positive_intent": "cancel_transfer",
+        "positive_record_count": 60,
+        "total_record_count": 120
+      },
+      {
+        "negative_record_count": 60,
+        "positive_intent": "close_account",
+        "positive_record_count": 60,
+        "total_record_count": 120
+      },
+      {
+        "negative_record_count": 60,
+        "positive_intent": "create_dispute",
+        "positive_record_count": 60,
+        "total_record_count": 120
+      },
+      {
+        "negative_record_count": 60,
+        "positive_intent": "freeze_card",
+        "positive_record_count": 60,
+        "total_record_count": 120
+      }
+    ]
+  }
+}

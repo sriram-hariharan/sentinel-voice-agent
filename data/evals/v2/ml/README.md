@@ -2296,9 +2296,53 @@ final-holdout access. Hybrid and every other candidate remain unselected.
 Step 29I remains blocked and unauthorized, runtime behavior remains unchanged,
 and `next_required=null`. The 640 fresh records are consumed
 diagnostic/development evidence and cannot be reused or represented as
-untouched evaluation evidence. No remediation has been frozen or authorized;
-a separately frozen remediation-design contract is required before any new
-data, model, or gate experiment.
+untouched evaluation evidence. At analysis completion no remediation had been
+frozen or authorized; the separate design below now freezes the bounded next
+cycle before any new data, model, or gate experiment.
+
+## V2-C6 protected-intent safety-gate remediation design
+
+`v2c6_protected_intent_gate_remediation_design_contract.json` freezes the
+separate post-analysis design. The completed failure analysis is its non-causal
+evidence basis: unsupported-to-protected over-routing was measured, but no
+causal root cause, candidate, or remediation was established by that analysis.
+
+The bounded candidate set contains only `HYBRID_CONTROL_R3` and
+`HYBRID_PROTECTED_VERIFIER_R3`. Both use the same Hybrid primary router and the
+same planned 10,088-record development set. The gated candidate adds four
+independent word+character TF-IDF `LinearSVC` verifiers, one per protected
+intent. A verifier is invoked only for its protected primary prediction;
+acceptance preserves that prediction and rejection returns
+`unsupported_or_uncertain`. Verifier output changes routing only.
+Authentication, ownership, confirmation, idempotency, and protected tool
+execution remain deterministic application responsibilities.
+
+The design freezes 480 new training records across three independent
+160-record R3 families. Each protected-intent verifier is trained solely on its
+60 new positive examples and 60 new unsupported hard negatives targeting that
+intent. The consumed 640-record R2 evaluation cannot become untouched evidence
+again. Two new independent R3 evaluation families are required, each with 320
+records, 40 examples per primary intent, and a 10-by-four protected-boundary
+allocation within its unsupported examples.
+
+The existing mandatory thresholds remain unchanged: protected recall at least
+0.80, protected false-positive rate at most 0.01, and unsupported recall at
+least 0.80. They apply to pooled grouped CV, both individual R3 evaluation
+families, and pooled R3 evaluation. Selection is lexicographic and restricted
+to candidates passing every gate in every scope.
+
+The contract prevents an automatic tuning loop. If neither candidate is
+eligible, no R4 classifier/data remediation, representation expansion, new
+authoring cycle, or gate weakening is authorized; `next_required` for that
+outcome is `routing_architecture_fallback_decision`. If at least one candidate
+is eligible, the continuation is
+`v2c6_candidate_freeze_before_final_holdout`. Neither outcome automatically
+authorizes Step 29I or final-holdout access.
+
+No R3 data has been authored and no experiment, fitting, inference, embedding,
+or threshold tuning has occurred. Step 29I remains blocked, the raw final
+holdout remains untouched, and the immediate frozen continuation is
+`v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`.
 
 ## Reproduce V2-C1
 

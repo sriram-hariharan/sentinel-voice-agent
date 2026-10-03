@@ -5796,11 +5796,28 @@ freezes a new development-only 256-token protocol, and
 `--preflight`, `--run`, and `--check-results`. It reuses exactly the same 20
 already-consumed development cases for one regression comparison, records
 provider-call and full-verifier latency separately, and has no automatic
-larger-budget fallback. The 256-token provider run has not occurred and its
-result artifacts do not exist. The historical 64-token contract, runner,
-cases, results, and manifest remain immutable failure evidence. The fresh
-400-record evaluation has not been authored or started, the raw V2-C5 final
-holdout remains prohibited, and Step 29I remains blocked.
+larger-budget fallback.
+
+That governed comparison has now run exactly once and returned `KEEP_256`:
+20/20 cases produced one structured tool-call decision, with zero failures,
+20 total provider calls, and zero retries. Completion usage ranged from 49 to
+86 tokens (median 73), so the prior direct 64-token exhaustion did not recur.
+Provider-call P95 latency was 333.607 ms and full-verifier P95 latency was
+333.765 ms (both about 334 ms); this 20-case run did not reproduce the prior
+multi-second tail. Development-only semantic diagnostics were 18/20 exact,
+10/10 explicit, 8/10 boundary exact, and 10/10 boundary safe non-explicit.
+The two non-exact boundary decisions were safe
+`AMBIGUOUS_OR_INFORMATIONAL -> NOT_REQUESTED` swaps.
+
+This freezes 256 tokens as the retained budget for proceeding to fresh
+evaluation, with low reasoning, zero SDK retries, 2.0-second SDK and outer
+timeouts, and `tool_choice = "auto"` unchanged. No further development budget
+experiment or tool-choice amendment is authorized by this evidence. The 20
+cases are consumed development evidence, not fresh or final acceptance
+evidence. The historical 64-token artifacts remain immutable. The fresh
+400-record evaluation has not started, the raw V2-C5 final holdout remains
+prohibited, and Step 29I remains blocked. Next required phase: **V2-C6 Fresh
+Fallback Evaluation Setup**.
 
 ### Why this extension is useful
 

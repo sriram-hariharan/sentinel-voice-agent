@@ -1,0 +1,28 @@
+{
+  "contract_sha256": "7b6c2e937218044978a99bf550c4b69d3ac846ab87fad60d040783a1bc8dfc58",
+  "development_cases_sha256": "46c0da1502767a6999f0e2fab8fa3c3ae56ba08d573ba1a1a78cac168de19343",
+  "governance": {
+    "alternate_budget_fallback": false,
+    "application_retries": 0,
+    "development_only": true,
+    "final_acceptance_evidence": false,
+    "final_holdout_accessed": false,
+    "fresh_acceptance_evidence": false,
+    "fresh_evaluation_started": false,
+    "reuses_consumed_development_cases": true,
+    "sdk_max_retries": 0,
+    "step29i_authorized": false,
+    "tool_choice_changed": false,
+    "verifier_prompt_changed": false
+  },
+  "result_status": "KEEP_256",
+  "results": {
+    "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_results.json",
+    "sha256": "0f2efbc5004f63c705e5290dc00d2291fe93a5cc292e831394f9a1e33e67dbc7"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_routing_fallback_verifier_budget_256_validation.py",
+    "sha256": "be9adef32834f40bf3e51fcef5fcf0df013a14b64f467a24ffa6a7c27400d7ba"
+  },
+  "schema_version": "v2c6-routing-fallback-verifier-budget-256-validation-results-manifest.v1"
+}

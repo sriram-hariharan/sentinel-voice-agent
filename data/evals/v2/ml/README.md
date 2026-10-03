@@ -2554,8 +2554,9 @@ The frozen final classifier-remediation stop rule now applies. No R4 cycle,
 classifier family, representation, targeted classifier dataset, threshold
 tuning, C tuning, class-weight change, or gate weakening is permitted. The next
 required phase is exactly `routing_architecture_fallback_decision`, a
-separately governed architecture decision. That fallback has not been
-designed or implemented. The raw V2-C5 final holdout remains prohibited, and
+separately governed architecture decision. That decision is now frozen as
+design only (see below); the fallback is not implemented. The raw V2-C5 final
+holdout remains prohibited, and
 Step 29I remains blocked.
 
 The persisted result can be revalidated without embedding, fitting, or
@@ -2566,6 +2567,113 @@ sentinelvoice_env/bin/python \
   scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
   --check-results
 ```
+
+### V2-C6 Routing Architecture Fallback Decision
+
+`data/evals/v2/ml/v2c6_routing_architecture_fallback_decision.json` freezes
+the decision `CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING` as
+**design only**. It hash-binds the frozen R3 results
+(`883dd954e9ed08c9d2be8a887c803270d09fda11341da9edd8cf67226204cde6`), the R3
+results manifest, the R3 remediation-design contract, and the V2-C5 taxonomy
+freeze and its manifest.
+
+Problem: the frozen R3 local classifiers could not jointly satisfy protected
+recall, protected false-positive rate, and unsupported recall across all
+required scopes, and the stop rule prohibits another classifier-remediation
+cycle.
+
+Decision:
+
+- The V2-C6 local classifier remains evaluation evidence only and never
+  becomes runtime routing authority. Runtime semantic routing remains the
+  existing Groq-first LLM tool calling.
+- Only when the conversational model proposes a registered protected-write
+  tool, a small structured semantic verifier checks that exact proposed action.
+  It returns one closed decision: `EXPLICIT_CURRENT_ACTION`,
+  `AMBIGUOUS_OR_INFORMATIONAL`, or `NOT_REQUESTED`. Free-form verifier output
+  is never authoritative.
+- Placement: in `AgentOrchestrator._run_model_loop` (verified at `d5e1e49`),
+  the current order for a proposed tool is the registered and effective
+  allowed-tool check, `authoritative_arguments` and `_RESOURCE_BINDINGS`
+  processing, resource and active-intent validation with a possible
+  `_resource_clarification` return, Pydantic input validation, the
+  `requires_confirmation` branch, and `ConversationState.request_action`. The
+  verifier is inserted after the registered and allowed-tool check and before
+  the `authoritative_arguments` / `_RESOURCE_BINDINGS` block. It therefore runs
+  before resource binding, resource clarification, input validation, the
+  confirmation branch, and pending-action creation.
+- `EXPLICIT_CURRENT_ACTION` continues through the unchanged deterministic path:
+  the existing resource binding and validation, the `requires_confirmation`
+  branch, the pending protected action, explicit one-use confirmation,
+  `ToolExecutor` authorization, authentication and ownership checks, then
+  execution.
+- `AMBIGUOUS_OR_INFORMATIONAL` or `NOT_REQUESTED` performs no resource-binding
+  clarification, creates no pending action, and asks no execution
+  confirmation. It returns a deterministic narrow
+  clarification question, and the answer is processed as a new user turn,
+  never as confirmation.
+- Verifier timeout, provider failure, malformed output, an invalid enum value,
+  or any other verifier failure fails closed identically: no resource-binding
+  clarification, no pending action, deterministic clarification, and the
+  existing human handoff where appropriate.
+- Semantic verification is never authorization. A verifier result cannot
+  authenticate, establish ownership, satisfy confirmation, execute or
+  authorize a tool, or bypass `ToolExecutor` or pending-action state.
+  Interruption and correction keep their existing invalidation semantics.
+- Executable protected actions are governed by the runtime registry, which
+  currently contains `freeze_card` and `create_dispute`. The taxonomy labels
+  `cancel_transfer` and `close_account` create no runtime tool, and the
+  verifier may never imply such a capability.
+- The verifier uses the existing `LLMProvider` abstraction behind a thin,
+  swappable interface, with Groq preferred. It adds no second agent, service,
+  or infrastructure, and it runs only at the protected-action boundary to bound
+  cost and latency.
+
+The verifier's authority is asymmetric: a negative or uncertain result can
+only cause clarification, and a positive result still cannot execute anything
+without the existing confirmation and authorization path.
+
+Alternatives recorded:
+
+- R4 local classifier remediation (rejected by the stop rule).
+- Weakening the protected-FPR threshold (prohibited and unsafe).
+- Clarifying every protected request (safe, but adds a redundant turn to
+  explicit requests, which hurts voice UX).
+- An LLM verifier on every turn (unnecessary cost and latency).
+- The LLM verifier as authorization (rejected).
+- Escalating every protected request to a human (defeats core V1
+  protected-action capability).
+
+Trade-offs: the decision targets the measured boundary, needs no new
+classifier cycle, and keeps deterministic execution controls with explicit
+fail-closed behavior. It costs one extra model call and some latency on
+protected-action turns, the verifier needs its own evaluation, and ambiguous
+cases intentionally add a user turn. Reversibility is high, because the
+verifier sits before pending-action creation behind a thin interface.
+
+Evaluation requirements are frozen for the future implementation, covering 16
+required scenarios: explicit acceptance; informational, hypothetical, and
+ambiguous wording; unsupported operations; fail-closed malformed output,
+timeouts, and provider failures; clarification correction and interruption;
+confirmation, authentication, ownership, and stale-confirmation controls; no
+direct verifier execution; and prompt-injection resistance. Tracked metrics are
+protected semantic false-positive rate, explicit protected-request recall,
+clarification rate, clarification recovery, fail-closed compliance,
+protected-execution authorization compliance, P50/P90/P95 verifier latency, and
+incremental cost per protected turn. Their thresholds belong to the separately
+governed implementation and evaluation contract. The consumed R3 fresh
+evidence cannot serve as untouched acceptance evidence, and a separately
+governed fresh evaluation is required before any runtime-acceptance claim.
+
+This step changed no runtime behavior and made no Groq, embedding, or model
+call. It records `routing_fallback_implemented = false`,
+`runtime_behavior_changed = false`, `step29i_authorized = false`,
+`final_holdout_accessed = false`, and `production_ready_claimed = false`. The
+design alone is not a safety or production-readiness claim. The next required
+activity is the separately governed
+`v2c6_routing_fallback_implementation_and_evaluation` phase, which must freeze
+its own implementation and evaluation contract first. The raw V2-C5 final
+holdout remains prohibited, and Step 29I remains blocked.
 
 ## Reproduce V2-C1
 

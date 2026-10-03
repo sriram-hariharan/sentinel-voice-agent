@@ -1,0 +1,381 @@
+{
+  "alternatives_considered": [
+    {
+      "id": "r4_local_classifier_remediation",
+      "reason": "Prohibited by the frozen R3 stop rule.",
+      "status": "rejected"
+    },
+    {
+      "id": "weaken_protected_fpr_threshold",
+      "reason": "Prohibited and unsafe.",
+      "status": "rejected"
+    },
+    {
+      "id": "always_clarify_every_protected_request",
+      "reason": "Safe, but adds a redundant conversational turn for clearly explicit requests, which is especially harmful in voice UX.",
+      "status": "not_selected"
+    },
+    {
+      "id": "llm_verifier_on_every_turn",
+      "reason": "Adds unnecessary cost and latency and broadens scope beyond the measured protected-action boundary.",
+      "status": "not_selected"
+    },
+    {
+      "id": "llm_verifier_as_authorization",
+      "reason": "Prompt or model output is never authorization.",
+      "status": "rejected"
+    },
+    {
+      "id": "escalate_every_protected_request_to_human",
+      "reason": "Safe, but defeats core V1 protected-action capability and is unnecessary when deterministic authentication, confirmation, and execution controls already exist.",
+      "status": "not_selected"
+    }
+  ],
+  "decision": {
+    "local_classifier": {
+      "role": "evaluation_evidence_only",
+      "runtime_integration_permitted": false,
+      "runtime_routing_authority": false
+    },
+    "placement": {
+      "current_runtime_sequence": [
+        "model_proposes_tool",
+        "registered_and_effective_allowed_tool_check",
+        "authoritative_arguments_initialization",
+        "resource_bindings_lookup",
+        "resource_and_active_intent_validation",
+        "possible_resource_clarification_return",
+        "pydantic_input_validation",
+        "requires_confirmation_branch",
+        "conversation_state_request_action"
+      ],
+      "future_protected_tool_sequence": [
+        "model_proposes_tool",
+        "registered_and_effective_allowed_tool_check",
+        "structured_protected_action_semantic_verifier",
+        "authoritative_arguments_initialization",
+        "resource_bindings_lookup",
+        "resource_and_active_intent_validation",
+        "possible_resource_clarification_return",
+        "pydantic_input_validation",
+        "requires_confirmation_branch",
+        "conversation_state_request_action"
+      ],
+      "insertion_point": "after_the_registered_and_effective_allowed_tool_check_and_before_the_existing_authoritative_arguments_and_RESOURCE_BINDINGS_block",
+      "pending_action_created_before_verification": false,
+      "pre_llm_resource_resolver_unchanged": true,
+      "runtime_reference": {
+        "confirmation_branch": "registered.definition.requires_confirmation",
+        "effective_allowed_tool_check": "AgentOrchestrator._allowed_tool_names",
+        "input_validation": "registered.input_model.model_validate",
+        "method": "AgentOrchestrator._run_model_loop",
+        "module": "backend/app/agent/orchestrator.py",
+        "pending_action_creation": "ConversationState.request_action",
+        "registered_tool_lookup": "TOOL_REGISTRY.get(tool_call.name)",
+        "resource_binding_block": "authoritative_arguments_and__RESOURCE_BINDINGS",
+        "resource_clarification": "_resource_clarification"
+      },
+      "verified_runtime_head": "d5e1e498775f595b2a9107f95484116cb1c73487",
+      "verifier_runs_after_allowed_tool_check": true,
+      "verifier_runs_before_input_validation": true,
+      "verifier_runs_before_requires_confirmation_branch": true,
+      "verifier_runs_before_resource_binding": true,
+      "verifier_runs_before_resource_clarification": true
+    },
+    "preserved_deterministic_controls": {
+      "authentication_unchanged": true,
+      "confirmation_one_use_and_stale_safe": true,
+      "explicit_confirmation_mandatory_after_positive_verification": true,
+      "idempotency_unchanged": true,
+      "interruption_or_correction_invalidates_abandoned_clarification_or_action": true,
+      "ownership_checks_unchanged": true,
+      "tool_executor_unchanged": true,
+      "tool_handlers_unchanged": true
+    },
+    "protected_action_semantic_verifier": {
+      "action_scope": "exactly_one_proposed_protected_action",
+      "authority": {
+        "is_authorization": false,
+        "may_authenticate_customer": false,
+        "may_authorize_unsupported_tool": false,
+        "may_bypass_pending_action_state": false,
+        "may_bypass_tool_executor": false,
+        "may_establish_ownership": false,
+        "may_execute_tool": false,
+        "may_satisfy_confirmation": false
+      },
+      "invocation_trigger": "conversational_model_proposes_a_registered_protected_write_tool_call",
+      "invoked_for_non_protected_proposals": false,
+      "invoked_on_every_turn": false,
+      "output_contract": {
+        "allowed_decisions": [
+          "EXPLICIT_CURRENT_ACTION",
+          "AMBIGUOUS_OR_INFORMATIONAL",
+          "NOT_REQUESTED"
+        ],
+        "format": "closed_structured_enum",
+        "free_form_output_authoritative": false,
+        "values_outside_enum": "verifier_failure"
+      },
+      "provider": {
+        "abstraction": "existing_LLMProvider_protocol",
+        "multi_agent_system": false,
+        "new_infrastructure_component": false,
+        "new_service": false,
+        "preferred_provider": "groq",
+        "second_agent": false,
+        "thin_swappable_interface": true
+      },
+      "purpose": "for_exactly_the_proposed_protected_action_determine_whether_the_user_request_contains_sufficient_semantic_evidence_of_a_current_request_to_execute_that_action"
+    },
+    "routing_semantics": {
+      "non_protected_proposal": "preserve_existing_orchestration_path",
+      "on_ambiguous_or_informational_or_not_requested": {
+        "ask_execution_confirmation": false,
+        "clarification_answer_counts_as_confirmation": false,
+        "clarification_text_generated_by_llm": false,
+        "create_pending_action": false,
+        "perform_resource_binding_clarification": false,
+        "response": "deterministic_narrow_clarification_question",
+        "user_answer_processing": "new_user_turn"
+      },
+      "on_explicit_current_action": [
+        "existing_authoritative_arguments_and_resource_binding",
+        "existing_resource_and_active_intent_validation",
+        "existing_input_validation",
+        "existing_requires_confirmation_branch",
+        "request_pending_protected_action",
+        "explicit_user_confirmation",
+        "deterministic_tool_executor_authorization",
+        "authentication_and_ownership_checks",
+        "execution"
+      ],
+      "on_verifier_failure": {
+        "behavior": "fail_closed",
+        "create_pending_action": false,
+        "exact_timeout_and_repeated_failure_policy": "to_be_frozen_by_the_separate_implementation_contract",
+        "failure_modes": [
+          "timeout",
+          "provider_failure",
+          "malformed_structured_output",
+          "invalid_enum_value",
+          "other_verifier_failure"
+        ],
+        "human_handoff": "existing_escalate_to_human_path_where_appropriate",
+        "perform_resource_binding_clarification": false,
+        "response": "deterministic_clarification"
+      },
+      "protected_proposal_ordered_steps": [
+        "confirm_registered_and_effective_allowed_protected_tool",
+        "do_not_create_pending_action",
+        "run_structured_semantic_verifier_for_exactly_the_proposed_protected_action_before_resource_binding",
+        "branch_on_verifier_decision"
+      ]
+    },
+    "runtime_semantic_routing": "existing_groq_first_llm_tool_calling",
+    "supported_protected_actions": {
+      "executable_protected_write_tools_at_freeze": [
+        "create_dispute",
+        "freeze_card"
+      ],
+      "new_tools_introduced": false,
+      "source_of_truth": "runtime_TOOL_REGISTRY",
+      "taxonomy_label_creates_runtime_tool": false,
+      "taxonomy_protected_intents_without_runtime_tool": [
+        "cancel_transfer",
+        "close_account"
+      ],
+      "verifier_may_imply_unregistered_capability": false
+    }
+  },
+  "decision_id": "CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING",
+  "decision_status": {
+    "design_frozen": true,
+    "design_only": true,
+    "embeddings_generated": false,
+    "final_holdout_accessed": false,
+    "final_model_acceptance_claimed": false,
+    "llm_calls_performed": false,
+    "model_fitting_performed": false,
+    "model_inference_performed": false,
+    "production_ready_claimed": false,
+    "r4_classifier_or_data_cycle_authorized": false,
+    "routing_fallback_implemented": false,
+    "runtime_behavior_changed": false,
+    "safety_claimed_from_design_alone": false,
+    "step29i_authorized": false,
+    "threshold_tuning_performed": false
+  },
+  "decision_version": "v2c6-routing-architecture-fallback-decision.v1",
+  "evaluation_requirements": {
+    "evidence_governance": {
+      "consumed_v2c5_final_holdout_prohibited": true,
+      "r3_fresh_evidence_consumed_by_r3_candidate_evaluation": true,
+      "r3_fresh_evidence_may_be_presented_as_untouched_final_acceptance_evidence": false,
+      "separately_governed_fresh_evaluation_required_before_runtime_acceptance": true
+    },
+    "metric_thresholds_frozen_by_this_decision": false,
+    "metric_thresholds_owner": "separately_governed_implementation_and_evaluation_contract",
+    "required_scenarios": [
+      "explicit_protected_request_accepted_by_verifier",
+      "informational_protected_wording_does_not_advance_to_pending_action",
+      "hypothetical_protected_wording_does_not_advance",
+      "ambiguous_wording_triggers_clarification",
+      "unsupported_operation_does_not_gain_a_tool",
+      "malformed_verifier_output_fails_closed",
+      "verifier_timeout_fails_closed",
+      "provider_failure_fails_closed",
+      "clarification_correction_works",
+      "interruption_during_clarification_works",
+      "no_protected_execution_without_explicit_confirmation",
+      "authentication_remains_required",
+      "ownership_remains_deterministic",
+      "stale_confirmation_cannot_be_reused",
+      "verifier_cannot_directly_execute_a_tool",
+      "prompt_injection_cannot_bypass_deterministic_controls"
+    ],
+    "tracked_metrics": [
+      "protected_semantic_false_positive_rate",
+      "explicit_protected_request_recall",
+      "clarification_rate",
+      "clarification_recovery_task_success",
+      "verifier_failure_fail_closed_compliance",
+      "protected_execution_authorization_compliance",
+      "verifier_latency_p50_p90_p95",
+      "incremental_cost_per_protected_turn"
+    ]
+  },
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "bound_as_source_artifact": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "next_required": "v2c6_routing_fallback_implementation_and_evaluation",
+  "next_required_governance": {
+    "implemented_by_this_decision": false,
+    "must_freeze_own_implementation_and_evaluation_contract_first": true,
+    "separately_governed": true
+  },
+  "phase": "V2-C6 Routing Architecture Fallback Decision",
+  "problem_statement": "The frozen R3 local classifiers could not jointly satisfy protected recall, protected false-positive rate, and unsupported recall across all required scopes, and the frozen stop rule prohibits another classifier-remediation cycle.",
+  "prohibited_in_this_step": [
+    "runtime_behavior_change",
+    "orchestrator_change",
+    "llm_provider_change",
+    "tool_executor_change",
+    "tool_registry_change",
+    "conversation_state_change",
+    "frontend_change",
+    "voice_worker_change",
+    "tool_schema_change",
+    "production_configuration_change",
+    "groq_call",
+    "embedding_generation",
+    "classifier_fitting",
+    "model_inference",
+    "verifier_implementation",
+    "r4_classifier_or_data_cycle",
+    "v2c5_final_holdout_access",
+    "step29i_authorization"
+  ],
+  "rationale": {
+    "asymmetric_authority": {
+      "negative_or_uncertain_result_effect": "clarification_only",
+      "positive_result_bypasses_confirmation": false,
+      "positive_result_can_execute": false,
+      "positive_result_effect": "continue_to_existing_resource_binding_pending_action_confirmation_and_deterministic_authorization"
+    },
+    "why_this_architecture": "It moves ambiguous semantic judgments away from a failed local classifier while keeping high-risk execution controlled by deterministic application code."
+  },
+  "repository_baseline": {
+    "branch": "v2/ml-routing-evaluation",
+    "head": "d5e1e498775f595b2a9107f95484116cb1c73487",
+    "head_subject": "Freeze V2-C6 R3 model selection result"
+  },
+  "schema_version": "v2c6-routing-architecture-fallback-decision.v1",
+  "source_artifacts": {
+    "r3_model_selection_results": {
+      "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_model_selection_results.json",
+      "schema_version": "v2c6-r3-protected-intent-gate-model-selection-results.v1",
+      "sha256": "883dd954e9ed08c9d2be8a887c803270d09fda11341da9edd8cf67226204cde6"
+    },
+    "r3_model_selection_results_manifest": {
+      "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_model_selection_results.manifest.json",
+      "schema_version": "v2c6-r3-protected-intent-gate-model-selection-results-manifest.v1",
+      "sha256": "95d8142df06faa250d79b9fb77dbe31ddbdb87923bbab082298827b5a7d899fc"
+    },
+    "r3_remediation_design_contract": {
+      "path": "data/evals/v2/ml/v2c6_protected_intent_gate_remediation_design_contract.json",
+      "schema_version": "v2c6-protected-intent-gate-remediation-design-contract.v1",
+      "sha256": "4a744a48e18d674c1f87bbd53f470cae95f0bf09fafd7920942310712c0c894e"
+    },
+    "taxonomy_freeze": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.json",
+      "schema_version": "v2c5-taxonomy-freeze.v1",
+      "sha256": "c50453617e1b95ead73780597f3f22c00365b88a2de0b32ba508a8d6f56e25c8"
+    },
+    "taxonomy_freeze_manifest": {
+      "path": "data/evals/v2/ml/v2c5_taxonomy_freeze.manifest.json",
+      "schema_version": "v2c5-taxonomy-freeze-manifest.v1",
+      "sha256": "359eb38e5ff63af0c9cc0f5db19951b8626f9e15cb136f23046648d655a0f7a9"
+    }
+  },
+  "status": "FROZEN",
+  "step29i_policy": {
+    "authorized_by_this_decision": false,
+    "blocked": true
+  },
+  "tradeoffs": {
+    "benefits": [
+      "targets_measured_safety_boundary",
+      "no_additional_local_classifier_cycle",
+      "preserves_deterministic_execution_controls",
+      "bounded_groq_cost",
+      "bounded_latency_impact",
+      "explicit_fail_closed_semantics",
+      "independently_testable_and_evaluable",
+      "genai_engineering_signal"
+    ],
+    "costs": [
+      "one_additional_model_call_for_protected_proposals",
+      "extra_latency_on_protected_action_turns",
+      "semantic_verifier_requires_its_own_evaluation",
+      "ambiguous_cases_intentionally_add_a_user_turn"
+    ],
+    "reversibility": {
+      "basis": "The verifier sits behind a thin interface before pending-action creation, so it can be removed or replaced without altering ToolExecutor, tool handlers, authentication, ownership, confirmation, or idempotency.",
+      "level": "HIGH"
+    }
+  },
+  "triggering_evidence": {
+    "causal_root_cause_established": false,
+    "eligible_candidate_count": 0,
+    "failed_mandatory_gates": {
+      "HYBRID_CONTROL_R3": [
+        "pooled_group_aware_cv:protected_false_positive_rate",
+        "v2c6_r3_eval_sf1_independent_casework:protected_false_positive_rate",
+        "v2c6_r3_eval_sf2_independent_naturalistic:protected_false_positive_rate",
+        "pooled_r3_fresh_evaluation:protected_false_positive_rate"
+      ],
+      "HYBRID_PROTECTED_VERIFIER_R3": [
+        "pooled_group_aware_cv:protected_recall",
+        "pooled_group_aware_cv:protected_false_positive_rate",
+        "v2c6_r3_eval_sf1_independent_casework:protected_false_positive_rate",
+        "v2c6_r3_eval_sf2_independent_naturalistic:protected_recall",
+        "v2c6_r3_eval_sf2_independent_naturalistic:protected_false_positive_rate",
+        "pooled_r3_fresh_evaluation:protected_false_positive_rate"
+      ]
+    },
+    "gates_weakened": false,
+    "r3_next_required": "routing_architecture_fallback_decision",
+    "r3_step29i_authorized": false,
+    "selected_candidate_id": null,
+    "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+    "summary": "The frozen R3 local classifiers could not jointly satisfy protected recall, protected false-positive rate, and unsupported recall across all required scopes.",
+    "winner_forced": false
+  }
+}

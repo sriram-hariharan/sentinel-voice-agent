@@ -7,6 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.conversation.state import (
+    PROTECTED_ACTION_RESOURCE_TYPES,
     ConversationState,
     PendingResourceResolution,
     ResourceCandidate,
@@ -20,6 +21,8 @@ class ResourceResolution:
     kind: ResourceType | None = None
     clarification: str | None = None
     selected_from_pending: bool = False
+    # Set only when a selection continues an already verified protected action.
+    protected_action: str | None = None
 
 
 _ACCOUNT_INTENTS = {"get_account_balance", "get_recent_transactions"}
@@ -65,6 +68,12 @@ _ORDINALS = {
 }
 
 _TRANSACTION_STATUSES = ("pending", "posted", "reversed", "declined")
+
+# Wording that may concern a protected action. Matching only defers protected
+# resource work until semantic verification; it never grants authority and
+# never triggers the verifier ("frozen" stays an ordinary status read).
+_PROTECTED_FREEZE_WORDING = re.compile(r"\bfreez(?:e|es|ing)\b")
+_PROTECTED_DISPUTE_WORDING = re.compile(r"\bdisput(?:e|es|ed|ing)\b")
 
 
 def _normalize(text: str) -> str:
@@ -322,6 +331,37 @@ class ResourceResolver:
 
         return ResourceResolution()
 
+    async def resolve_protected(
+        self,
+        *,
+        action: str,
+        user_text: str,
+        state: ConversationState,
+        db: AsyncSession,
+    ) -> ResourceResolution:
+        """Resolve the resource for a protected action that passed verification."""
+        resource_type = PROTECTED_ACTION_RESOURCE_TYPES.get(action)
+
+        if resource_type is None:
+            raise ValueError(f"unsupported protected action: {action}")
+
+        state.clear_resource_resolution()
+
+        if not state.authenticated or state.customer_id is None:
+            return ResourceResolution()
+
+        text = _normalize(user_text)
+
+        if resource_type == ResourceType.CARD:
+            return await self._resolve_card(text, state, db, protected_action=action)
+
+        return await self._resolve_transaction(
+            text,
+            state,
+            db,
+            protected_action=action,
+        )
+
     def _resolve_pending(
         self,
         text: str,
@@ -330,6 +370,14 @@ class ResourceResolver:
         pending = state.pending_resource_resolution
 
         if pending is None:
+            return None
+
+        protected = pending.intent in PROTECTED_ACTION_RESOURCE_TYPES
+
+        if protected and state.matching_protected_action_semantic_context() is None:
+            # A protected selection is only meaningful for an action that
+            # already passed semantic verification.
+            self._clear_pending_context(state, pending.resource_type)
             return None
 
         selected = _selected_candidate(text, pending)
@@ -344,6 +392,7 @@ class ResourceResolver:
             return ResourceResolution(
                 kind=pending.resource_type,
                 selected_from_pending=True,
+                protected_action=pending.intent if protected else None,
             )
 
         new_type = self._explicit_resource_type(text)
@@ -506,11 +555,21 @@ class ResourceResolver:
         text: str,
         state: ConversationState,
         db: AsyncSession,
+        *,
+        protected_action: str | None = None,
     ) -> ResourceResolution:
+        if protected_action is None and (
+            _PROTECTED_FREEZE_WORDING.search(text)
+            or state.active_intent == "freeze_card"
+        ):
+            # Protected card resolution waits for semantic verification.
+            # This detection grants no authority and never runs the verifier.
+            return ResourceResolution()
+
         state.active_card_id = None
 
-        if "freeze" in text:
-            state.active_intent = "freeze_card"
+        if protected_action is not None:
+            state.active_intent = protected_action
         elif state.active_intent not in _CARD_INTENTS:
             state.active_intent = "get_card_status"
 
@@ -610,11 +669,20 @@ class ResourceResolver:
         text: str,
         state: ConversationState,
         db: AsyncSession,
+        *,
+        protected_action: str | None = None,
     ) -> ResourceResolution:
+        if protected_action is None and (
+            _PROTECTED_DISPUTE_WORDING.search(text)
+            or state.active_intent == "create_dispute"
+        ):
+            # Protected transaction resolution waits for semantic verification.
+            return ResourceResolution()
+
         state.active_transaction_id = None
 
-        if "dispute" in text:
-            state.active_intent = "create_dispute"
+        if protected_action is not None:
+            state.active_intent = protected_action
         elif state.active_intent not in _TRANSACTION_INTENTS:
             state.active_intent = "get_transaction_details"
 
@@ -805,16 +873,6 @@ class ResourceResolver:
         else:
             state.active_transaction_id = candidate.resource_id
             state.active_account_id = candidate.related_account_id
-
-        if (
-            resource_type == ResourceType.CARD
-            and intent == "freeze_card"
-        ):
-            state.request_action(
-                "freeze_card",
-                candidate.resource_id,
-                arguments={"card_id": str(candidate.resource_id)},
-            )
 
     @staticmethod
     def _clear_pending_context(

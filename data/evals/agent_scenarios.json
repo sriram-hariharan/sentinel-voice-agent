@@ -1,5 +1,5 @@
 {
-  "evaluation_version": "1.0.1",
+  "evaluation_version": "1.1.0",
   "scenarios": [
     {
       "scenario_id": "public_policy_unauthenticated",
@@ -94,7 +94,7 @@
       "description": "An ambiguous freeze request does not create a pending action.",
       "tags": ["protected_write", "clarification", "card"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card"},
-      "turns": [{"user": "Freeze my card.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]}],
+      "turns": [{"user": "Freeze my card.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]}],
       "expected": {"requested_tools": ["freeze_card"], "forbidden_tools": ["freeze_card"], "final_turn_status": "RESPONDED", "response_contains": ["Which card"]}
     },
     {
@@ -103,7 +103,7 @@
       "tags": ["protected_write", "confirmation", "card"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card", "active_card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"},
       "turns": [
-        {"user": "Freeze card 1842.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
+        {"user": "Freeze card 1842.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
         {"user": "Yes", "llm_responses": [{"content": "The card is frozen."}]}
       ],
       "expected": {"requested_tools": ["freeze_card"], "executed_tools": ["freeze_card"], "tool_arguments": {"freeze_card": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}, "final_turn_status": "RESPONDED", "confirmation_required": true, "confirmation_should_execute": true}
@@ -114,7 +114,7 @@
       "tags": ["protected_write", "confirmation", "cancel"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card", "active_card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"},
       "turns": [
-        {"user": "Freeze card 1842.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
+        {"user": "Freeze card 1842.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
         {"user": "No"}
       ],
       "expected": {"requested_tools": ["freeze_card"], "forbidden_tools": ["freeze_card"], "final_turn_status": "RESPONDED", "response_contains": ["perform that action"], "confirmation_required": true, "confirmation_should_execute": false}
@@ -125,7 +125,7 @@
       "tags": ["protected_write", "confirmation", "stale"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card", "active_card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"},
       "turns": [
-        {"user": "Freeze card 1842.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
+        {"user": "Freeze card 1842.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
         {"user": "What happens if I freeze my card?", "policy_sources": [{"policy_id": "debit-card-freeze", "title": "Debit Card Freeze", "section": "Effect", "content": "A freeze blocks new authorizations."}], "llm_responses": [{"content": "A freeze blocks new authorizations."}]}
       ],
       "expected": {"requested_tools": ["freeze_card"], "forbidden_tools": ["freeze_card"], "final_turn_status": "RESPONDED", "policy_ids": ["debit-card-freeze"], "confirmation_required": true, "confirmation_should_execute": false}
@@ -136,7 +136,7 @@
       "tags": ["protected_write", "confirmation", "duplicate"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card", "active_card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"},
       "turns": [
-        {"user": "Freeze card 1842.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
+        {"user": "Freeze card 1842.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
         {"user": "Yes", "llm_responses": [{"content": "The card is frozen."}]},
         {"user": "Yes", "llm_responses": [{"content": "There is no protected action awaiting confirmation."}]}
       ],
@@ -148,7 +148,7 @@
       "tags": ["protected_write", "confirmation", "dispute"],
       "initial_session": {"authenticated": true, "active_intent": "create_dispute", "active_transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1"},
       "turns": [
-        {"user": "Open a dispute for this transaction.", "llm_responses": [{"tool_calls": [{"name": "create_dispute", "arguments": {"transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1", "reason_code": "unauthorized"}}]}]},
+        {"user": "Open a dispute for this transaction.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "create_dispute", "arguments": {"transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1", "reason_code": "unauthorized"}}]}]},
         {"user": "Confirm", "llm_responses": [{"content": "The dispute was created."}]}
       ],
       "expected": {"requested_tools": ["create_dispute"], "executed_tools": ["create_dispute"], "tool_arguments": {"create_dispute": {"transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1", "reason_code": "unauthorized", "notes": null}}, "final_turn_status": "RESPONDED", "confirmation_required": true, "confirmation_should_execute": true}
@@ -159,7 +159,7 @@
       "tags": ["protected_write", "confirmation", "dispute", "cancel"],
       "initial_session": {"authenticated": true, "active_intent": "create_dispute", "active_transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1"},
       "turns": [
-        {"user": "Open a dispute for this transaction.", "llm_responses": [{"tool_calls": [{"name": "create_dispute", "arguments": {"transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1", "reason_code": "unauthorized"}}]}]},
+        {"user": "Open a dispute for this transaction.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "create_dispute", "arguments": {"transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1", "reason_code": "unauthorized"}}]}]},
         {"user": "Actually don't"}
       ],
       "expected": {"requested_tools": ["create_dispute"], "forbidden_tools": ["create_dispute"], "final_turn_status": "RESPONDED", "confirmation_required": true, "confirmation_should_execute": false}
@@ -234,6 +234,7 @@
       "initial_session": {"authenticated": true, "active_intent": "create_dispute", "active_transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1"},
       "turns": [{
         "user": "Open a dispute for this transaction.",
+        "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"],
         "llm_responses": [
           {"tool_calls": [{"name": "create_dispute", "arguments": {"transaction_id": "dddddddd-dddd-4ddd-8ddd-ddddddddddd1"}}]},
           {"content": "I need a valid dispute reason before proceeding."}
@@ -339,7 +340,7 @@
       "tags": ["interruption", "protected_write", "policy"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card", "active_card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"},
       "turns": [
-        {"user": "Freeze my card.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
+        {"user": "Freeze my card.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
         {"user": "Actually, just explain what freezing does.", "interrupt_before": true, "policy_sources": [{"policy_id": "debit-card-freeze", "title": "Debit Card Freeze", "section": "Effect", "content": "A freeze blocks new authorizations."}], "llm_responses": [{"content": "A freeze blocks new authorizations."}]}
       ],
       "expected": {"requested_tools": ["freeze_card"], "forbidden_tools": ["freeze_card"], "final_turn_status": "RESPONDED", "policy_ids": ["debit-card-freeze"], "interruption_expected": true}
@@ -350,7 +351,7 @@
       "tags": ["interruption", "confirmation", "protected_write"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card", "active_card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"},
       "turns": [
-        {"user": "Freeze card 1842.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
+        {"user": "Freeze card 1842.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
         {"user": "When can I open a dispute instead?", "interrupt_before": true, "policy_sources": [{"policy_id": "transaction-disputes", "title": "Transaction Disputes", "section": "Eligibility", "content": "A dispute becomes eligible after posting."}], "llm_responses": [{"content": "A dispute becomes eligible after posting."}]}
       ],
       "expected": {"requested_tools": ["freeze_card"], "forbidden_tools": ["freeze_card"], "final_turn_status": "RESPONDED", "policy_ids": ["transaction-disputes"], "confirmation_required": true, "confirmation_should_execute": false, "interruption_expected": true}
@@ -361,7 +362,7 @@
       "tags": ["interruption", "protected_write", "duplicate"],
       "initial_session": {"authenticated": true, "active_intent": "freeze_card", "active_card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"},
       "turns": [
-        {"user": "Freeze card 1842.", "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
+        {"user": "Freeze card 1842.", "protected_verifier_decisions": ["EXPLICIT_CURRENT_ACTION"], "llm_responses": [{"tool_calls": [{"name": "freeze_card", "arguments": {"card_id": "cccccccc-cccc-4ccc-8ccc-ccccccccccc1"}}]}]},
         {"user": "Yes", "llm_responses": [{"content": "The card is frozen."}]},
         {"user": "What happens to pending purchases?", "interrupt_before": true, "policy_sources": [{"policy_id": "transaction-status", "title": "Transaction Status", "section": "Pending", "content": "Pending purchases can still post after a freeze."}], "llm_responses": [{"content": "Pending purchases can still post after a freeze."}]}
       ],

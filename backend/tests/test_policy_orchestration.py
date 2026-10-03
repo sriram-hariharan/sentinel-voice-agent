@@ -8,6 +8,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.agent.dependencies import get_agent_orchestrator
 from backend.app.agent.orchestrator import AgentOrchestrator
+from backend.app.agent.protected_action_verifier import (
+    ProtectedActionSemanticDecision,
+)
 from backend.app.agent.resource_resolver import ResourceResolution
 from backend.app.auth.sessions import InMemorySessionStore, get_session_store
 from backend.app.conversation.state import (
@@ -54,6 +57,16 @@ class SequenceLLM:
 class NoopResourceResolver:
     async def resolve(self, **kwargs) -> ResourceResolution:
         return ResourceResolution()
+
+    async def resolve_protected(self, **kwargs) -> ResourceResolution:
+        return ResourceResolution()
+
+
+class ExplicitVerifier:
+    """Scripted protected-action verifier that accepts explicit requests."""
+
+    async def verify(self, *, user_text: str, proposed_action: str):
+        return ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION
 
 
 class FakePolicyRetriever:
@@ -539,6 +552,7 @@ async def test_direct_freeze_request_still_requires_confirmation(
         tool_executor=executor,
         policy_retriever=retriever,
         resource_resolver=NoopResourceResolver(),
+        protected_action_verifier=ExplicitVerifier(),
     )
 
     result = await orchestrator.handle_text_turn(
@@ -586,6 +600,7 @@ async def test_direct_dispute_request_still_requires_confirmation() -> None:
         tool_executor=executor,
         policy_retriever=retriever,
         resource_resolver=NoopResourceResolver(),
+        protected_action_verifier=ExplicitVerifier(),
     )
 
     result = await orchestrator.handle_text_turn(

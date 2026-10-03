@@ -2882,6 +2882,126 @@ evaluation call. The raw V2-C5 final holdout remains prohibited, and Step 29I
 remains blocked. The next required phase is
 `v2c6_routing_fallback_runtime_implementation`.
 
+### V2-C6 Routing Fallback Runtime Implementation
+
+The deterministic runtime for `CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING`
+is now implemented for the two executable protected writes, `freeze_card` and
+`create_dispute`. The frozen decision, amendment, and implementation contract
+are unchanged.
+
+- `backend/app/agent/protected_action_verifier.py` defines the three-value
+  `ProtectedActionSemanticDecision`, the typed
+  `ProtectedActionVerificationError` with nine failure categories, the
+  `ProtectedActionSemanticVerifier` protocol, and
+  `LLMProtectedActionSemanticVerifier`.
+  - The verifier makes one bounded call through the existing `LLMProvider`
+    with a 2.0-second timeout and no retries. It accepts only exactly one
+    `record_protected_action_semantic_decision` call carrying a valid enum
+    value. Free-form text is never a decision.
+  - The internal schema is not in `TOOL_REGISTRY`, has no handler, and never
+    reaches `ToolExecutor`.
+  - The prompt serializes `{proposed_action, customer_utterance}` as JSON and
+    treats the utterance as untrusted data.
+- Production wiring builds a dedicated `GroqLLMProvider` for the verifier
+  using the same `settings.llm_model` (`openai/gpt-oss-20b`) and
+  `max_completion_tokens = 64`. The conversational provider keeps its
+  existing budget. An orchestrator constructed without a verifier fails every
+  protected proposal closed.
+- In `AgentOrchestrator._run_model_loop`, the verifier runs only for a
+  `PermissionLevel.PROTECTED_WRITE` tool that already passed the registered
+  and allowed-tool check. It runs before resource binding, validation, the
+  `requires_confirmation` branch, and `ConversationState.request_action`.
+  - `EXPLICIT_CURRENT_ACTION` continues to post-verification protected
+    resource resolution, then the unchanged pending-action, one-use
+    confirmation, and `ToolExecutor` path.
+  - `AMBIGUOUS_OR_INFORMATIONAL`, `NOT_REQUESTED`, and every verifier failure
+    return the frozen canonical clarification for that action. They clear
+    protected resolver state and protected intent and create no pending
+    action. A later "yes" is processed as a new request, never as
+    confirmation.
+- `ResourceResolver` no longer creates the `freeze_card` pending action.
+  Before verification, freeze or dispute wording (`freez(e|es|ing)`,
+  `disput(e|es|ed|ing)`) or a lingering protected intent only defers
+  protected resource work. That detection grants no authority and never runs
+  the verifier, and non-protected resolution is unchanged.
+  `resolve_protected()` performs card or transaction resolution only after
+  explicit verification.
+- `ConversationState.protected_action_semantic_context` holds a typed
+  `ProtectedActionSemanticContext(action, resource_type)` that carries a
+  verified request through one resource-selection turn.
+  - It stores no utterance, never reaches `ToolExecutionContext`, and is
+    cleared on pending-action creation, cancellation, correction, cleared or
+    mismatched resolution, or terminal state.
+  - It survives voice interruption only with its matching preserved
+    resolution.
+  - A bare selector continues only through it. The application synthesizes
+    the protected call from the selected resource without calling the model:
+    the card ID for `freeze_card`, and for `create_dispute` the selected
+    transaction plus the originally verified `reason_code` and `notes` (see the
+    amendment below). A one-use marker exempts only that first synthesized
+    call from re-verification.
+- Traces emit `protected_action.verification.started`, `.completed`, and
+  `.failed` under the `safety` component. Metadata includes the action,
+  purpose, provider, model, decision or failure category, and tokens, but no
+  raw text.
+  - The verifier's call emits `llm.request` events with purpose
+    `protected_action_semantic_verification`, so existing cost aggregation
+    sees it.
+  - Its usage is merged into turn usage through a task-local
+    `ContextVar`, not shared mutable state.
+- The offline agent-scenario dataset (`evaluation_version` 1.1.0, still 35
+  scenarios) scripts verifier decisions per turn, separately from
+  conversational responses.
+
+Deterministic implementation tests were added for the verifier, the fallback
+flows, lifecycle, and security regressions, and the resolver tests that
+encoded the old pre-verification behavior were updated to the frozen
+semantics. No real Groq call was made.
+
+Still pending:
+
+- Live-provider adequacy of the 64-token verifier budget has not been checked.
+- The fresh 400-record semantic evaluation has not been authored or run.
+- No acceptance or production-readiness claim is made.
+
+The raw V2-C5 final holdout remains prohibited and untouched, and Step 29I
+remains blocked. The next required activity is the development-only verifier
+budget validation on non-fresh examples, before fresh evaluation is authored.
+
+### V2-C6 Routing Fallback Implementation Contract Amendment
+
+`data/evals/v2/ml/v2c6_routing_fallback_implementation_contract_amendment.json`
+records a defect found in review before the runtime was committed, and its
+fix. The amendment hash-binds the implementation contract, which stays
+unchanged.
+
+- The defect: the multi-turn `create_dispute` continuation kept only the
+  frozen `ProtectedActionSemanticContext(action, resource_type)`, discarded
+  the original `reason_code` and `notes`, and re-ran the model on the bare
+  selector. With no conversation history, the model could invent the reason.
+- The fix adds a narrow, dispute-specific `VerifiedDisputeRequest(reason_code,
+  notes)`.
+  - It has no `transaction_id` and forbids extra fields, and its constraints
+    mirror `CreateDisputeInput`.
+  - It lives in `ConversationState.verified_dispute_request` only alongside a
+    matching `create_dispute` context and is cleared with it.
+  - It is not confirmation or authorization and cannot execute anything.
+- Dispute arguments are now validated before any transaction selection. The
+  selection turn synthesizes `create_dispute` from the application-selected
+  transaction and the preserved request, with no model call and no
+  re-verification. Explicit confirmation is still required.
+- The one-use continuation marker is a local orchestration argument consumed
+  by the first tool call of any kind, so it can never exempt another
+  protected proposal.
+- Known limitation: wording such as "lock my card" is not freeze wording and
+  may first receive a generic card-status selection question. Any freeze
+  still requires a later protected proposal, verification of that turn, and
+  confirmation.
+
+The 64-token budget, the verifier contract, the prohibited raw V2-C5 final
+holdout, and the Step 29I block are unchanged. The next required activity is
+`v2c6_routing_fallback_development_verifier_budget_validation`.
+
 ## Reproduce V2-C1
 
 ```bash

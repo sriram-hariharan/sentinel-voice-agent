@@ -7,7 +7,13 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.agent.orchestrator import AgentOrchestrator, AgentTurnStatus
-from backend.app.agent.resource_resolver import ResourceResolver
+from backend.app.agent.protected_action_verifier import (
+    ProtectedActionSemanticDecision,
+)
+from backend.app.agent.resource_resolver import (
+    ResourceResolution,
+    ResourceResolver,
+)
 from backend.app.conversation.state import (
     AuthenticationLevel,
     ConversationPhase,
@@ -44,6 +50,29 @@ class SequenceLLM:
     async def generate(self, *, messages, tools=None) -> LLMResponse:
         self.calls.append({"messages": messages, "tools": tools})
         return self.responses.pop(0)
+
+
+class ScriptedVerifier:
+    def __init__(self, *decisions: ProtectedActionSemanticDecision) -> None:
+        self.decisions = list(decisions)
+        self.calls: list[tuple[str, str]] = []
+
+    async def verify(self, *, user_text: str, proposed_action: str):
+        self.calls.append((user_text, proposed_action))
+        return self.decisions.pop(0)
+
+
+def _freeze_proposal(card_id: UUID = CARD_ID) -> LLMResponse:
+    return LLMResponse(
+        model="test-model",
+        tool_calls=[
+            LLMToolCall(
+                id="call-freeze",
+                name="freeze_card",
+                arguments={"card_id": str(card_id)},
+            )
+        ],
+    )
 
 
 def _state() -> ConversationState:
@@ -195,6 +224,24 @@ async def test_barge_in_correction_replaces_active_checking_with_savings() -> No
 
 
 @pytest.mark.asyncio
+async def test_pre_llm_freeze_wording_defers_protected_card_resolution() -> None:
+    state = _state()
+    db = _db_with_scalar_results()
+
+    result = await ResourceResolver().resolve(
+        user_text="Freeze my card",
+        state=state,
+        db=db,
+    )
+
+    assert result == ResourceResolution()
+    assert db.scalars.await_count == 0
+    assert state.pending_resource_resolution is None
+    assert state.pending_action is None
+    assert state.active_intent is None
+
+
+@pytest.mark.asyncio
 async def test_ambiguous_card_does_not_reuse_or_select_a_card() -> None:
     state = _state()
     state.active_card_id = CARD_ID
@@ -205,7 +252,8 @@ async def test_ambiguous_card_does_not_reuse_or_select_a_card() -> None:
         ]
     )
 
-    result = await ResourceResolver().resolve(
+    result = await ResourceResolver().resolve_protected(
+        action="freeze_card",
         user_text="Freeze my card",
         state=state,
         db=db,
@@ -239,7 +287,7 @@ async def test_ambiguous_card_does_not_reuse_or_select_a_card() -> None:
         "the first one",
     ],
 )
-async def test_stored_card_candidate_selection_creates_pending_action(
+async def test_verified_card_selection_binds_without_creating_pending_action(
     selection: str,
 ) -> None:
     state = _state()
@@ -251,11 +299,13 @@ async def test_stored_card_candidate_selection_creates_pending_action(
     )
     resolver = ResourceResolver()
 
-    await resolver.resolve(
+    await resolver.resolve_protected(
+        action="freeze_card",
         user_text="Freeze my card",
         state=state,
         db=db,
     )
+    state.set_protected_action_semantic_context("freeze_card", ResourceType.CARD)
     result = await resolver.resolve(
         user_text=selection,
         state=state,
@@ -263,20 +313,50 @@ async def test_stored_card_candidate_selection_creates_pending_action(
     )
 
     assert result.clarification is None
+    assert result.selected_from_pending is True
+    assert result.protected_action == "freeze_card"
     assert db.scalars.await_count == 1
     assert state.pending_resource_resolution is None
+    assert state.protected_action_semantic_context is None
     assert state.active_card_id == CARD_ID
-    assert state.pending_action is not None
-    assert state.pending_action.action == "freeze_card"
-    assert state.pending_action.resource_id == CARD_ID
-    assert state.pending_action.arguments == {"card_id": str(CARD_ID)}
-    assert state.phase == ConversationPhase.WAITING_FOR_CONFIRMATION
+    assert state.active_intent == "freeze_card"
+    assert state.pending_action is None
+
+
+@pytest.mark.asyncio
+async def test_protected_selection_without_verified_context_is_abandoned() -> None:
+    state = _state()
+    db = _db_with_scalar_results(
+        [
+            _card(CARD_ID, "****1842", "ACTIVE"),
+            _card(FROZEN_CARD_ID, "****6620", "FROZEN"),
+        ]
+    )
+    resolver = ResourceResolver()
+
+    await resolver.resolve_protected(
+        action="freeze_card",
+        user_text="Freeze my card",
+        state=state,
+        db=db,
+    )
+    assert state.pending_resource_resolution is not None
+    result = await resolver.resolve(
+        user_text="1842",
+        state=state,
+        db=db,
+    )
+
+    assert result.selected_from_pending is False
+    assert result.protected_action is None
+    assert state.pending_resource_resolution is None
+    assert state.pending_action is None
+    assert state.active_card_id is None
 
 
 @pytest.mark.asyncio
 async def test_masked_suffix_resolves_one_owned_card() -> None:
     state = _state()
-    state.active_intent = "freeze_card"
     db = _db_with_scalar_results(
         [
             _card(CARD_ID, "****1842", "ACTIVE"),
@@ -284,7 +364,8 @@ async def test_masked_suffix_resolves_one_owned_card() -> None:
         ]
     )
 
-    result = await ResourceResolver().resolve(
+    result = await ResourceResolver().resolve_protected(
+        action="freeze_card",
         user_text="The one ending in 1842",
         state=state,
         db=db,
@@ -298,7 +379,6 @@ async def test_masked_suffix_resolves_one_owned_card() -> None:
 @pytest.mark.asyncio
 async def test_cross_customer_cards_are_never_considered() -> None:
     state = _state()
-    state.active_intent = "freeze_card"
     db = _db_with_scalar_results(
         [
             _card(CARD_ID, "****1842", "ACTIVE"),
@@ -311,7 +391,8 @@ async def test_cross_customer_cards_are_never_considered() -> None:
         ]
     )
 
-    result = await ResourceResolver().resolve(
+    result = await ResourceResolver().resolve_protected(
+        action="freeze_card",
         user_text="The card ending in 4407",
         state=state,
         db=db,
@@ -514,7 +595,16 @@ async def test_explicit_dispute_requires_a_concrete_transaction() -> None:
         ],
     )
 
-    result = await ResourceResolver().resolve(
+    deferred = await ResourceResolver().resolve(
+        user_text="Create a dispute for a transaction.",
+        state=state,
+        db=db,
+    )
+    assert deferred == ResourceResolution()
+    assert state.pending_resource_resolution is None
+
+    result = await ResourceResolver().resolve_protected(
+        action="create_dispute",
         user_text="Create a dispute for a transaction.",
         state=state,
         db=db,
@@ -656,7 +746,7 @@ async def test_unrelated_new_turn_clears_stale_resource_clarification() -> None:
     resolver = ResourceResolver()
 
     await resolver.resolve(
-        user_text="Freeze my card",
+        user_text="What is the status of my card?",
         state=state,
         db=db,
     )
@@ -775,22 +865,14 @@ async def test_resolved_card_feeds_protected_proposal_and_still_waits(
             _card(FROZEN_CARD_ID, "****6620", "FROZEN"),
         ]
     )
-    llm = SequenceLLM(
-        [
-            LLMResponse(
-                model="test-model",
-                tool_calls=[
-                    LLMToolCall(
-                        id="call-freeze",
-                        name="freeze_card",
-                        arguments={"card_id": str(FROZEN_CARD_ID)},
-                    )
-                ],
-            )
-        ]
-    )
+    llm = SequenceLLM([_freeze_proposal(FROZEN_CARD_ID)])
     executor = AsyncMock()
-    orchestrator = AgentOrchestrator(llm=llm, tool_executor=executor)
+    verifier = ScriptedVerifier(ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION)
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        protected_action_verifier=verifier,
+    )
 
     result = await orchestrator.handle_text_turn(
         user_text=user_text,
@@ -798,6 +880,7 @@ async def test_resolved_card_feeds_protected_proposal_and_still_waits(
         db=db,
     )
 
+    assert verifier.calls == [(user_text, "freeze_card")]
     assert result.status == AgentTurnStatus.WAITING_FOR_CONFIRMATION
     assert state.pending_action is not None
     assert state.pending_action.resource_id == CARD_ID
@@ -833,10 +916,12 @@ async def test_concrete_dispute_request_still_requires_confirmation() -> None:
         ]
     )
     executor = AsyncMock()
+    verifier = ScriptedVerifier(ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION)
 
     result = await AgentOrchestrator(
         llm=llm,
         tool_executor=executor,
+        protected_action_verifier=verifier,
     ).handle_text_turn(
         user_text=(
             "Dispute the ABC Electronics transaction for $274.19."
@@ -845,6 +930,9 @@ async def test_concrete_dispute_request_still_requires_confirmation() -> None:
         db=db,
     )
 
+    assert verifier.calls == [
+        ("Dispute the ABC Electronics transaction for $274.19.", "create_dispute")
+    ]
     assert result.status == AgentTurnStatus.WAITING_FOR_CONFIRMATION
     assert state.active_transaction_id == TRANSACTION_ID
     assert state.pending_action is not None
@@ -974,15 +1062,22 @@ async def test_freeze_clarification_selection_and_cancel_are_deterministic() -> 
             _card(FROZEN_CARD_ID, "****6620", "FROZEN"),
         ]
     )
-    llm = SequenceLLM([])
+    llm = SequenceLLM([_freeze_proposal()])
     executor = AsyncMock()
-    orchestrator = AgentOrchestrator(llm=llm, tool_executor=executor)
+    verifier = ScriptedVerifier(ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION)
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        protected_action_verifier=verifier,
+    )
 
     clarification = await orchestrator.handle_text_turn(
         user_text="Freeze my card",
         state=state,
         db=db,
     )
+    assert state.pending_action is None
+    assert state.protected_action_semantic_context is not None
     confirmation_prompt = await orchestrator.handle_text_turn(
         user_text="1842",
         state=state,
@@ -996,8 +1091,10 @@ async def test_freeze_clarification_selection_and_cancel_are_deterministic() -> 
     assert "freeze" in confirmation_prompt.text.casefold()
     assert state.pending_action is not None
     assert state.pending_action.resource_id == CARD_ID
+    assert state.protected_action_semantic_context is None
     assert state.phase == ConversationPhase.WAITING_FOR_CONFIRMATION
-    assert llm.calls == []
+    assert verifier.calls == [("Freeze my card", "freeze_card")]
+    assert len(llm.calls) == 1
 
     cancellation = await orchestrator.handle_text_turn(
         user_text="Cancel",
@@ -1009,7 +1106,7 @@ async def test_freeze_clarification_selection_and_cancel_are_deterministic() -> 
     assert state.pending_action is None
     assert state.active_card_id is None
     executor.execute.assert_not_awaited()
-    assert llm.calls == []
+    assert len(llm.calls) == 1
 
 
 @pytest.mark.asyncio
@@ -1023,10 +1120,11 @@ async def test_confirm_executes_exactly_the_selected_card() -> None:
     )
     llm = SequenceLLM(
         [
+            _freeze_proposal(),
             LLMResponse(
                 content="Your card ending in 1842 is now frozen.",
                 model="test-model",
-            )
+            ),
         ]
     )
     executor = AsyncMock()
@@ -1037,7 +1135,11 @@ async def test_confirm_executes_exactly_the_selected_card() -> None:
         status="FROZEN",
         changed=True,
     )
-    orchestrator = AgentOrchestrator(llm=llm, tool_executor=executor)
+    orchestrator = AgentOrchestrator(
+        llm=llm,
+        tool_executor=executor,
+        protected_action_verifier=ScriptedVerifier(ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION),
+    )
 
     await orchestrator.handle_text_turn(
         user_text="Freeze my card",

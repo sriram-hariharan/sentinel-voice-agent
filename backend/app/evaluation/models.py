@@ -40,6 +40,16 @@ class EvaluationTurn(BaseModel):
     retrieval_failure: bool = False
     interrupt_before: bool = False
     preserve_pending_confirmation: bool = False
+    # Scripted protected-action verifier decisions, kept separate from the
+    # conversational response queue.
+    protected_verifier_decisions: tuple[
+        Literal[
+            "EXPLICIT_CURRENT_ACTION",
+            "AMBIGUOUS_OR_INFORMATIONAL",
+            "NOT_REQUESTED",
+        ],
+        ...,
+    ] = ()
 
     model_config = ConfigDict(frozen=True, extra="forbid")
 

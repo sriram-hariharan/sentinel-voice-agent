@@ -2,7 +2,7 @@ from enum import StrEnum
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from backend.app.tools.schemas import (
     ActionConfirmation,
@@ -78,6 +78,47 @@ class PendingResourceResolution(BaseModel):
     model_config = ConfigDict(frozen=True)
 
 
+PROTECTED_ACTION_RESOURCE_TYPES: dict[str, ResourceType] = {
+    "freeze_card": ResourceType.CARD,
+    "create_dispute": ResourceType.TRANSACTION,
+}
+
+
+class ProtectedActionSemanticContext(BaseModel):
+    """Records that one protected action already passed semantic verification.
+
+    It exists only while that verified action waits for resource selection.
+    It is not a pending action, confirmation, or authorization, and it never
+    reaches ToolExecutionContext.
+    """
+
+    action: str
+    resource_type: ResourceType
+
+    model_config = ConfigDict(frozen=True)
+
+    @model_validator(mode="after")
+    def action_matches_resource_type(self) -> "ProtectedActionSemanticContext":
+        if PROTECTED_ACTION_RESOURCE_TYPES.get(self.action) != self.resource_type:
+            raise ValueError("unsupported protected action/resource pair")
+        return self
+
+
+class VerifiedDisputeRequest(BaseModel):
+    """Original non-resource create_dispute arguments of a verified request.
+
+    Held only alongside a matching create_dispute semantic context while the
+    customer selects a transaction. It never carries a transaction_id (the
+    application-selected transaction is authoritative), and it is not
+    confirmation, authorization, or execution authority.
+    """
+
+    reason_code: str = Field(min_length=1, max_length=64)
+    notes: str | None = None
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+
 class VoicePlaybackState(BaseModel):
     speech_id: str = Field(min_length=1, max_length=128)
     voice_turn_id: str = Field(min_length=1, max_length=128)
@@ -105,6 +146,8 @@ class ConversationState(BaseModel):
     active_transaction_id: UUID | None = None
 
     pending_resource_resolution: PendingResourceResolution | None = None
+    protected_action_semantic_context: ProtectedActionSemanticContext | None = None
+    verified_dispute_request: VerifiedDisputeRequest | None = None
     pending_action: PendingAction | None = None
     retrieved_policy_sources: list[str] = Field(default_factory=list)
     escalation_status: EscalationStatus = EscalationStatus.NONE
@@ -133,6 +176,7 @@ class ConversationState(BaseModel):
         confirmation_required: bool = True,
     ) -> None:
         self.pending_resource_resolution = None
+        self._clear_verified_protected_state()
         self.pending_action = PendingAction(
             action=action,
             resource_id=resource_id,
@@ -153,6 +197,7 @@ class ConversationState(BaseModel):
         clarification: str,
     ) -> None:
         self.pending_action = None
+        self._clear_verified_protected_state()
         self.pending_resource_resolution = PendingResourceResolution(
             resource_type=resource_type,
             intent=intent,
@@ -164,6 +209,69 @@ class ConversationState(BaseModel):
 
     def clear_resource_resolution(self) -> None:
         self.pending_resource_resolution = None
+        self._clear_verified_protected_state()
+
+    def _clear_verified_protected_state(self) -> None:
+        self.protected_action_semantic_context = None
+        self.verified_dispute_request = None
+
+    def set_protected_action_semantic_context(
+        self,
+        action: str,
+        resource_type: ResourceType,
+        *,
+        dispute_request: VerifiedDisputeRequest | None = None,
+    ) -> None:
+        context = ProtectedActionSemanticContext(
+            action=action,
+            resource_type=resource_type,
+        )
+
+        if (action == "create_dispute") != (dispute_request is not None):
+            raise ConversationStateError(
+                "A verified dispute request is required for create_dispute only"
+            )
+
+        pending = self.pending_resource_resolution
+
+        if (
+            pending is None
+            or pending.intent != action
+            or pending.resource_type != resource_type
+        ):
+            raise ConversationStateError(
+                "Verified protected context requires a matching resource "
+                "resolution"
+            )
+
+        self.protected_action_semantic_context = context
+        self.verified_dispute_request = dispute_request
+
+    def clear_protected_action_semantic_context(self) -> None:
+        self._clear_verified_protected_state()
+
+    def matching_protected_action_semantic_context(
+        self,
+    ) -> ProtectedActionSemanticContext | None:
+        """Return the verified context only while its resolution still matches."""
+        context = self.protected_action_semantic_context
+
+        if context is None:
+            self.verified_dispute_request = None
+            return None
+
+        pending = self.pending_resource_resolution
+
+        if (
+            self.phase in {ConversationPhase.ENDED, ConversationPhase.FAILED}
+            or pending is None
+            or pending.intent != context.action
+            or pending.resource_type != context.resource_type
+        ):
+            self._clear_verified_protected_state()
+            return None
+
+        return context
 
     def confirm_pending_action(self) -> None:
         pending = self.pending_action
@@ -185,6 +293,7 @@ class ConversationState(BaseModel):
 
     def cancel_pending_action(self) -> None:
         self.pending_action = None
+        self._clear_verified_protected_state()
 
         if self.phase not in {
             ConversationPhase.INTERRUPTED,
@@ -236,7 +345,9 @@ class ConversationState(BaseModel):
         if not preserve_pending_resource_resolution:
             self.pending_resource_resolution = None
 
+        # Verified semantic context never outlives its matching resolution.
         self.phase = ConversationPhase.INTERRUPTED
+        self.matching_protected_action_semantic_context()
 
     def record_voice_playback(
         self,

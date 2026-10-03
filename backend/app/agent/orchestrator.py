@@ -8,12 +8,23 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.agent.prompt import SYSTEM_PROMPT
+from backend.app.agent.protected_action_verifier import (
+    VERIFIER_PURPOSE,
+    ProtectedActionSemanticDecision,
+    ProtectedActionSemanticVerifier,
+    ProtectedActionVerificationError,
+    UnavailableProtectedActionVerifier,
+    VerifierFailureCategory,
+    capture_protected_verifier_usage,
+)
 from backend.app.agent.resource_resolver import ResourceResolver
 from backend.app.agent.tool_schemas import build_llm_tool_schemas
 from backend.app.conversation.state import (
+    PROTECTED_ACTION_RESOURCE_TYPES,
     ConversationPhase,
     ConversationState,
     ResourceType,
+    VerifiedDisputeRequest,
 )
 from backend.app.observability.events import TraceStatus
 from backend.app.observability.tracing import emit_trace_event, trace_span
@@ -29,6 +40,7 @@ from backend.app.rag.retrieval import (
     PostgresPolicySearch,
 )
 from backend.app.rag.routing import is_policy_question
+from backend.app.tools.definitions import PermissionLevel
 from backend.app.tools.errors import ToolBackendError, ToolError
 from backend.app.tools.executor import ToolExecutor
 from backend.app.tools.registry import TOOL_REGISTRY
@@ -126,6 +138,20 @@ _UNBACKED_CONFIRMATION_PROMPT = re.compile(
 )
 
 _MARKDOWN_LINK = re.compile(r"\[([^\]]+)\]\([^)]+\)")
+
+# Frozen canonical semantic clarifications. They are not execution
+# confirmation; the reply is processed as a new semantic request.
+SEMANTIC_CLARIFICATIONS = {
+    "freeze_card": (
+        "Are you asking me to freeze a card now? If so, please say that "
+        "directly. Otherwise, tell me what you want to know about freezing "
+        "a card."
+    ),
+    "create_dispute": (
+        "Are you asking me to create a dispute now? If so, please say that "
+        "directly. Otherwise, tell me what you want to know about disputes."
+    ),
+}
 
 
 def _normalize_confirmation_text(text: str) -> str:
@@ -257,6 +283,14 @@ def _clear_action_context(
         state.active_transaction_id = None
 
 
+def _usage_metadata(usage: LLMUsage) -> dict[str, int]:
+    return {
+        "prompt_tokens": usage.prompt_tokens,
+        "completion_tokens": usage.completion_tokens,
+        "total_tokens": usage.total_tokens,
+    }
+
+
 def _tool_call_message(
     response: LLMResponse,
     tool_call: LLMToolCall,
@@ -297,6 +331,7 @@ class AgentOrchestrator:
         tool_executor: ToolExecutor | None = None,
         resource_resolver: ResourceResolver | None = None,
         policy_retriever: PolicyRetriever | None = None,
+        protected_action_verifier: ProtectedActionSemanticVerifier | None = None,
         policy_top_k: int = 5,
         max_tool_calls: int = 3,
     ) -> None:
@@ -308,6 +343,10 @@ class AgentOrchestrator:
         self._llm = llm
         self._tool_executor = tool_executor or ToolExecutor()
         self._resource_resolver = resource_resolver or ResourceResolver()
+        # Without an injected verifier, every protected proposal fails closed.
+        self._protected_action_verifier = (
+            protected_action_verifier or UnavailableProtectedActionVerifier()
+        )
         self._policy_retriever = policy_retriever
         self._policy_top_k = policy_top_k
         self._max_tool_calls = max_tool_calls
@@ -390,6 +429,11 @@ class AgentOrchestrator:
                 db=db,
             )
 
+        verified_context = state.matching_protected_action_semantic_context()
+        # Captured before resolution, which consumes the verified state.
+        verified_dispute_request = (
+            state.verified_dispute_request if verified_context is not None else None
+        )
         resolution = await self._resource_resolver.resolve(
             user_text=user_text,
             state=state,
@@ -411,6 +455,23 @@ class AgentOrchestrator:
             return AgentTurnResult(
                 text=_confirmation_prompt(state.pending_action.action),
                 status=AgentTurnStatus.WAITING_FOR_CONFIRMATION,
+            )
+
+        if (
+            resolution.selected_from_pending
+            and resolution.protected_action is not None
+        ):
+            return await self._continue_verified_protected_selection(
+                user_text=user_text,
+                state=state,
+                db=db,
+                action=resolution.protected_action,
+                verified_action=(
+                    verified_context.action
+                    if verified_context is not None
+                    else None
+                ),
+                verified_dispute_request=verified_dispute_request,
             )
 
         if (
@@ -462,7 +523,185 @@ class AgentOrchestrator:
             messages=messages,
             state=state,
             db=db,
+            user_text=user_text,
         )
+
+    async def _continue_verified_protected_selection(
+        self,
+        *,
+        user_text: str,
+        state: ConversationState,
+        db: AsyncSession,
+        action: str,
+        verified_action: str | None,
+        verified_dispute_request: VerifiedDisputeRequest | None = None,
+    ) -> AgentTurnResult:
+        """Finish resource selection for an action verified on an earlier turn.
+
+        The bare selector is not re-verified and never counts as a new
+        explicit request; it continues only the matching verified action.
+        The application synthesizes the protected call from the selected
+        resource and the originally verified request, so no model call can
+        regenerate or change its arguments.
+        """
+        if verified_action != action:
+            _clear_action_context(state, action)
+            return self._semantic_clarification(state, action, LLMUsage())
+
+        emit_trace_event(
+            "protected_action.selection.continued",
+            component="safety",
+            status=TraceStatus.COMPLETED,
+            metadata={"action": action},
+        )
+
+        if action == "freeze_card":
+            card_id = state.active_card_id
+
+            if card_id is None:
+                state.phase = ConversationPhase.FAILED
+                raise AgentOrchestrationError(
+                    "A selected protected card has no active resource ID"
+                )
+
+            initial_response: LLMResponse | None = LLMResponse(
+                content="",
+                tool_calls=[
+                    LLMToolCall(
+                        id="application-resolved-protected-card",
+                        name="freeze_card",
+                        arguments={"card_id": str(card_id)},
+                    )
+                ],
+                model="application-resolved-resource",
+            )
+        else:
+            transaction_id = state.active_transaction_id
+
+            if verified_dispute_request is None or transaction_id is None:
+                _clear_action_context(state, action)
+                return self._semantic_clarification(state, action, LLMUsage())
+
+            initial_response = LLMResponse(
+                content="",
+                tool_calls=[
+                    LLMToolCall(
+                        id="application-resolved-protected-transaction",
+                        name="create_dispute",
+                        arguments={
+                            # Application-selected transaction is authoritative.
+                            "transaction_id": str(transaction_id),
+                            "reason_code": verified_dispute_request.reason_code,
+                            "notes": verified_dispute_request.notes,
+                        },
+                    )
+                ],
+                model="application-resolved-resource",
+            )
+
+        return await self._run_model_loop(
+            messages=self._build_messages(user_text=user_text, state=state),
+            state=state,
+            db=db,
+            initial_response=initial_response,
+            user_text=user_text,
+            preverified_protected_action=action,
+        )
+
+    def _semantic_clarification(
+        self,
+        state: ConversationState,
+        action: str,
+        usage: LLMUsage,
+    ) -> AgentTurnResult:
+        pending = state.pending_resource_resolution
+
+        if (
+            pending is not None
+            and pending.intent in PROTECTED_ACTION_RESOURCE_TYPES
+        ):
+            state.clear_resource_resolution()
+
+        state.clear_protected_action_semantic_context()
+
+        if state.active_intent in PROTECTED_ACTION_RESOURCE_TYPES:
+            state.active_intent = None
+
+        state.phase = ConversationPhase.AGENT_SPEAKING
+        emit_trace_event(
+            "protected_action.clarification.returned",
+            component="safety",
+            status=TraceStatus.COMPLETED,
+            metadata={"action": action},
+        )
+        return AgentTurnResult(
+            text=SEMANTIC_CLARIFICATIONS[action],
+            status=AgentTurnStatus.RESPONDED,
+            usage=usage,
+        )
+
+    async def _verify_protected_action(
+        self,
+        *,
+        action: str,
+        user_text: str | None,
+    ) -> tuple[ProtectedActionSemanticDecision | None, LLMUsage]:
+        """Run the verifier once. Any failure returns ``None`` (fail closed)."""
+        verifier = self._protected_action_verifier
+        metadata = {
+            "action": action,
+            "purpose": VERIFIER_PURPOSE,
+            "provider": str(getattr(verifier, "provider", "unknown")),
+            "model": str(getattr(verifier, "model", "unknown")),
+        }
+
+        with capture_protected_verifier_usage() as captured:
+            try:
+                async with trace_span(
+                    "protected_action.verification",
+                    component="safety",
+                    metadata=metadata,
+                ) as span:
+                    try:
+                        if user_text is None:
+                            raise ProtectedActionVerificationError(
+                                VerifierFailureCategory.UNEXPECTED_VERIFIER_EXCEPTION,
+                                "protected proposal has no current user utterance",
+                            )
+                        decision = await verifier.verify(
+                            user_text=user_text,
+                            proposed_action=action,
+                        )
+                        if not isinstance(decision, ProtectedActionSemanticDecision):
+                            raise ProtectedActionVerificationError(
+                                VerifierFailureCategory.INVALID_ENUM,
+                                "verifier returned a non-enum decision",
+                            )
+                    except ProtectedActionVerificationError as exc:
+                        span.set_metadata(
+                            failure_category=exc.category.value,
+                            **_usage_metadata(captured.usage),
+                        )
+                        raise
+                    except Exception as exc:  # any verifier error fails closed
+                        span.set_metadata(
+                            failure_category=(
+                                VerifierFailureCategory.UNEXPECTED_VERIFIER_EXCEPTION.value
+                            ),
+                            **_usage_metadata(captured.usage),
+                        )
+                        raise ProtectedActionVerificationError(
+                            VerifierFailureCategory.UNEXPECTED_VERIFIER_EXCEPTION,
+                            "unexpected verifier failure",
+                        ) from exc
+                    span.set_metadata(
+                        decision=decision.value,
+                        **_usage_metadata(captured.usage),
+                    )
+            except ProtectedActionVerificationError:
+                return None, captured.usage
+
+        return decision, captured.usage
 
     async def _handle_policy_question(
         self,
@@ -675,6 +914,8 @@ class AgentOrchestrator:
         allowed_tool_names: set[str] | None = None,
         policy_sources: list[str] | None = None,
         enforce_unbacked_confirmation_guard: bool = True,
+        user_text: str | None = None,
+        preverified_protected_action: str | None = None,
     ) -> AgentTurnResult:
         executed_tools: list[str] = []
         total_usage = LLMUsage()
@@ -746,6 +987,10 @@ class AgentOrchestrator:
 
             tool_calls_used += 1
             tool_call = response.tool_calls[0]
+            # The one-use marker can exempt only the very first tool call of
+            # this loop (the application-synthesized continuation call).
+            preverified_exempt = preverified_protected_action == tool_call.name
+            preverified_protected_action = None
             emit_trace_event(
                 "tool.requested",
                 component="agent",
@@ -794,6 +1039,94 @@ class AgentOrchestrator:
                     ]
                 )
                 continue
+
+            if (
+                registered.definition.permission_level
+                == PermissionLevel.PROTECTED_WRITE
+                and not preverified_exempt
+            ):
+                # Semantic verification precedes protected resource
+                # resolution, pending-action creation, and confirmation.
+                decision, verifier_usage = await self._verify_protected_action(
+                    action=tool_call.name,
+                    user_text=user_text,
+                )
+                total_usage = _merge_usage(total_usage, verifier_usage)
+
+                if (
+                    decision
+                    != ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION
+                ):
+                    return self._semantic_clarification(
+                        state,
+                        tool_call.name,
+                        total_usage,
+                    )
+
+                dispute_request: VerifiedDisputeRequest | None = None
+
+                if tool_call.name == "create_dispute":
+                    # Preserve the verified request's own arguments; a
+                    # later bare selector must never regenerate them.
+                    try:
+                        dispute_request = VerifiedDisputeRequest(
+                            reason_code=tool_call.arguments.get("reason_code"),
+                            notes=tool_call.arguments.get("notes"),
+                        )
+                    except ValidationError:
+                        emit_trace_event(
+                            "tool.validation.failed",
+                            component="agent",
+                            status=TraceStatus.FAILED,
+                            error_category="validation_error",
+                            metadata={"tool_name": tool_call.name},
+                        )
+                        messages.extend(
+                            [
+                                _tool_call_message(
+                                    response,
+                                    tool_call,
+                                    tool_call.arguments,
+                                ),
+                                _tool_result_message(
+                                    tool_call.id,
+                                    {
+                                        "ok": False,
+                                        "error": "invalid_tool_arguments",
+                                    },
+                                ),
+                            ]
+                        )
+                        continue
+
+                resolution = await self._resource_resolver.resolve_protected(
+                    action=tool_call.name,
+                    user_text=user_text or "",
+                    state=state,
+                    db=db,
+                )
+
+                if resolution.clarification is not None:
+                    pending = state.pending_resource_resolution
+
+                    if (
+                        pending is not None
+                        and pending.intent == tool_call.name
+                    ):
+                        state.set_protected_action_semantic_context(
+                            tool_call.name,
+                            pending.resource_type,
+                            dispute_request=dispute_request,
+                        )
+
+                    state.phase = ConversationPhase.AGENT_SPEAKING
+                    return AgentTurnResult(
+                        text=resolution.clarification,
+                        status=AgentTurnStatus.RESPONDED,
+                        executed_tools=executed_tools,
+                        policy_sources=response_sources,
+                        usage=total_usage,
+                    )
 
             authoritative_arguments = dict(tool_call.arguments)
             binding = _RESOURCE_BINDINGS.get(tool_call.name)

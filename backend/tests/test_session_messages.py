@@ -7,6 +7,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.app.agent.dependencies import get_agent_orchestrator
 from backend.app.agent.orchestrator import AgentOrchestrator
+from backend.app.agent.protected_action_verifier import (
+    ProtectedActionSemanticDecision,
+)
 from backend.app.agent.resource_resolver import ResourceResolution
 from backend.app.auth.sessions import InMemorySessionStore, get_session_store
 from backend.app.config.settings import Settings, get_settings
@@ -39,6 +42,16 @@ class SequenceLLM:
 class NoopResourceResolver:
     async def resolve(self, **kwargs) -> ResourceResolution:
         return ResourceResolution()
+
+    async def resolve_protected(self, **kwargs) -> ResourceResolution:
+        return ResourceResolution()
+
+
+class ExplicitVerifier:
+    """Scripted protected-action verifier that accepts explicit requests."""
+
+    async def verify(self, *, user_text: str, proposed_action: str):
+        return ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION
 
 
 @pytest.fixture
@@ -232,6 +245,7 @@ def test_protected_action_returns_waiting_for_confirmation(api_context) -> None:
             llm=llm,
             tool_executor=executor,
             resource_resolver=NoopResourceResolver(),
+            protected_action_verifier=ExplicitVerifier(),
         )
     )
 
@@ -283,6 +297,7 @@ def test_confirmation_executes_stored_protected_action(api_context) -> None:
             llm=llm,
             tool_executor=executor,
             resource_resolver=NoopResourceResolver(),
+            protected_action_verifier=ExplicitVerifier(),
         )
     )
 
@@ -337,6 +352,7 @@ def test_cancellation_does_not_execute_protected_action(api_context) -> None:
             llm=llm,
             tool_executor=executor,
             resource_resolver=NoopResourceResolver(),
+            protected_action_verifier=ExplicitVerifier(),
         )
     )
 

@@ -1,0 +1,137 @@
+{
+  "amended_create_dispute_flow": {
+    "binding_overwrites_transaction_id_from_state": true,
+    "continuation_call": "application_synthesized_create_dispute_from_selected_transaction_and_verified_dispute_request",
+    "explicit_confirmation_still_required": true,
+    "invalid_non_resource_arguments": "existing_invalid_tool_arguments_path_without_transaction_selection",
+    "model_supplied_transaction_id_used": false,
+    "non_resource_arguments_validated_before_protected_resource_resolution": true,
+    "selection_turn_reruns_conversational_model": false,
+    "selection_turn_reverifies_bare_selector": false,
+    "transaction_id_source": "application_selected_resource"
+  },
+  "amendment_status": {
+    "design_frozen": true,
+    "final_acceptance_claimed": false,
+    "final_holdout_accessed": false,
+    "fresh_fallback_evaluation_authored": false,
+    "fresh_fallback_evaluation_performed": false,
+    "groq_calls_performed": false,
+    "original_contract_rewritten": false,
+    "production_ready_claimed": false,
+    "protected_action_semantic_context_fields_changed": false,
+    "step29i_authorized": false,
+    "verifier_max_completion_tokens_changed": false
+  },
+  "amendment_version": "v2c6-routing-fallback-implementation-contract-amendment.v1",
+  "amends_contract": {
+    "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_evaluation_contract.json",
+    "schema_version": "v2c6-routing-fallback-implementation-evaluation-contract.v1",
+    "sha256": "c972a381a80bcf7a36b5db751195b3263a8bbc14b72e1442d196306f656a68c0"
+  },
+  "discovered_defect": {
+    "masked_by_test": "scripted model returned the same reason_code on both turns",
+    "original_notes_preserved": false,
+    "original_reason_code_preserved": false,
+    "second_model_call_had_conversation_history": false,
+    "summary": "The uncommitted multi-turn create_dispute continuation kept only ProtectedActionSemanticContext(action, resource_type). The original reason_code and notes were discarded, and the selection turn re-ran the conversational model with only the system prompt, state context lines, and the bare selector utterance, so the model could invent or change reason_code."
+  },
+  "discovery_baseline": {
+    "branch": "v2/ml-routing-evaluation",
+    "head": "25ec5ba74e1b55e0a0130883493308f005cae30d",
+    "head_subject": "Freeze V2-C6 routing fallback implementation contract",
+    "runtime_state": "uncommitted_step_2_implementation"
+  },
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "bound_as_source_artifact": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "known_limitations": [
+    {
+      "description": "Wording such as 'lock my card' is not freeze wording, so generic card-status resolution may ask a card-selection question before the model runs. No protected pending action or execution can follow without a later protected tool proposal, semantic verification of that turn, and explicit confirmation.",
+      "id": "unrecognized_protected_synonyms",
+      "open_ended_synonym_rules_added": false
+    }
+  ],
+  "next_required": "v2c6_routing_fallback_development_verifier_budget_validation",
+  "one_use_continuation_marker": {
+    "applies_to": "only_the_first_tool_call_of_the_continuation_loop",
+    "can_exempt_other_protected_action": false,
+    "consumed_by_first_tool_call_of_any_kind": true,
+    "first_tool_call_is_application_synthesized": true,
+    "is_confirmation": false,
+    "must_match_the_verified_action": true,
+    "reaches_tool_executor_directly": false,
+    "storage": "local_orchestration_argument_not_conversation_state"
+  },
+  "phase": "V2-C6 Routing Fallback Runtime Implementation",
+  "schema_version": "v2c6-routing-fallback-implementation-contract-amendment.v1",
+  "status": "FROZEN",
+  "step29i_policy": {
+    "authorized_by_this_amendment": false,
+    "blocked": true
+  },
+  "substep": "Verified Dispute Request Continuation Amendment",
+  "unchanged_guarantees": {
+    "executable_protected_write_tools": [
+      "create_dispute",
+      "freeze_card"
+    ],
+    "max_completion_tokens": 64,
+    "protected_action_semantic_context_fields": [
+      "action",
+      "resource_type"
+    ],
+    "verifier_authority": {
+      "is_authorization": false,
+      "may_authenticate_customer": false,
+      "may_authorize_unsupported_tool": false,
+      "may_bypass_pending_action_state": false,
+      "may_bypass_tool_executor": false,
+      "may_establish_ownership": false,
+      "may_execute_tool": false,
+      "may_satisfy_confirmation": false
+    },
+    "verifier_decisions": [
+      "EXPLICIT_CURRENT_ACTION",
+      "AMBIGUOUS_OR_INFORMATIONAL",
+      "NOT_REQUESTED"
+    ],
+    "verifier_timeout_seconds": 2.0
+  },
+  "verified_dispute_request_state": {
+    "action_specific": true,
+    "applies_to": "create_dispute",
+    "can_execute": false,
+    "cleared_with_semantic_context_on": [
+      "pending_action_successfully_created",
+      "cancellation",
+      "corrected_or_unrelated_intent",
+      "abandonment",
+      "terminal_conversation_state",
+      "matching_resource_resolution_cleared",
+      "action_or_resource_type_mismatch"
+    ],
+    "contains_transaction_id": false,
+    "conversation_state_field": "verified_dispute_request",
+    "exists_only_with_matching_create_dispute_semantic_context": true,
+    "exposed_as_tool_execution_context_confirmation": false,
+    "extra_fields_forbidden": true,
+    "field_constraints_mirror": "CreateDisputeInput",
+    "fields": {
+      "notes": "str | None",
+      "reason_code": "str (1-64 characters)"
+    },
+    "generic_argument_bag": false,
+    "is_authorization": false,
+    "is_confirmation": false,
+    "reusable_for_another_protected_action": false,
+    "type_name": "VerifiedDisputeRequest",
+    "voice_interruption": "preserved_only_with_matching_preserved_resource_resolution"
+  }
+}

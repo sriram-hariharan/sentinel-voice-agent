@@ -8,6 +8,11 @@ from uuid import UUID
 from pydantic import BaseModel, Field
 
 from backend.app.agent.orchestrator import AgentOrchestrator
+from backend.app.agent.protected_action_verifier import (
+    ProtectedActionSemanticDecision,
+    ProtectedActionVerificationError,
+    VerifierFailureCategory,
+)
 from backend.app.agent.resource_resolver import ResourceResolution
 from backend.app.conversation.state import (
     AuthenticationLevel,
@@ -136,6 +141,39 @@ class EvaluationResourceResolver:
         del kwargs
         return ResourceResolution()
 
+    async def resolve_protected(self, **kwargs) -> ResourceResolution:
+        del kwargs
+        return ResourceResolution()
+
+
+class EvaluationProtectedActionVerifier:
+    """Scripted verifier decisions, separate from conversational responses.
+
+    An exhausted script fails closed exactly like a provider failure.
+    """
+
+    provider = EVALUATION_PROVIDER
+    model = EVALUATION_MODEL
+
+    def __init__(self, decisions: list[str]) -> None:
+        self._decisions = list(decisions)
+        self.calls: list[str] = []
+
+    async def verify(
+        self,
+        *,
+        user_text: str,
+        proposed_action: str,
+    ) -> ProtectedActionSemanticDecision:
+        del user_text
+        self.calls.append(proposed_action)
+        if not self._decisions:
+            raise ProtectedActionVerificationError(
+                VerifierFailureCategory.PROVIDER_ERROR,
+                "evaluation verifier script is empty",
+            )
+        return ProtectedActionSemanticDecision(self._decisions.pop(0))
+
 
 class SyntheticToolRuntime:
     def __init__(self, failures: dict[str, str]) -> None:
@@ -218,11 +256,19 @@ async def run_scenario(
         [response for turn in scenario.turns for response in turn.llm_responses]
     )
     runtime = SyntheticToolRuntime(scenario.tool_failure)
+    verifier = EvaluationProtectedActionVerifier(
+        [
+            decision
+            for turn in scenario.turns
+            for decision in turn.protected_verifier_decisions
+        ]
+    )
     orchestrator = AgentOrchestrator(
         llm=llm,
         tool_executor=runtime.executor(),
         resource_resolver=EvaluationResourceResolver(),
         policy_retriever=EvaluationPolicyRetriever(scenario),
+        protected_action_verifier=verifier,
     )
     state = _initial_state(scenario)
     sink = InMemoryTraceSink()

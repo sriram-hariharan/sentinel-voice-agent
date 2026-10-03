@@ -9,6 +9,9 @@ from backend.app.agent.orchestrator import (
     AgentOrchestrator,
     AgentTurnStatus,
 )
+from backend.app.agent.protected_action_verifier import (
+    ProtectedActionSemanticDecision,
+)
 from backend.app.agent.resource_resolver import ResourceResolution
 from backend.app.conversation.state import (
     AuthenticationLevel,
@@ -62,6 +65,19 @@ class SequenceLLM:
 class NoopResourceResolver:
     async def resolve(self, **kwargs) -> ResourceResolution:
         return ResourceResolution()
+
+    async def resolve_protected(self, **kwargs) -> ResourceResolution:
+        return ResourceResolution()
+
+
+class ScriptedVerifier:
+    def __init__(self, *decisions: ProtectedActionSemanticDecision) -> None:
+        self.decisions = list(decisions)
+        self.calls: list[tuple[str, str]] = []
+
+    async def verify(self, *, user_text: str, proposed_action: str):
+        self.calls.append((user_text, proposed_action))
+        return self.decisions.pop(0)
 
 
 def _authenticated_state() -> ConversationState:
@@ -159,10 +175,14 @@ async def test_protected_tool_proposal_waits_for_confirmation() -> None:
     )
 
     executor = AsyncMock()
+    verifier = ScriptedVerifier(
+        ProtectedActionSemanticDecision.EXPLICIT_CURRENT_ACTION
+    )
     orchestrator = AgentOrchestrator(
         llm=llm,
         tool_executor=executor,
         resource_resolver=NoopResourceResolver(),
+        protected_action_verifier=verifier,
     )
 
     state = _authenticated_state()
@@ -176,6 +196,7 @@ async def test_protected_tool_proposal_waits_for_confirmation() -> None:
         db=db,
     )
 
+    assert verifier.calls == [("Freeze my card", "freeze_card")]
     assert result.status == AgentTurnStatus.WAITING_FOR_CONFIRMATION
     assert state.phase == ConversationPhase.WAITING_FOR_CONFIRMATION
 

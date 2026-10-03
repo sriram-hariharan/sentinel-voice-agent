@@ -2344,6 +2344,48 @@ or threshold tuning has occurred. Step 29I remains blocked, the raw final
 holdout remains untouched, and the immediate frozen continuation is
 `v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`.
 
+### R3 protected-intent gate data authoring/build workflow
+
+`scripts/build_v2c6_r3_protected_intent_gate_data.py` implements the frozen
+workflow without generating utterance text. Its four mutually exclusive modes
+are `--preflight`, `--prepare-authoring-workfiles`, `--build`, and
+`--check-results`. Preparation will create only these ignored, create-once
+workfiles:
+
+- `local/v2c6_r3_protected_intent_gate_training_authoring.json`, containing
+  480 empty slots across the three frozen 160-record training families;
+- `local/v2c6_r3_fresh_source_evaluation_authoring.json`, containing 640 empty
+  slots across the two frozen 320-record evaluation families.
+
+The training allocation is exactly 20 positives and 20 targeted unsupported
+negatives per protected intent per family, yielding 60 positives and 60
+negatives for each of the four verifier datasets. Each evaluation family has
+40 records per primary intent; its 40 unsupported records allocate 10 cases to
+each protected boundary. Evaluation slots are explicitly not training data,
+are excluded from candidate fitting, and freeze the required independent
+authoring and no-prediction-inspection declarations.
+
+Build is blocked until all records have nonempty text, matching raw and
+normalized hashes, valid provenance, approved semantic review, and no
+unresolved required human adjudication. Exact and normalized duplicates,
+cross-intent collisions, training/evaluation overlap, and overlap against the
+9,608 existing development records or the consumed 640 R2 evaluation records
+all fail closed. No embedding or semantic-similarity test is substituted for
+these exact deterministic controls.
+
+When complete, build will create, without overwriting, the 480-record training
+artifact, the combined 10,088-record development artifact, the independent
+640-record fresh evaluation artifact, and a manifest for each. Manifests pin
+the frozen contract, existing development data, consumed R2 lineage, workfile
+and output hashes, counts, verifier composition, leakage audit, review status,
+and unchanged governance flags.
+
+No authoring workfile or tracked R3 dataset has been created yet, and no R3
+example has been authored. No model, embedding, fitting, inference,
+evaluation, or threshold tuning ran in this implementation step. The raw final
+holdout remains prohibited and untouched, Step 29I remains blocked, and the
+contract's success/failure stop rule is unchanged.
+
 ## Reproduce V2-C1
 
 ```bash

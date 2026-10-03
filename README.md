@@ -5113,6 +5113,34 @@ inference, threshold tuning, or experiment. Step 29I remains blocked and the
 raw final holdout remains untouched. The immediate frozen continuation is
 `v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`.
 
+#### V2-C6 R3 protected-intent gate data workflow
+
+`scripts/build_v2c6_r3_protected_intent_gate_data.py` implements the local
+authoring and deterministic build workflow authorized by the frozen design.
+It supports `--preflight`, `--prepare-authoring-workfiles`, `--build`, and
+`--check-results`. Preparation creates two ignored, create-once workfiles with
+empty text slots: 480 training slots across the three frozen 160-record source
+families and 640 evaluation slots across the two frozen 320-record source
+families. The builder does not generate example text.
+
+Completed workfiles must preserve the frozen IDs, groups, intent and boundary
+allocations, provenance, fitting exclusions, and source-independence flags.
+Every record must contain verified text hashes and an approved human or
+AI-assisted semantic review; flagged ambiguity remains blocked until recorded
+human adjudication is complete. Build-time validation requires zero exact or
+normalized duplicates, cross-intent normalized collisions, training/evaluation
+overlap, overlap with the 9,608-record development source, and overlap with the
+consumed 640-record R2 evaluation source.
+
+After authoring and review, `--build` will create the 480-record R3 training
+artifact, the 10,088-record expanded development artifact, the 640-record
+fresh evaluation artifact, and their hash-pinning manifests. These outputs are
+create-once, and the fresh evaluation records are excluded from fitting. The
+workflow currently has authored no R3 examples, created no local workfiles or
+tracked datasets, and run no model, embedding, fitting, inference, evaluation,
+or threshold tuning. The raw final holdout remains prohibited and untouched,
+Step 29I remains blocked, and the frozen stop rule is unchanged.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

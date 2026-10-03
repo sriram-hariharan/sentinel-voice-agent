@@ -3002,6 +3002,49 @@ The 64-token budget, the verifier contract, the prohibited raw V2-C5 final
 holdout, and the Step 29I block are unchanged. The next required activity is
 `v2c6_routing_fallback_development_verifier_budget_validation`.
 
+### V2-C6 Routing Fallback Verifier Budget Validation Protocol
+
+The Step 2 runtime implementation is frozen at commit `d18228c`. The next
+activity is a development-only check of the 64-token verifier budget, and its
+protocol is now frozen before any provider call.
+
+- `data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_development_cases.json`
+  holds 20 synthetic cases: 5 explicit and 5 boundary cases each for
+  `freeze_card` and `create_dispute`. The boundary cases cover informational,
+  hypothetical, advice, negation, ambiguous, and other-action wording.
+  - The cases were written for this check from the frozen semantic
+    definitions. None is derived from R3 fresh records, the future fresh
+    evaluation, or the prohibited V2-C5 final holdout.
+  - They are marked development-only and not eligible for fresh or final
+    acceptance evidence. Once used they are consumed and can never serve as
+    fresh acceptance evidence.
+- `data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_contract.json`
+  hash-binds the implementation contract, its amendment, the verifier,
+  dependency wiring, the Groq provider, and the case set.
+  - It freezes the run: `openai/gpt-oss-20b` through `settings.llm_model`,
+    `max_completion_tokens = 64`, a 2.0-second timeout, the existing `auto`
+    tool choice, one call per case, and zero retries.
+  - It predeclares the result statuses in precedence order:
+    `TOKEN_BUDGET_AMENDMENT_REQUIRED` (direct token-exhaustion evidence),
+    `STRUCTURED_OUTPUT_POLICY_ISSUE` (a normal completion without a valid
+    structured decision, including a provider `tool_use_failed` error),
+    `INCONCLUSIVE_PROVIDER_FAILURE` (only transport, provider, or timeout
+    failures), and `KEEP_64` (all 20 cases structurally successful).
+  - Semantic correctness is reported only as a diagnostic, and never as
+    evidence of token exhaustion.
+- `scripts/run_v2c6_routing_fallback_verifier_budget_validation.py` supports
+  three modes:
+  - `--preflight` and `--check-results` never call a provider and never write.
+  - `--run` is the only mode that calls Groq. It uses
+    `build_protected_action_verifier(Settings())` with a runner-local
+    recording wrapper, and writes create-once results and a manifest that
+    contain no customer utterances.
+  - No other token budget is tried automatically.
+
+No Groq call has been made, no budget or tool-choice amendment has been made,
+and the fresh 400-record fallback evaluation has not been authored or started.
+The raw V2-C5 final holdout remains prohibited, and Step 29I remains blocked.
+
 ## Reproduce V2-C1
 
 ```bash

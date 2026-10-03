@@ -1,0 +1,166 @@
+{
+  "contract_status": {
+    "contract_frozen": true,
+    "final_holdout_accessed": false,
+    "groq_calls_performed": false,
+    "run_performed": false,
+    "step29i_authorized": false,
+    "tool_choice_changed": false,
+    "verifier_max_completion_tokens_changed": false,
+    "verifier_prompt_changed": false
+  },
+  "contract_version": "v2c6-routing-fallback-verifier-budget-validation-contract.v1",
+  "development_evidence_governance": {
+    "cases_consumed_once_used": true,
+    "development_only": true,
+    "eligible_for_future_fresh_evaluation": false,
+    "final_acceptance_evidence": false,
+    "fresh_fallback_evaluation_authored": false,
+    "fresh_fallback_evaluation_started": false
+  },
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "bound_as_source_artifact": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "frozen_run_configuration": {
+    "alternate_budgets_tested": false,
+    "automatic_retries": 0,
+    "cases": 20,
+    "execution": "sequential",
+    "fresh_evaluation": false,
+    "max_completion_tokens": 64,
+    "model": "openai/gpt-oss-20b",
+    "model_source": "settings.llm_model",
+    "prompt_changes_during_run": false,
+    "real_provider_calls_permitted_only_in": "--run",
+    "real_provider_calls_required": true,
+    "timeout_seconds": 2.0,
+    "tool_choice": "auto_existing_groq_provider_behavior",
+    "verifier_calls_per_case": 1,
+    "verifier_construction": "build_protected_action_verifier(Settings())"
+  },
+  "observation_instrumentation": {
+    "customer_utterance_in_results": false,
+    "mechanism": "runner_local_recording_wrapper_around_the_production_groq_provider",
+    "production_provider_protocol_changed": false,
+    "provider_error_message_text_in_results": false,
+    "recorded_per_case": [
+      "case_id",
+      "proposed_action",
+      "expected_decision",
+      "observed_decision",
+      "failure_category",
+      "provider",
+      "model",
+      "finish_reason",
+      "provider_call_count",
+      "structured_tool_call_count",
+      "provider_error_type",
+      "provider_error_code",
+      "provider_error_status",
+      "provider_error_mentions_token_limit",
+      "prompt_tokens",
+      "completion_tokens",
+      "total_tokens",
+      "latency_ms"
+    ]
+  },
+  "on_failure": {
+    "INCONCLUSIVE_PROVIDER_FAILURE": "stop; any rerun requires a separately recorded decision",
+    "STRUCTURED_OUTPUT_POLICY_ISSUE": "stop; do not silently change tool_choice or provider behavior",
+    "TOKEN_BUDGET_AMENDMENT_REQUIRED": "stop; freeze a replacement budget separately before any further provider experiment",
+    "automatic_higher_budget_run": false
+  },
+  "output_artifacts": {
+    "create_once": true,
+    "manifest": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.manifest.json",
+    "results": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.json"
+  },
+  "phase": "V2-C6 Routing Fallback Development Verifier Budget Validation",
+  "purpose": "Determine only whether the real production verifier path (openai/gpt-oss-20b, max_completion_tokens 64, 2.0-second timeout, existing tool_choice auto) reliably returns one valid structured verifier decision. This is not fresh fallback evaluation, final semantic acceptance, or model selection.",
+  "repository_baseline": {
+    "branch": "v2/ml-routing-evaluation",
+    "head": "d18228c7b61e10bf01d0e959f242c63ebd5b2ccc",
+    "head_subject": "Implement V2-C6 protected-action semantic verification fallback"
+  },
+  "result_statuses": {
+    "INCONCLUSIVE_PROVIDER_FAILURE": "no token-exhaustion or structured-output evidence, and the only failures are external provider, transport, rate-limit, or timeout failures",
+    "KEEP_64": "all 20 cases complete without verifier failure, with exactly one structured decision call, a valid enum decision, and a finish_reason other than length",
+    "STRUCTURED_OUTPUT_POLICY_ISSUE": "no token-exhaustion evidence, and any case completed normally but failed the structured-output protocol (zero, multiple, or wrong calls, invalid arguments or enum, malformed output, or a provider tool_use_failed error)",
+    "TOKEN_BUDGET_AMENDMENT_REQUIRED": "any case has direct token-exhaustion evidence: finish_reason length, or a provider error that explicitly reports a token limit",
+    "network_failures_imply_token_exhaustion": false,
+    "precedence": [
+      "TOKEN_BUDGET_AMENDMENT_REQUIRED",
+      "STRUCTURED_OUTPUT_POLICY_ISSUE",
+      "INCONCLUSIVE_PROVIDER_FAILURE",
+      "KEEP_64"
+    ],
+    "provider_failure_categories": [
+      "timeout",
+      "provider_error",
+      "unexpected_verifier_exception"
+    ],
+    "semantic_errors_imply_token_exhaustion": false,
+    "structured_output_failure_categories": [
+      "zero_structured_calls",
+      "multiple_structured_calls",
+      "wrong_structured_tool_name",
+      "invalid_arguments",
+      "invalid_enum",
+      "malformed_structured_output"
+    ],
+    "structured_output_provider_error_codes": [
+      "tool_use_failed"
+    ],
+    "token_exhaustion_finish_reasons": [
+      "length"
+    ]
+  },
+  "schema_version": "v2c6-routing-fallback-verifier-budget-validation-contract.v1",
+  "semantic_diagnostics": {
+    "report": [
+      "exact_correct_of_20",
+      "explicit_correct_of_10",
+      "boundary_exact_correct_of_10",
+      "boundary_safe_non_explicit_of_10",
+      "decision_confusion_counts"
+    ],
+    "role": "diagnostic_only_not_acceptance"
+  },
+  "source_bindings": {
+    "dependencies": {
+      "path": "backend/app/agent/dependencies.py",
+      "sha256": "66c3df54f090c9d700ae15aaf089259c50dc22dc35769e41dc10dfd175d6dbb2"
+    },
+    "development_cases": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_development_cases.json",
+      "sha256": "46c0da1502767a6999f0e2fab8fa3c3ae56ba08d573ba1a1a78cac168de19343"
+    },
+    "groq_provider": {
+      "path": "backend/app/providers/groq_llm.py",
+      "sha256": "3d2eaef4849ec65f945d58456139240ffb7a7953626ffed7c5ed387d826e3ae2"
+    },
+    "implementation_contract_amendment": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_contract_amendment.json",
+      "sha256": "591e103dbf28db33508dbbb3a236171d160762efac03f8536988c452d74ccbd5"
+    },
+    "implementation_evaluation_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_evaluation_contract.json",
+      "sha256": "c972a381a80bcf7a36b5db751195b3263a8bbc14b72e1442d196306f656a68c0"
+    },
+    "protected_action_verifier": {
+      "path": "backend/app/agent/protected_action_verifier.py",
+      "sha256": "db57cb4d14ccf97b4e98aea59c704dae7804094f014d4414fe93fdff8d96a7d9"
+    }
+  },
+  "status": "FROZEN",
+  "step29i_policy": {
+    "authorized_by_this_contract": false,
+    "blocked": true
+  }
+}

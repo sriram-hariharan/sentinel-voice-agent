@@ -1,0 +1,189 @@
+{
+  "authoring": {
+    "authoring_method": "ai_assisted_authoring_by_claude_code_from_frozen_definitions",
+    "derived_from_future_fresh_fallback_evaluation": false,
+    "derived_from_r3_fresh_records": false,
+    "derived_from_v2c5_final_holdout": false,
+    "human_reviewed": false,
+    "independently_authored_from_frozen_semantic_definitions": true
+  },
+  "case_count": 20,
+  "cases": [
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_freeze_explicit_01",
+      "case_kind": "explicit",
+      "customer_utterance": "Freeze my debit card right now.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_freeze_explicit_02",
+      "case_kind": "explicit",
+      "customer_utterance": "Can you lock down my card? I just lost my wallet at the train station.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_freeze_explicit_03",
+      "case_kind": "explicit",
+      "customer_utterance": "Please put a freeze on the card ending in 1842.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_freeze_explicit_04",
+      "case_kind": "explicit",
+      "customer_utterance": "I think someone took my card, so freeze it immediately.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_freeze_explicit_05",
+      "case_kind": "explicit",
+      "customer_utterance": "Go ahead and freeze my credit card for me.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": "informational",
+      "case_id": "v2c6_budget_dev_freeze_boundary_01",
+      "case_kind": "boundary",
+      "customer_utterance": "What happens to my automatic payments if I freeze my card?",
+      "expected_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": "hypothetical",
+      "case_id": "v2c6_budget_dev_freeze_boundary_02",
+      "case_kind": "boundary",
+      "customer_utterance": "If I ever lose my card, could I freeze it from the app?",
+      "expected_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": "advice",
+      "case_id": "v2c6_budget_dev_freeze_boundary_03",
+      "case_kind": "boundary",
+      "customer_utterance": "Should I freeze my card or just wait and see if it turns up?",
+      "expected_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": "negation",
+      "case_id": "v2c6_budget_dev_freeze_boundary_04",
+      "case_kind": "boundary",
+      "customer_utterance": "Don't freeze my card, I found it in my jacket pocket.",
+      "expected_decision": "NOT_REQUESTED",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": "ambiguity",
+      "case_id": "v2c6_budget_dev_freeze_boundary_05",
+      "case_kind": "boundary",
+      "customer_utterance": "I'm a little worried about my card after that strange charge.",
+      "expected_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "proposed_action": "freeze_card"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_dispute_explicit_01",
+      "case_kind": "explicit",
+      "customer_utterance": "Dispute the forty dollar charge from Bright Cinema, I was never there.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_dispute_explicit_02",
+      "case_kind": "explicit",
+      "customer_utterance": "I want to open a dispute for that double charge at the grocery store.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_dispute_explicit_03",
+      "case_kind": "explicit",
+      "customer_utterance": "Please file a dispute on yesterday's hotel transaction.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_dispute_explicit_04",
+      "case_kind": "explicit",
+      "customer_utterance": "Can you dispute the subscription charge from last week? I cancelled it in March.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": null,
+      "case_id": "v2c6_budget_dev_dispute_explicit_05",
+      "case_kind": "explicit",
+      "customer_utterance": "Start a dispute for the transaction at Metro Fuel, it isn't mine.",
+      "expected_decision": "EXPLICIT_CURRENT_ACTION",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": "informational",
+      "case_id": "v2c6_budget_dev_dispute_boundary_01",
+      "case_kind": "boundary",
+      "customer_utterance": "How long does a dispute usually take to resolve?",
+      "expected_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": "hypothetical",
+      "case_id": "v2c6_budget_dev_dispute_boundary_02",
+      "case_kind": "boundary",
+      "customer_utterance": "If the refund doesn't show up by Friday, would I be able to dispute it then?",
+      "expected_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": "advice",
+      "case_id": "v2c6_budget_dev_dispute_boundary_03",
+      "case_kind": "boundary",
+      "customer_utterance": "Is it worth disputing a five dollar charge, or should I just let it go?",
+      "expected_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": "negation",
+      "case_id": "v2c6_budget_dev_dispute_boundary_04",
+      "case_kind": "boundary",
+      "customer_utterance": "No need to dispute anything, the store already refunded me.",
+      "expected_decision": "NOT_REQUESTED",
+      "proposed_action": "create_dispute"
+    },
+    {
+      "boundary_category": "request_for_other_action",
+      "case_id": "v2c6_budget_dev_dispute_boundary_05",
+      "case_kind": "boundary",
+      "customer_utterance": "Actually, can you just freeze my card instead?",
+      "expected_decision": "NOT_REQUESTED",
+      "proposed_action": "create_dispute"
+    }
+  ],
+  "composition": {
+    "create_dispute": {
+      "boundary": 5,
+      "explicit": 5
+    },
+    "freeze_card": {
+      "boundary": 5,
+      "explicit": 5
+    }
+  },
+  "consumed_once_used": true,
+  "development_only": true,
+  "eligible_for_final_acceptance": false,
+  "eligible_for_future_fresh_evaluation": false,
+  "phase": "V2-C6 Routing Fallback Development Verifier Budget Validation",
+  "schema_version": "v2c6-routing-fallback-verifier-budget-development-cases.v1"
+}

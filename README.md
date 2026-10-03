@@ -5162,52 +5162,99 @@ The data build ran no model, embedding, fitting, inference, threshold tuning,
 or candidate selection. The raw final holdout remains prohibited and
 untouched, and Step 29I remains blocked.
 
-The next governed activity is implementation and execution of the already
-frozen two-candidate R3 experiment comparing `HYBRID_CONTROL_R3` and
-`HYBRID_PROTECTED_VERIFIER_R3`. Neither candidate has been evaluated, so
-neither is yet known to be better or acceptable. The frozen stop rule is
-unchanged: if neither candidate passes every gate in every required scope, the
-next activity is `routing_architecture_fallback_decision`, not another
-classifier or data remediation cycle.
+The R3 experiment comparing `HYBRID_CONTROL_R3` and
+`HYBRID_PROTECTED_VERIFIER_R3` has since been executed; see the frozen result
+below.
 
-#### V2-C6 R3 protected-intent gate model-selection runner
+#### V2-C6 R3 protected-intent gate model-selection result
 
-`scripts/run_v2c6_r3_protected_intent_gate_model_selection.py` implements the
-frozen two-candidate R3 experiment. It has been implemented but **not
-executed**: no R3 candidate has been selected, no R3 result artifact exists,
-and implementing the runner generated no embeddings and performed no model
-fitting or inference.
+`scripts/run_v2c6_r3_protected_intent_gate_model_selection.py` ran the frozen
+two-candidate experiment. Both candidates shared one deterministic five-fold
+`StratifiedGroupKFold` plan over the 10,088 expanded development records and
+reused the hash-pinned R2 Hybrid, TF-IDF, BGE, `LinearSVC`, and metric
+conventions. The gated candidate's four word+char TF-IDF verifiers were fitted
+only on R3 addendum records, with each verifier record inheriting its
+development record's fold side. Fresh evaluation fitted each candidate once on
+all development records and evaluated both fresh families without refitting.
 
-The runner pins the R3 contract, the six frozen R3 dataset and manifest hashes,
-and the earlier convention sources. It reuses the Hybrid, TF-IDF, BGE,
-`LinearSVC`, and metric helpers from the hash-pinned R2 runner, so both
-candidates use exactly the established conventions. Both candidates share one
-deterministic five-fold `StratifiedGroupKFold` plan over the 10,088 expanded
-development records. The gated candidate's four word+char TF-IDF verifiers
-are fitted only on R3 addendum records. During grouped CV each verifier
-record inherits its development record's fold side, so fold-validation records
-never enter verifier fitting. Fresh evaluation fits each candidate once on all
-development records (plus the full 60 + 60 verifier populations) and
-evaluates both fresh families without refitting. The mandatory gates,
-eligibility, gate diagnostics, lexicographic selection, and stop-rule
-continuation follow the frozen contract exactly. The raw V2-C5 final holdout
-remains prohibited, and Step 29I remains blocked.
+The experiment was executed once and `--check-results` validated the saved
+artifacts:
 
-Future local commands (`--run` is not part of the implementation step):
+- `data/evals/v2/ml/v2c6_r3_protected_intent_gate_model_selection_results.json`
+  (SHA-256 `883dd954e9ed08c9d2be8a887c803270d09fda11341da9edd8cf67226204cde6`)
+- `data/evals/v2/ml/v2c6_r3_protected_intent_gate_model_selection_results.manifest.json`
 
-```bash
-sentinelvoice_env/bin/python \
-  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
-  --preflight
+Frozen outcome: `selection_status = NO_ACCEPTABLE_CANDIDATE`,
+`eligible_candidate_count = 0`, `selected_candidate_id = null`,
+`winner_forced = false`, `gates_weakened = false`,
+`next_required = routing_architecture_fallback_decision`, and
+`step29i_authorized = false`.
 
-sentinelvoice_env/bin/python \
-  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
-  --run
+| Scope | Metric | `HYBRID_CONTROL_R3` | `HYBRID_PROTECTED_VERIFIER_R3` |
+| --- | --- | --- | --- |
+| `pooled_group_aware_cv` | protected recall | 0.9352189781021898 PASS | 0.7992700729927007 **FAIL** |
+| `pooled_group_aware_cv` | protected FPR | 0.016236654804270462 **FAIL** | 0.010342526690391459 **FAIL** |
+| `pooled_group_aware_cv` | unsupported recall | 0.8994226112870181 PASS | 0.9087353324641461 PASS |
+| `v2c6_r3_eval_sf1_independent_casework` | protected recall | 0.99375 PASS | 0.95 PASS |
+| `v2c6_r3_eval_sf1_independent_casework` | protected FPR | 0.03125 **FAIL** | 0.0125 **FAIL** |
+| `v2c6_r3_eval_sf1_independent_casework` | unsupported recall | 0.875 PASS | 0.95 PASS |
+| `v2c6_r3_eval_sf2_independent_naturalistic` | protected recall | 0.8125 PASS | 0.75 **FAIL** |
+| `v2c6_r3_eval_sf2_independent_naturalistic` | protected FPR | 0.025 **FAIL** | 0.0125 **FAIL** |
+| `v2c6_r3_eval_sf2_independent_naturalistic` | unsupported recall | 0.875 PASS | 0.925 PASS |
+| `pooled_r3_fresh_evaluation` | protected recall | 0.903125 PASS | 0.85 PASS |
+| `pooled_r3_fresh_evaluation` | protected FPR | 0.028125 **FAIL** | 0.0125 **FAIL** |
+| `pooled_r3_fresh_evaluation` | unsupported recall | 0.875 PASS | 0.9375 PASS |
 
-sentinelvoice_env/bin/python \
-  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
-  --check-results
-```
+Thresholds: protected recall >= 0.80, protected FPR <= 0.01, unsupported
+recall >= 0.80, required on every scope. Both candidates are ineligible.
+
+| Selection metric | `HYBRID_CONTROL_R3` | `HYBRID_PROTECTED_VERIFIER_R3` |
+| --- | --- | --- |
+| worst fresh-family primary-8 macro-F1 | 0.7980060473006161 | 0.7801821499891757 |
+| pooled fresh primary-8 macro-F1 | 0.8733783556753727 | 0.8605614917303537 |
+| pooled grouped-CV macro-F1-16 | 0.8935424434545153 | 0.8792005038767634 |
+
+Because no candidate was eligible, the lexicographic selection rule was not
+applied to choose a winner; these metrics are recorded for completeness only.
+
+Pooled fresh gate diagnostics for `HYBRID_PROTECTED_VERIFIER_R3`:
+
+- primary protected predictions presented to verifiers: 298
+- verifier accept count: 276; verifier reject-to-unsupported count: 22
+- protected false positives: 9 before the gate, 4 after (5 prevented)
+- true protected requests rejected by the verifier: 17
+- protected recall: 0.903125 before the gate, 0.85 after
+- unsupported recall: 0.875 before the gate, 0.9375 after
+
+The protected verifier materially reduced protected false positives and
+improved unsupported recall, but the improvement was insufficient to satisfy
+the frozen protected-FPR threshold, and it also reduced protected recall enough
+to fail mandatory gates in grouped CV and fresh family 2. This is a measured
+outcome, not an established causal root cause. The experiment therefore
+produced no acceptable candidate.
+
+The executed `--run` truthfully recorded
+`embeddings_generated_during_run`, `model_fitting_performed`,
+`model_inference_performed`, `model_selection_performed`,
+`primary_router_fitting_performed`, `verifier_fitting_performed`, and
+`fresh_evaluation_performed` as `true`. It recorded `false` for
+`final_holdout_accessed`, `final_holdout_evaluated`,
+`fresh_evaluation_used_for_fitting`,
+`fresh_evaluation_used_for_threshold_tuning`,
+`fresh_evaluation_used_for_candidate_modification`,
+`threshold_tuning_performed`, `calibration_performed`,
+`persisted_fitted_classifier`, `runtime_behavior_changed`,
+`production_ready_claimed`, `final_model_acceptance_claimed`,
+`r4_classifier_or_data_cycle_authorized`, `routing_fallback_implemented`, and
+`step29i_authorized`.
+
+The frozen final classifier-remediation stop rule now applies. No R4 cycle,
+classifier family, representation, targeted classifier dataset, threshold
+tuning, C tuning, class-weight change, or gate weakening is permitted. The next
+required phase is exactly `routing_architecture_fallback_decision`, a
+separately governed architecture decision. That fallback has not been
+designed or implemented. The raw V2-C5 final holdout remains prohibited, and
+Step 29I remains blocked.
 
 ### Why this extension is useful
 

@@ -1,0 +1,88 @@
+{
+  "candidate_count": 2,
+  "completed_candidate_count": 2,
+  "contract": {
+    "path": "data/evals/v2/ml/v2c6_protected_intent_gate_remediation_design_contract.json",
+    "schema_version": "v2c6-protected-intent-gate-remediation-design-contract.v1",
+    "sha256": "4a744a48e18d674c1f87bbd53f470cae95f0bf09fafd7920942310712c0c894e"
+  },
+  "frozen_inputs": {
+    "convention_sources": {
+      "prior_targeted_remediation_contract": {
+        "path": "data/evals/v2/ml/v2c6_targeted_remediation_design_contract.json",
+        "sha256": "339bd20f4bb94e73a42bd297c053aef8deaf55ee42a3b2145b8792172e7d5e91"
+      },
+      "reused_r2_runner": {
+        "path": "scripts/run_v2c6_targeted_remediation_model_selection.py",
+        "sha256": "043e00d5cab470359b2ad5e4f78492a715bfb9ed6e83e766fcd08e6c923af6b0"
+      },
+      "step29g_contract": {
+        "path": "data/evals/v2/ml/v2c6_source_aware_model_selection_contract.json",
+        "sha256": "de4566b7fdb097e78fcd23b8ffa4682c4757cc7c5901c3f9a49d7da28192b1ba"
+      }
+    },
+    "development_dataset": {
+      "manifest_sha256": "5ead89b05dfc4b649e048cc5bb44c261d38f9536594b02f9e38a8024514168fe",
+      "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_development_dataset.json",
+      "record_count": 10088,
+      "schema_version": "v2c6-r3-protected-intent-gate-development-dataset.v1",
+      "sha256": "d27c411cefdba2cc4d8a9c70493b05f43542e1542f1b202c909090a7185f36fe"
+    },
+    "fresh_evaluation_dataset": {
+      "excluded_from_fitting": true,
+      "manifest_sha256": "5972e5c81f552cf978219075f0536689693f1a0e78892fedc148b33df07f40ba",
+      "path": "data/evals/v2/ml/v2c6_r3_fresh_source_evaluation_dataset.json",
+      "record_count": 640,
+      "schema_version": "v2c6-r3-fresh-source-evaluation-dataset.v1",
+      "sha256": "e530f24c236ed03c8228ab465165996d7ea94fb24f43cc1ddb1545118918d369"
+    },
+    "training_addendum": {
+      "manifest_sha256": "f5d3ba48a425e72eab8b45d5835f7f3fc8334c42ba6c0d6ab3e6d700eeecefbf",
+      "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_training_examples.json",
+      "record_count": 480,
+      "schema_version": "v2c6-r3-protected-intent-gate-training-examples.v1",
+      "sha256": "db2db4d6116c04712ae9b5979c71c8cbdc1ed9c4e330ba4f3915ba8b62efce14"
+    }
+  },
+  "governance": {
+    "calibration_performed": false,
+    "embeddings_generated_during_run": true,
+    "final_holdout_accessed": false,
+    "final_holdout_evaluated": false,
+    "final_model_acceptance_claimed": false,
+    "fresh_evaluation_performed": true,
+    "fresh_evaluation_used_for_candidate_modification": false,
+    "fresh_evaluation_used_for_fitting": false,
+    "fresh_evaluation_used_for_threshold_tuning": false,
+    "gates_weakened": false,
+    "model_fitting_performed": true,
+    "model_inference_performed": true,
+    "model_selection_performed": true,
+    "persisted_fitted_classifier": false,
+    "primary_router_fitting_performed": true,
+    "production_model_training_performed": false,
+    "production_ready_claimed": false,
+    "r4_classifier_or_data_cycle_authorized": false,
+    "routing_fallback_implemented": false,
+    "runtime_behavior_changed": false,
+    "step29i_authorized": false,
+    "threshold_tuning_performed": false,
+    "verifier_fitting_performed": true,
+    "winner_forced": false
+  },
+  "next_required": "routing_architecture_fallback_decision",
+  "phase": "V2-C6 R3 protected-intent gate model selection",
+  "results": {
+    "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_model_selection_results.json",
+    "schema_version": "v2c6-r3-protected-intent-gate-model-selection-results.v1",
+    "sha256": "883dd954e9ed08c9d2be8a887c803270d09fda11341da9edd8cf67226204cde6"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_r3_protected_intent_gate_model_selection.py",
+    "sha256": "e80731bcb5b1b3b4cc79d25d019304cb35f2c63ed7514d208c06e77bbbb9266d"
+  },
+  "schema_version": "v2c6-r3-protected-intent-gate-model-selection-results-manifest.v1",
+  "selected_candidate_id": null,
+  "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+  "split_audit_sha256": "59fc389f0c9a02b540b99e94433a55744a9f5610bd67ffc6f891b71e4348f89b"
+}

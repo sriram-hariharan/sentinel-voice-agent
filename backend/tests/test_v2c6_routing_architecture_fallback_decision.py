@@ -225,9 +225,19 @@ def test_verifier_placement_is_after_allowed_check_and_before_resource_binding(
         "verifier_runs_before_resource_clarification",
         "verifier_runs_before_input_validation",
         "verifier_runs_before_requires_confirmation_branch",
-        "pre_llm_resource_resolver_unchanged",
     ):
         assert placement[field] is True, field
+    # Historical value only: the resolver safety amendment supersedes it for
+    # protected actions (see test_v2c6_routing_architecture_fallback_decision_amendment).
+    assert placement["pre_llm_resource_resolver_unchanged"] is True
+    amendment = json.loads(
+        (
+            ROOT / "data/evals/v2/ml/v2c6_routing_architecture_fallback_decision_amendment.json"
+        ).read_text(encoding="utf-8")
+    )
+    assert amendment["corrected_invariant"][
+        "pre_llm_resource_resolver_unchanged_for_protected_actions"
+    ] is False
     assert placement["pending_action_created_before_verification"] is False
     assert "existing_branch" not in placement["runtime_reference"]
     steps = decision["decision"]["routing_semantics"]["protected_proposal_ordered_steps"]

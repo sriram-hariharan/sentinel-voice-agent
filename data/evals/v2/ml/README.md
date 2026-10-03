@@ -2675,6 +2675,87 @@ activity is the separately governed
 its own implementation and evaluation contract first. The raw V2-C5 final
 holdout remains prohibited, and Step 29I remains blocked.
 
+### V2-C6 Routing Fallback Resolver Safety Amendment
+
+`data/evals/v2/ml/v2c6_routing_architecture_fallback_decision_amendment.json`
+is a separately frozen, design-only amendment. It hash-binds the original
+decision (`b650511031a8df58056c045da684c63a0144b1272aa5d0525dc971734339a541`),
+which remains unmodified historical evidence, and records the discovery HEAD
+`6f196eb`.
+
+The original decision recorded `pre_llm_resource_resolver_unchanged = true` and
+assumed that no protected pending action could exist before semantic
+verification. Direct inspection of the current code contradicts this for
+protected actions:
+
+- `freeze_card`: `ResourceResolver._resolve_card` sets the `freeze_card` intent
+  for any card request containing the substring "freeze".
+  - With one matching card, `_activate_candidate` calls
+    `ConversationState.request_action("freeze_card", ...)`, and
+    `AgentOrchestrator.handle_text_turn` then returns the execution-confirmation
+    prompt before any model call.
+  - With several cards, the resolver asks a card-selection question, and the
+    selection reply creates the pending action the same way.
+- `create_dispute`: `_resolve_transaction` sets the `create_dispute` intent on
+  the substring "dispute" and can ask a transaction-selection question.
+  `_activate_candidate` only binds the transaction and never calls
+  `request_action`. The `create_dispute` pending action is created only by the
+  model tool-call path.
+- The two tools are therefore not symmetric. Both can receive
+  protected-intent resource clarification before verification, but only
+  `freeze_card` gets a pre-verification pending action.
+- These paths bypass the intended semantic-verification placement, not
+  authentication, explicit confirmation, or `ToolExecutor` authorization,
+  which all remain enforced.
+
+Corrected invariant: for every executable protected action, semantic
+verification must precede protected-action resource clarification,
+pending-action creation, and the execution-confirmation prompt.
+
+- The pre-LLM resolver is no longer frozen as unchanged for protected actions.
+  The implementation must remove, bypass, or defer any resolver path that can
+  create a protected pending action before verification, including the
+  `freeze_card` `request_action` call in `_activate_candidate`.
+- Non-protected resource resolution stays unchanged unless a minimal refactor
+  is needed.
+- A verified explicit request may still need resource clarification. For
+  example, "Freeze my card." with several cards asks which card. An
+  informational request such as "What happens if I freeze my card?" gets only
+  semantic clarification, with no card selection and no pending action.
+
+Multi-turn rule: when a verified explicit request needs a resource-selection
+turn, only minimal, action-specific state records that verification already
+succeeded.
+
+- That state is not confirmation or authorization and cannot execute
+  anything.
+- It cannot be reused for a different protected action.
+- It is invalidated by cancellation, correction, or abandonment, must be safe
+  under voice interruption, and never bypasses the later explicit execution
+  confirmation.
+- A bare selection reply such as "the Visa card", "the first one", or "ending
+  in 1234" never independently counts as `EXPLICIT_CURRENT_ACTION`.
+- The exact state representation belongs to the implementation contract.
+
+Corrected future order:
+
+1. Determine or propose the protected action without granting authority.
+2. Run structured semantic verification. A non-explicit result gets semantic
+   clarification and stops.
+3. For an explicit result: resolve and bind the protected resource, asking a
+   resource question if necessary and keeping verified state across turns.
+4. Validate the request and create the pending action.
+5. Ask for explicit execution confirmation.
+6. Apply deterministic `ToolExecutor` authorization, authentication, and
+   ownership enforcement, then execute.
+
+The amendment adds seven required evaluation scenarios. All original
+guarantees are preserved: the three verifier decisions, no verifier authority,
+no R4 or classifier runtime integration, registry-only executable tools,
+mandatory explicit confirmation, a required fresh fallback evaluation, the
+prohibited raw V2-C5 final holdout, and Step 29I blocked. No runtime code
+changed.
+
 ## Reproduce V2-C1
 
 ```bash

@@ -1,0 +1,220 @@
+{
+  "additional_required_evaluation_scenarios": [
+    "informational_freeze_wording_with_single_card_creates_no_pending_action",
+    "informational_freeze_wording_with_multiple_cards_asks_no_card_selection",
+    "informational_dispute_wording_asks_no_transaction_selection",
+    "explicit_protected_request_with_multiple_resources_asks_resource_selection",
+    "resource_selection_reply_does_not_independently_verify_protected_action",
+    "verified_semantic_state_invalidated_by_cancellation_correction_or_interruption",
+    "verified_semantic_state_not_reused_for_different_protected_action"
+  ],
+  "amended_artifact": {
+    "committed_at_head": "6f196eb6063f5e72b58cb7f838302daad0af380d",
+    "path": "data/evals/v2/ml/v2c6_routing_architecture_fallback_decision.json",
+    "schema_version": "v2c6-routing-architecture-fallback-decision.v1",
+    "sha256": "b650511031a8df58056c045da684c63a0144b1272aa5d0525dc971734339a541"
+  },
+  "amendment_status": {
+    "design_frozen": true,
+    "design_only": true,
+    "embeddings_generated": false,
+    "final_holdout_accessed": false,
+    "final_model_acceptance_claimed": false,
+    "llm_calls_performed": false,
+    "model_fitting_performed": false,
+    "model_inference_performed": false,
+    "original_decision_remains_historical_evidence": true,
+    "original_decision_rewritten": false,
+    "production_ready_claimed": false,
+    "r4_classifier_or_data_cycle_authorized": false,
+    "resource_resolver_changed": false,
+    "routing_fallback_implemented": false,
+    "runtime_behavior_changed": false,
+    "step29i_authorized": false
+  },
+  "amendment_version": "v2c6-routing-architecture-fallback-decision-amendment.v1",
+  "amends_decision_id": "CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING",
+  "corrected_future_order": [
+    "user_turn",
+    "determine_or_propose_protected_action_without_granting_authority",
+    "structured_semantic_verification",
+    "if_non_explicit_semantic_clarification_and_stop",
+    "if_explicit_protected_resource_resolution_and_binding",
+    "resource_clarification_if_necessary",
+    "preserve_action_specific_verified_semantic_state_if_multi_turn",
+    "request_validation",
+    "create_pending_action",
+    "explicit_execution_confirmation",
+    "deterministic_tool_executor_authorization",
+    "ownership_and_authentication_enforcement",
+    "execution"
+  ],
+  "corrected_invariant": {
+    "applies_to": "every_executable_protected_action",
+    "exact_refactor_owner": "separately_governed_implementation_contract",
+    "implementation_must_remove_bypass_or_defer_resolver_protected_pending_action_creation": true,
+    "pre_llm_resource_resolver_unchanged_for_protected_actions": false,
+    "resolver_freeze_card_request_action_may_remain_a_verification_bypass": false,
+    "semantic_verification_must_precede": [
+      "protected_action_specific_resource_clarification",
+      "pending_action_creation",
+      "execution_confirmation_prompt"
+    ]
+  },
+  "discovery_baseline": {
+    "branch": "v2/ml-routing-evaluation",
+    "head": "6f196eb6063f5e72b58cb7f838302daad0af380d",
+    "head_subject": "Freeze V2-C6 routing architecture fallback decision"
+  },
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "bound_as_source_artifact": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "multi_turn_verified_semantic_state": {
+    "action_specific": true,
+    "bypasses_explicit_execution_confirmation": false,
+    "can_execute": false,
+    "invalidated_by": [
+      "cancellation",
+      "correction",
+      "abandonment"
+    ],
+    "is_authorization": false,
+    "is_confirmation": false,
+    "purpose": "minimum_explicit_state_recording_that_semantic_verification_already_succeeded_for_one_protected_action_awaiting_resource_selection",
+    "reusable_for_different_protected_action": false,
+    "state_representation_frozen_by_this_amendment": false,
+    "state_representation_owner": "separately_governed_implementation_contract",
+    "voice_interruption_handling": "must_be_safe_under_existing_interruption_semantics"
+  },
+  "next_required": "v2c6_routing_fallback_implementation_and_evaluation",
+  "observed_runtime_behavior": {
+    "authorization_bypass_note": "The observed behavior bypasses the intended semantic-verification placement, not authentication, explicit confirmation, or ToolExecutor authorization, which remain enforced.",
+    "authorization_bypass_observed": false,
+    "create_dispute": {
+      "bypasses_explicit_confirmation": false,
+      "bypasses_future_semantic_verifier_placement": "resource_clarification_only",
+      "bypasses_tool_executor_authorization": false,
+      "intent_trigger": "ResourceResolver._resolve_transaction sets active_intent to create_dispute when a transaction request contains the substring 'dispute'",
+      "multiple_matching_transactions": "request_resource_resolution records intent create_dispute and returns a transaction-selection clarification before any model call",
+      "pending_action_creation_path": "only AgentOrchestrator._run_model_loop after the model proposes create_dispute",
+      "resolver_creates_pending_action": false,
+      "resolver_issues_protected_resource_clarification": true,
+      "single_matching_transaction": "_activate_candidate binds active_transaction_id and active_account_id only; it does not call request_action"
+    },
+    "freeze_card": {
+      "bypasses_explicit_confirmation": false,
+      "bypasses_future_semantic_verifier_placement": true,
+      "bypasses_tool_executor_authorization": false,
+      "intent_trigger": "ResourceResolver._resolve_card sets active_intent to freeze_card when a card request contains the substring 'freeze'",
+      "multiple_matching_cards": "request_resource_resolution records intent freeze_card and returns a card-selection clarification before any model call",
+      "resolver_creates_pending_action": true,
+      "resolver_issues_protected_resource_clarification": true,
+      "selection_reply_after_clarification": "_resolve_pending activates the selected card through _activate_candidate, which creates the freeze_card pending action",
+      "single_matching_card": "_activate_candidate calls ConversationState.request_action('freeze_card', card_id) which creates pending_action and enters WAITING_FOR_CONFIRMATION; the orchestrator then returns the execution-confirmation prompt without a model call"
+    },
+    "observed_at_head": "6f196eb6063f5e72b58cb7f838302daad0af380d",
+    "observed_file_sha256": {
+      "backend/app/agent/orchestrator.py": "684644aa69be8cd26c76e15492d9096774e35556c5d9d5548ba87ea2b238a272",
+      "backend/app/agent/resource_resolver.py": "5bb855a4480c620a1a0f088bb3013f4c1a88511cb9810a4d4fec0b9c95417ae5"
+    },
+    "pre_llm_ordering": "AgentOrchestrator.handle_text_turn calls ResourceResolver.resolve before the model loop; a resolver clarification is returned immediately, and a pending action in WAITING_FOR_CONFIRMATION returns the execution-confirmation prompt before any model call",
+    "symmetry_between_protected_tools": false
+  },
+  "orchestration_refactor_owner": "separately_governed_implementation_contract",
+  "phase": "V2-C6 Routing Architecture Fallback Decision",
+  "preserved_original_guarantees": {
+    "explicit_confirmation_required": true,
+    "fresh_fallback_evaluation_required": true,
+    "local_classifier": {
+      "role": "evaluation_evidence_only",
+      "runtime_integration_permitted": false,
+      "runtime_routing_authority": false
+    },
+    "r4_permitted": false,
+    "supported_protected_actions": {
+      "executable_protected_write_tools_at_freeze": [
+        "create_dispute",
+        "freeze_card"
+      ],
+      "new_tools_introduced": false,
+      "source_of_truth": "runtime_TOOL_REGISTRY",
+      "taxonomy_label_creates_runtime_tool": false,
+      "taxonomy_protected_intents_without_runtime_tool": [
+        "cancel_transfer",
+        "close_account"
+      ],
+      "verifier_may_imply_unregistered_capability": false
+    },
+    "threshold_weakening_permitted": false,
+    "tool_executor_remains_deterministic_authority": true,
+    "verifier_authority": {
+      "is_authorization": false,
+      "may_authenticate_customer": false,
+      "may_authorize_unsupported_tool": false,
+      "may_bypass_pending_action_state": false,
+      "may_bypass_tool_executor": false,
+      "may_establish_ownership": false,
+      "may_execute_tool": false,
+      "may_satisfy_confirmation": false
+    },
+    "verifier_decisions": [
+      "EXPLICIT_CURRENT_ACTION",
+      "AMBIGUOUS_OR_INFORMATIONAL",
+      "NOT_REQUESTED"
+    ]
+  },
+  "resource_resolution_after_verification": {
+    "examples": [
+      {
+        "condition": "multiple_cards_exist",
+        "expected": "ask_which_card",
+        "utterance": "Freeze my card.",
+        "verifier_decision": "EXPLICIT_CURRENT_ACTION"
+      },
+      {
+        "ask_which_card": false,
+        "condition": "any",
+        "create_pending_action": false,
+        "expected": "semantic_clarification_only",
+        "utterance": "What happens if I freeze my card?",
+        "verifier_decision": "AMBIGUOUS_OR_INFORMATIONAL_or_NOT_REQUESTED"
+      }
+    ],
+    "explicit_request_may_still_need_resource_clarification": true,
+    "non_protected_resource_resolution": "unchanged_unless_a_minimal_refactor_is_necessary",
+    "protected_resource_resolution_only_after_explicit_semantic_verification": true
+  },
+  "resource_selection_replies": {
+    "examples": [
+      "the Visa card",
+      "the first one",
+      "ending in 1234"
+    ],
+    "independently_count_as_explicit_current_action": false,
+    "may_continue_only_through_explicit_verified_semantic_state": true
+  },
+  "schema_version": "v2c6-routing-architecture-fallback-decision-amendment.v1",
+  "status": "FROZEN",
+  "step29i_policy": {
+    "authorized_by_this_amendment": false,
+    "blocked": true
+  },
+  "substep": "Resolver Safety Amendment",
+  "superseded_original_assertions": {
+    "decision.placement.pending_action_created_before_verification": {
+      "original_value": false,
+      "status": "remains_the_required_invariant_but_is_not_true_of_the_current_runtime_for_freeze_card"
+    },
+    "decision.placement.pre_llm_resource_resolver_unchanged": {
+      "amended_value_for_protected_actions": false,
+      "original_value": true,
+      "reason": "The pre-LLM ResourceResolver can create a freeze_card pending action and can issue protected-intent resource clarification before any semantic verification."
+    }
+  }
+}

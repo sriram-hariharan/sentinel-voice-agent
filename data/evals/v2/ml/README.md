@@ -2309,7 +2309,7 @@ causal root cause, candidate, or remediation was established by that analysis.
 
 The bounded candidate set contains only `HYBRID_CONTROL_R3` and
 `HYBRID_PROTECTED_VERIFIER_R3`. Both use the same Hybrid primary router and the
-same planned 10,088-record development set. The gated candidate adds four
+same 10,088-record development set. The gated candidate adds four
 independent word+character TF-IDF `LinearSVC` verifiers, one per protected
 intent. A verifier is invoked only for its protected primary prediction;
 acceptance preserves that prediction and rejection returns
@@ -2339,17 +2339,18 @@ is eligible, the continuation is
 `v2c6_candidate_freeze_before_final_holdout`. Neither outcome automatically
 authorizes Step 29I or final-holdout access.
 
-No R3 data has been authored and no experiment, fitting, inference, embedding,
-or threshold tuning has occurred. Step 29I remains blocked, the raw final
-holdout remains untouched, and the immediate frozen continuation is
-`v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`.
+The contract step itself authored no R3 data and ran no experiment, fitting,
+inference, embedding, or threshold tuning. Its immediate frozen continuation,
+`v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`, has since been
+completed; see the R3 dataset build below. Step 29I remains blocked and the
+raw final holdout remains untouched.
 
 ### R3 protected-intent gate data authoring/build workflow
 
 `scripts/build_v2c6_r3_protected_intent_gate_data.py` implements the frozen
 workflow without generating utterance text. Its four mutually exclusive modes
 are `--preflight`, `--prepare-authoring-workfiles`, `--build`, and
-`--check-results`. Preparation will create only these ignored, create-once
+`--check-results`. Preparation creates only these ignored, create-once
 workfiles:
 
 - `local/v2c6_r3_protected_intent_gate_training_authoring.json`, containing
@@ -2373,18 +2374,59 @@ cross-intent collisions, training/evaluation overlap, and overlap against the
 all fail closed. No embedding or semantic-similarity test is substituted for
 these exact deterministic controls.
 
-When complete, build will create, without overwriting, the 480-record training
-artifact, the combined 10,088-record development artifact, the independent
-640-record fresh evaluation artifact, and a manifest for each. Manifests pin
-the frozen contract, existing development data, consumed R2 lineage, workfile
-and output hashes, counts, verifier composition, leakage audit, review status,
-and unchanged governance flags.
+Build creates, without overwriting, the 480-record training artifact, the
+combined 10,088-record development artifact, the independent 640-record fresh
+evaluation artifact, and a manifest for each. Manifests pin the frozen
+contract, existing development data, consumed R2 lineage, workfile and output
+hashes, counts, verifier composition, leakage audit, review status, and
+unchanged governance flags.
 
-No authoring workfile or tracked R3 dataset has been created yet, and no R3
-example has been authored. No model, embedding, fitting, inference,
-evaluation, or threshold tuning ran in this implementation step. The raw final
-holdout remains prohibited and untouched, Step 29I remains blocked, and the
-contract's success/failure stop rule is unchanged.
+### R3 protected-intent gate dataset build
+
+The R3 data build is complete:
+
+- `v2c6_r3_protected_intent_gate_training_examples.json`: 480 targeted
+  training addendum records (60 positives and 60 targeted unsupported
+  negatives per protected-intent verifier);
+- `v2c6_r3_protected_intent_gate_development_dataset.json`: 10,088 expanded
+  development records (the frozen 9,608 records followed by the 480 new
+  training records);
+- `v2c6_r3_fresh_source_evaluation_dataset.json`: 640 new fresh evaluation
+  records (320 per source family, 80 per primary intent).
+
+All 480 training records and all 640 fresh evaluation records were approved
+through AI-assisted review, which is not recorded as human review. Human
+adjudication was required for 0 records. The build's duplicate and leakage
+audit passed with every exact and normalized count at zero: within-dataset
+duplicates, cross-intent collisions, training/evaluation overlap, overlap with
+the 9,608-record development source, and overlap with the consumed 640-record
+R2 evaluation. The fresh evaluation records remained excluded from candidate
+fitting throughout authoring and build.
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `v2c6_r3_protected_intent_gate_training_examples.json` | `db2db4d6116c04712ae9b5979c71c8cbdc1ed9c4e330ba4f3915ba8b62efce14` |
+| `v2c6_r3_protected_intent_gate_training_examples.manifest.json` | `f5d3ba48a425e72eab8b45d5835f7f3fc8334c42ba6c0d6ab3e6d700eeecefbf` |
+| `v2c6_r3_protected_intent_gate_development_dataset.json` | `d27c411cefdba2cc4d8a9c70493b05f43542e1542f1b202c909090a7185f36fe` |
+| `v2c6_r3_protected_intent_gate_development_dataset.manifest.json` | `5ead89b05dfc4b649e048cc5bb44c261d38f9536594b02f9e38a8024514168fe` |
+| `v2c6_r3_fresh_source_evaluation_dataset.json` | `e530f24c236ed03c8228ab465165996d7ea94fb24f43cc1ddb1545118918d369` |
+| `v2c6_r3_fresh_source_evaluation_dataset.manifest.json` | `5972e5c81f552cf978219075f0536689693f1a0e78892fedc148b33df07f40ba` |
+
+No model, embedding, fitting, inference, threshold tuning, or candidate
+selection occurred during the data build. The raw final holdout remains
+prohibited and untouched, and Step 29I remains blocked.
+
+The next governed activity is implementation and execution of the already
+frozen two-candidate R3 experiment:
+
+1. `HYBRID_CONTROL_R3`
+2. `HYBRID_PROTECTED_VERIFIER_R3`
+
+Neither candidate has been evaluated, so neither is yet known to be better or
+acceptable. The contract's stop rule is unchanged: if neither candidate passes
+every gate in every required scope, the next activity is
+`routing_architecture_fallback_decision`, not another classifier or data
+remediation cycle.
 
 ## Reproduce V2-C1
 

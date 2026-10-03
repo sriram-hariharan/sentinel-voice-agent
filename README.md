@@ -5079,7 +5079,7 @@ but it did not establish a causal root cause or select a model or remedy.
 
 The deliberately narrow experiment compares exactly `HYBRID_CONTROL_R3`
 against `HYBRID_PROTECTED_VERIFIER_R3`. Both use the same Hybrid primary router
-and the same planned 10,088-record expanded development set. The gated variant
+and the same 10,088-record expanded development set. The gated variant
 adds four independent word+character TF-IDF `LinearSVC` verifiers, one for each
 protected intent. A verifier runs only after its protected intent is predicted;
 acceptance preserves that prediction and rejection routes to
@@ -5110,8 +5110,9 @@ access.
 
 This contract step authored no data and ran no model, embedding, fitting,
 inference, threshold tuning, or experiment. Step 29I remains blocked and the
-raw final holdout remains untouched. The immediate frozen continuation is
-`v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`.
+raw final holdout remains untouched. Its immediate frozen continuation,
+`v2c6_r3_targeted_addendum_and_fresh_evaluation_authoring`, has since been
+completed; see the R3 dataset build below.
 
 #### V2-C6 R3 protected-intent gate data workflow
 
@@ -5132,14 +5133,42 @@ normalized duplicates, cross-intent normalized collisions, training/evaluation
 overlap, overlap with the 9,608-record development source, and overlap with the
 consumed 640-record R2 evaluation source.
 
-After authoring and review, `--build` will create the 480-record R3 training
+After authoring and review, `--build` created the 480-record R3 training
 artifact, the 10,088-record expanded development artifact, the 640-record
 fresh evaluation artifact, and their hash-pinning manifests. These outputs are
-create-once, and the fresh evaluation records are excluded from fitting. The
-workflow currently has authored no R3 examples, created no local workfiles or
-tracked datasets, and run no model, embedding, fitting, inference, evaluation,
-or threshold tuning. The raw final holdout remains prohibited and untouched,
-Step 29I remains blocked, and the frozen stop rule is unchanged.
+create-once, and the fresh evaluation records are excluded from fitting.
+
+#### V2-C6 R3 protected-intent gate dataset build
+
+The R3 data build is complete. All 480 targeted training records and all 640
+fresh evaluation records were approved through AI-assisted review; AI-assisted
+review is not recorded as human review, and human adjudication was required for
+0 records. Every duplicate and leakage check passed with zero exact or
+normalized duplicates, cross-intent collisions, training/evaluation overlap,
+overlap with the 9,608-record development source, and overlap with the consumed
+640-record R2 evaluation. The fresh evaluation records remained excluded from
+fitting throughout authoring and build.
+
+| Artifact | Records | SHA-256 |
+| --- | ---: | --- |
+| `v2c6_r3_protected_intent_gate_training_examples.json` | 480 | `db2db4d6116c04712ae9b5979c71c8cbdc1ed9c4e330ba4f3915ba8b62efce14` |
+| `v2c6_r3_protected_intent_gate_training_examples.manifest.json` | — | `f5d3ba48a425e72eab8b45d5835f7f3fc8334c42ba6c0d6ab3e6d700eeecefbf` |
+| `v2c6_r3_protected_intent_gate_development_dataset.json` | 10,088 | `d27c411cefdba2cc4d8a9c70493b05f43542e1542f1b202c909090a7185f36fe` |
+| `v2c6_r3_protected_intent_gate_development_dataset.manifest.json` | — | `5ead89b05dfc4b649e048cc5bb44c261d38f9536594b02f9e38a8024514168fe` |
+| `v2c6_r3_fresh_source_evaluation_dataset.json` | 640 | `e530f24c236ed03c8228ab465165996d7ea94fb24f43cc1ddb1545118918d369` |
+| `v2c6_r3_fresh_source_evaluation_dataset.manifest.json` | — | `5972e5c81f552cf978219075f0536689693f1a0e78892fedc148b33df07f40ba` |
+
+The data build ran no model, embedding, fitting, inference, threshold tuning,
+or candidate selection. The raw final holdout remains prohibited and
+untouched, and Step 29I remains blocked.
+
+The next governed activity is implementation and execution of the already
+frozen two-candidate R3 experiment comparing `HYBRID_CONTROL_R3` and
+`HYBRID_PROTECTED_VERIFIER_R3`. Neither candidate has been evaluated, so
+neither is yet known to be better or acceptable. The frozen stop rule is
+unchanged: if neither candidate passes every gate in every required scope, the
+next activity is `routing_architecture_fallback_decision`, not another
+classifier or data remediation cycle.
 
 ### Why this extension is useful
 

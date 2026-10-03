@@ -1,0 +1,181 @@
+{
+  "artifact": {
+    "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_development_dataset.json",
+    "schema_version": "v2c6-r3-protected-intent-gate-development-dataset.v1",
+    "sha256": "d27c411cefdba2cc4d8a9c70493b05f43542e1542f1b202c909090a7185f36fe"
+  },
+  "builder": {
+    "path": "scripts/build_v2c6_r3_protected_intent_gate_data.py",
+    "sha256": "67cc670093fc04b0787acc50800b0d456793e160ed2ab588109d261da25d116f",
+    "version": "v2c6-r3-protected-intent-gate-data-builder.v1"
+  },
+  "consumed_r2_lineage": {
+    "path": "data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.json",
+    "schema_version": "v2c6-fresh-source-evaluation-dataset.v1",
+    "sha256": "df3c1eef7e262260754a1a10908b540d479fe7dc3d6f228d1a9ba432ae9f1a6e"
+  },
+  "contract": {
+    "path": "data/evals/v2/ml/v2c6_protected_intent_gate_remediation_design_contract.json",
+    "schema_version": "v2c6-protected-intent-gate-remediation-design-contract.v1",
+    "sha256": "4a744a48e18d674c1f87bbd53f470cae95f0bf09fafd7920942310712c0c894e"
+  },
+  "counts": {
+    "existing_record_count": 9608,
+    "fresh_evaluation_record_count": 0,
+    "new_training_record_count": 480,
+    "total_record_count": 10088
+  },
+  "existing_development": {
+    "path": "data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.json",
+    "schema_version": "v2c6-targeted-remediated-development-dataset.v1",
+    "sha256": "133456aa10552058fe67ed2eed37acbe583e31331656174cd2e018430cca799d"
+  },
+  "governance": {
+    "builder_generated_example_text": false,
+    "candidate_selected": false,
+    "dataset_mutated_before_build": false,
+    "embeddings_generated": false,
+    "final_holdout_accessed": false,
+    "inference_performed": false,
+    "model_fitting_performed": false,
+    "model_inference_performed": false,
+    "model_selection_performed": false,
+    "models_run": false,
+    "runtime_behavior_changed": false,
+    "step29i_authorized": false,
+    "taxonomy_mutated": false,
+    "threshold_tuning_performed": false
+  },
+  "input_workfiles": {
+    "fresh_evaluation": {
+      "path": "data/evals/v2/ml/local/v2c6_r3_fresh_source_evaluation_authoring.json",
+      "sha256": "d2bd70f07e931569c4247273dc22a61dda0363a285ad2a8c6c1e7fd948654dc0"
+    },
+    "targeted_training": {
+      "path": "data/evals/v2/ml/local/v2c6_r3_protected_intent_gate_training_authoring.json",
+      "sha256": "808ce0e8b61afc2711fc89b8de33617b57b921fcb0b0404f857b378b0c5cf9f0"
+    }
+  },
+  "phase": "V2-C6 R3 protected-intent gate data authoring",
+  "schema_version": "v2c6-r3-protected-intent-gate-development-dataset-manifest.v1",
+  "source_lineage": {
+    "consumed_r2_fresh_dataset": {
+      "path": "data/evals/v2/ml/v2c6_fresh_source_evaluation_dataset.json",
+      "schema_version": "v2c6-fresh-source-evaluation-dataset.v1",
+      "sha256": "df3c1eef7e262260754a1a10908b540d479fe7dc3d6f228d1a9ba432ae9f1a6e"
+    },
+    "existing_development_dataset": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediated_development_dataset.json",
+      "schema_version": "v2c6-targeted-remediated-development-dataset.v1",
+      "sha256": "133456aa10552058fe67ed2eed37acbe583e31331656174cd2e018430cca799d"
+    },
+    "failure_analysis_contract": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis_contract.json",
+      "schema_version": "v2c6-targeted-remediation-failure-analysis-contract.v1",
+      "sha256": "d9cb3fa6fcc6cdbb248ea7221bf0e74029b91dd7a7d74e411a9c2c8d8f0cf652"
+    },
+    "failure_analysis_manifest": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis.manifest.json",
+      "schema_version": "v2c6-targeted-remediation-failure-analysis-manifest.v1",
+      "sha256": "e514b744690733f223332c36a34c7a12bdf988d4442770e49dc49ddc108d5d6a"
+    },
+    "failure_analysis_result": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_failure_analysis.json",
+      "schema_version": "v2c6-targeted-remediation-failure-analysis.v1",
+      "sha256": "047151b85e84cf4a8704ca95af445b40e066a93ebb1f487125cff9a08ca1760d"
+    },
+    "prior_targeted_remediation_design_contract": {
+      "path": "data/evals/v2/ml/v2c6_targeted_remediation_design_contract.json",
+      "schema_version": "v2c6-targeted-remediation-design-contract.v1",
+      "sha256": "339bd20f4bb94e73a42bd297c053aef8deaf55ee42a3b2145b8792172e7d5e91"
+    }
+  },
+  "validation": {
+    "allocation": {
+      "evaluation_counts_by_source_family": {
+        "v2c6_r3_eval_sf1_independent_casework": 320,
+        "v2c6_r3_eval_sf2_independent_naturalistic": 320
+      },
+      "training_counts_by_source_family": {
+        "v2c6_r3_train_sf1_minimal_explicitness": 160,
+        "v2c6_r3_train_sf2_contextual_boundary": 160,
+        "v2c6_r3_train_sf3_conversational_ambiguity": 160
+      },
+      "verifier_training_composition": {
+        "cancel_transfer": {
+          "negative_record_count": 60,
+          "positive_record_count": 60,
+          "record_count": 120
+        },
+        "close_account": {
+          "negative_record_count": 60,
+          "positive_record_count": 60,
+          "record_count": 120
+        },
+        "create_dispute": {
+          "negative_record_count": 60,
+          "positive_record_count": 60,
+          "record_count": 120
+        },
+        "freeze_card": {
+          "negative_record_count": 60,
+          "positive_record_count": 60,
+          "record_count": 120
+        }
+      }
+    },
+    "duplicate_and_leakage": {
+      "all_duplicate_and_leakage_checks_passed": true,
+      "cross_intent_normalized_collision_count": 0,
+      "embedding_or_semantic_similarity_used": false,
+      "evaluation_consumed_exact_overlap_count": 0,
+      "evaluation_consumed_normalized_overlap_count": 0,
+      "evaluation_development_exact_overlap_count": 0,
+      "evaluation_development_normalized_overlap_count": 0,
+      "evaluation_within_exact_duplicate_count": 0,
+      "evaluation_within_normalized_duplicate_count": 0,
+      "normalization_version": "unicode-nfkc-lower-whitespace.v1",
+      "raw_text_persisted_in_report": false,
+      "training_consumed_exact_overlap_count": 0,
+      "training_consumed_normalized_overlap_count": 0,
+      "training_development_exact_overlap_count": 0,
+      "training_development_normalized_overlap_count": 0,
+      "training_evaluation_exact_overlap_count": 0,
+      "training_evaluation_normalized_overlap_count": 0,
+      "training_within_exact_duplicate_count": 0,
+      "training_within_normalized_duplicate_count": 0
+    },
+    "identity_and_group_isolation": {
+      "cross_role_group_collision_count": 0,
+      "cross_role_record_id_collision_count": 0,
+      "historical_group_collision_count": 0,
+      "historical_record_id_collision_count": 0,
+      "new_group_ids_unique": true,
+      "new_record_ids_unique": true
+    },
+    "review": {
+      "evaluation": {
+        "ai_assisted_review_is_human_review": false,
+        "approved_count": 640,
+        "human_adjudication_completed_count": 0,
+        "human_adjudication_required_count": 0,
+        "record_count": 640,
+        "review_methods": {
+          "ai_assisted_review": 640
+        },
+        "unresolved_human_adjudication_count": 0
+      },
+      "training": {
+        "ai_assisted_review_is_human_review": false,
+        "approved_count": 480,
+        "human_adjudication_completed_count": 0,
+        "human_adjudication_required_count": 0,
+        "record_count": 480,
+        "review_methods": {
+          "ai_assisted_review": 480
+        },
+        "unresolved_human_adjudication_count": 0
+      }
+    }
+  }
+}

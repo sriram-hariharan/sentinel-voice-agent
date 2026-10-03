@@ -1,0 +1,27 @@
+{
+  "contract_sha256": "ddb87a2620315a18cbda114187d86f2f7975b13ade4ec13bb3cbccb94e745e5a",
+  "development_cases_sha256": "46c0da1502767a6999f0e2fab8fa3c3ae56ba08d573ba1a1a78cac168de19343",
+  "governance": {
+    "alternate_budgets_tested": false,
+    "automatic_retries": 0,
+    "cases_consumed": true,
+    "development_only": true,
+    "final_acceptance_evidence": false,
+    "final_holdout_accessed": false,
+    "fresh_fallback_evaluation_authored": false,
+    "fresh_fallback_evaluation_started": false,
+    "step29i_authorized": false,
+    "tool_choice_changed": false,
+    "verifier_prompt_changed": false
+  },
+  "result_status": "TOKEN_BUDGET_AMENDMENT_REQUIRED",
+  "results": {
+    "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.json",
+    "sha256": "fcc21b6faf947d83b4f1024054dc823299fa0b29318290207f8dbce7a675336b"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_routing_fallback_verifier_budget_validation.py",
+    "sha256": "64b3114c444d671c2ead3980ad32da9e3be8fe1e75b71ecfde06c19487c8f419"
+  },
+  "schema_version": "v2c6-routing-fallback-verifier-budget-validation-results-manifest.v1"
+}

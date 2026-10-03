@@ -1,0 +1,242 @@
+{
+  "amended_verifier_configuration": {
+    "application_retries": 0,
+    "budget_rationale": [
+      "18 of 18 completed responses exhausted 64 completion tokens",
+      "no completed response reached the structured decision",
+      "256 gives bounded 4x headroom",
+      "low reasoning effort further reduces reasoning-token consumption",
+      "avoids a 64 -> 128 -> 256 experiment sequence"
+    ],
+    "gpt_oss_reasoning_effort_values": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "max_completion_tokens": 256,
+    "model": "openai/gpt-oss-20b",
+    "model_source": "settings.llm_model",
+    "outer_timeout_kept_as_defense_in_depth": true,
+    "outer_verifier_timeout_seconds": 2.0,
+    "parallel_tool_calls": false,
+    "provider_default_reasoning_effort": "medium",
+    "reasoning_effort": "low",
+    "reasoning_effort_rationale": [
+      "the classification is deliberately narrow three-way",
+      "no multi-step planning is required",
+      "low reasoning reduces reasoning-token consumption",
+      "latency and cost discipline matter for voice",
+      "the verifier is not an authorization engine"
+    ],
+    "sdk_max_retries": 0,
+    "sdk_timeout_seconds": 2.0,
+    "supersedes_max_completion_tokens": 64,
+    "temperature": 0,
+    "tool_choice": "auto",
+    "verifier_specific": true
+  },
+  "amendment_status": {
+    "additional_groq_calls_in_this_step": false,
+    "amended_experiment_run": false,
+    "amended_runtime_implemented": false,
+    "design_frozen": true,
+    "development_evidence_consumed": true,
+    "final_acceptance_claimed": false,
+    "final_holdout_accessed": false,
+    "fresh_fallback_evaluation_authored": false,
+    "fresh_fallback_evaluation_started": false,
+    "production_ready_claimed": false,
+    "step29i_authorized": false,
+    "tool_choice_changed": false
+  },
+  "amendment_version": "v2c6-routing-fallback-verifier-budget-provider-amendment.v1",
+  "development_evidence": {
+    "cases_eligible_for_final_acceptance": false,
+    "cases_eligible_for_fresh_evaluation": false,
+    "consumed_cases_reuse_authorized_for": "one_later_development_regression_comparison_only",
+    "development_evidence_consumed": true
+  },
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "bound_as_source_artifact": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "frozen_64_token_result": {
+    "all_completed_responses_consumed_exactly_64_completion_tokens": true,
+    "application_retries": 0,
+    "budget_64_rejected": true,
+    "case_count": 20,
+    "check_results_valid": true,
+    "completed_response_count": 18,
+    "completion_tokens": {
+      "max": 64,
+      "median": 64,
+      "min": 64
+    },
+    "executed_once": true,
+    "failure_class": "token_budget_exhaustion",
+    "failure_counts": {
+      "timeout": 2,
+      "zero_structured_calls": 18
+    },
+    "finish_reason_counts": {
+      "None": 2,
+      "length": 18
+    },
+    "groq_sdk_version": "1.7.0",
+    "latency_ms": {
+      "max": 47050.439,
+      "p50": 178.867,
+      "p90": 323.633,
+      "p95": 17634.272
+    },
+    "result_status": "TOKEN_BUDGET_AMENDMENT_REQUIRED",
+    "structural_success_count": 0,
+    "total_provider_calls": 20
+  },
+  "next_development_experiment": {
+    "authorized": true,
+    "automatic_larger_budget_fallback": false,
+    "cases": "the same 20 consumed development cases",
+    "configuration": {
+      "application_retries": 0,
+      "max_completion_tokens": 256,
+      "model": "openai/gpt-oss-20b",
+      "outer_verifier_timeout_seconds": 2.0,
+      "reasoning_effort": "low",
+      "sdk_max_retries": 0,
+      "sdk_timeout_seconds": 2.0,
+      "tool_choice": "auto"
+    },
+    "evidence_role": "development_regression_comparison_only",
+    "may_become_fresh_acceptance_evidence": false,
+    "run_in_this_step": false
+  },
+  "next_implementation_plan": {
+    "prefer_preconfigured_async_groq_client_over_retry_infrastructure": true,
+    "smallest_change_required": true,
+    "steps": [
+      "extend GroqLLMProvider only as needed for an optional reasoning_effort, defaulting to current behavior",
+      "build the dedicated verifier provider with max_completion_tokens 256, reasoning_effort low, and a preconfigured AsyncGroq client with max_retries 0 and timeout 2.0",
+      "leave the conversational provider's budget, reasoning, and retry behavior unchanged",
+      "preserve the LLMProvider protocol",
+      "keep the outer asyncio verifier timeout"
+    ]
+  },
+  "next_required": "v2c6_routing_fallback_amended_verifier_implementation_and_development_validation",
+  "phase": "V2-C6 Routing Fallback Verifier Budget and Provider Boundary Amendment",
+  "provider_boundary_finding": {
+    "causal_mechanism_established": false,
+    "configuration_mismatch": "the production verifier client does not explicitly set max_retries=0 or a 2.0-second client timeout, so the frozen zero-retry requirement is not guaranteed at the SDK layer even though the application performs no retry",
+    "groq_sdk_defaults": {
+      "connect_timeout_seconds": 5.0,
+      "max_retries": 2,
+      "request_timeout_seconds": 60,
+      "retried_failures": "connection errors, 408, 409, 429, and 5xx responses",
+      "source": "groq Python SDK 1.7.0 _constants.DEFAULT_MAX_RETRIES and DEFAULT_TIMEOUT"
+    },
+    "observed": "the two timed-out cases took about 47.05 s and 17.63 s of wall-clock time although the verifier wraps the provider call in a 2.0-second asyncio timeout; P95 latency was about 17.6 s",
+    "outer_asyncio_timeout_bounded_wall_clock_in_observed_timeouts": false
+  },
+  "repository_baseline": {
+    "branch": "v2/ml-routing-evaluation",
+    "head": "c38af30959db707d1b9affeb4ec8295ea044dc8e",
+    "head_subject": "Freeze V2-C6 verifier budget development validation protocol"
+  },
+  "schema_version": "v2c6-routing-fallback-verifier-budget-provider-amendment.v1",
+  "semantic_interpretation": {
+    "exact_correct_of_20": 0,
+    "reason": "every case failed structurally, so no decision was produced; 0/20 says nothing about semantic classification quality",
+    "semantic_quality_evidence": false
+  },
+  "source_bindings": {
+    "budget_development_cases": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_development_cases.json",
+      "sha256": "46c0da1502767a6999f0e2fab8fa3c3ae56ba08d573ba1a1a78cac168de19343"
+    },
+    "budget_validation_contract_64": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_contract.json",
+      "sha256": "ddb87a2620315a18cbda114187d86f2f7975b13ade4ec13bb3cbccb94e745e5a"
+    },
+    "budget_validation_results_64": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.json",
+      "sha256": "fcc21b6faf947d83b4f1024054dc823299fa0b29318290207f8dbce7a675336b"
+    },
+    "budget_validation_results_manifest_64": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.manifest.json",
+      "sha256": "2da6bf3abee0e1c8e802a8cffb5a3663dab46ae93b2a0bb513cafa589bbe7c71"
+    },
+    "dependencies": {
+      "path": "backend/app/agent/dependencies.py",
+      "sha256": "66c3df54f090c9d700ae15aaf089259c50dc22dc35769e41dc10dfd175d6dbb2"
+    },
+    "groq_provider": {
+      "path": "backend/app/providers/groq_llm.py",
+      "sha256": "3d2eaef4849ec65f945d58456139240ffb7a7953626ffed7c5ed387d826e3ae2"
+    },
+    "implementation_contract_amendment": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_contract_amendment.json",
+      "sha256": "591e103dbf28db33508dbbb3a236171d160762efac03f8536988c452d74ccbd5"
+    },
+    "implementation_evaluation_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_evaluation_contract.json",
+      "sha256": "c972a381a80bcf7a36b5db751195b3263a8bbc14b72e1442d196306f656a68c0"
+    },
+    "protected_action_verifier": {
+      "path": "backend/app/agent/protected_action_verifier.py",
+      "sha256": "db57cb4d14ccf97b4e98aea59c704dae7804094f014d4414fe93fdff8d96a7d9"
+    }
+  },
+  "status": "FROZEN",
+  "step29i_policy": {
+    "authorized_by_this_amendment": false,
+    "blocked": true
+  },
+  "tool_choice_rule": {
+    "change_to_required_now": false,
+    "next_run_distinguishes": [
+      "structural_success",
+      "token_exhaustion",
+      "normal_text_or_no_tool_completion",
+      "provider_or_timeout_failure"
+    ],
+    "normal_non_length_no_tool_completion_may_justify": "a separately governed structured-output or tool-choice amendment",
+    "reason": "the 64-token run was dominated by direct token exhaustion and was not a clean test of whether auto tool choice yields text-only completions"
+  },
+  "unchanged": {
+    "authorization_semantics": true,
+    "classifier_runtime_integration": false,
+    "confirmation_semantics": true,
+    "conversational_provider_budget_and_reasoning": true,
+    "decision_enum": [
+      "EXPLICIT_CURRENT_ACTION",
+      "AMBIGUOUS_OR_INFORMATIONAL",
+      "NOT_REQUESTED"
+    ],
+    "deterministic_clarification": true,
+    "fresh_semantic_acceptance_thresholds": [
+      {
+        "comparison": "less_than_or_equal",
+        "metric": "protected_semantic_false_positive_rate",
+        "threshold": 0.01
+      },
+      {
+        "comparison": "greater_than_or_equal",
+        "metric": "explicit_protected_request_recall",
+        "threshold": 0.8
+      }
+    ],
+    "internal_tool_schema": true,
+    "model_family": true,
+    "new_agent_service_or_infrastructure": false,
+    "protected_action_state_semantics": true,
+    "protected_action_trigger": true,
+    "tool_choice_auto": true,
+    "tool_executor": true,
+    "verifier_prompt": true
+  }
+}

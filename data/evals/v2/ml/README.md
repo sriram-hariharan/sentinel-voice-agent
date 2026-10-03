@@ -3045,6 +3045,56 @@ No Groq call has been made, no budget or tool-choice amendment has been made,
 and the fresh 400-record fallback evaluation has not been authored or started.
 The raw V2-C5 final holdout remains prohibited, and Step 29I remains blocked.
 
+### V2-C6 Routing Fallback Verifier Budget and Provider Amendment
+
+The 64-token development check was executed once against the protocol frozen
+at `c38af30`, and `--check-results` validated the artifacts without any
+provider call.
+
+- `data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.json`
+  (SHA-256 `fcc21b6faf947d83b4f1024054dc823299fa0b29318290207f8dbce7a675336b`)
+  and its manifest record `TOKEN_BUDGET_AMENDMENT_REQUIRED`.
+  - 18 of 20 calls ended with `finish_reason = length` after exactly 64
+    completion tokens, and 2 timed out.
+  - 0 of 20 were structurally successful, and no valid structured decision was
+    produced.
+- No semantic-quality conclusion is drawn: 0/20 correct means only that no
+  decision was ever returned.
+- The 20 cases are now consumed development evidence and remain ineligible
+  for fresh or final acceptance evidence.
+- Observed P95 wall-clock latency was about 17.6 s, and the two timed-out
+  calls took about 47 s and 17.6 s despite the 2.0-second outer timeout. The
+  installed Groq SDK (1.7.0) defaults to 2 retries and a 60-second client
+  timeout, so the verifier client did not guarantee the frozen zero-retry
+  requirement at the SDK layer. This is recorded as a provider-boundary
+  configuration mismatch, not an established cause.
+
+`data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_provider_amendment.json`
+freezes the response. It hash-binds the contracts, cases, 64-token results,
+and current provider sources.
+
+- The amended verifier keeps `openai/gpt-oss-20b` and sets
+  `max_completion_tokens = 256` (bounded 4x headroom),
+  `reasoning_effort = "low"`, Groq client `max_retries = 0`, and an explicit
+  2.0-second client timeout.
+- It also keeps the 2.0-second outer timeout as defense in depth, and keeps
+  `tool_choice = "auto"`, `parallel_tool_calls = false`, temperature 0, and
+  zero application retries.
+- These changes are verifier-specific. The conversational provider, prompt,
+  schema, decisions, trigger, clarification, authorization, confirmation,
+  `ToolExecutor`, and fresh acceptance thresholds are unchanged.
+- `tool_choice` stays `auto` because the 64-token run was dominated by token
+  exhaustion and did not cleanly test text-only completions.
+- One later development-only comparison on the same consumed 20 cases is
+  authorized, as regression evidence only. No larger budget will be tried
+  automatically.
+
+The amended runtime is not implemented yet and the amended experiment has not
+run. The fresh 400-record evaluation has not been authored or started. The raw
+V2-C5 final holdout remains prohibited, and Step 29I remains blocked. The next
+required activity is
+`v2c6_routing_fallback_amended_verifier_implementation_and_development_validation`.
+
 ## Reproduce V2-C1
 
 ```bash

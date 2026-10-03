@@ -1,0 +1,31 @@
+{
+  "contract_sha256": "4edd9ef5361cdc16aac770e5e0306bd4eb8c643c814ccbf3a753535b31131680",
+  "fresh_family_sha256": [
+    "af412a01293c9ec24897d3a2d5ea790ee2fcbb7eeedb0753c3384e77b00ba5c1",
+    "9bf16cfd3c184e317b099c1663312619ce6987b4ce693f91f89bdebd485819b4"
+  ],
+  "governance": {
+    "alternate_budget_fallback": false,
+    "application_retries": 0,
+    "development_only": false,
+    "final_holdout": false,
+    "final_holdout_accessed": false,
+    "fresh_evaluation": true,
+    "fresh_evaluation_consumed": true,
+    "prompt_tuning_eligible": false,
+    "runtime_configuration_changed": false,
+    "sdk_max_retries": 0,
+    "step29i_authorized": false,
+    "training_eligible": false
+  },
+  "result_status": "FRESH_SEMANTIC_PASS",
+  "results": {
+    "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_results.json",
+    "sha256": "af2e3945ff625c88ee23fe1f3e15961ad5fd09e61c7c3d2672aa64918d387c00"
+  },
+  "runner": {
+    "path": "scripts/run_v2c6_routing_fallback_fresh_semantic_evaluation.py",
+    "sha256": "603b51860dfb8e312263b61f3837d88a6d5fab4e5c25eb4d14a806da0adabb36"
+  },
+  "schema_version": "v2c6-routing-fallback-fresh-semantic-evaluation-results-manifest.v1"
+}

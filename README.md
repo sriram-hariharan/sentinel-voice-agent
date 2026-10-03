@@ -5814,22 +5814,55 @@ evaluation, with low reasoning, zero SDK retries, 2.0-second SDK and outer
 timeouts, and `tool_choice = "auto"` unchanged. No further development budget
 experiment or tool-choice amendment is authorized by this evidence. The 20
 cases are consumed development evidence, not fresh or final acceptance
-evidence. The historical 64-token artifacts remain immutable. The fresh
-400-record evaluation is now independently authored and frozen, but inference
-has not started and no fresh result artifacts exist. It contains two source
+evidence. The historical 64-token artifacts remain immutable.
+
+The independently authored 400-record fresh semantic evaluation has now run
+exactly once and returned `FRESH_SEMANTIC_PASS`. It contains two source
 families of 200 records each. Within each family, `freeze_card` and
 `create_dispute` each have 50 explicit-current-action positives and 50
-boundary negatives; each action's negatives contain exactly 10 informational,
-10 hypothetical, 10 advice-or-guidance, 10 negated-or-not-requested, and 10
-ambiguous-or-current-context cases.
+boundary negatives.
 
-The verifier configuration is frozen before fresh inference. These examples
-are neither training nor prompt-tuning data and may not be used to modify the
-model, prompt, token budget, reasoning effort, retry/timeout policy, tool
-choice, clarification templates, or semantic definitions. Deterministic
-runtime acceptance remains a separate mandatory closeout gate. The raw V2-C5
-final holdout remains prohibited and untouched, and Step 29I remains blocked.
-Next required phase: **V2-C6 Fresh Fallback Evaluation Execution**.
+| Required scope | Explicit recall | Protected false positives | Protected FPR | Recall gate | FPR gate |
+| --- | ---: | ---: | ---: | --- | --- |
+| Fresh family 1 | 1.00 | 0/100 | 0.00 | pass | pass |
+| Fresh family 2 | 1.00 | 1/100 | 0.01 | pass | pass |
+| Pooled fresh | 1.00 | 1/200 | 0.005 | pass | pass |
+| Pooled fresh `freeze_card` | 1.00 | 0/100 | 0.00 | pass | pass |
+| Pooled fresh `create_dispute` | 1.00 | 1/100 | 0.01 | pass | pass |
+
+All ten mandatory safety gates passed, with 200/200 explicit hits and one real
+protected semantic false positive in total. Exact three-way accuracy was
+0.7425, but it is a diagnostic rather than a frozen safety gate. In particular,
+the large `AMBIGUOUS_OR_INFORMATIONAL -> NOT_REQUESTED` count is a safe
+non-explicit-to-non-explicit label swap and does not create a protected false
+positive. The separately reported safe non-explicit boundary rate was 0.985;
+the one real false positive is retained in the evidence.
+
+The run recorded 398 normal tool-call completions, one timeout, one provider
+error, and zero retries. Provider-call latency was P50 216.416 ms, P90 489.334
+ms, P95 532.508 ms, and maximum 2002.643 ms; full-verifier latency was P50
+216.618 ms, P90 489.413 ms, P95 532.644 ms, and maximum 2003.002 ms. Token
+totals were 176015 prompt, 29649 completion, and 205664 overall. The timeout
+and provider error failed closed/non-explicit and therefore did not fail a
+semantic gate, but they remain operational reliability evidence for runtime
+safety closeout. The evaluation must not be rerun to erase them.
+
+The verifier remains frozen at `openai/gpt-oss-20b`, 256 completion tokens,
+low reasoning, zero SDK and application retries, 2.0-second SDK and outer
+timeouts, `tool_choice = "auto"`, temperature 0, and
+`parallel_tool_calls = false`. This result authorizes no prompt, model, budget,
+reasoning, tool-choice, timeout, or retry change. The 400 examples are
+permanently consumed fresh acceptance evidence: they are non-tunable and may
+not become development or training data. This is semantic-verifier acceptance,
+not production or final-model acceptance.
+
+The next required phase is **V2-C6 Deterministic Runtime Safety Closeout**. It
+must verify the complete protected-action runtime deterministically, including
+fail-closed behavior, state and confirmation safety, authorization and resource
+boundaries, idempotency, interruption/correction behavior, and preservation of
+public/private reads. No new semantic examples or Groq inference are required
+for that closeout unless separately frozen. The raw V2-C5 final holdout remains
+prohibited and untouched, and Step 29I remains blocked.
 
 ### Why this extension is useful
 

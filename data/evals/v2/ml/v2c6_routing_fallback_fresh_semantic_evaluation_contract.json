@@ -1,0 +1,181 @@
+{
+  "acceptance_gates": {
+    "all_gates_mandatory": true,
+    "gate_weakening_permitted": false,
+    "metrics": {
+      "explicit_protected_request_recall": {
+        "comparison": "greater_than_or_equal",
+        "threshold": 0.8
+      },
+      "protected_semantic_false_positive_rate": {
+        "comparison": "less_than_or_equal",
+        "threshold": 0.01
+      }
+    },
+    "required_scopes": [
+      "fresh_family_1",
+      "fresh_family_2",
+      "pooled_fresh",
+      "pooled_fresh_freeze_card",
+      "pooled_fresh_create_dispute"
+    ],
+    "result_statuses": [
+      "FRESH_SEMANTIC_PASS",
+      "FRESH_SEMANTIC_FAIL"
+    ],
+    "weighted_override_permitted": false
+  },
+  "dataset": {
+    "boundary_subtypes": [
+      "informational",
+      "hypothetical",
+      "advice_or_guidance",
+      "negated_or_not_requested",
+      "ambiguous_or_current_context"
+    ],
+    "family_count": 2,
+    "per_action_per_family": {
+      "boundary": 50,
+      "explicit": 50
+    },
+    "per_boundary_subtype_per_action_per_family": 10,
+    "records_per_family": 200,
+    "total_boundary_negatives": 200,
+    "total_explicit_positives": 200,
+    "total_records": 400
+  },
+  "development_only": false,
+  "final_holdout": false,
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "fresh_evaluation": true,
+  "frozen_runtime_configuration": {
+    "application_retries": 0,
+    "max_completion_tokens": 256,
+    "model": "openai/gpt-oss-20b",
+    "outer_timeout_seconds": 2.0,
+    "parallel_tool_calls": false,
+    "provider_calls_per_record": 1,
+    "reasoning_effort": "low",
+    "sdk_max_retries": 0,
+    "sdk_timeout_seconds": 2.0,
+    "temperature": 0,
+    "tool_choice": "auto"
+  },
+  "governance": {
+    "automatic_remediation_authorized": false,
+    "deterministic_runtime_acceptance_closeout_required": true,
+    "fresh_evaluation_started": false,
+    "no_fresh_data_tuning": true,
+    "step29i_authorized": false
+  },
+  "integer_gate_implications": {
+    "fresh_family_1": {
+      "maximum_false_positives": 1,
+      "minimum_explicit_hits": 80,
+      "negative_count": 100,
+      "positive_count": 100
+    },
+    "fresh_family_2": {
+      "maximum_false_positives": 1,
+      "minimum_explicit_hits": 80,
+      "negative_count": 100,
+      "positive_count": 100
+    },
+    "pooled_fresh": {
+      "maximum_false_positives": 2,
+      "minimum_explicit_hits": 160,
+      "negative_count": 200,
+      "positive_count": 200
+    },
+    "pooled_fresh_create_dispute": {
+      "maximum_false_positives": 1,
+      "minimum_explicit_hits": 80,
+      "negative_count": 100,
+      "positive_count": 100
+    },
+    "pooled_fresh_freeze_card": {
+      "maximum_false_positives": 1,
+      "minimum_explicit_hits": 80,
+      "negative_count": 100,
+      "positive_count": 100
+    }
+  },
+  "next_required": "V2-C6 Fresh Fallback Evaluation Execution",
+  "outputs": {
+    "manifest": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_results.manifest.json",
+    "results": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_results.json"
+  },
+  "phase": "V2-C6 Fresh Fallback Evaluation Setup",
+  "post_freeze_prohibited_changes_based_on_fresh_examples": [
+    "prompt",
+    "model",
+    "token_budget",
+    "reasoning_effort",
+    "retry_policy",
+    "timeout",
+    "tool_choice",
+    "clarification_templates",
+    "semantic_definitions"
+  ],
+  "prompt_tuning_eligible": false,
+  "schema_version": "v2c6-routing-fallback-fresh-semantic-evaluation-contract.v1",
+  "source_bindings": {
+    "budget_development_cases": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_development_cases.json",
+      "sha256": "46c0da1502767a6999f0e2fab8fa3c3ae56ba08d573ba1a1a78cac168de19343"
+    },
+    "budget_provider_amendment": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_provider_amendment.json",
+      "sha256": "f39c31c6fc3fe1fa5e1f5e3f07d923cef5dec8d1016411d852e974ff9ef61b3f"
+    },
+    "budget_validation_256_manifest": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_results.manifest.json",
+      "sha256": "db2117e62ae732d1ea837c17c9a84f6dca4eef949ece89c79ced58f447cc79fa"
+    },
+    "budget_validation_256_results": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_results.json",
+      "sha256": "0f2efbc5004f63c705e5290dc00d2291fe93a5cc292e831394f9a1e33e67dbc7"
+    },
+    "dependencies": {
+      "path": "backend/app/agent/dependencies.py",
+      "sha256": "02a971f6069ecb309bcac22c9a0a37beb56680e49ba97aa7b932052392bfc8fa"
+    },
+    "fresh_family_1": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_family_1.json",
+      "sha256": "af412a01293c9ec24897d3a2d5ea790ee2fcbb7eeedb0753c3384e77b00ba5c1"
+    },
+    "fresh_family_2": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_family_2.json",
+      "sha256": "9bf16cfd3c184e317b099c1663312619ce6987b4ce693f91f89bdebd485819b4"
+    },
+    "groq_provider": {
+      "path": "backend/app/providers/groq_llm.py",
+      "sha256": "b1fb73bdfdc93bdb5ae1d1abea6a48087a93a4e4ef3a747f7e89d50df20e7fe7"
+    },
+    "implementation_contract_amendment": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_contract_amendment.json",
+      "sha256": "591e103dbf28db33508dbbb3a236171d160762efac03f8536988c452d74ccbd5"
+    },
+    "implementation_evaluation_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_evaluation_contract.json",
+      "sha256": "c972a381a80bcf7a36b5db751195b3263a8bbc14b72e1442d196306f656a68c0"
+    },
+    "protected_action_verifier": {
+      "path": "backend/app/agent/protected_action_verifier.py",
+      "sha256": "41bb9048f8afbda29d573f63cb707cd947c37170c5d697464fef9c1cc833332d"
+    },
+    "r3_fresh_hash_source": {
+      "path": "data/evals/v2/ml/v2c6_r3_fresh_source_evaluation_dataset.json",
+      "sha256": "e530f24c236ed03c8228ab465165996d7ea94fb24f43cc1ddb1545118918d369"
+    }
+  },
+  "status": "FROZEN",
+  "training_eligible": false
+}

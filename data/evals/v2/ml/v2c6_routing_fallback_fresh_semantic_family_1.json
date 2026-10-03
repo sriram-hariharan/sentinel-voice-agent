@@ -1,0 +1,1821 @@
+{
+  "schema_version": "v2c6-routing-fallback-fresh-semantic-family.v1",
+  "phase": "V2-C6 Fresh Fallback Evaluation Setup",
+  "source_family": "v2c6_fallback_fresh_family_1",
+  "family_style": "independently authored natural straightforward customer-support phrasing with broad lexical variety",
+  "authoring_provenance": {
+    "authoring_method": "controlled_llm_assisted",
+    "author": "OpenAI Codex",
+    "review_method": "ai_assisted_review",
+    "human_review_performed": false,
+    "independently_authored_from_frozen_semantic_definitions": true,
+    "prior_evaluation_utterances_consulted_during_authoring": false,
+    "other_fresh_family_consulted_during_authoring": false
+  },
+  "fresh_evaluation": true,
+  "training_eligible": false,
+  "prompt_tuning_eligible": false,
+  "record_count": 200,
+  "records": [
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0001",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please freeze my card because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0002",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please freeze my card after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0003",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please freeze my card since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0004",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please freeze my card because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0005",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please freeze my card while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0006",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Lock my debit card now because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0007",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Lock my debit card now after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0008",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Lock my debit card now since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0009",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Lock my debit card now because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0010",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Lock my debit card now while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0011",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need you to disable this card because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0012",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need you to disable this card after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0013",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need you to disable this card since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0014",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need you to disable this card because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0015",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need you to disable this card while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0016",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you put an immediate block on my card because my wallet is missing?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0017",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you put an immediate block on my card after an unfamiliar payment alert?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0018",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you put an immediate block on my card since I left it on public transport?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0019",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you put an immediate block on my card because its details may have been exposed online?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0020",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you put an immediate block on my card while I check where it was last used?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0021",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Stop my card from being used because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0022",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Stop my card from being used after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0023",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Stop my card from being used since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0024",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Stop my card from being used because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0025",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Stop my card from being used while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0026",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Turn off my current card because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0027",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Turn off my current card after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0028",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Turn off my current card since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0029",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Turn off my current card because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0030",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Turn off my current card while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0031",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please suspend the card right away because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0032",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please suspend the card right away after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0033",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please suspend the card right away since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0034",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please suspend the card right away because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0035",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please suspend the card right away while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0036",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Make my bank card inactive because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0037",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Make my bank card inactive after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0038",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Make my bank card inactive since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0039",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Make my bank card inactive because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0040",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Make my bank card inactive while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0041",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Block all new use of my card because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0042",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Block all new use of my card after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0043",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Block all new use of my card since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0044",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Block all new use of my card because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0045",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Block all new use of my card while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0046",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want this card frozen immediately because my wallet is missing."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0047",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want this card frozen immediately after an unfamiliar payment alert."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0048",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want this card frozen immediately since I left it on public transport."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0049",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want this card frozen immediately because its details may have been exposed online."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0050",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want this card frozen immediately while I check where it was last used."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0051",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please open a dispute for the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0052",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please open a dispute for the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0053",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please open a dispute for the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0054",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please open a dispute for the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0055",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please open a dispute for the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0056",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want to challenge the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0057",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want to challenge the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0058",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want to challenge the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0059",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want to challenge the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0060",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I want to challenge the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0061",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "File a transaction dispute over the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0062",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "File a transaction dispute over the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0063",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "File a transaction dispute over the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0064",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "File a transaction dispute over the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0065",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "File a transaction dispute over the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0066",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you contest the purchase I do not recognize for me?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0067",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you contest the duplicate restaurant charge for me?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0068",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you contest the cash withdrawal where no money came out for me?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0069",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you contest the subscription debit posted after cancellation for me?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0070",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Can you contest the merchant amount that differs from my receipt for me?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0071",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need a dispute started for the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0072",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need a dispute started for the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0073",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need a dispute started for the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0074",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need a dispute started for the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0075",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I need a dispute started for the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0076",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please create a claim concerning the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0077",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please create a claim concerning the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0078",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please create a claim concerning the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0079",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please create a claim concerning the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0080",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please create a claim concerning the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0081",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Help me formally dispute the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0082",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Help me formally dispute the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0083",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Help me formally dispute the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0084",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Help me formally dispute the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0085",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Help me formally dispute the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0086",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Open a case to challenge the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0087",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Open a case to challenge the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0088",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Open a case to challenge the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0089",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Open a case to challenge the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0090",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Open a case to challenge the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0091",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I am asking you to dispute the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0092",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I am asking you to dispute the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0093",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I am asking you to dispute the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0094",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I am asking you to dispute the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0095",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "I am asking you to dispute the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0096",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please register a dispute against the purchase I do not recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0097",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please register a dispute against the duplicate restaurant charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0098",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please register a dispute against the cash withdrawal where no money came out."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0099",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please register a dispute against the subscription debit posted after cancellation."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0100",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "explicit",
+      "boundary_subtype": null,
+      "gold_decision": "EXPLICIT_CURRENT_ACTION",
+      "customer_utterance": "Please register a dispute against the merchant amount that differs from my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0101",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What does freezing a card prevent?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0102",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "How quickly does a card freeze take effect?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0103",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Does a frozen card still receive refunds?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0104",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Can recurring subscriptions post while a card is frozen?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0105",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "How would I unfreeze a card later?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0106",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Is freezing a card different from replacing it?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0107",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Does a card lock affect the underlying account?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0108",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What happens to pending purchases after a card is frozen?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0109",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Is there a fee for putting a card on hold?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0110",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Where in the app is the card-freeze option explained?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0111",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If I lost my wallet, would freezing the card be enough?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0112",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Suppose my card details leaked; would a lock stop online use?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0113",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If another strange alert appeared, I might freeze the card."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0114",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Would the card be unusable if I chose to put it on hold?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0115",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If I froze the card tonight, could I restore it tomorrow?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0116",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Imagine the card was stolen; how would a freeze work?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0117",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If the shop finds my card later, could a freeze be reversed?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0118",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Would travel reservations survive if I decided to lock the card?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0119",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If I suspected copying, I would consider disabling the card."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0120",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Could I freeze only one card if I ever needed to?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0121",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Should I freeze the card or keep watching the activity?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0122",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Would you recommend locking my card after one unfamiliar alert?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0123",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What is the safest option if I cannot remember where I put the card?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0124",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Do I need a freeze, or is replacing the card more appropriate?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0125",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Can you advise whether a temporary card hold makes sense here?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0126",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What should I check before deciding to disable the card?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0127",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Is a card freeze the right precaution for a misplaced wallet?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0128",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Which is better in this situation, locking the card or changing its PIN?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0129",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Please explain whether I ought to put the card on hold."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0130",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What would you suggest if the card may still be at home?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0131",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Do not freeze my card; I found it in my coat."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0132",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Leave the card active because the purchase alert was mine."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0133",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "I no longer want the card locked."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0134",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Please keep my card enabled while I verify the merchant."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0135",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Cancel my earlier thought about freezing the card."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0136",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "There is no need to disable the card now."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0137",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Do not put a hold on it; the wallet was returned."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0138",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "I was going to request a freeze, but not anymore."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0139",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Keep the card usable because I recognize the transaction."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0140",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "I am specifically asking you not to block my card."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0141",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "My card might be somewhere in the house."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0142",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "There was an alert from a store I rarely visit."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0143",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "I cannot remember whether I brought the card home."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0144",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "The wallet has been missing for about an hour."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0145",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Someone may have seen the numbers on my card."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0146",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "The card is not where I usually keep it."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0147",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "I noticed two attempts that I am still checking."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0148",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "My physical card was out of sight for a while."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0149",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "I am unsure who used the card at that shop."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0150",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "freeze_card",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "The card situation has me worried right now."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0151",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "How does a card-transaction dispute work?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0152",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What documents are normally needed for a dispute?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0153",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "How long does the dispute process usually take?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0154",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Does filing a dispute immediately reverse a charge?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0155",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What happens after a merchant receives a dispute?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0156",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Can a dispute be withdrawn later?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0157",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "How are duplicate-charge disputes investigated?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0158",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Does a merchant refund affect an open dispute?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0159",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Where can I read the bank's dispute policy?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0160",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "informational",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What is the difference between a dispute and a refund request?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0161",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If the merchant never replies, could I dispute the charge?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0162",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Suppose the refund does not arrive; would a dispute be possible?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0163",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If I discovered the purchase was not mine, I might challenge it."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0164",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Would I need a dispute if the seller billed me twice?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0165",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If the item never shipped, could the payment be contested?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0166",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Imagine the receipt showed a different amount; what would happen?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0167",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If I chose to dispute later, would there be a deadline?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0168",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Could a transaction be challenged if I paid cash as well?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0169",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "If the subscription bills me again, I may open a dispute."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0170",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "hypothetical",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Would a dispute apply if an ATM gave me no cash?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0171",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Should I dispute this charge or contact the store first?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0172",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Would you recommend challenging a payment that looks unfamiliar?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0173",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What should I gather before deciding whether to file a dispute?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0174",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Is a dispute the right next step for a missing refund?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0175",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Can you advise me whether this duplicate debit should be contested?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0176",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Do I need to wait for the merchant before considering a dispute?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0177",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "What is the best approach when a transaction amount looks wrong?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0178",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Should I seek a refund or use the dispute process?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0179",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Please explain which option makes sense for an undelivered order."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0180",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "advice_or_guidance",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "Would contesting the charge be premature at this point?"
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0181",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Do not open a dispute; the merchant fixed the charge."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0182",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "I recognize the purchase now, so no dispute is needed."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0183",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Please leave the transaction alone while the refund is pending."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0184",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "I no longer want to challenge that payment."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0185",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Cancel the idea of disputing it because the amount is correct."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0186",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Do not file anything; the second charge disappeared."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0187",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "I was considering a dispute, but the seller resolved it."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0188",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "Please do not contest the debit yet."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0189",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "There is no need for a claim because I found the receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0190",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "negated_or_not_requested",
+      "gold_decision": "NOT_REQUESTED",
+      "customer_utterance": "I am asking you not to start a transaction dispute."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0191",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "There is a charge here that I do not immediately recognize."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0192",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "The restaurant amount looks a little higher than expected."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0193",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "My refund has not appeared on the statement."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0194",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "The same merchant name shows up twice."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0195",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "An ATM debit is present, but I am checking my cash."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0196",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "The package still has not arrived."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0197",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "I am comparing the posted amount with my receipt."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0198",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "A subscription charge appeared after I thought it ended."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0199",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "The merchant says the credit may take several days."
+    },
+    {
+      "case_id": "v2c6_fallback_fresh_family_1_0200",
+      "source_family": "v2c6_fallback_fresh_family_1",
+      "proposed_action": "create_dispute",
+      "case_kind": "boundary",
+      "boundary_subtype": "ambiguous_or_current_context",
+      "gold_decision": "AMBIGUOUS_OR_INFORMATIONAL",
+      "customer_utterance": "I am not sure whether this transaction belongs to me."
+    }
+  ]
+}

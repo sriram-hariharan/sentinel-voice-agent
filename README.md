@@ -5815,9 +5815,21 @@ timeouts, and `tool_choice = "auto"` unchanged. No further development budget
 experiment or tool-choice amendment is authorized by this evidence. The 20
 cases are consumed development evidence, not fresh or final acceptance
 evidence. The historical 64-token artifacts remain immutable. The fresh
-400-record evaluation has not started, the raw V2-C5 final holdout remains
-prohibited, and Step 29I remains blocked. Next required phase: **V2-C6 Fresh
-Fallback Evaluation Setup**.
+400-record evaluation is now independently authored and frozen, but inference
+has not started and no fresh result artifacts exist. It contains two source
+families of 200 records each. Within each family, `freeze_card` and
+`create_dispute` each have 50 explicit-current-action positives and 50
+boundary negatives; each action's negatives contain exactly 10 informational,
+10 hypothetical, 10 advice-or-guidance, 10 negated-or-not-requested, and 10
+ambiguous-or-current-context cases.
+
+The verifier configuration is frozen before fresh inference. These examples
+are neither training nor prompt-tuning data and may not be used to modify the
+model, prompt, token budget, reasoning effort, retry/timeout policy, tool
+choice, clarification templates, or semantic definitions. Deterministic
+runtime acceptance remains a separate mandatory closeout gate. The raw V2-C5
+final holdout remains prohibited and untouched, and Step 29I remains blocked.
+Next required phase: **V2-C6 Fresh Fallback Evaluation Execution**.
 
 ### Why this extension is useful
 

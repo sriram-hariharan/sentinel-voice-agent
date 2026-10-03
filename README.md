@@ -5170,6 +5170,45 @@ unchanged: if neither candidate passes every gate in every required scope, the
 next activity is `routing_architecture_fallback_decision`, not another
 classifier or data remediation cycle.
 
+#### V2-C6 R3 protected-intent gate model-selection runner
+
+`scripts/run_v2c6_r3_protected_intent_gate_model_selection.py` implements the
+frozen two-candidate R3 experiment. It has been implemented but **not
+executed**: no R3 candidate has been selected, no R3 result artifact exists,
+and implementing the runner generated no embeddings and performed no model
+fitting or inference.
+
+The runner pins the R3 contract, the six frozen R3 dataset and manifest hashes,
+and the earlier convention sources. It reuses the Hybrid, TF-IDF, BGE,
+`LinearSVC`, and metric helpers from the hash-pinned R2 runner, so both
+candidates use exactly the established conventions. Both candidates share one
+deterministic five-fold `StratifiedGroupKFold` plan over the 10,088 expanded
+development records. The gated candidate's four word+char TF-IDF verifiers
+are fitted only on R3 addendum records. During grouped CV each verifier
+record inherits its development record's fold side, so fold-validation records
+never enter verifier fitting. Fresh evaluation fits each candidate once on all
+development records (plus the full 60 + 60 verifier populations) and
+evaluates both fresh families without refitting. The mandatory gates,
+eligibility, gate diagnostics, lexicographic selection, and stop-rule
+continuation follow the frozen contract exactly. The raw V2-C5 final holdout
+remains prohibited, and Step 29I remains blocked.
+
+Future local commands (`--run` is not part of the implementation step):
+
+```bash
+sentinelvoice_env/bin/python \
+  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
+  --preflight
+
+sentinelvoice_env/bin/python \
+  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
+  --run
+
+sentinelvoice_env/bin/python \
+  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
+  --check-results
+```
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

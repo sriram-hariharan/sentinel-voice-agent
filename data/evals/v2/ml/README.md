@@ -2428,6 +2428,84 @@ every gate in every required scope, the next activity is
 `routing_architecture_fallback_decision`, not another classifier or data
 remediation cycle.
 
+### R3 protected-intent gate model-selection runner
+
+`scripts/run_v2c6_r3_protected_intent_gate_model_selection.py` implements the
+frozen experiment and is **implemented but not executed**. No R3 candidate has
+been selected and no R3 result artifact exists. Implementing the runner
+generated no embeddings and performed no model fitting or inference.
+
+Modes:
+
+- `--preflight` validates the contract, convention lineage, dataset and
+  manifest hashes, counts, the grouped split, verifier fold membership, fresh
+  isolation, and output availability. It performs no embedding, fitting,
+  inference, or writes.
+- `--run` executes grouped CV and fresh evaluation for both candidates and
+  creates the results and manifest once, atomically.
+- `--check-results` deterministically revalidates existing results and their
+  manifest from the persisted predictions, without embedding, fitting, or
+  inference.
+
+Execution semantics:
+
+- Convention reuse: the Hybrid, word+char TF-IDF, BGE, `LinearSVC`, and
+  metric helpers are loaded from the R2 runner only after its SHA-256 matches
+  the hash recorded by the consumed R2 result manifest.
+- Grouped CV: one `StratifiedGroupKFold(n_splits=5, shuffle=True,
+  random_state=20260930)` plan over `group_id` is built once and reused for both
+  candidates. Each fold fits the Hybrid primary router on its training
+  partition only.
+- Verifier fold isolation: each verifier trains only on R3 addendum records
+  whose expanded-development records lie in that fold's training partition.
+  Historical development records and fold-validation R3 records are rejected.
+  The full-population verifier fit requires exactly 60 positives and 60
+  targeted unsupported negatives.
+- Gate: only a protected primary prediction is sent, and only to its dedicated
+  verifier. Acceptance keeps the prediction; rejection returns
+  `unsupported_or_uncertain`. The gate changes routing only and is not
+  authorization.
+- Fresh evaluation: each candidate is fitted once on all 10,088 development
+  records and evaluated on both 320-record families and the pooled 640 without
+  refitting. Fresh records never enter any fit.
+- Gates and selection: all three mandatory gates must pass in all four scopes
+  (pooled grouped CV, each fresh family, and pooled fresh). The frozen
+  lexicographic rule is applied to eligible candidates only, with a 1e-12
+  numeric tie tolerance.
+- Stop rule: with no eligible candidate the result is
+  `NO_ACCEPTABLE_CANDIDATE` with `next_required =
+  routing_architecture_fallback_decision`. With an eligible candidate it is
+  `v2c6_candidate_freeze_before_final_holdout`. Neither outcome authorizes
+  Step 29I, final-holdout access, or final model acceptance.
+- Verifier diagnostics: `per_protected_intent_verifier_recall` uses the
+  denominator of rows whose gold intent and primary prediction are both that
+  protected intent. It is distinct from final routing protected recall, and
+  the diagnostics never replace the mandatory gates.
+- Outputs: `v2c6_r3_protected_intent_gate_model_selection_results.json` and
+  its manifest are create-once, contain no raw utterance text, and persist no
+  fitted model. The BGE cache is ignored local data under `local/`, bound to
+  the ordered populations, source hashes, split audit, runner, and library
+  versions.
+
+The raw V2-C5 final holdout remains prohibited, and Step 29I remains blocked.
+
+```bash
+sentinelvoice_env/bin/python \
+  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
+  --preflight
+
+sentinelvoice_env/bin/python \
+  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
+  --run
+
+sentinelvoice_env/bin/python \
+  scripts/run_v2c6_r3_protected_intent_gate_model_selection.py \
+  --check-results
+```
+
+`--run` is not part of the implementation step and must be executed locally
+after review and validation.
+
 ## Reproduce V2-C1
 
 ```bash

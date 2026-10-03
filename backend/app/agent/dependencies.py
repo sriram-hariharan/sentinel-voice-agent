@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, status
+from groq import AsyncGroq
 
 from backend.app.agent.orchestrator import AgentOrchestrator
 from backend.app.agent.protected_action_verifier import (
@@ -11,6 +12,10 @@ from backend.app.config.settings import Settings, get_settings
 from backend.app.providers.embeddings import FastEmbedProvider
 from backend.app.providers.groq_llm import GroqLLMProvider
 from backend.app.rag.retrieval import PolicyRetriever
+
+VERIFIER_REASONING_EFFORT = "low"
+VERIFIER_SDK_MAX_RETRIES = 0
+VERIFIER_SDK_TIMEOUT_SECONDS = 2.0
 
 
 def build_llm_provider(settings: Settings) -> GroqLLMProvider:
@@ -42,11 +47,18 @@ def build_protected_action_verifier(
     if not api_key:
         raise ValueError("Groq API key is not configured")
 
+    client = AsyncGroq(
+        api_key=api_key,
+        max_retries=VERIFIER_SDK_MAX_RETRIES,
+        timeout=VERIFIER_SDK_TIMEOUT_SECONDS,
+    )
     return LLMProtectedActionSemanticVerifier(
         llm=GroqLLMProvider(
             api_key=api_key,
+            client=client,
             model=settings.llm_model,
             max_completion_tokens=VERIFIER_MAX_COMPLETION_TOKENS,
+            reasoning_effort=VERIFIER_REASONING_EFFORT,
         ),
     )
 

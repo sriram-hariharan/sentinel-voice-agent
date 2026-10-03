@@ -23,7 +23,7 @@ from backend.app.providers.groq_llm import (
 from backend.app.providers.llm import LLMProvider, LLMResponse, LLMUsage
 
 VERIFIER_TIMEOUT_SECONDS = 2.0
-VERIFIER_MAX_COMPLETION_TOKENS = 64
+VERIFIER_MAX_COMPLETION_TOKENS = 256
 VERIFIER_PURPOSE = "protected_action_semantic_verification"
 DECISION_TOOL_NAME = "record_protected_action_semantic_decision"
 

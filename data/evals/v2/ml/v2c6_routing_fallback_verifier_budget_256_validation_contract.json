@@ -1,0 +1,113 @@
+{
+  "application_retries": 0,
+  "case_count": 20,
+  "development_only": true,
+  "final_acceptance_evidence": false,
+  "final_holdout_policy": {
+    "access_permitted": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json",
+    "searching_permitted": false
+  },
+  "fresh_acceptance_evidence": false,
+  "fresh_evaluation_started": false,
+  "frozen_run_configuration": {
+    "alternate_budget_fallback": false,
+    "application_retries": 0,
+    "case_count": 20,
+    "execution": "sequential",
+    "max_completion_tokens": 256,
+    "model": "openai/gpt-oss-20b",
+    "outer_timeout_seconds": 2.0,
+    "parallel_tool_calls": false,
+    "provider_calls_per_case": 1,
+    "reasoning_effort": "low",
+    "sdk_max_retries": 0,
+    "sdk_timeout_seconds": 2.0,
+    "temperature": 0,
+    "tool_choice": "auto"
+  },
+  "governance": {
+    "candidate_selected": false,
+    "development_only": true,
+    "final_acceptance_evidence": false,
+    "final_holdout_accessed": false,
+    "fresh_acceptance_evidence": false,
+    "fresh_evaluation_started": false,
+    "model_family_changed": false,
+    "prompt_changed": false,
+    "reuses_consumed_development_cases": true,
+    "runtime_behavior_changed_beyond_frozen_amendment": false,
+    "step29i_authorized": false,
+    "threshold_tuning_performed": false,
+    "tool_choice_changed": false
+  },
+  "latency_measurement": {
+    "aggregates": [
+      "p50",
+      "p90",
+      "p95",
+      "max"
+    ],
+    "provider_call_latency_ms": "time awaiting the runner-wrapped provider.generate call",
+    "verifier_wall_latency_ms": "complete verifier.verify wall time"
+  },
+  "next_required": "execute_v2c6_routing_fallback_verifier_budget_256_development_validation",
+  "outputs": {
+    "manifest": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_results.manifest.json",
+    "results": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_results.json"
+  },
+  "phase": "V2-C6 Routing Fallback 256-Token Development Verifier Budget Validation",
+  "result_statuses": {
+    "INCONCLUSIVE_PROVIDER_FAILURE": "only timeout, transport, availability, or other external failures prevent a structural conclusion",
+    "KEEP_256": "all 20 cases return exactly one valid structured decision with one provider call and no token exhaustion",
+    "STRUCTURED_OUTPUT_POLICY_ISSUE": "a normal non-length completion or tool-use failure does not yield exactly one valid decision",
+    "TOKEN_BUDGET_STILL_INSUFFICIENT": "any finish_reason length or explicit provider token-limit signal",
+    "precedence": [
+      "TOKEN_BUDGET_STILL_INSUFFICIENT",
+      "STRUCTURED_OUTPUT_POLICY_ISSUE",
+      "INCONCLUSIVE_PROVIDER_FAILURE",
+      "KEEP_256"
+    ],
+    "semantic_errors_change_keep_status": false
+  },
+  "reuses_consumed_development_cases": true,
+  "schema_version": "v2c6-routing-fallback-verifier-budget-256-validation-contract.v1",
+  "source_bindings": {
+    "budget_development_cases": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_development_cases.json",
+      "sha256": "46c0da1502767a6999f0e2fab8fa3c3ae56ba08d573ba1a1a78cac168de19343"
+    },
+    "budget_provider_amendment": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_provider_amendment.json",
+      "sha256": "f39c31c6fc3fe1fa5e1f5e3f07d923cef5dec8d1016411d852e974ff9ef61b3f"
+    },
+    "dependencies": {
+      "path": "backend/app/agent/dependencies.py",
+      "sha256": "02a971f6069ecb309bcac22c9a0a37beb56680e49ba97aa7b932052392bfc8fa"
+    },
+    "groq_provider": {
+      "path": "backend/app/providers/groq_llm.py",
+      "sha256": "b1fb73bdfdc93bdb5ae1d1abea6a48087a93a4e4ef3a747f7e89d50df20e7fe7"
+    },
+    "protected_action_verifier": {
+      "path": "backend/app/agent/protected_action_verifier.py",
+      "sha256": "41bb9048f8afbda29d573f63cb707cd947c37170c5d697464fef9c1cc833332d"
+    },
+    "results_64": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.json",
+      "sha256": "fcc21b6faf947d83b4f1024054dc823299fa0b29318290207f8dbce7a675336b"
+    },
+    "results_manifest_64": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_validation_results.manifest.json",
+      "sha256": "2da6bf3abee0e1c8e802a8cffb5a3663dab46ae93b2a0bb513cafa589bbe7c71"
+    }
+  },
+  "status": "FROZEN",
+  "step29i_policy": {
+    "authorized": false,
+    "blocked": true
+  }
+}

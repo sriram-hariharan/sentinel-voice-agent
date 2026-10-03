@@ -179,7 +179,7 @@ async def test_timeout_fails_closed_after_exactly_one_call() -> None:
 
 def test_frozen_timeout_and_budget_constants() -> None:
     assert VERIFIER_TIMEOUT_SECONDS == 2.0
-    assert VERIFIER_MAX_COMPLETION_TOKENS == 64
+    assert VERIFIER_MAX_COMPLETION_TOKENS == 256
     with pytest.raises(ValueError):
         LLMProtectedActionSemanticVerifier(llm=FakeProvider(None), timeout_seconds=2.5)
 
@@ -274,7 +274,7 @@ async def test_concurrent_usage_capture_is_task_local() -> None:
     assert second.prompt_tokens == 500
 
 
-def test_dependency_wiring_uses_dedicated_64_token_provider() -> None:
+def test_dependency_wiring_uses_amended_dedicated_provider() -> None:
     settings = Settings(groq_api_key="test-key", llm_model="openai/gpt-oss-20b")
 
     verifier = build_protected_action_verifier(settings)
@@ -282,6 +282,11 @@ def test_dependency_wiring_uses_dedicated_64_token_provider() -> None:
 
     assert isinstance(verifier, LLMProtectedActionSemanticVerifier)
     assert verifier.model == "openai/gpt-oss-20b"
-    assert verifier._llm.max_completion_tokens == 64
+    assert verifier._llm.max_completion_tokens == 256
+    assert verifier._llm.reasoning_effort == "low"
+    assert verifier._llm._client.max_retries == 0
+    assert verifier._llm._client.timeout == 2.0
+    assert verifier._timeout_seconds == 2.0
     assert conversational.max_completion_tokens == 1024
+    assert conversational.reasoning_effort is None
     assert verifier._llm is not conversational

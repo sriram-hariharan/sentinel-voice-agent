@@ -3089,11 +3089,29 @@ and current provider sources.
   authorized, as regression evidence only. No larger budget will be tried
   automatically.
 
-The amended runtime is not implemented yet and the amended experiment has not
-run. The fresh 400-record evaluation has not been authored or started. The raw
-V2-C5 final holdout remains prohibited, and Step 29I remains blocked. The next
-required activity is
-`v2c6_routing_fallback_amended_verifier_implementation_and_development_validation`.
+The amended runtime is now implemented. Its dedicated production verifier uses
+`settings.llm_model` (`openai/gpt-oss-20b`),
+`max_completion_tokens = 256`, `reasoning_effort = "low"`, and a
+verifier-specific Groq 1.7.0 `AsyncGroq` client configured with
+`max_retries = 0` and `timeout = 2.0`. The existing outer
+`asyncio.timeout(2.0)` remains as defense in depth. `tool_choice = "auto"`,
+`parallel_tool_calls = false`, temperature 0, and zero application retries are
+unchanged. The ordinary conversational provider retains its existing
+1024-token budget, implicit reasoning behavior, and ordinary client defaults.
+The prior 17--47 second observations establish a provider-boundary
+configuration problem, but do not prove SDK retries were the exact cause.
+
+`data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_contract.json`
+freezes a new development-only 256-token protocol, and
+`scripts/run_v2c6_routing_fallback_verifier_budget_256_validation.py` provides
+`--preflight`, `--run`, and `--check-results`. It reuses exactly the same 20
+already-consumed development cases for one regression comparison, records
+provider-call and full-verifier latency separately, and has no automatic
+larger-budget fallback. The 256-token provider run has not occurred and its
+result artifacts do not exist. The historical 64-token contract, runner,
+cases, results, and manifest remain immutable failure evidence. The fresh
+400-record evaluation has not been authored or started, the raw V2-C5 final
+holdout remains prohibited, and Step 29I remains blocked.
 
 ## Reproduce V2-C1
 

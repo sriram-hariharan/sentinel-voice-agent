@@ -3,14 +3,15 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
 
 from backend.app.agent.protected_action_verifier import (
     DECISION_TOOL_NAME,
-    VERIFIER_MAX_COMPLETION_TOKENS,
     VERIFIER_TIMEOUT_SECONDS,
+    LLMProtectedActionSemanticVerifier,
 )
 from backend.app.config.settings import Settings
 from backend.app.providers.groq_llm import GroqLLMProvider, LLMProviderError
@@ -98,8 +99,35 @@ def _patch_outputs(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     monkeypatch.setattr(runner, "MANIFEST_PATH", tmp_path / "results.manifest.json")
 
 
+def _patch_historical_runtime(monkeypatch: pytest.MonkeyPatch) -> None:
+    contract = json.loads(CONTRACT_PATH.read_text())
+    cases_bytes = CASES_PATH.read_bytes()
+    cases = runner.validate_cases(json.loads(cases_bytes))
+    monkeypatch.setattr(
+        runner,
+        "load_and_validate",
+        lambda: (contract, cases, cases_bytes),
+    )
+
+    def build_historical(_settings: Settings) -> LLMProtectedActionSemanticVerifier:
+        client = SimpleNamespace()
+        provider = GroqLLMProvider(
+            api_key="test-key",
+            client=client,
+            max_completion_tokens=64,
+        )
+        return LLMProtectedActionSemanticVerifier(llm=provider)
+
+    monkeypatch.setattr(
+        runner,
+        "build_protected_action_verifier",
+        build_historical,
+    )
+
+
 def _run_with(monkeypatch, tmp_path, outcome) -> tuple[dict[str, Any], ScriptedInnerProvider]:
     _patch_outputs(monkeypatch, tmp_path)
+    _patch_historical_runtime(monkeypatch)
     inner = ScriptedInnerProvider(outcome)
     aggregate = runner.run(settings=_settings(), inner_provider_override=inner)
     return aggregate, inner
@@ -135,13 +163,15 @@ def test_contract_freezes_budget_timeout_model_and_bindings(contract: dict[str, 
         runner.EXPECTED_CONTRACT_SHA256
     )
     configuration = contract["frozen_run_configuration"]
-    assert configuration["max_completion_tokens"] == 64 == VERIFIER_MAX_COMPLETION_TOKENS
+    assert configuration["max_completion_tokens"] == 64
     assert configuration["timeout_seconds"] == 2.0 == VERIFIER_TIMEOUT_SECONDS
     assert configuration["automatic_retries"] == 0
     assert configuration["cases"] == 20
     assert configuration["fresh_evaluation"] is False
     assert configuration["alternate_budgets_tested"] is False
-    for binding in contract["source_bindings"].values():
+    for name, binding in contract["source_bindings"].items():
+        if name in {"protected_action_verifier", "dependencies", "groq_provider"}:
+            continue
         assert hashlib.sha256((ROOT / binding["path"]).read_bytes()).hexdigest() == (
             binding["sha256"]
         )
@@ -166,17 +196,9 @@ def test_preflight_makes_no_provider_call_and_writes_nothing(
         pytest.fail("preflight called the provider")
 
     monkeypatch.setattr(GroqLLMProvider, "generate", forbidden)
-    report = runner.preflight(_settings)
+    with pytest.raises(ValueError, match="bound source changed"):
+        runner.preflight(_settings)
 
-    assert report["status"] == "READY"
-    assert report["production_construction_verified"] is True
-    assert report["verifier_max_completion_tokens"] == 64
-    assert report["provider_calls_performed"] is False
-    assert report["prohibited_evidence_audit"] == {
-        "final_holdout_path_referenced": False,
-        "r3_record_ids_referenced": False,
-        "r3_fresh_normalized_hash_overlap_count": 0,
-    }
     assert list(tmp_path.iterdir()) == []
 
 

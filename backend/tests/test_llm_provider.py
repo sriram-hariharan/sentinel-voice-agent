@@ -68,6 +68,7 @@ async def test_groq_provider_normalizes_direct_response() -> None:
 
     assert request["model"] == "openai/gpt-oss-20b"
     assert "tools" not in request
+    assert "reasoning_effort" not in request
 
 
 @pytest.mark.asyncio
@@ -133,6 +134,40 @@ async def test_groq_provider_normalizes_tool_call() -> None:
 
     assert request["tool_choice"] == "auto"
     assert request["parallel_tool_calls"] is False
+
+
+@pytest.mark.asyncio
+async def test_groq_provider_sends_reasoning_effort_only_when_configured() -> None:
+    response = SimpleNamespace(
+        model="openai/gpt-oss-20b",
+        choices=[
+            SimpleNamespace(
+                finish_reason="stop",
+                message=SimpleNamespace(content="done", tool_calls=None),
+            )
+        ],
+        usage=None,
+    )
+    client, create = _client_for(response)
+    provider = GroqLLMProvider(
+        api_key="test-key",
+        client=client,
+        reasoning_effort="low",
+    )
+
+    await provider.generate(messages=[{"role": "user", "content": "Hello"}])
+
+    assert create.await_args.kwargs["reasoning_effort"] == "low"
+
+
+def test_groq_provider_rejects_unknown_reasoning_effort() -> None:
+    client, _ = _client_for(None)
+    with pytest.raises(ValueError, match="reasoning_effort"):
+        GroqLLMProvider(
+            api_key="test-key",
+            client=client,
+            reasoning_effort="minimal",
+        )
 
 
 @pytest.mark.asyncio

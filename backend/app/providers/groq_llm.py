@@ -25,13 +25,17 @@ class GroqLLMProvider:
         api_key: str,
         model: str = "openai/gpt-oss-20b",
         max_completion_tokens: int = 1024,
+        reasoning_effort: str | None = None,
         client: Any | None = None,
     ) -> None:
         if not api_key and client is None:
             raise ValueError("Groq API key is required")
+        if reasoning_effort not in {None, "low", "medium", "high"}:
+            raise ValueError("reasoning_effort must be low, medium, high, or None")
 
         self.model = model
         self.max_completion_tokens = max_completion_tokens
+        self.reasoning_effort = reasoning_effort
         self._client = client or AsyncGroq(api_key=api_key)
 
     @property
@@ -50,6 +54,9 @@ class GroqLLMProvider:
             "temperature": 0,
             "max_completion_tokens": self.max_completion_tokens,
         }
+
+        if self.reasoning_effort is not None:
+            request["reasoning_effort"] = self.reasoning_effort
 
         if tools:
             request.update(

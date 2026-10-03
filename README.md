@@ -5445,6 +5445,132 @@ mandatory explicit confirmation, a required fresh fallback evaluation, the
 prohibited raw V2-C5 final holdout, and Step 29I blocked. No runtime code
 changed.
 
+#### V2-C6 Routing Fallback Implementation Contract
+
+`data/evals/v2/ml/v2c6_routing_fallback_implementation_evaluation_contract.json`
+freezes the implementation and evaluation contract for
+`CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING` before any runtime code
+changes. It hash-binds the frozen decision and its resolver-safety amendment
+(and through them the R3 result), plus the current orchestrator, resource
+resolver, conversation state, LLM provider protocol, Groq provider, tool
+definitions, registry, and `ToolExecutor`.
+
+Architecture summary:
+
+- Chosen approach: a structured semantic verifier at the protected-action
+  boundary only.
+- Problem solved: the R3 classifiers failed the mandatory gates, and the stop
+  rule forbids another classifier cycle.
+- Why it suits SentinelVoice: it reuses Groq-first tool calling and the
+  deterministic authorization stack inside the modular monolith.
+- Alternatives: recorded in the original decision.
+- Trade-off: one additional bounded Groq call on protected proposals buys a
+  semantic safety boundary before protected resource and pending-action state.
+- Reversibility: high.
+
+Verifier interface and output:
+
+- An async `ProtectedActionSemanticVerifier.verify(*, user_text,
+  proposed_action)` returns exactly one of `EXPLICIT_CURRENT_ACTION`,
+  `AMBIGUOUS_OR_INFORMATIONAL`, or `NOT_REQUESTED`. Failures are typed
+  exceptions, never a fourth decision.
+- Structured output uses the existing `LLMProvider` with one internal schema,
+  `record_protected_action_semantic_decision`, which has a single required
+  enum field. It is never registered, never passed to `ToolExecutor`, and has
+  no handler.
+- Anything other than exactly one correctly named call with a valid enum
+  value is a failure. Free-form text never substitutes for the decision.
+- A dedicated prompt treats customer text as untrusted data and decides only
+  the semantic question, never authentication, ownership, confirmation, or
+  permission.
+
+Bounds and failure policy:
+
+- The verifier uses the same `openai/gpt-oss-20b` model through a dedicated
+  Groq provider instance with `max_completion_tokens = 64`, a 2.0-second
+  timeout (matching the banking-tool convention), at most one call per
+  protected proposal, and zero retries.
+- Timeouts, provider errors, malformed or zero or multiple calls, wrong names,
+  invalid arguments or enum values, and unexpected exceptions all fail closed.
+  A failure creates no pending action, no confirmation prompt, no protected
+  resource clarification, and no execution.
+- There is no retry loop and no failure counter. The deterministic response
+  may offer the existing human-support path.
+
+Semantic clarification:
+
+- Non-explicit decisions and failures use fixed, action-specific templates.
+  freeze_card: "Are you asking me to freeze a card now? If so, please say that
+  directly. Otherwise, tell me what you want to know about freezing a card."
+  create_dispute: "Are you asking me to create a dispute now? If so, please
+  say that directly. Otherwise, tell me what you want to know about disputes."
+- Clarification is never confirmation. A bare "yes" is processed as a new
+  semantic request.
+- Clarification clears protected resource-resolution state and keeps no
+  protected intent waiting for a later "yes".
+
+Resolver correction:
+
+- The resolver may not create the `freeze_card` pending action or ask
+  `freeze_card` or `create_dispute` resource questions before verification.
+- An existing active card or transaction neither authorizes nor verifies a new
+  protected action.
+
+Verified resource state:
+
+- A typed `ProtectedActionSemanticContext(action, resource_type)` on
+  `ConversationState` carries a verified explicit request through a
+  resource-selection turn. The valid pairs are `freeze_card` with CARD and
+  `create_dispute` with TRANSACTION.
+- It stores no utterance and is not a pending action, confirmation, or
+  authorization.
+- It is cleared on pending-action creation, cancellation, correction,
+  abandonment, terminal state, cleared resource resolution, or mismatch. It
+  survives voice interruption only together with the matching preserved
+  resource resolution.
+- Bare selectors continue only through this context.
+
+Trigger and observability:
+
+- The verifier is triggered only by
+  `PermissionLevel.PROTECTED_WRITE` on an already registered and allowed tool,
+  never by keywords, active intent, or classifier output.
+- Traces emit `protected_action.verification.started`, `.completed`, and
+  `.failed` under the `safety` component with no raw text.
+- Verifier LLM usage flows through the existing `llm.request` events, tagged
+  with purpose `protected_action_semantic_verification`, so cost aggregation
+  and latency remain measurable.
+
+Future fresh semantic evaluation (not authored yet): two independent families
+of 200 records each. Each family holds 50 explicit `freeze_card`, 50 explicit
+`create_dispute`, and 50 varied boundary negatives per action, giving 400
+records in total. No R3 paraphrasing is allowed.
+
+Acceptance gates:
+
+- Protected semantic false-positive rate <= 0.01 and explicit protected-request
+  recall >= 0.80 on each family, the pooled set, and each action within the
+  pooled set. Each family may have at most 1 false positive in 100 negatives
+  and needs at least 80 explicit hits in 100 positives. The pooled set allows
+  at most 2 in 200 and needs at least 160 in 200.
+- Deterministic gates must equal 1.0: verifier fail-closed compliance,
+  protected-execution authorization compliance, required safety-scenario pass
+  rate across the union of all decision, amendment, and contract scenarios,
+  and clarification-recovery task success.
+- Clarification rate, P50/P90/P95 verifier latency, and incremental cost per
+  protected turn are required evidence but not invented gates.
+- Once fresh evaluation begins, no prompt, model, threshold, retry, or
+  template changes are permitted. A failure is recorded as failure.
+
+Known risk: `gpt-oss-20b` reasoning tokens may exhaust the 64-token budget,
+which this step could not verify without calling Groq. Any budget change must
+come through a separately frozen amendment before fresh evaluation begins.
+
+This step changed no runtime code and made no Groq, model, embedding, or
+evaluation call. The raw V2-C5 final holdout remains prohibited, and Step 29I
+remains blocked. The next required phase is
+`v2c6_routing_fallback_runtime_implementation`.
+
 ### Why this extension is useful
 
 It adds genuine MLE signal:

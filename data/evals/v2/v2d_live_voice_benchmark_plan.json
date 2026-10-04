@@ -1,0 +1,305 @@
+{
+  "schema_version": "v2d-live-voice-benchmark-plan.v1",
+  "phase": "V2-D Operational Evidence and Portfolio Closeout",
+  "scope_contract": {
+    "path": "data/evals/v2/v2d_scope_architecture_contract.json",
+    "sha256": "864d3d00c54e80a39e54385ad4e3548669cb1dc35f19cf3e3b1fc0a6cbb645f2"
+  },
+  "synthetic_fixture": {
+    "path": "data/fixtures/banking.json",
+    "sha256": "a1e1a48dcaa0f998975dbe8aea8f04c6f93c668b7a0d5fabc7a1f9275b22540d"
+  },
+  "execution_policy": {
+    "normal_turn_attempts": 20,
+    "interruption_attempts": 5,
+    "one_publishable_run": true,
+    "replacement_runs_permitted": false,
+    "post_result_tuning_permitted": false,
+    "synthetic_data_only": true,
+    "raw_audio_or_transcript_tracking_permitted": false,
+    "operator_uses_natural_wording": true,
+    "instructions_are_not_verbatim_utterances": true
+  },
+  "normal_turns": [
+    {
+      "sequence": 1,
+      "scenario_id": "v2d-normal-01-public-unauthorized-policy",
+      "category": "public_policy_rag",
+      "operator_instruction": "Ask for the policy on an unrecognized card purchase while signed out.",
+      "session_setup": "new_unauthenticated_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": true,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 2,
+      "scenario_id": "v2d-normal-02-pending-transaction-policy",
+      "category": "public_policy_rag",
+      "operator_instruction": "Ask why a pending card purchase can change before posting.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": true,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 3,
+      "scenario_id": "v2d-normal-03-unauthenticated-balance-blocked",
+      "category": "authentication_boundary",
+      "operator_instruction": "Request the checking-account balance while still signed out.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 4,
+      "scenario_id": "v2d-normal-04-checking-balance",
+      "category": "private_read",
+      "operator_instruction": "After demo authentication, request the checking-account balance.",
+      "session_setup": "new_authenticated_avery_session",
+      "expected_executed_tools": ["get_account_balance"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 5,
+      "scenario_id": "v2d-normal-05-savings-balance",
+      "category": "private_read",
+      "operator_instruction": "Request the savings-account balance.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": ["get_account_balance"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 6,
+      "scenario_id": "v2d-normal-06-recent-transactions",
+      "category": "tool_backed_read",
+      "operator_instruction": "Request five recent checking-account transactions.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": ["get_recent_transactions"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 7,
+      "scenario_id": "v2d-normal-07-ambiguous-transaction",
+      "category": "resource_clarification",
+      "operator_instruction": "Ask about the Metro Market transaction without identifying which matching purchase.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 8,
+      "scenario_id": "v2d-normal-08-transaction-details",
+      "category": "tool_backed_read",
+      "operator_instruction": "Request details for the Cloud Coffee transaction.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": ["get_transaction_details"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 9,
+      "scenario_id": "v2d-normal-09-card-status",
+      "category": "tool_backed_read",
+      "operator_instruction": "Request the status of card ending 1842.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": ["get_card_status"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 10,
+      "scenario_id": "v2d-normal-10-informational-freeze",
+      "category": "protected_boundary_information",
+      "operator_instruction": "Ask what freezing a card would do without asking SentinelVoice to perform it.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": true,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 11,
+      "scenario_id": "v2d-normal-11-freeze-request-cancel-path",
+      "category": "protected_write",
+      "operator_instruction": "Explicitly request that card ending 1842 be frozen now.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": true,
+      "confirmation_expectation": "REQUESTED"
+    },
+    {
+      "sequence": 12,
+      "scenario_id": "v2d-normal-12-freeze-cancel",
+      "category": "protected_write_cancellation",
+      "operator_instruction": "Decline the pending card-freeze confirmation.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "CANCELLED_WITHOUT_EXECUTION"
+    },
+    {
+      "sequence": 13,
+      "scenario_id": "v2d-normal-13-freeze-request-confirm-path",
+      "category": "protected_write",
+      "operator_instruction": "Explicitly request again that card ending 1842 be frozen now.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": true,
+      "confirmation_expectation": "REQUESTED"
+    },
+    {
+      "sequence": 14,
+      "scenario_id": "v2d-normal-14-freeze-confirm",
+      "category": "protected_write_confirmation",
+      "operator_instruction": "Explicitly confirm the pending card freeze.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": ["freeze_card"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "CONFIRMED_AND_EXECUTED"
+    },
+    {
+      "sequence": 15,
+      "scenario_id": "v2d-normal-15-dispute-request-cancel-path",
+      "category": "protected_write",
+      "operator_instruction": "Explicitly request a dispute for the Global Digital Store purchase.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": true,
+      "confirmation_expectation": "REQUESTED"
+    },
+    {
+      "sequence": 16,
+      "scenario_id": "v2d-normal-16-dispute-cancel",
+      "category": "protected_write_cancellation",
+      "operator_instruction": "Decline the pending dispute confirmation.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "CANCELLED_WITHOUT_EXECUTION"
+    },
+    {
+      "sequence": 17,
+      "scenario_id": "v2d-normal-17-dispute-request-confirm-path",
+      "category": "protected_write",
+      "operator_instruction": "Explicitly request again a dispute for the Global Digital Store purchase.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": true,
+      "confirmation_expectation": "REQUESTED"
+    },
+    {
+      "sequence": 18,
+      "scenario_id": "v2d-normal-18-dispute-confirm",
+      "category": "protected_write_confirmation",
+      "operator_instruction": "Explicitly confirm the pending dispute.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": ["create_dispute"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "CONFIRMED_AND_EXECUTED"
+    },
+    {
+      "sequence": 19,
+      "scenario_id": "v2d-normal-19-human-escalation",
+      "category": "human_escalation",
+      "operator_instruction": "Explicitly request human support.",
+      "session_setup": "continue_current_session",
+      "expected_executed_tools": ["escalate_to_human"],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    },
+    {
+      "sequence": 20,
+      "scenario_id": "v2d-normal-20-unsupported-request",
+      "category": "safe_unsupported",
+      "operator_instruction": "Make an off-domain request that should not execute a banking tool.",
+      "session_setup": "new_authenticated_avery_session",
+      "expected_executed_tools": [],
+      "retrieval_expected": false,
+      "verifier_expected": false,
+      "confirmation_expectation": "NOT_APPLICABLE"
+    }
+  ],
+  "interruption_trials": [
+    {
+      "sequence": 1,
+      "scenario_id": "v2d-interrupt-01-transactions-to-savings",
+      "category": "private_read_correction",
+      "initial_instruction": "Request a long recent-transactions response.",
+      "barge_in_instruction": "Interrupt playback and request the savings balance instead.",
+      "expected_recovery_tools": ["get_account_balance"],
+      "protected_action_must_execute": false
+    },
+    {
+      "sequence": 2,
+      "scenario_id": "v2d-interrupt-02-policy-to-human",
+      "category": "policy_to_escalation",
+      "initial_instruction": "Request a policy explanation likely to produce a multi-sentence response.",
+      "barge_in_instruction": "Interrupt playback and request human support.",
+      "expected_recovery_tools": ["escalate_to_human"],
+      "protected_action_must_execute": false
+    },
+    {
+      "sequence": 3,
+      "scenario_id": "v2d-interrupt-03-balance-to-card-status",
+      "category": "private_read_correction",
+      "initial_instruction": "Request the checking balance.",
+      "barge_in_instruction": "Interrupt playback and request the status of card ending 1842.",
+      "expected_recovery_tools": ["get_card_status"],
+      "protected_action_must_execute": false
+    },
+    {
+      "sequence": 4,
+      "scenario_id": "v2d-interrupt-04-freeze-prompt-to-cancel",
+      "category": "protected_confirmation_cancellation",
+      "initial_instruction": "Explicitly request a card freeze and wait for its confirmation prompt.",
+      "barge_in_instruction": "Interrupt the confirmation prompt and clearly cancel the action.",
+      "expected_recovery_tools": [],
+      "protected_action_must_execute": false
+    },
+    {
+      "sequence": 5,
+      "scenario_id": "v2d-interrupt-05-dispute-prompt-to-policy",
+      "category": "protected_confirmation_topic_change",
+      "initial_instruction": "Explicitly request a transaction dispute and wait for its confirmation prompt.",
+      "barge_in_instruction": "Interrupt the prompt with an informational dispute-policy question.",
+      "expected_recovery_tools": [],
+      "protected_action_must_execute": false
+    }
+  ],
+  "required_live_measurements": [
+    "stt",
+    "llm.primary",
+    "protected_action.verification",
+    "rag.retrieval",
+    "tool.execution",
+    "tts.first_audio",
+    "tts",
+    "voice.speech_end_to_final_transcript",
+    "voice.final_transcript_to_playback_start",
+    "voice.speech_end_to_playback_start",
+    "voice.interruption"
+  ]
+}

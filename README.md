@@ -5856,13 +5856,47 @@ permanently consumed fresh acceptance evidence: they are non-tunable and may
 not become development or training data. This is semantic-verifier acceptance,
 not production or final-model acceptance.
 
-The next required phase is **V2-C6 Deterministic Runtime Safety Closeout**. It
-must verify the complete protected-action runtime deterministically, including
-fail-closed behavior, state and confirmation safety, authorization and resource
-boundaries, idempotency, interruption/correction behavior, and preservation of
-public/private reads. No new semantic examples or Groq inference are required
-for that closeout unless separately frozen. The raw V2-C5 final holdout remains
-prohibited and untouched, and Step 29I remains blocked.
++The deterministic runtime safety closeout has now executed successfully under
+`data/evals/v2/ml/v2c6_routing_fallback_deterministic_runtime_safety_contract.json`
+(SHA-256
+`50ec51a82f5b1eb76310779fd4bfb38e4eb08d260aa189873f6afc921b194675`).
+Its strict all-or-nothing result is `RUNTIME_SAFETY_PASS`: all 12 mandatory
+invariants passed and none failed. The generated result is
+`data/evals/v2/ml/v2c6_routing_fallback_deterministic_runtime_safety_result.json`
+(SHA-256
+`991bf2dda733389def6173c9b90377bb57b560d5fba3c58f303d648ed5f13cc0`).
+
+The closeout coverage is:
+
+- A: verifier failures fail closed.
+- B: ambiguous, informational, and not-requested proposals cannot advance.
+- C: semantic verification precedes protected resource binding.
+- D: multi-turn protected resource selection preserves only matching state.
+- E: verified context and continuation markers are isolated by action.
+- F: protected execution requires current, explicit, one-use confirmation.
+- G: authentication, authorization, and ownership remain deterministic.
+- H: the banking tool registry remains the executable boundary.
+- I: interruption, correction, and cancellation clear or preserve state only
+  under the existing matching-state rules.
+- J: completed and duplicate protected actions retain existing idempotency
+  guarantees.
+- K: public informational and private-read operations remain ungated by the
+  verifier.
+- L: verifier tracing and usage metadata remain observable without raw customer
+  utterances.
+
+The standard-library closeout runner supports `--preflight`, one-time
+`--run`, and read-only `--check-results`. It uses fake/scripted providers,
+synthetic banking data, and deterministic pytest evidence only. No Groq call,
+semantic inference, fresh-evaluation rerun, prompt or configuration tuning,
+runtime change, or new semantic data occurred. The frozen verifier
+configuration and the consumed/non-tunable status of the 400 fresh examples
+are unchanged.
+
+This closes only deterministic runtime safety for the accepted fallback. It
+does not claim production or final-model acceptance and does not authorize
+Step 29I. The raw V2-C5 final holdout remains prohibited and untouched; the
+contract records `next_required = null`.
 
 ### Why this extension is useful
 

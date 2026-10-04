@@ -1,0 +1,290 @@
+{
+  "schema_version": "v2c6-routing-fallback-deterministic-runtime-safety-contract.v1",
+  "phase": "V2-C6 Deterministic Runtime Safety Closeout",
+  "status": "FROZEN",
+  "semantic_evaluation_status": "FRESH_SEMANTIC_PASS",
+  "semantic_prerequisite": {
+    "required_status": "FRESH_SEMANTIC_PASS",
+    "fresh_evidence_consumed": true,
+    "fresh_evidence_tuning_permitted": false,
+    "fresh_semantic_evaluation_rerun_permitted": false
+  },
+  "frozen_verifier_configuration": {
+    "model": "openai/gpt-oss-20b",
+    "max_completion_tokens": 256,
+    "reasoning_effort": "low",
+    "sdk_max_retries": 0,
+    "sdk_timeout_seconds": 2.0,
+    "outer_timeout_seconds": 2.0,
+    "application_retries": 0,
+    "tool_choice": "auto",
+    "temperature": 0,
+    "parallel_tool_calls": false
+  },
+  "acceptance_rule": {
+    "type": "strict_all_mandatory_invariants",
+    "percentage_threshold": null,
+    "partial_pass_permitted": false,
+    "weighted_score_permitted": false,
+    "waiver_permitted": false,
+    "pass_status": "RUNTIME_SAFETY_PASS",
+    "fail_status": "RUNTIME_SAFETY_FAIL"
+  },
+  "invariants": [
+    {
+      "id": "A",
+      "name": "verifier_fail_closed",
+      "coverage_before": "PARTIAL",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_verifier_failures_fail_closed_with_no_pending_action",
+        "backend/tests/test_protected_action_verifier.py::test_malformed_structured_output_fails_with_typed_error",
+        "backend/tests/test_protected_action_verifier.py::test_provider_failures_fail_with_typed_error_and_no_retry",
+        "backend/tests/test_protected_action_verifier.py::test_timeout_fails_closed_after_exactly_one_call"
+      ],
+      "new_test_evidence": [
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_create_dispute_representative_verifier_failures_fail_closed"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "ambiguous_informational_not_requested",
+      "coverage_before": "PARTIAL",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_informational_freeze_gets_semantic_clarification_only",
+        "backend/tests/test_protected_action_fallback.py::test_informational_dispute_gets_no_transaction_selection_question",
+        "backend/tests/test_protected_action_fallback.py::test_yes_after_semantic_clarification_is_not_confirmation"
+      ],
+      "new_test_evidence": [
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_create_dispute_not_requested_cannot_advance"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "resource_binding_order",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_explicit_freeze_single_card_verifies_before_resolution_and_waits",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_freeze_multi_card_selects_through_verified_context",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_dispute_single_transaction_verifies_first_then_waits",
+        "backend/tests/test_resource_resolver.py::test_pre_llm_freeze_wording_defers_protected_card_resolution"
+      ],
+      "new_test_evidence": []
+    },
+    {
+      "id": "D",
+      "name": "multi_turn_resource_selection",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_explicit_freeze_multi_card_selects_through_verified_context",
+        "backend/tests/test_protected_action_fallback.py::test_multi_transaction_dispute_retains_original_arguments_exactly",
+        "backend/tests/test_resource_resolver.py::test_confirm_executes_exactly_the_selected_card"
+      ],
+      "new_test_evidence": []
+    },
+    {
+      "id": "E",
+      "name": "cross_action_isolation",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_verified_dispute_state_is_not_reusable_for_a_different_action",
+        "backend/tests/test_protected_action_fallback.py::test_one_use_marker_cannot_exempt_another_protected_action",
+        "backend/tests/test_protected_action_fallback.py::test_one_use_marker_only_covers_the_first_tool_call",
+        "backend/tests/test_protected_action_fallback.py::test_semantic_context_rejects_invalid_pairs_and_unmatched_resolution"
+      ],
+      "new_test_evidence": []
+    },
+    {
+      "id": "F",
+      "name": "explicit_confirmation",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_agent_orchestrator.py::test_explicit_yes_executes_stored_protected_action_once",
+        "backend/tests/test_agent_orchestrator.py::test_no_cancels_protected_action_without_execution",
+        "backend/tests/test_agent_orchestrator.py::test_correction_invalidates_old_confirmation_and_is_reprocessed",
+        "backend/tests/test_protected_action_fallback.py::test_yes_after_semantic_clarification_is_not_confirmation",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_verification_never_executes_without_one_use_confirmation",
+        "backend/tests/test_conversation_state.py::test_replacing_pending_action_invalidates_old_confirmation"
+      ],
+      "new_test_evidence": []
+    },
+    {
+      "id": "G",
+      "name": "authentication_authorization_ownership",
+      "coverage_before": "PARTIAL",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_unauthenticated_protected_proposal_never_reaches_verifier",
+        "backend/tests/test_protected_action_fallback.py::test_cross_customer_card_cannot_be_selected_even_when_explicit",
+        "backend/tests/test_banking_tools.py::test_create_dispute_hides_unowned_transaction",
+        "backend/tests/test_tool_executor.py::test_executor_requires_confirmation_for_protected_write",
+        "backend/tests/test_agent_orchestrator.py::test_non_backend_tool_errors_do_not_trigger_escalation"
+      ],
+      "new_test_evidence": [
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_matching_confirmation_never_bypasses_authentication"
+      ]
+    },
+    {
+      "id": "H",
+      "name": "tool_registry_boundary",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_tool_executor.py::test_registry_contains_exactly_seven_v1_tools",
+        "backend/tests/test_protected_action_verifier.py::test_internal_decision_schema_is_not_a_runtime_tool",
+        "backend/tests/test_protected_action_fallback.py::test_unsupported_taxonomy_intents_gain_no_tool_or_verification",
+        "backend/tests/test_protected_action_fallback.py::test_one_use_marker_only_covers_the_first_tool_call"
+      ],
+      "new_test_evidence": []
+    },
+    {
+      "id": "I",
+      "name": "interruption_correction_cancellation",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_cancelled_or_corrected_dispute_selection_drops_preserved_arguments",
+        "backend/tests/test_protected_action_fallback.py::test_cancellation_during_resource_selection_clears_context",
+        "backend/tests/test_protected_action_fallback.py::test_correction_during_resource_selection_clears_context",
+        "backend/tests/test_protected_action_fallback.py::test_interruption_preserving_resolution_preserves_context_safely",
+        "backend/tests/test_protected_action_fallback.py::test_interruption_without_preserved_resolution_clears_context",
+        "backend/tests/test_conversation_state.py::test_interruption_cancels_action_not_yet_executing"
+      ],
+      "new_test_evidence": []
+    },
+    {
+      "id": "J",
+      "name": "idempotency_duplicate_execution",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_banking_tools.py::test_freeze_card_is_idempotent_when_already_frozen",
+        "backend/tests/test_banking_tools.py::test_create_dispute_returns_existing_dispute_on_retry",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_verification_never_executes_without_one_use_confirmation",
+        "backend/tests/test_conversation_state.py::test_stale_tool_completion_cannot_clear_new_pending_action"
+      ],
+      "new_test_evidence": []
+    },
+    {
+      "id": "K",
+      "name": "non_protected_regression",
+      "coverage_before": "PARTIAL",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_non_protected_card_status_resolution_is_unchanged",
+        "backend/tests/test_protected_action_fallback.py::test_policy_routed_informational_questions_never_reach_the_verifier",
+        "backend/tests/test_tool_executor.py::test_executor_rejects_unauthenticated_private_read"
+      ],
+      "new_test_evidence": [
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_private_read_tools_never_invoke_protected_verifier"
+      ]
+    },
+    {
+      "id": "L",
+      "name": "observability",
+      "coverage_before": "SUFFICIENT",
+      "coverage_after": "SUFFICIENT",
+      "existing_test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_verifier_trace_events_and_usage_are_recorded_without_raw_text",
+        "backend/tests/test_protected_action_fallback.py::test_failed_verification_emits_failed_event_with_category",
+        "backend/tests/test_protected_action_verifier.py::test_trace_events_have_purpose_tokens_and_no_raw_text"
+      ],
+      "new_test_evidence": []
+    }
+  ],
+  "source_bindings": {
+    "fallback_implementation_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_evaluation_contract.json",
+      "sha256": "c972a381a80bcf7a36b5db751195b3263a8bbc14b72e1442d196306f656a68c0"
+    },
+    "verified_dispute_implementation_amendment": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_implementation_contract_amendment.json",
+      "sha256": "591e103dbf28db33508dbbb3a236171d160762efac03f8536988c452d74ccbd5"
+    },
+    "budget_provider_amendment": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_provider_amendment.json",
+      "sha256": "f39c31c6fc3fe1fa5e1f5e3f07d923cef5dec8d1016411d852e974ff9ef61b3f"
+    },
+    "fresh_semantic_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_contract.json",
+      "sha256": "4edd9ef5361cdc16aac770e5e0306bd4eb8c643c814ccbf3a753535b31131680"
+    },
+    "fresh_semantic_result": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_results.json",
+      "sha256": "af2e3945ff625c88ee23fe1f3e15961ad5fd09e61c7c3d2672aa64918d387c00"
+    },
+    "fresh_semantic_result_manifest": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_results.manifest.json",
+      "sha256": "786018ed0fb53c8b1390ef970709f004cb605da445dc20635ad993a3dc9dcc4b"
+    },
+    "orchestrator": {
+      "path": "backend/app/agent/orchestrator.py",
+      "sha256": "9cb8e8b9023c12a70f175aa7cb4aadac44420dbe30a2fd0e856ddff50c27889f"
+    },
+    "resource_resolver": {
+      "path": "backend/app/agent/resource_resolver.py",
+      "sha256": "d86abe07e1fefae5e3e49f15d996bd1635bd8311ac06dabdafc1eb1a755a7cfa"
+    },
+    "protected_action_verifier": {
+      "path": "backend/app/agent/protected_action_verifier.py",
+      "sha256": "41bb9048f8afbda29d573f63cb707cd947c37170c5d697464fef9c1cc833332d"
+    },
+    "dependencies": {
+      "path": "backend/app/agent/dependencies.py",
+      "sha256": "02a971f6069ecb309bcac22c9a0a37beb56680e49ba97aa7b932052392bfc8fa"
+    },
+    "conversation_state": {
+      "path": "backend/app/conversation/state.py",
+      "sha256": "098b2b5bec03352e55613541278e3ebeeead285bf228ca4aa38af14bf9571a71"
+    },
+    "tool_executor": {
+      "path": "backend/app/tools/executor.py",
+      "sha256": "b938d92a638eed39a8e02b2b9c0ede0a372d02130188d7a0edd1b60d6696dedd"
+    },
+    "tool_registry": {
+      "path": "backend/app/tools/registry.py",
+      "sha256": "2b2d891c6c6d32f505d1d390b4347bc70383a7c8900a69c377d1acf2b6611548"
+    },
+    "tool_definitions": {
+      "path": "backend/app/tools/definitions.py",
+      "sha256": "e576ddd27dc4439bf3d954bfef49fdff308983dd0028ab8dd290eebc91b117fa"
+    },
+    "banking_tools": {
+      "path": "backend/app/tools/banking.py",
+      "sha256": "ca5a6c391cb4277171b9e509a6c3c7d542d12051fb9a7265523d53675bfb4811"
+    }
+  },
+  "execution": {
+    "runner": "scripts/run_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py",
+    "result": "data/evals/v2/ml/v2c6_routing_fallback_deterministic_runtime_safety_result.json",
+    "modes": [
+      "preflight",
+      "run",
+      "check_results"
+    ],
+    "real_provider_calls_permitted": false,
+    "result_overwrite_permitted": false
+  },
+  "governance": {
+    "requires_real_provider": false,
+    "runtime_configuration_change_authorized": false,
+    "semantic_tuning_authorized": false,
+    "new_semantic_data_authorized": false,
+    "step29i_authorized": false,
+    "runtime_behavior_changed": false
+  },
+  "final_holdout_policy": {
+    "final_holdout_access_permitted": false,
+    "hashing_permitted": false,
+    "inspection_permitted": false,
+    "parsing_permitted": false,
+    "searching_permitted": false,
+    "prohibited_path": "data/evals/v2/ml/v2c5_final_holdout.json"
+  },
+  "next_required": null
+}

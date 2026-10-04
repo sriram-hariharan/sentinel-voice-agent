@@ -1,0 +1,188 @@
+{
+  "contract": {
+    "path": "data/evals/v2/ml/v2c6_routing_fallback_deterministic_runtime_safety_contract.json",
+    "sha256": "50ec51a82f5b1eb76310779fd4bfb38e4eb08d260aa189873f6afc921b194675"
+  },
+  "failed_invariants": 0,
+  "final_status": "RUNTIME_SAFETY_PASS",
+  "governance": {
+    "final_holdout_accessed": false,
+    "fresh_semantic_evaluation_rerun": false,
+    "provider_calls_performed": false,
+    "runtime_changed": false,
+    "step29i_authorized": false
+  },
+  "invariants": [
+    {
+      "id": "A",
+      "name": "verifier_fail_closed",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_verifier_failures_fail_closed_with_no_pending_action",
+        "backend/tests/test_protected_action_verifier.py::test_malformed_structured_output_fails_with_typed_error",
+        "backend/tests/test_protected_action_verifier.py::test_provider_failures_fail_with_typed_error_and_no_retry",
+        "backend/tests/test_protected_action_verifier.py::test_timeout_fails_closed_after_exactly_one_call",
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_create_dispute_representative_verifier_failures_fail_closed"
+      ]
+    },
+    {
+      "id": "B",
+      "name": "ambiguous_informational_not_requested",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_informational_freeze_gets_semantic_clarification_only",
+        "backend/tests/test_protected_action_fallback.py::test_informational_dispute_gets_no_transaction_selection_question",
+        "backend/tests/test_protected_action_fallback.py::test_yes_after_semantic_clarification_is_not_confirmation",
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_create_dispute_not_requested_cannot_advance"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "resource_binding_order",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_explicit_freeze_single_card_verifies_before_resolution_and_waits",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_freeze_multi_card_selects_through_verified_context",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_dispute_single_transaction_verifies_first_then_waits",
+        "backend/tests/test_resource_resolver.py::test_pre_llm_freeze_wording_defers_protected_card_resolution"
+      ]
+    },
+    {
+      "id": "D",
+      "name": "multi_turn_resource_selection",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_explicit_freeze_multi_card_selects_through_verified_context",
+        "backend/tests/test_protected_action_fallback.py::test_multi_transaction_dispute_retains_original_arguments_exactly",
+        "backend/tests/test_resource_resolver.py::test_confirm_executes_exactly_the_selected_card"
+      ]
+    },
+    {
+      "id": "E",
+      "name": "cross_action_isolation",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_verified_dispute_state_is_not_reusable_for_a_different_action",
+        "backend/tests/test_protected_action_fallback.py::test_one_use_marker_cannot_exempt_another_protected_action",
+        "backend/tests/test_protected_action_fallback.py::test_one_use_marker_only_covers_the_first_tool_call",
+        "backend/tests/test_protected_action_fallback.py::test_semantic_context_rejects_invalid_pairs_and_unmatched_resolution"
+      ]
+    },
+    {
+      "id": "F",
+      "name": "explicit_confirmation",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_agent_orchestrator.py::test_explicit_yes_executes_stored_protected_action_once",
+        "backend/tests/test_agent_orchestrator.py::test_no_cancels_protected_action_without_execution",
+        "backend/tests/test_agent_orchestrator.py::test_correction_invalidates_old_confirmation_and_is_reprocessed",
+        "backend/tests/test_protected_action_fallback.py::test_yes_after_semantic_clarification_is_not_confirmation",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_verification_never_executes_without_one_use_confirmation",
+        "backend/tests/test_conversation_state.py::test_replacing_pending_action_invalidates_old_confirmation"
+      ]
+    },
+    {
+      "id": "G",
+      "name": "authentication_authorization_ownership",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_unauthenticated_protected_proposal_never_reaches_verifier",
+        "backend/tests/test_protected_action_fallback.py::test_cross_customer_card_cannot_be_selected_even_when_explicit",
+        "backend/tests/test_banking_tools.py::test_create_dispute_hides_unowned_transaction",
+        "backend/tests/test_tool_executor.py::test_executor_requires_confirmation_for_protected_write",
+        "backend/tests/test_agent_orchestrator.py::test_non_backend_tool_errors_do_not_trigger_escalation",
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_matching_confirmation_never_bypasses_authentication"
+      ]
+    },
+    {
+      "id": "H",
+      "name": "tool_registry_boundary",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_tool_executor.py::test_registry_contains_exactly_seven_v1_tools",
+        "backend/tests/test_protected_action_verifier.py::test_internal_decision_schema_is_not_a_runtime_tool",
+        "backend/tests/test_protected_action_fallback.py::test_unsupported_taxonomy_intents_gain_no_tool_or_verification",
+        "backend/tests/test_protected_action_fallback.py::test_one_use_marker_only_covers_the_first_tool_call"
+      ]
+    },
+    {
+      "id": "I",
+      "name": "interruption_correction_cancellation",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_cancelled_or_corrected_dispute_selection_drops_preserved_arguments",
+        "backend/tests/test_protected_action_fallback.py::test_cancellation_during_resource_selection_clears_context",
+        "backend/tests/test_protected_action_fallback.py::test_correction_during_resource_selection_clears_context",
+        "backend/tests/test_protected_action_fallback.py::test_interruption_preserving_resolution_preserves_context_safely",
+        "backend/tests/test_protected_action_fallback.py::test_interruption_without_preserved_resolution_clears_context",
+        "backend/tests/test_conversation_state.py::test_interruption_cancels_action_not_yet_executing"
+      ]
+    },
+    {
+      "id": "J",
+      "name": "idempotency_duplicate_execution",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_banking_tools.py::test_freeze_card_is_idempotent_when_already_frozen",
+        "backend/tests/test_banking_tools.py::test_create_dispute_returns_existing_dispute_on_retry",
+        "backend/tests/test_protected_action_fallback.py::test_explicit_verification_never_executes_without_one_use_confirmation",
+        "backend/tests/test_conversation_state.py::test_stale_tool_completion_cannot_clear_new_pending_action"
+      ]
+    },
+    {
+      "id": "K",
+      "name": "non_protected_regression",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_non_protected_card_status_resolution_is_unchanged",
+        "backend/tests/test_protected_action_fallback.py::test_policy_routed_informational_questions_never_reach_the_verifier",
+        "backend/tests/test_tool_executor.py::test_executor_rejects_unauthenticated_private_read",
+        "backend/tests/test_v2c6_routing_fallback_deterministic_runtime_safety_closeout.py::test_private_read_tools_never_invoke_protected_verifier"
+      ]
+    },
+    {
+      "id": "L",
+      "name": "observability",
+      "pytest_exit_code": 0,
+      "status": "PASS",
+      "test_evidence": [
+        "backend/tests/test_protected_action_fallback.py::test_verifier_trace_events_and_usage_are_recorded_without_raw_text",
+        "backend/tests/test_protected_action_fallback.py::test_failed_verification_emits_failed_event_with_category",
+        "backend/tests/test_protected_action_verifier.py::test_trace_events_have_purpose_tokens_and_no_raw_text"
+      ]
+    }
+  ],
+  "passed_invariants": 12,
+  "phase": "V2-C6 Deterministic Runtime Safety Closeout",
+  "schema_version": "v2c6-routing-fallback-deterministic-runtime-safety-result.v1",
+  "semantic_prerequisite": "FRESH_SEMANTIC_PASS",
+  "source_runtime_hashes": {
+    "banking_tools": "ca5a6c391cb4277171b9e509a6c3c7d542d12051fb9a7265523d53675bfb4811",
+    "budget_provider_amendment": "f39c31c6fc3fe1fa5e1f5e3f07d923cef5dec8d1016411d852e974ff9ef61b3f",
+    "conversation_state": "098b2b5bec03352e55613541278e3ebeeead285bf228ca4aa38af14bf9571a71",
+    "dependencies": "02a971f6069ecb309bcac22c9a0a37beb56680e49ba97aa7b932052392bfc8fa",
+    "fallback_implementation_contract": "c972a381a80bcf7a36b5db751195b3263a8bbc14b72e1442d196306f656a68c0",
+    "fresh_semantic_contract": "4edd9ef5361cdc16aac770e5e0306bd4eb8c643c814ccbf3a753535b31131680",
+    "fresh_semantic_result": "af2e3945ff625c88ee23fe1f3e15961ad5fd09e61c7c3d2672aa64918d387c00",
+    "fresh_semantic_result_manifest": "786018ed0fb53c8b1390ef970709f004cb605da445dc20635ad993a3dc9dcc4b",
+    "orchestrator": "9cb8e8b9023c12a70f175aa7cb4aadac44420dbe30a2fd0e856ddff50c27889f",
+    "protected_action_verifier": "41bb9048f8afbda29d573f63cb707cd947c37170c5d697464fef9c1cc833332d",
+    "resource_resolver": "d86abe07e1fefae5e3e49f15d996bd1635bd8311ac06dabdafc1eb1a755a7cfa",
+    "tool_definitions": "e576ddd27dc4439bf3d954bfef49fdff308983dd0028ab8dd290eebc91b117fa",
+    "tool_executor": "b938d92a638eed39a8e02b2b9c0ede0a372d02130188d7a0edd1b60d6696dedd",
+    "tool_registry": "2b2d891c6c6d32f505d1d390b4347bc70383a7c8900a69c377d1acf2b6611548",
+    "verified_dispute_implementation_amendment": "591e103dbf28db33508dbbb3a236171d160762efac03f8536988c452d74ccbd5"
+  },
+  "total_required_invariants": 12
+}

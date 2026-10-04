@@ -1,0 +1,110 @@
+{
+  "schema_version": "v2c6-final-closure-decision.v1",
+  "phase": "V2-C6",
+  "status": "CLOSED",
+  "classifier_path": {
+    "selection_status": "NO_ACCEPTABLE_CANDIDATE",
+    "selected_candidate": null,
+    "step29i_authorized": false,
+    "runtime_classifier_promoted": false
+  },
+  "fallback_path": {
+    "architecture": "CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING",
+    "development_verifier_status": "KEEP_256",
+    "fresh_semantic_status": "FRESH_SEMANTIC_PASS",
+    "deterministic_runtime_status": "RUNTIME_SAFETY_PASS",
+    "runtime_fallback_accepted": true
+  },
+  "frozen_verifier_configuration": {
+    "model": "openai/gpt-oss-20b",
+    "max_completion_tokens": 256,
+    "reasoning_effort": "low",
+    "sdk_max_retries": 0,
+    "sdk_timeout_seconds": 2.0,
+    "outer_timeout_seconds": 2.0,
+    "application_retries": 0,
+    "tool_choice": "auto",
+    "temperature": 0,
+    "parallel_tool_calls": false
+  },
+  "governance": {
+    "semantic_tuning_authorized": false,
+    "fresh_evidence_consumed": true,
+    "fresh_evidence_tuning_permitted": false,
+    "final_holdout_accessed": false,
+    "prohibited_v2c5_holdout_remains_prohibited": true,
+    "step29i_authorized": false,
+    "backend_runtime_change_authorized": false,
+    "sentinelvoice_product_production_ready_claimed": false
+  },
+  "evidence_bindings": {
+    "r3_classifier_selection_result": {
+      "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_model_selection_results.json",
+      "sha256": "883dd954e9ed08c9d2be8a887c803270d09fda11341da9edd8cf67226204cde6"
+    },
+    "r3_classifier_selection_manifest": {
+      "path": "data/evals/v2/ml/v2c6_r3_protected_intent_gate_model_selection_results.manifest.json",
+      "sha256": "95d8142df06faa250d79b9fb77dbe31ddbdb87923bbab082298827b5a7d899fc"
+    },
+    "routing_fallback_decision": {
+      "path": "data/evals/v2/ml/v2c6_routing_architecture_fallback_decision.json",
+      "sha256": "b650511031a8df58056c045da684c63a0144b1272aa5d0525dc971734339a541"
+    },
+    "verifier_budget_256_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_contract.json",
+      "sha256": "7b6c2e937218044978a99bf550c4b69d3ac846ab87fad60d040783a1bc8dfc58"
+    },
+    "verifier_budget_256_result": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_results.json",
+      "sha256": "0f2efbc5004f63c705e5290dc00d2291fe93a5cc292e831394f9a1e33e67dbc7"
+    },
+    "verifier_budget_256_manifest": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_verifier_budget_256_validation_results.manifest.json",
+      "sha256": "db2117e62ae732d1ea837c17c9a84f6dca4eef949ece89c79ced58f447cc79fa"
+    },
+    "fresh_semantic_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_contract.json",
+      "sha256": "4edd9ef5361cdc16aac770e5e0306bd4eb8c643c814ccbf3a753535b31131680"
+    },
+    "fresh_semantic_result": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_results.json",
+      "sha256": "af2e3945ff625c88ee23fe1f3e15961ad5fd09e61c7c3d2672aa64918d387c00"
+    },
+    "fresh_semantic_manifest": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_fresh_semantic_evaluation_results.manifest.json",
+      "sha256": "786018ed0fb53c8b1390ef970709f004cb605da445dc20635ad993a3dc9dcc4b"
+    },
+    "deterministic_runtime_contract": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_deterministic_runtime_safety_contract.json",
+      "sha256": "50ec51a82f5b1eb76310779fd4bfb38e4eb08d260aa189873f6afc921b194675"
+    },
+    "deterministic_runtime_result": {
+      "path": "data/evals/v2/ml/v2c6_routing_fallback_deterministic_runtime_safety_result.json",
+      "sha256": "991bf2dda733389def6173c9b90377bb57b560d5fba3c58f303d648ed5f13cc0"
+    },
+    "protected_action_verifier": {
+      "path": "backend/app/agent/protected_action_verifier.py",
+      "sha256": "41bb9048f8afbda29d573f63cb707cd947c37170c5d697464fef9c1cc833332d"
+    },
+    "dependencies": {
+      "path": "backend/app/agent/dependencies.py",
+      "sha256": "02a971f6069ecb309bcac22c9a0a37beb56680e49ba97aa7b932052392bfc8fa"
+    },
+    "groq_provider": {
+      "path": "backend/app/providers/groq_llm.py",
+      "sha256": "b1fb73bdfdc93bdb5ae1d1abea6a48087a93a4e4ef3a747f7e89d50df20e7fe7"
+    }
+  },
+  "v2d_handoff": {
+    "entry_conditions_satisfied": true,
+    "v2c6_closed": true,
+    "accepted_runtime_routing_path_exists": true,
+    "protected_semantic_safety_passed_fresh_evaluation": true,
+    "deterministic_protected_action_runtime_safety_passed": true,
+    "classifier_step29i_included": false,
+    "scope_defined_in_current_readme": false,
+    "implementation_started": false,
+    "separate_frozen_scope_contract_required_before_implementation": true
+  },
+  "next_phase": "V2-D"
+}

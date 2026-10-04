@@ -5856,7 +5856,7 @@ permanently consumed fresh acceptance evidence: they are non-tunable and may
 not become development or training data. This is semantic-verifier acceptance,
 not production or final-model acceptance.
 
-+The deterministic runtime safety closeout has now executed successfully under
+The deterministic runtime safety closeout has now executed successfully under
 `data/evals/v2/ml/v2c6_routing_fallback_deterministic_runtime_safety_contract.json`
 (SHA-256
 `50ec51a82f5b1eb76310779fd4bfb38e4eb08d260aa189873f6afc921b194675`).
@@ -5897,6 +5897,34 @@ This closes only deterministic runtime safety for the accepted fallback. It
 does not claim production or final-model acceptance and does not authorize
 Step 29I. The raw V2-C5 final holdout remains prohibited and untouched; the
 contract records `next_required = null`.
+
+#### V2-C6 Final Closure and V2-D Handoff
+
+**V2-C6 is CLOSED.** The two routing paths retain distinct conclusions:
+
+| Path | Final V2-C6 conclusion |
+| --- | --- |
+| Local classifier | `NO_ACCEPTABLE_CANDIDATE`; selected candidate is `null`; Step 29I remains blocked and no classifier was promoted to runtime |
+| Runtime fallback | `CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING` accepted for the V2-C6 fallback path |
+| Fresh semantic acceptance | `FRESH_SEMANTIC_PASS` |
+| Deterministic runtime safety | `RUNTIME_SAFETY_PASS` |
+
+`data/evals/v2/ml/v2c6_final_closure_decision.json` freezes this conclusion,
+the exact verifier configuration, and its source hashes. The successful
+fallback evidence does not make the failed classifier path successful and is
+not a claim that the entire SentinelVoice product is production-ready. The
+400 fresh semantic examples remain consumed and non-tunable; no classifier,
+prompt, model, budget, reasoning, tool-choice, timeout, or retry change is
+authorized.
+
+The next roadmap phase is **V2-D**. Its entry conditions are satisfied because
+V2-C6 is closed, an accepted runtime routing path exists, and both fresh
+semantic safety and deterministic protected-action runtime safety passed.
+Classifier Step 29I is explicitly excluded from this handoff. The current
+README names V2-D as the next separately governed phase but does not define its
+implementation scope. V2-D has not started and requires its own frozen scope
+and contract before implementation. The prohibited raw V2-C5 holdout remains
+untouched and Step 29I remains unauthorized.
 
 ### Why this extension is useful
 

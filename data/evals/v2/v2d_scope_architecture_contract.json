@@ -1,0 +1,181 @@
+{
+  "schema_version": "v2d-scope-architecture-contract.v1",
+  "phase": "V2-D",
+  "title": "Operational Evidence and Portfolio Closeout",
+  "contract_status": "FROZEN",
+  "implementation_status": "NOT_STARTED",
+  "implementation_authorized": false,
+  "historical_scope_status": {
+    "readme_previously_named_v2d": true,
+    "readme_previously_defined_v2d_scope": false,
+    "historical_requirements_invented": false
+  },
+  "baseline": {
+    "v2c6_status": "CLOSED",
+    "v2c6_closure": {
+      "path": "data/evals/v2/ml/v2c6_final_closure_decision.json",
+      "sha256": "7945b8aa5b70df0976bbc53320ca9705683cf00853175e568289482e3bf50adb"
+    },
+    "accepted_runtime_routing_path": "CLARIFICATION_GATED_STRUCTURED_LLM_PROTECTED_ROUTING",
+    "accepted_fallback_configuration_frozen": true,
+    "classifier_step29i_authorized": false,
+    "consumed_evaluation_evidence_tunable": false,
+    "v1_scope_frozen": true
+  },
+  "problem_being_solved": "SentinelVoice has a complete V1 product slice and extensive subsystem, safety, routing, and ML evidence, but that evidence is distributed across tests, evaluation artifacts, traces, and manual acceptance notes. V2-D will produce one current, reproducible, reviewer-facing system evidence pack that verifies release invariants and reports bounded end-to-end voice latency, reliability, and cost without adding product scope or changing runtime behavior.",
+  "why_next": [
+    "V2-C6 has closed the routing decision and leaves no authorized classifier continuation.",
+    "The remaining portfolio gap is system-level evidence, not another model, dataset, product feature, or infrastructure layer.",
+    "Existing evaluators, trace events, redaction, usage accounting, and voice-latency summaries already provide the required measurement primitives.",
+    "A finite closeout converts those primitives into auditable evidence and ends the roadmap by default."
+  ],
+  "architecture": {
+    "pattern": "read-only evidence layer around the existing modular monolith",
+    "runtime_topology_change": false,
+    "data_flow": [
+      "existing deterministic tests and evaluators -> aggregate release evidence",
+      "existing browser voice path and structured trace logs -> redacted latency, reliability, usage, and cost summaries",
+      "aggregate evidence plus pinned configuration -> tracked result and manifest",
+      "tracked result -> concise README portfolio closeout"
+    ],
+    "live_execution_boundary": "One predeclared benchmark run may exercise the existing configured LiveKit and Groq path. The evidence tooling itself must not own provider calls, change prompts or settings, or rerun failed cases to improve results.",
+    "raw_data_policy": "Do not track raw audio, transcripts, prompts, customer records, credentials, or unredacted logs. Track only aggregate metrics, safe failure categories, configuration identifiers, counts, and hashes.",
+    "new_runtime_infrastructure": []
+  },
+  "measurable_acceptance_criteria": [
+    {
+      "id": "AC-01",
+      "criterion": "The V2-C6 closure hash matches this contract, V2-C6 remains CLOSED, the accepted fallback configuration is unchanged, Step 29I remains unauthorized, and consumed evidence is not used for tuning."
+    },
+    {
+      "id": "AC-02",
+      "criterion": "The repository-standard backend tests, backend Ruff check, frontend tests, frontend lint, frontend production build, and deterministic agent evaluation all complete successfully under one recorded revision and environment."
+    },
+    {
+      "id": "AC-03",
+      "criterion": "The deterministic agent evaluation reports 100% task success, zero unauthorized protected actions executed, 100% confirmation compliance, 100% interruption recovery, and 100% policy-source accuracy on its frozen scenarios."
+    },
+    {
+      "id": "AC-04",
+      "criterion": "The existing retrieval evaluation reports Recall@1 >= 0.938, Recall@3 = 1.0, and MRR = 1.0 on its version-controlled scenarios, with its measurement source and environment recorded."
+    },
+    {
+      "id": "AC-05",
+      "criterion": "A single publishable live benchmark records exactly 20 normal voice-turn attempts and exactly 5 intentional interruption attempts; every attempt, failure, and missing stage remains visible, with no replacement runs or post-result tuning."
+    },
+    {
+      "id": "AC-06",
+      "criterion": "The live benchmark has at least 19/20 completed normal turns, 5/5 successful interruption recoveries, zero unauthorized protected actions, 100% confirmation compliance for attempted protected writes, and zero cross-customer disclosures."
+    },
+    {
+      "id": "AC-07",
+      "criterion": "For every observed supported voice stage, the result reports sample count, P50, P90, P95, and maximum latency; interruption latency is separate from normal response latency, and speech-end-to-playback-start is not described as microphone-to-audible latency."
+    },
+    {
+      "id": "AC-08",
+      "criterion": "The live result reports provider/model identifiers, attempted and completed counts, safe failure categories, token/audio/character usage where available, estimated total cost, and cost per successful turn; unavailable pricing is explicit rather than treated as zero."
+    },
+    {
+      "id": "AC-09",
+      "criterion": "All benchmark turns have trace, session, and turn correlation identifiers; applicable tool, retrieval, safety, provider, and latency events are present; tracked evidence contains zero raw-text, raw-audio, secret, or customer-identifier leaks."
+    },
+    {
+      "id": "AC-10",
+      "criterion": "The result and manifest hash-pin the contract, repository revision, configuration, evaluated inputs, and evidence-producing code, and explicitly distinguish deterministic_fake measurements from live_llm, live_stt, and live_voice measurements."
+    },
+    {
+      "id": "AC-11",
+      "criterion": "No backend/app file, taxonomy, model, prompt, routing rule, tool, dataset, safety gate, or runtime deployment topology changes during V2-D."
+    },
+    {
+      "id": "AC-12",
+      "criterion": "Closeout ends as PORTFOLIO_COMPLETE only when AC-01 through AC-11 pass. Otherwise it ends as PORTFOLIO_COMPLETE_WITH_LIMITATIONS when safety invariants still pass but operational evidence misses a non-safety target, or V2D_BLOCKED when evidence is incomplete or a safety invariant fails; failures are documented rather than tuned away."
+    }
+  ],
+  "required_artifacts_and_results": [
+    "this frozen scope and architecture contract",
+    "one small read-only evidence collector with focused deterministic tests",
+    "one aggregate V2-D evidence result containing deterministic and bounded-live sections",
+    "one manifest that hash-pins the result, contract, configuration, revision, inputs, and collector",
+    "README and data/evals/v2 documentation updated from the frozen result",
+    "a final closeout decision embedded in the aggregate result; no automatic successor phase"
+  ],
+  "existing_components_reused": [
+    "the existing browser, LiveKit voice worker, FastAPI session boundary, agent orchestrator, typed tools, hybrid RAG, PostgreSQL/pgvector, and accepted fallback route",
+    "backend/app/evaluation models, graders, runner, and frozen scenario datasets",
+    "backend/app/observability trace schemas, sinks, redaction, summaries, latency metrics, usage normalization, and cost estimation",
+    "scripts/evaluate_agent.py, scripts/evaluate_policy_retrieval.py, and scripts/summarize_voice_latency.py",
+    "the Trace & Metrics reviewer panel and existing CI validation commands",
+    "the V2-C6 final closure decision as the routing-governance baseline"
+  ],
+  "alternatives_considered": [
+    {
+      "alternative": "Reopen classifier remediation or authorize Step 29I",
+      "why_less_suitable": "V2-C6 closed with no acceptable classifier and explicitly blocked Step 29I; reopening it would tune on consumed evidence and repeat a resolved decision."
+    },
+    {
+      "alternative": "Add persistent distributed telemetry, Kubernetes, Kafka, or microservices",
+      "why_less_suitable": "The current scale needs an auditable portfolio result, not distributed operations; existing structured logs and bounded trace summaries already expose the required measurements."
+    },
+    {
+      "alternative": "Add telephony, GraphRAG, multi-agent orchestration, more tools, or another model feature",
+      "why_less_suitable": "These expand surface area without closing the identified evidence gap and weaken the project's simplicity, latency, safety, and completion story."
+    },
+    {
+      "alternative": "Create a large new audio or semantic evaluation corpus",
+      "why_less_suitable": "It adds authoring and governance cost, risks another tuning loop, and is unnecessary for a bounded operational closeout."
+    },
+    {
+      "alternative": "End with documentation only",
+      "why_less_suitable": "Documentation without a current hash-pinned system result would leave reliability, latency, cost, and release claims difficult to reproduce."
+    }
+  ],
+  "tradeoffs": [
+    "A 20-turn live run is useful portfolio evidence but too small and environment-dependent for universal production-performance claims.",
+    "Keeping telemetry process-local limits distributed-operations claims but avoids infrastructure that the project does not need.",
+    "Strict no-rerun and no-tuning rules preserve evidentiary integrity but may retain provider or network anomalies in the published result.",
+    "Deterministic tests give strong safety and regression evidence but cannot substitute for real audio, network, or hosted-provider behavior.",
+    "A terminal closeout favors a coherent finished project over marginal feature breadth."
+  ],
+  "reversibility": {
+    "level": "HIGH",
+    "basis": "V2-D is additive and evidence-only. Its collector and tracked artifacts can be removed without changing the application, data model, runtime route, provider abstraction, tools, or deployment topology.",
+    "runtime_migration_required": false,
+    "data_migration_required": false
+  },
+  "explicit_out_of_scope": [
+    "any backend/app implementation change",
+    "classifier remediation, classifier promotion, Step 29I, threshold tuning, or reuse of consumed evidence as fresh evidence",
+    "new semantic, routing, holdout, or audio evaluation datasets",
+    "prompt, model, token-budget, reasoning, tool-choice, retry, timeout, taxonomy, or safety-gate changes",
+    "Kubernetes, Kafka, microservices, persistent tracing platforms, GraphRAG, multi-agent orchestration, telephony, real banking APIs, and new runtime services",
+    "production-readiness, regulatory-compliance, universal-latency, or real-customer generalization claims",
+    "access to the prohibited V2-C5 final holdout",
+    "an automatic V2-E or open-ended optimization roadmap"
+  ],
+  "ordered_implementation_steps": [
+    "1. Obtain explicit authorization to implement V2-D; verify the frozen V2-C6 baseline and keep backend/app unchanged.",
+    "2. Implement the small read-only evidence collector and deterministic contract tests outside backend/app.",
+    "3. Run and record the minimum deterministic release, agent, retrieval, frontend, safety, trace, redaction, and manifest checks.",
+    "4. Freeze the exact live benchmark environment and scenario checklist before provider execution; do not author a reusable tuning dataset.",
+    "5. Execute the one bounded 20-turn plus 5-interruption live benchmark and retain every attempt without tuning or replacement runs.",
+    "6. Generate the aggregate result and manifest, assign the contract-defined closeout status, and statically validate hashes and schemas.",
+    "7. Update documentation from the frozen result, state limitations precisely, and close the SentinelVoice roadmap unless a separate future need is demonstrated."
+  ],
+  "estimated_project_completion_value": {
+    "rating": "HIGH",
+    "score_out_of_10": 9,
+    "reason": "It turns existing AI, safety, evaluation, observability, latency, and cost work into a single defensible reviewer artifact while adding almost no architectural surface area and establishing a clear stopping point."
+  },
+  "governance": {
+    "v2d_is_model_development": false,
+    "v2d_is_runtime_feature_development": false,
+    "accepted_fallback_may_change": false,
+    "step29i_authorized": false,
+    "consumed_evidence_may_be_tuned_against": false,
+    "implementation_may_begin_from_this_edit": false,
+    "next_required": "explicit user authorization to implement V2-D Step 1",
+    "default_phase_after_completion": null,
+    "portfolio_roadmap_ends_by_default": true
+  }
+}
